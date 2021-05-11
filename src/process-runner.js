@@ -40,6 +40,6 @@ export class ProcessRunner {
             obj = obj[part] = obj[part] || {};
         }
 
-        obj[parts[parts.length -1]] = await getValue(value, context, process);
+        obj[parts[parts.length -1]] = await this.getValue(value, context, process);
     }
 }

@@ -38,3 +38,13 @@ test("ArrayActions - add - on context path", async () => {
     expect(context.values.length).toEqual(1);
     expect(context.values[0]).toEqual("Hello World");
 })
+
+test("ArrayActions - fieldToCSV", async () => {
+    const context = {
+        values: [{value: 1}, {value: 2}, {value: 3}]
+    };
+
+    await globalThis.crs.intent.array.perform({action: "field_to_svg", args: {source: "@context.values", target: "@context.result", delimiter: ";", field: "value"}}, context);
+    expect(context.result).not.toBeUndefined();
+    expect(context.result).toEqual("1;2;3");
+})
