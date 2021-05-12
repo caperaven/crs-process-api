@@ -39,6 +39,15 @@ test("ArrayActions - add - on context path", async () => {
     expect(context.values[0]).toEqual("Hello World");
 })
 
+test("ArrayActions - add - context to array", async () => {
+    const step = { type: "array", action: "add", args: {target: "@process.data.collection", value: "@item"}};
+    const process = {data: {collection: []}};
+    const item = "Hello World";
+    await globalThis.crs.intent.array.perform(step, null, process, item);
+    expect(process.data.collection.length).toEqual(1);
+    expect(process.data.collection[0]).toEqual("Hello World");
+});
+
 test("ArrayActions - fieldToCSV", async () => {
     const context = {
         values: [{value: 1}, {value: 2}, {value: 3}]

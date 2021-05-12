@@ -8,7 +8,9 @@ export class ConsoleActions {
     }
 
     static async log(args, context, process) {
-        console.log(await crs.process.getValue(args?.message, context, process));
+        if (args.message != null) {
+            console.log(await crs.process.getValue(args?.message, context, process));
+        }
     }
 
     static async error(args, context, process) {

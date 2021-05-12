@@ -4,7 +4,10 @@ export const schema = {
         data: {
             records: null,
             min_collection: [],
-            max_collection: []
+            max_collection: [],
+            input_data: {
+                first
+            }
         },
 
         // process steps.
