@@ -1,10 +1,12 @@
 export class LoopActions {
     static async perform(step, context, process) {
         const source = await crs.process.getValue(step.args.source, context, process);
-        const startStep = step.args.steps[step.args.start];
-
+        const stepKeys = Object.keys(step.args.steps);
         for (let item of source) {
-            await crs.process.runStep(startStep, context, process, item);
+            for (let stepKey of stepKeys) {
+                const s = step.args.steps[stepKey];
+                await crs.process.runStep(s, context, process, item);
+            }
         }
     }
 }

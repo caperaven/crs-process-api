@@ -2,7 +2,9 @@ import "./../src/index.js";
 import {getValueOnPath} from "./mockups/binding-mocks.js";
 import {schema} from "./schemas/schema.js";
 
-let log = null;
+let logs = {
+    log: null
+};
 
 beforeAll(() => {
     global.console = {
@@ -29,6 +31,8 @@ test("ProcessRunner - run", async () => {
 
     const result = await crs.process.run(context, schema.distribute_array);
     expect(result).not.toBeUndefined();
+    expect(result.min_collection.length).toEqual(11);
+    expect(result.max_collection.length).toEqual(9);
 })
 
 function createContext(count) {

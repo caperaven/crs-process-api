@@ -2,7 +2,6 @@ export const schema = {
     distribute_array: {
         // data object used as a storage of data during the process.
         data: {
-            records: null,
             min_collection: [],
             max_collection: []
         },
@@ -33,6 +32,7 @@ export const schema = {
                 type: "loop",
                 args: {
                     source: "@context.records",
+                    sequence: "smaller_condition",
                     steps: {
                         smaller_condition: {
                             type: "condition",
@@ -46,8 +46,7 @@ export const schema = {
                                         value: "@item"
                                     }
                                 }
-                            },
-                            next_step: "greater_condition"
+                            }
                         },
 
                         greater_condition: {
