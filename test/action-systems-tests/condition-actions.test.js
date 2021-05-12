@@ -1,4 +1,5 @@
 import "./../../src/index.js";
+import {getValueOnPath} from "./../mockups/binding-mocks.js";
 
 const logs = {
     log: null
@@ -17,6 +18,9 @@ beforeAll(() => {
                     function: new Function("context", `return ${exp};`)
                 };
             }
+        },
+        utils: {
+            getValueOnPath: getValueOnPath
         }
     };
 
@@ -56,4 +60,37 @@ test("ConditionActions - condition on item - fail", async () => {
     expect(logs.log).toEqual("fail");
 })
 
+test("ConditionActions - pass_step string", async () => {
+    const process = {
+        steps: {
+            log_success: {
+                type: "console",
+                action: "log",
+                args: {
+                    message: "pass"
+                }
+            }
+        }
+    }
+
+    await crs.intent.condition.perform({args: {condition: "@context.isValid == true", pass_step: "log_success"}}, {isValid: true}, process)
+    expect(logs.log).toEqual("pass");
+})
+
+test("ConditionActions - fail_step string", async () => {
+    const process = {
+        steps: {
+            log_failure: {
+                type: "console",
+                action: "log",
+                args: {
+                    message: "fail"
+                }
+            }
+        }
+    }
+
+    await crs.intent.condition.perform({args: {condition: "@context.isValid == true", fail_step: "log_failure"}}, {isValid: false}, process)
+    expect(logs.log).toEqual("fail");
+})
 

@@ -17,10 +17,17 @@ export class ConditionActions {
         const expf = crsbinding.expression.compile(exp);
 
         if (expf.function(ctx) == true && step.args.pass_step != null) {
-            await crs.process.runStep(step.args.pass_step, context, process, item);
+            const nextStep = await this.getNextStep(process, step.args?.pass_step);
+            await crs.process.runStep(nextStep, context, process, item);
         }
         else if (step.args.fail_step != null) {
-            await crs.process.runStep(step.args.fail_step, context, process, item);
+            const nextStep = await this.getNextStep(process, step.args?.fail_step);
+            await crs.process.runStep(nextStep, context, process, item);
         }
+    }
+
+    static async getNextStep(process, step) {
+        if (typeof step == "object") return step;
+        return crsbinding.utils.getValueOnPath(process.steps, step);
     }
 }

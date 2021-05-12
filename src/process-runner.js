@@ -3,7 +3,7 @@ export class ProcessRunner {
         process = JSON.parse(JSON.stringify(process));
         process.context = context;
         process._disposables = [];
-        await this.runStep(process.steps.start);
+        await this.runStep(process.steps.start, context, process);
         await this.cleanProcess(process);
         return process.data;
     }
@@ -11,7 +11,10 @@ export class ProcessRunner {
     static async runStep(step, context, process, item) {
         if (step == null) return;
 
-        await crs.intent[step.type].perform(step, context, process, item);
+        if (step.type != null) {
+            await crs.intent[step.type].perform(step, context, process, item);
+        }
+
         const nextStep = process?.steps?.[step.next_step];
         await this.runStep(nextStep, context, process, item);
     }

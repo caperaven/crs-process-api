@@ -10,23 +10,13 @@ export const schema = {
         // process steps.
         steps: {
             start: {
-                next_step: "get_data"
-            },
-
-            get_data: {
-                type: "data",
-                action: "local",
-                args: {
-                    source: "@context.datasource.data",
-                    target: "@process.data.records"
-                },
                 next_step: "validate_record_count"
             },
 
             validate_record_count: {
-                type: "conditions",
+                type: "condition",
                 args: {
-                    condition: "@process.data?.records?.length > 0",
+                    condition: "@context.records.length > 0",
                     fail_step: {
                         type: "log",
                         action: "error",
@@ -35,14 +25,14 @@ export const schema = {
                         },
                         next_step: "done"
                     },
-                    pass_step: "@process.loop"
+                    pass_step: "loop"
                 },
             },
 
             loop: {
                 type: "loop",
                 args: {
-                    source: "@process.data.records",
+                    source: "@context.records",
                     steps: {
                         smaller_condition: {
                             type: "condition",

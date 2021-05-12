@@ -22,6 +22,12 @@ test("ConditionActions - log", async () => {
     expect(logs.log).toEqual("log-message");
 })
 
+test("ConditionActions - log - messages", async () => {
+    logs.log = null;
+    await globalThis.crs.intent.console.perform({action: "log", args: {messages: ["log-message"]}});
+    expect(logs.log).toEqual("log-message");
+})
+
 test("ConditionActions - warn", async () => {
     logs.log = null;
     await globalThis.crs.intent.console.perform({action: "warn", args: {message: "warn-message"}});
