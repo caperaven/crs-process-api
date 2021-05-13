@@ -26,7 +26,7 @@ export class ProcessRunner {
      * @param item {Object} items object @item
      * @returns {Promise<void>}
      */
-    static async runStep(step, context, process, item) {
+    static async runStep(step, context= null, process= null, item= null) {
         if (step == null) return;
 
         if (step.type != null) {
@@ -67,15 +67,35 @@ export class ProcessRunner {
     }
 
     static async setValue(expr, value, context, process, item) {
-        let obj = expr.indexOf("@context") == 0 ? context : process;
-        const parts = expr.replace("@context.", "").replace("@process.", "").replace("@item.", "").split(".");
-
-        for (let i = 0; i < parts.length - 1; i++) {
-            const part = parts[i];
-            obj = obj[part] = obj[part] || {};
+        let ctx;
+        if (expr.indexOf("@item") != -1) {
+            ctx = item;
+            expr = expr.replace("@item.", "");
+        }
+        else if (expr.indexOf("@process") != -1) {
+            ctx = process;
+            expr = expr.replace("@process.", "");
+        }
+        else {
+            ctx = context;
+            expr = expr.replace("@context.", "");
         }
 
-        obj[parts[parts.length -1]] = await this.getValue(value, context, process, item);
+        let obj = ctx;
+
+        if (expr.indexOf(".") == -1) {
+            obj[expr] = await this.getValue(value, context, process, item);
+        }
+        else {
+            const parts = expr.split(".");
+
+            for (let i = 0; i < parts.length - 1; i++) {
+                const part = parts[i];
+                obj = obj[part] = obj[part] || {};
+            }
+
+            obj[parts[parts.length -1]] = await this.getValue(value, context, process, item);
+        }
     }
 
     static async cleanProcess(process) {
