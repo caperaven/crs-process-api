@@ -1,6 +1,6 @@
 import "./../src/index.js";
 import {getValueOnPath} from "./mockups/binding-mocks.js";
-import {schema} from "./schemas/schema.js";
+import {loopExample} from "./schemas/loop-example.js";
 
 let logs = {
     log: null
@@ -29,7 +29,7 @@ beforeAll(() => {
 test("ProcessRunner - run", async () => {
     const context = createContext(20);
 
-    const result = await crs.process.run(context, schema.distribute_array);
+    const result = await crs.process.run(context, loopExample.distribute_array);
     expect(result).not.toBeUndefined();
     expect(result.min_collection.length).toEqual(11);
     expect(result.max_collection.length).toEqual(9);

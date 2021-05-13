@@ -1,4 +1,4 @@
-export const schema = {
+export const loopExample = {
     distribute_array: {
         // data object used as a storage of data during the process.
         data: {
@@ -32,7 +32,6 @@ export const schema = {
                 type: "loop",
                 args: {
                     source: "@context.records",
-                    sequence: "smaller_condition",
                     steps: {
                         smaller_condition: {
                             type: "condition",

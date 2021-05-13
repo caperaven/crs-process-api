@@ -1,6 +1,8 @@
 import "./../../src/index.js";
 import {getValueOnPath} from "../mockups/binding-mocks.js";
 
+let log;
+
 beforeAll(() => {
     globalThis.console = {
         error: (msg) => log = msg

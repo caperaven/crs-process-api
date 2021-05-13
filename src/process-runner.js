@@ -1,4 +1,13 @@
+/**
+ * Main entry for running processes
+ */
 export class ProcessRunner {
+    /**
+     * Run a entire process and all it's steps
+     * @param context {Object} context object @context
+     * @param process {Object} process object @process
+     * @returns {Promise<Object>} returns the process.data object
+     */
     static async run(context, process) {
         process = JSON.parse(JSON.stringify(process));
         process.context = context;
@@ -8,6 +17,15 @@ export class ProcessRunner {
         return process.data;
     }
 
+    /**
+     * Run a process step definition.
+     * Used internally and externally
+     * @param step {Object} step definition
+     * @param context {Object} context object @context
+     * @param process {Object} process object @process
+     * @param item {Object} items object @item
+     * @returns {Promise<void>}
+     */
     static async runStep(step, context, process, item) {
         if (step == null) return;
 
@@ -19,6 +37,14 @@ export class ProcessRunner {
         await this.runStep(nextStep, context, process, item);
     }
 
+    /**
+     * Utility function used to get objects and values on paths defined by process
+     * @param expr {string} path expression
+     * @param context {Object} context object @context
+     * @param process {Object} process object @process
+     * @param item {Object} items object @item
+     * @returns {Promise<string|*>}
+     */
     static async getValue(expr, context, process, item) {
         if (typeof expr != "string") return expr;
         if (expr == "@context") return context;

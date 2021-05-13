@@ -8,6 +8,7 @@ globalThis.crs = globalThis.crs || {};
 
 /**
  * Register features on the intent.
+ * This can be used programmatically.
  */
 globalThis.crs.intent = {
     array: ArrayActions,
