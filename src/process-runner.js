@@ -45,25 +45,35 @@ export class ProcessRunner {
      * @param item {Object} items object @item
      * @returns {Promise<string|*>}
      */
-    static async getValue(expr, context, process, item) {
+    static async getValue(expr, context = null, process=  null, item = null) {
         if (typeof expr != "string") return expr;
+
         if (expr == "@context") return context;
         if (expr == "@process") return process;
         if (expr == "@item") return item;
 
-        if (expr.indexOf("@context") == 0) {
-            return crsbinding.utils.getValueOnPath(context, expr.replace("@context.", ""));
+        if (expr.indexOf("(") != -1) {
+            let ctx = expr.indexOf("@item") != -1 ? item : expr.indexOf("@process") != -1 ? process : context;
+            const exp = expr.replace("@context", "context").replace("@process", "context").replace("@item", "context");
+            const fn = new Function("context", `return ${exp}`);
+            return fn(ctx);
         }
+        else
+        {
+            if (expr.indexOf("@context") == 0) {
+                return crsbinding.utils.getValueOnPath(context, expr.replace("@context.", ""));
+            }
 
-        if (expr.indexOf("@process") == 0) {
-            return crsbinding.utils.getValueOnPath(process, expr.replace("@process.", ""));
+            if (expr.indexOf("@process") == 0) {
+                return crsbinding.utils.getValueOnPath(process, expr.replace("@process.", ""));
+            }
+
+            if (expr.indexOf("@item") == 0) {
+                return crsbinding.utils.getValueOnPath(item, expr.replace("@item.", ""));
+            }
+
+            return expr;
         }
-
-        if (expr.indexOf("@item") == 0) {
-            return crsbinding.utils.getValueOnPath(item, expr.replace("@item.", ""));
-        }
-
-        return expr;
     }
 
     static async setValue(expr, value, context, process, item) {

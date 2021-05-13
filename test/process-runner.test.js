@@ -22,6 +22,30 @@ test("ProcessRunner - run", async () => {
     expect(result.max_collection.length).toEqual(9);
 })
 
+test("ProcessRunner - getValue - context", async () => {
+    const context = {value: 10};
+    const result = await crs.process.getValue("@context.value", context);
+    expect(result).toEqual(10);
+})
+
+test("ProcessRunner - getValue - process", async () => {
+    const process = {value: 10};
+    const result = await crs.process.getValue("@process.value", null, process);
+    expect(result).toEqual(10);
+})
+
+test("ProcessRunner - getValue - item", async () => {
+    const item = {value: 10};
+    const result = await crs.process.getValue("@item.value", null, null, item);
+    expect(result).toEqual(10);
+})
+
+test("ProcessRunner - getValue - with function", async () => {
+    const context = {src: "Hello World"};
+    const result = await crs.process.getValue("@context.src.toUpperCase()", context, null, null);
+    expect(result).toEqual("HELLO WORLD");
+})
+
 function createContext(count) {
     const result = [];
 

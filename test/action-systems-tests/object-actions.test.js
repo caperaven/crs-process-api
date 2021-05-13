@@ -26,7 +26,7 @@ test("ObjectActions - set - item", async () => {
     expect(item.value).toEqual(1);
 })
 
-test.skip("ObjectActions - set - with functions", async () => {
+test("ObjectActions - set - with functions", async () => {
     const context = {src: "hello world"};
     const descriptor = await SetDescriptor.new("@context.value", "@context.src.toUpperCase()");
     await globalThis.crs.process.runStep(descriptor, context);
