@@ -15,30 +15,23 @@ beforeAll(() => {
     }
 })
 
-test("LoopActions - loop through", async () => {
-    const context = {
-        records: [
-            {
-                value: 1
-            },
-            {
-                value: 2
-            },
-            {
-                value: 3
-            },
-            {
-                value: 4
-            }
-        ],
-        result: []
+function createContext(count) {
+    const result = {records: [], result: []};
+
+    for (let i = 0; i < count; i++) {
+        result.records.push({value: i});
     }
+
+    return result;
+}
+
+test("LoopActions - loop through - copy item to other arrays", async () => {
+    const context = createContext(5);
 
     const step = {
         type: "loop",
         args: {
             source: "@context.records",
-            start: "copy_to_array",
             steps: {
                 copy_to_array: {
                     type: "array",
@@ -52,6 +45,32 @@ test("LoopActions - loop through", async () => {
         }
     }
 
-    await globalThis.crs.intent.loop.perform(step, context);
+    await globalThis.crs.process.runStep(step, context);
     expect(context.result.length).toEqual(context.records.length);
+})
+
+test("LoopActions - loop through - set item value", async () => {
+    const context = createContext(5);
+
+    const step = {
+        type: "loop",
+        args: {
+            source: "@context.records",
+            steps: {
+                set_value: {
+                    type: "object",
+                    action: "set",
+                    args: {
+                        target: "@item.value",
+                        value: 10
+                    }
+                }
+            }
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context);
+    for (let record of context.records) {
+        expect(record.value).toBe(10);
+    }
 })
