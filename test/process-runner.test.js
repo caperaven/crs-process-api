@@ -51,6 +51,11 @@ test("ProcessRunner - getValue - with expression", async () => {
     expect(result).toEqual(3);
 })
 
+test("ProcessRunner - getValue - calculate using context and process and item", async () => {
+    const result = await crs.process.getValue("@context.base * @item.value + @process.fraction", {base: 2}, {fraction: 0.123}, {value: 5});
+    expect(result).toEqual(10.123);
+})
+
 function createContext(count) {
     const result = [];
 

@@ -52,28 +52,11 @@ export class ProcessRunner {
         if (expr == "@process") return process;
         if (expr == "@item") return item;
 
-        if (expr.indexOf("(") != -1) {
-            let ctx = expr.indexOf("@item") != -1 ? item : expr.indexOf("@process") != -1 ? process : context;
-            const exp = expr.replace("@context", "context").replace("@process", "context").replace("@item", "context");
-            const fn = new Function("context", `return ${exp}`);
-            return fn(ctx);
-        }
-        else
-        {
-            if (expr.indexOf("@context") == 0) {
-                return crsbinding.utils.getValueOnPath(context, expr.replace("@context.", ""));
-            }
+        if (expr.indexOf("@") == -1 && expr.indexOf("(") == -1) return expr;
 
-            if (expr.indexOf("@process") == 0) {
-                return crsbinding.utils.getValueOnPath(process, expr.replace("@process.", ""));
-            }
-
-            if (expr.indexOf("@item") == 0) {
-                return crsbinding.utils.getValueOnPath(item, expr.replace("@item.", ""));
-            }
-
-            return expr;
-        }
+        const exp = expr.split("@").join("");
+        const fn = new Function("context", "process", "item", `return ${exp};`);
+        return fn(context, process, item);
     }
 
     static async setValue(expr, value, context, process, item) {
