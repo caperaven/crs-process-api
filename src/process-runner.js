@@ -30,11 +30,11 @@ export class ProcessRunner {
         if (step == null) return;
 
         if (step.type != null) {
-            await crs.intent[step.type].perform(step, context, process, item);
+            return await crs.intent[step.type].perform(step, context, process, item);
         }
 
         const nextStep = process?.steps?.[step.next_step];
-        await this.runStep(nextStep, context, process, item);
+        return await this.runStep(nextStep, context, process, item);
     }
 
     /**
