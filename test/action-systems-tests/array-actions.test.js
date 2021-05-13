@@ -1,18 +1,14 @@
 import "./../../src/index.js";
-import {getValueOnPath} from "./../mockups/binding-mocks.js";
+import {loadBinding} from "./../mockups/crsbinding.mock.js";
 
 let log = null;
 
-beforeAll(() => {
+beforeAll(async () => {
     globalThis.console = {
         error: (msg) => log = msg
     }
 
-    globalThis.crsbinding = {
-        utils: {
-            getValueOnPath: getValueOnPath
-        }
-    }
+    await loadBinding();
 })
 
 test("ArrayActions - add - directly to array", async () => {

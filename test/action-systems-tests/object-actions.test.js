@@ -1,4 +1,9 @@
 import "./../../src/index.js";
+import {loadBinding} from "./../mockups/crsbinding.mock.js";
+
+beforeAll(async () => {
+    await loadBinding();
+})
 
 test("ObjectActions - set - context", async () => {
     const context = {};
@@ -19,6 +24,13 @@ test("ObjectActions - set - item", async () => {
     const descriptor = await SetDescriptor.new("@item.value", 1);
     await globalThis.crs.process.runStep(descriptor, null, null, item);
     expect(item.value).toEqual(1);
+})
+
+test.skip("ObjectActions - set - with functions", async () => {
+    const context = {src: "hello world"};
+    const descriptor = await SetDescriptor.new("@context.value", "@context.src.toUpperCase()");
+    await globalThis.crs.process.runStep(descriptor, context);
+    expect(context.value).toEqual("HELLO WORLD");
 })
 
 class SetDescriptor {

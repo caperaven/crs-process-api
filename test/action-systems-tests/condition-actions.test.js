@@ -1,29 +1,16 @@
 import "./../../src/index.js";
-import {getValueOnPath} from "./../mockups/binding-mocks.js";
+import {loadBinding} from "./../mockups/crsbinding.mock.js";
 
 const logs = {
     log: null
 }
 
-beforeAll(() => {
+beforeAll(async () => {
     global.console = {
         log: (msg) => logs.log = msg
     }
 
-    global.crsbinding = {
-        expression: {
-            compile: (exp) => {
-                exp = exp.replace("@context", "context").replace("@process", "context").replace("@item", "context");
-                return {
-                    function: new Function("context", `return ${exp};`)
-                };
-            }
-        },
-        utils: {
-            getValueOnPath: getValueOnPath
-        }
-    };
-
+    await loadBinding();
 })
 
 beforeEach(() => {
