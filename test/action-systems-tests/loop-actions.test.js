@@ -70,3 +70,31 @@ test("LoopActions - loop through - set item value", async () => {
         expect(record.value).toBe(10);
     }
 })
+
+test("LoopActions - uppercase item value", async () => {
+    const context = {
+        records: [{code: "a"}, {code: "b"}, {code: "c"}]
+    }
+
+    const step = {
+        type: "loop",
+        args: {
+            source: "@context.records",
+            steps: {
+                set_value: {
+                    type: "object",
+                    action: "set",
+                    args: {
+                        target: "@item.code",
+                        value: "@item.code.toUpperCase()"
+                    }
+                }
+            }
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.records[0].code).toEqual("A");
+    expect(context.records[1].code).toEqual("B");
+    expect(context.records[2].code).toEqual("C");
+})

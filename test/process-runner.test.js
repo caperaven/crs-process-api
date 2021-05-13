@@ -46,6 +46,11 @@ test("ProcessRunner - getValue - with function", async () => {
     expect(result).toEqual("HELLO WORLD");
 })
 
+test("ProcessRunner - getValue - with expression", async () => {
+    const result = await crs.process.getValue("(1 + 2)");
+    expect(result).toEqual(3);
+})
+
 function createContext(count) {
     const result = [];
 
