@@ -4,6 +4,7 @@ import {ConditionActions} from "./action-systems/condition-actions.js";
 import {ConsoleActions} from "./action-systems/console-actions.js";
 import {LoopActions} from "./action-systems/loop-actions.js";
 import {ObjectActions} from './action-systems/object-actions.js';
+import {ActionActions} from './action-systems/action-actions.js';
 
 globalThis.crs = globalThis.crs || {};
 
@@ -16,7 +17,9 @@ globalThis.crs.intent = {
     condition: ConditionActions,
     console: ConsoleActions,
     loop: LoopActions,
-    object: ObjectActions
+    object: ObjectActions,
+    action: ActionActions
 }
 
 globalThis.crs.process = ProcessRunner;
+globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
