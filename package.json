@@ -28,6 +28,6 @@
         "rollup-plugin-terser": "^5.1.2"
     },
     "dependencies": {
-        "crs-binding": "0.0.220"
+        "crs-binding": "0.0.221"
     }
 }

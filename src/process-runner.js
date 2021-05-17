@@ -10,6 +10,7 @@ export class ProcessRunner {
      */
     static async run(context, process) {
         process = JSON.parse(JSON.stringify(process));
+        process.data = process.data || {};
         process.context = context;
         process._disposables = [];
         await this.runStep(process.steps.start, context, process);
@@ -29,12 +30,18 @@ export class ProcessRunner {
     static async runStep(step, context= null, process= null, item= null) {
         if (step == null) return;
 
+        let result;
         if (step.type != null) {
-            return await crs.intent[step.type].perform(step, context, process, item);
+            result = await crs.intent[step.type].perform(step, context, process, item);
         }
 
         const nextStep = process?.steps?.[step.next_step];
-        return await this.runStep(nextStep, context, process, item);
+
+        if (nextStep != null) {
+            return await this.runStep(nextStep, context, process, item);
+        }
+
+        return result;
     }
 
     /**
@@ -59,6 +66,15 @@ export class ProcessRunner {
         return fn(context, process, item);
     }
 
+    /**
+     * Utility function to set the property of a object on a defined path
+     * @param expr {string} path expression on what property to set
+     * @param value {any} the value to set on the property
+     * @param context {Object} obj to use if expr references @context
+     * @param process {Object} obj to use if expr references @process
+     * @param item {Object} obj to use if expr references @item
+     * @returns {Promise<void>}
+     */
     static async setValue(expr, value, context, process, item) {
         let ctx;
         if (expr.indexOf("@item") != -1) {

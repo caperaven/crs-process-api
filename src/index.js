@@ -5,6 +5,7 @@ import {ConsoleActions} from "./action-systems/console-actions.js";
 import {LoopActions} from "./action-systems/loop-actions.js";
 import {ObjectActions} from './action-systems/object-actions.js';
 import {ActionActions} from './action-systems/action-actions.js';
+import {MathActions} from "./action-systems/math-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -18,7 +19,8 @@ globalThis.crs.intent = {
     console: ConsoleActions,
     loop: LoopActions,
     object: ObjectActions,
-    action: ActionActions
+    action: ActionActions,
+    math: MathActions
 }
 
 globalThis.crs.process = ProcessRunner;
