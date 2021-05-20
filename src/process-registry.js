@@ -19,8 +19,7 @@ export class SchemaRegistry {
 
         // 1. Copy parameter values to process to run
         const process = schema[processName];
-        const parameters = args.step.args?.parameters;
-        await copyParametersToProcess(process, parameters);
+        await copyParametersToProcess(process, args.parameters);
         await validateParameters(process, processName);
 
         // 2. Run process
@@ -58,7 +57,8 @@ async function copyParametersToProcess(process, parameters) {
 }
 
 /**
- * Check the processes required parameters, referring to parameters_def
+ * Check the processes required parameters, referring to parameters_def.
+ * Concern: Is this process in a condition with all requirements set to be able to run.
  * @param process {object} process definition
  * @param processName {string} name of the process to be used in error handling
  * @returns {Promise<void>}
@@ -69,6 +69,7 @@ async function validateParameters(process, processName) {
     let isValid = true;
     for (const [key, value] of Object.entries(process.parameters_def)) {
         if (value.required === true) {
+            // JHR: update
             isValid = process.parameters[key] != null;
         }
 

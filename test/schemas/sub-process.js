@@ -2,9 +2,6 @@ export const processes = {
     id: "sub_example",
 
     process1: {
-        data: {
-            sum: 0
-        },
         steps: {
             start: {
                 next_step: "get_values"
@@ -27,7 +24,7 @@ export const processes = {
     process2: {
         parameters_def: {
             value1: {type: "number", required: true},
-            value2: {type: "number", required: true}
+            value2: {type: "number", required: true, default: 0}
         },
 
         // parameters1: {
@@ -56,6 +53,27 @@ export const processes = {
                     target: "@process.result"
                 },
             }
+            // branch: {
+            //     type: "switch",
+            //     args: [
+            //         {
+            //             case: "@process.data.value < 5",
+            //             next_step: "step1"
+            //         },
+            //         {
+            //             case: "@process.data.value > 5 && @process.data.value < 10",
+            //             next_step: "step2"
+            //         },
+            //         {
+            //             case: "@process.data.value > 10",
+            //             next_step: "step3"
+            //         },
+            //         {
+            //             case: "default",
+            //             next_step: "step4"
+            //         }
+            //     ]
+            // }
         }
     }
 }

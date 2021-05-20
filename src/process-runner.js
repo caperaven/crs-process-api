@@ -8,12 +8,11 @@ export class ProcessRunner {
      * @param process {Object} process object @process
      * @returns {Promise<Object>} returns the process.data object
      */
-    static async run(context, process) {
+    static async run(context, process, item) {
         process = JSON.parse(JSON.stringify(process));
         process.data = process.data || {};
         process.context = context;
-        process._disposables = [];
-        await this.runStep(process.steps.start, context, process);
+        await this.runStep(process.steps.start, context, process, item);
 
         const result = process.result;
         await this.cleanProcess(process);
@@ -113,16 +112,5 @@ export class ProcessRunner {
         delete process.context;
         delete process.parameters;
         delete process.result;
-
-        for (let disposable of process._disposables) {
-            if (Array.isArray(disposable)){
-                for (let item of disposable) {
-                    item.dispose?.();
-                }
-                disposable.length = 0;
-            }
-
-            disposable.dispose?.();
-        }
     }
 }
