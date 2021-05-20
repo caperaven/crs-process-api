@@ -1,7 +1,7 @@
 export const loopExample = {
     distribute_array: {
         // data object used as a storage of data during the process.
-        data: {
+        result: {
             min_collection: [],
             max_collection: []
         },
@@ -41,7 +41,7 @@ export const loopExample = {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "@process.data.min_collection",
+                                        target: "@process.result.min_collection",
                                         value: "@item"
                                     }
                                 }
@@ -56,7 +56,7 @@ export const loopExample = {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "@process.data.max_collection",
+                                        target: "@process.result.max_collection",
                                         value: "@item"
                                     }
                                 }
@@ -70,7 +70,7 @@ export const loopExample = {
                 type: "console",
                 action: "log",
                 args: {
-                    messages: ["@process.data.min_collection", "@process.data.max_collection"]
+                    messages: ["@process.result.min_collection", "@process.result.max_collection"]
                 },
                 next_step: "done"
             },

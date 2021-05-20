@@ -1,4 +1,3 @@
-import "./../../src/index.js";
 import {loadBinding} from "./../mockups/crsbinding.mock.js";
 
 const logs = {
@@ -11,6 +10,7 @@ beforeAll(async () => {
     }
 
     await loadBinding();
+    await import("./../../src/index.js");
 })
 
 beforeEach(() => {

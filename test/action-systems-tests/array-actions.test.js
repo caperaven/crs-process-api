@@ -1,4 +1,3 @@
-import "./../../src/index.js";
 import {loadBinding} from "./../mockups/crsbinding.mock.js";
 
 let log = null;
@@ -9,6 +8,7 @@ beforeAll(async () => {
     }
 
     await loadBinding();
+    await import("./../../src/index.js");
 })
 
 test("ArrayActions - add - directly to array", async () => {

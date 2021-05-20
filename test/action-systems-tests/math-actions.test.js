@@ -1,4 +1,9 @@
-import "./../../src/index.js";
+import {loadBinding} from "../mockups/crsbinding.mock.js";
+
+beforeAll(async () => {
+    await loadBinding();
+    await import("./../../src/index.js");
+})
 
 test("MathActions - add", async () => {
     const process = {
@@ -12,14 +17,14 @@ test("MathActions - add", async () => {
                 args: {
                     value1: 10,
                     value2: 11,
-                    target: "@process.data.result"
+                    target: "@process.result"
                 }
             }
         }
     }
 
-    const data = await crs.process.run(null, process);
-    expect(data.result).toEqual(21);
+    const result = await crs.process.run(null, process);
+    expect(result).toEqual(21);
 })
 
 test("MathActions - subtract", async () => {
@@ -34,14 +39,14 @@ test("MathActions - subtract", async () => {
                 args: {
                     value1: 10,
                     value2: 11,
-                    target: "@process.data.result"
+                    target: "@process.result"
                 }
             }
         }
     }
 
-    const data = await crs.process.run(null, process);
-    expect(data.result).toEqual(-1);
+    const result = await crs.process.run(null, process);
+    expect(result).toEqual(-1);
 })
 
 test("MathActions - multiply", async () => {
@@ -56,14 +61,14 @@ test("MathActions - multiply", async () => {
                 args: {
                     value1: 10,
                     value2: 1,
-                    target: "@process.data.result"
+                    target: "@process.result"
                 }
             }
         }
     }
 
-    const data = await crs.process.run(null, process);
-    expect(data.result).toEqual(10);
+    const result = await crs.process.run(null, process);
+    expect(result).toEqual(10);
 })
 
 test("MathActions - divide", async () => {
@@ -78,14 +83,14 @@ test("MathActions - divide", async () => {
                 args: {
                     value1: 10,
                     value2: 1,
-                    target: "@process.data.result"
+                    target: "@process.result"
                 }
             }
         }
     }
 
-    const data = await crs.process.run(null, process);
-    expect(data.result).toEqual(10);
+    const result = await crs.process.run(null, process);
+    expect(result).toEqual(10);
 })
 
 test("MathActions - sin", async () => {
@@ -99,14 +104,14 @@ test("MathActions - sin", async () => {
                 action: "sin",
                 args: {
                     value: [90],
-                    target: "@process.data.result"
+                    target: "@process.result"
                 }
             }
         }
     }
 
-    const data = await crs.process.run(null, process);
-    expect(data.result).toEqual(0.8939966636005579);
+    const result = await crs.process.run(null, process);
+    expect(result).toEqual(0.8939966636005579);
 })
 
 test("MathActions - max", async () => {
@@ -114,7 +119,6 @@ test("MathActions - max", async () => {
         data: {
             max: 0
         },
-
         steps: {
             start: {
                 next_step: "max"
@@ -133,12 +137,12 @@ test("MathActions - max", async () => {
                 action: "max",
                 args: {
                     value: ["@process.data.max", 100],
-                    target: "@process.data.max"
+                    target: "@process.result"
                 },
             }
         }
     }
 
-    const data = await crs.process.run(null, process);
-    expect(data.max).toEqual(100);
+    const result = await crs.process.run(null, process);
+    expect(result).toEqual(100);
 })

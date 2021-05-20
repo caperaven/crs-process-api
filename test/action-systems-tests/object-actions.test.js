@@ -1,8 +1,8 @@
-import "./../../src/index.js";
 import {loadBinding} from "./../mockups/crsbinding.mock.js";
 
 beforeAll(async () => {
     await loadBinding();
+    await import("./../../src/index.js");
 })
 
 test("ObjectActions - set - context", async () => {

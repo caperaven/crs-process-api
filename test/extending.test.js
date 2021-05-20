@@ -1,4 +1,10 @@
-import "./../src/index.js";
+import {loadBinding} from "./mockups/crsbinding.mock.js";
+
+beforeAll(async () => {
+    await loadBinding();
+    await import("./../src/index.js");
+})
+
 
 class Math {
     static async perform(step, context, process, item) {
