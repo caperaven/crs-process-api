@@ -12,6 +12,8 @@ export class ProcessRunner {
         process = JSON.parse(JSON.stringify(process));
         process.data = process.data || {};
         process.context = context;
+
+        await validateParameters(context, process, item);
         await this.runStep(process.steps.start, context, process, item);
 
         const result = process.result;
@@ -112,5 +114,33 @@ export class ProcessRunner {
         delete process.context;
         delete process.parameters;
         delete process.result;
+    }
+}
+
+/**
+ * Check the processes required parameters, referring to parameters_def.
+ * Concern: Is this process in a condition with all requirements set to be able to run.
+ * @returns {Promise<void>}
+ */
+async function validateParameters(context, process,item) {
+    if (process.parameters_def == null) return;
+
+    process.parameters = process.parameters || {};
+
+    let isValid = true;
+    for (const [key, value] of Object.entries(process.parameters_def)) {
+        if (value.required === true) {
+            if (process.parameters[key] == null && value.default != null) {
+                process.parameters[key] = await crs.process.getValue(value.default, context, process, item);
+                isValid = true;
+            }
+            else {
+                isValid = process.parameters[key] != null;
+            }
+        }
+
+        if (isValid === false) {
+            throw new Error(`required parameter "${key}" not set`);
+        }
     }
 }

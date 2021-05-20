@@ -15,7 +15,7 @@ export const processes = {
                         value1: 10,
                         value2: 11
                     },
-                    result: "@process.result"
+                    target: "@process.result"
                 }
             }
         }

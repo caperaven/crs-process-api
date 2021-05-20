@@ -20,13 +20,12 @@ export class SchemaRegistry {
         // 1. Copy parameter values to process to run
         const process = schema[processName];
         await copyParametersToProcess(process, args.parameters);
-        await validateParameters(process, processName);
 
         // 2. Run process
         const result = await crs.process.run(args.context, process);
 
         // 3. Copy output from process to calling process
-        const resultPath = args.step.args?.result;
+        const resultPath = args.step.args?.target;
         if (resultPath != null) {
             await crs.process.setValue(resultPath, result, args.context, args.process, args.item);
         }
@@ -53,28 +52,5 @@ async function copyParametersToProcess(process, parameters) {
     process.parameters = process.parameters || {};
     for (const [key, value] of Object.entries(parameters)) {
         process.parameters[key] = value;
-    }
-}
-
-/**
- * Check the processes required parameters, referring to parameters_def.
- * Concern: Is this process in a condition with all requirements set to be able to run.
- * @param process {object} process definition
- * @param processName {string} name of the process to be used in error handling
- * @returns {Promise<void>}
- */
-async function validateParameters(process, processName) {
-    if (process.parameters_def == null) return;
-
-    let isValid = true;
-    for (const [key, value] of Object.entries(process.parameters_def)) {
-        if (value.required === true) {
-            // JHR: update
-            isValid = process.parameters[key] != null;
-        }
-
-        if (isValid === false) {
-            throw new Error(`required parameter "${key}" not set in process "${processName}"`);
-        }
     }
 }

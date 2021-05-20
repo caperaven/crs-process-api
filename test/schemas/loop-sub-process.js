@@ -23,7 +23,7 @@ export const processes = {
                                     value1: "@process.data.sum",
                                     value2: "@item.value"
                                 },
-                                result: "@process.data.sum"
+                                target: "@process.data.sum"
                             }
                         }
                     }

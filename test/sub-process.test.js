@@ -6,7 +6,7 @@ beforeAll(async () => {
     await loadBinding();
     await import("./../src/index.js")
     crs.processSchemaRegistry.add(subProcesses);
-    crs.process.fetch = () => loopProcesses;
+    crs.process.fetch = async () => loopProcesses;
 })
 
 afterAll(async () => {
