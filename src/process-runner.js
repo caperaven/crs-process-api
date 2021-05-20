@@ -14,8 +14,10 @@ export class ProcessRunner {
         process.context = context;
         process._disposables = [];
         await this.runStep(process.steps.start, context, process);
+
+        const result = process.result;
         await this.cleanProcess(process);
-        return process.data;
+        return result;
     }
 
     /**
@@ -109,6 +111,8 @@ export class ProcessRunner {
 
     static async cleanProcess(process) {
         delete process.context;
+        delete process.parameters;
+        delete process.result;
 
         for (let disposable of process._disposables) {
             if (Array.isArray(disposable)){
