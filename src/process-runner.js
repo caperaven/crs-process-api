@@ -132,15 +132,13 @@ async function validateParameters(context, process,item) {
         if (value.required === true) {
             if (process.parameters[key] == null && value.default != null) {
                 process.parameters[key] = await crs.process.getValue(value.default, context, process, item);
-                isValid = true;
             }
-            else {
-                isValid = process.parameters[key] != null;
-            }
+
+            isValid = process.parameters[key] != null;
         }
 
         if (isValid === false) {
-            throw new Error(`required parameter "${key}" not set`);
+            throw new Error(`required parameter "${key}" not set or is null`);
         }
     }
 }

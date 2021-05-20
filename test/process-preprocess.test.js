@@ -14,3 +14,19 @@ test("pre process - load parameter values", async () => {
     const result = await crs.process.run(context, process.parameterised);
     expect(result).toEqual(100);
 })
+
+test("pre process - load parameter values - null value", async () => {
+    const context = {
+        value: null
+    }
+
+    let hasError = false;
+    try {
+        await crs.process.run(context, process.parameterised);
+    }
+    catch(e) {
+        hasError = true;
+    }
+
+    expect(hasError).toEqual(true);
+})
