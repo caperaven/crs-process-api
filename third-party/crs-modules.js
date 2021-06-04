@@ -40,6 +40,11 @@ export class Modules {
         return (await this.get(key))?.default;
     }
 
+    async getConstant(key, name) {
+        const module = await this.get(key);
+        return module?.[name];
+    }
+
     async getPrototype(key, className) {
         const module = await this.get(key);
         return module?.[className || key];

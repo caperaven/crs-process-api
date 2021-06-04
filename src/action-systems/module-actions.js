@@ -9,6 +9,22 @@ export class ModuleActions {
     }
 
     static async call(step, context) {
+        if (step.args.default === true) {
+            return await crs.modules.callDefault(step.args.module, context, step.args.parameters);
+        }
+
         return await crs.modules.call(step.args.module, context, step.args.fnName, step.args.parameters);
+    }
+
+    static async create_class(step) {
+        if (step.args.default === true) {
+            return await crs.modules.getInstanceOfDefault(step.args.module, step.args.parameters);
+        }
+
+        return await crs.modules.getInstanceOf(step.args.module, step.args.class, step.args.parameters);
+    }
+
+    static async get_constant(step) {
+        return await crs.modules.getConstant(step.args.module, step.args.name);
     }
 }
