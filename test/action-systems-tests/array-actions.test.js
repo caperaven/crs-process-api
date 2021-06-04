@@ -49,7 +49,7 @@ test("ArrayActions - fieldToCSV", async () => {
         values: [{value: 1}, {value: 2}, {value: 3}]
     };
 
-    await globalThis.crs.intent.array.perform({action: "field_to_svg", args: {source: "@context.values", target: "@context.result", delimiter: ";", field: "value"}}, context);
+    await globalThis.crs.intent.array.perform({action: "field_to_csv", args: {source: "@context.values", target: "@context.result", delimiter: ";", field: "value"}}, context);
     expect(context.result).not.toBeUndefined();
     expect(context.result).toEqual("1;2;3");
 })

@@ -15,7 +15,7 @@ export class ArrayActions {
         }
     }
 
-    static async field_to_svg(step, context, process, item) {
+    static async field_to_csv(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
 
         if (source == null) {
