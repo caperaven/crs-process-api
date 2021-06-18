@@ -3,6 +3,7 @@
 ## Introduction
 
 This library provides a basis to develop process driven application where users and developers use the same API to define features.  
+It has a dependency on [crs-binding](https://github.com/caperaven/crs-binding).
 
 The goals are: 
 
@@ -543,4 +544,127 @@ const step = {
         }
     }
 }
+```
+
+## Process intent
+
+```js
+crs.intent.process
+```
+
+This intent allows for sub processes.   
+In other words, running a different process as a step in the current process.  
+This can go n levels deep.
+
+```js
+const step = {
+    type: "process",
+    action: "sub_process_name", // property name on the process schema object that you want to execute.
+    args: {
+        schema: "schema_registry_key", // id property on the process schema object. see below
+        parameters: {
+            value: 10
+        },
+        target: "@context.result"
+    }
+}
+```
+
+Take special note on parameters.  
+You need a way to transfer values between processes.  
+Parameters is the way that is done.
+The values defined in the above parameters object will be passed to the sub process as its parameters.
+
+A process defines it's required input using a property called "parameters_def".  
+parameters_def is also used to define what parameters are required and what default values are if the parameter is not provided.
+
+Use the "target" args parameter to store the result of the sub process.
+
+```js
+const process = {
+    parameters_def: {
+        value1: {type: "number", required: true},
+        value2: {type: "number", required: true, default: 0}
+    },
+    steps: {
+        ...
+    }
+}
+```
+
+"parameters_def" is just a definition and not accessed directly in the process.  
+Each process that has parameters can be accessed through the "parameters" property created at runtime.
+
+```js
+const step = {
+    type: "math",
+    action: "add",
+    args: {
+        value1: "@process.parameters.value1",
+        value2: "@process.parameters.value2",
+        target: "@process.result"
+    },
+}
+```
+
+A process's "result" must be set on the "result" property of the process object as can be seen above.
+
+An important part of running sub processes is the `process schema registry`.
+
+```js
+crs.processSchemaRegistry
+```
+
+This object acts as a registry and aggregator of processes.  
+A schema is a JSON object that contains one or more processes.
+
+```js
+export const processes = {
+    id: "loop_sub",
+    process1: {   // process called "process1"
+        data: {}, // data object on the process for storing values
+        steps: {} // steps of the process
+    },
+    process2: {   // process called "process2"
+        data: {}, // data object on the process for storing values
+        steps: {} // steps of the process
+    }
+}
+```
+
+Processes are object properties on the schema object.  
+Each schema object must have a unique id property.
+The id will be the name used to define what schema the process is on when executing a process step.
+
+## SchemaRegistry
+
+```js
+crs.processSchemaRegistry
+```
+
+This only has two public functions:
+
+1. add
+1. remove
+
+processSchemaRegistry stores process objects on a private object called _schemas.  
+The id of the schema defines the property name on _schemas.
+
+If you want to execute a process on the registry, you need to use event aggregation.
+
+```js
+const step = {
+    action: "process1",
+    args: {
+        schema: "loop_sub"
+    }  
+}
+
+await crsbinding.events.emitter.emit("run-process", {
+    step: step,             // define what schema and process to run
+    context: context,       // what object to use as @context
+    process: process,       // what object to use as @process
+    item: item,             // what object to use as @item
+    parameters: parameters  // parameters to use in the process you are calling.
+});
 ```
