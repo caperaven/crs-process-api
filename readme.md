@@ -10,7 +10,26 @@ The goals are:
 2. Allow defining and executing processes using code
 3. Allow defining and executing processes using json
 
-This allows application users to define processes for your system using json and execute them at will.
+This allows application users to define processes for your system using json and execute them at will.    
+A process is a sequence of steps that follow up on each other.    
+The system does not assume sequential execution.  
+
+Using the properties:
+
+1. next_step
+1. pass_step
+1. fail_step
+
+you indicate what the next step must be.
+
+With this system you can perform simple single step actions or scenarios like this.
+
+1. Get a list of records from the server
+1. Loop through those records and perform a check on each record.
+1. If the condition passes copy that record to an array (result array)
+1. Once you have looped through the records save the result array to file
+
+The idea behind the process api is part of the [dynamic application](https://caperaven.github.io/pages/documents/dynamic-applications.html) goal.
 
 ## Executing a process
 There are two ways to run a process.
@@ -195,3 +214,333 @@ stepName: {
 crs.intent.action
 ```
 
+This intent allows you to execute a function on either
+
+1. @context
+1. @process
+1. @item
+
+```js
+const step = {
+    type: "action",
+    action: "@context.log",
+    args: {
+        parameters: ["Hello World"]
+    }
+}
+```
+
+The target args property will copy the function results to the specified location.  
+Executing the action will also return you the value of the function you called.
+
+## Array Intent
+
+```js
+crs.intent.array
+```
+
+This intent provides simple array access. 
+
+The default functions are:
+
+1. add - add a value or object to array
+1. field_to_csv - using an array of objects, export a csv text for a given property on the stored objects.
+
+<strong>add step</strong>
+```js
+const step = {
+    type: "array",
+    action: "add", 
+    args: {
+        target: "@context.values", 
+        value: "Hello World"
+    }
+}
+```
+
+You can also use this directly.
+
+```js
+const values = [];
+await crs.intent.array.perform({action: "add", args: {target: values, value: "Hello World"}});
+```
+
+<strong>field_to_csv step</strong>
+```js
+const step = {
+    type: "array",
+    action: "field_to_csv",
+    args: {
+        source: "@context.values",  // what array to use 
+        target: "@context.result",  // where to copy the result
+        delimiter: ";",             // what delimeter to use
+        field: "value"              // what is the property name to use for the values
+    }
+}
+```
+
+## Condition Intent
+
+```js
+crs.intent.condition
+```
+
+This intent allows you to perform an "if" statement.  
+The condition will either pass or fail on you need to indicate what step to take should the condition pass or fail.  
+To do this you need to define the next step in either:
+
+1. pass_step - perform this step if the condition passes
+1. fail_step - perform this step if the condition fails
+
+Pass and fail steps need to point to root level objects or a process step object
+The step for this does not require an action property.
+
+```js
+const step = {
+    type: "condition",
+    args: {
+        condition: "@context.value === 10",
+        pass_step: "doSomething",
+        fail_step: "end"
+    }
+}
+```
+
+The condition is a standard javascript expression.
+
+## Console Intent
+
+```js
+crs.intent.console
+```
+
+This intent exposes basic browser console features.  
+In a standard process I don't think it adds much value but when debugging a process can come in handy.
+
+The actions exposed on this intent are:
+
+1. log  - console.log
+1. error - console.error
+1. warn - console.warn
+1. table - console.table
+
+```js
+const step = {
+    type: "console",
+    action: "log",              // or eror, warn, table
+    args: {
+        message: "Hello World"  // or @context.value / @process.value / @item.value
+    }
+}
+```
+
+## Loop Intent
+
+```js
+crs.intent.loop
+```
+
+This intent allows you to loop through an array and works a little different to the other steps.
+
+```js
+const step = {
+    type: "loop",
+    args: {
+        source: "@context.records",
+        steps: {
+            copy_to_array: {
+                type: "array",
+                action: "add",
+                args: {
+                    target: "@context.result",
+                    value: "@item"
+                }
+            }
+        }
+    }
+}
+```
+The above example loops through an array found at "@context.records".
+For each item we copy that array item "@item" to an array at "@context.result".
+
+As you can see in the above example the loop args has a steps property that define what steps to take.
+These steps execute top down so if you have more than one step, it will execute step 1 then 2 then 3 ...
+It is at this point where the "@item" comes into play.
+
+If you look at a standard intent entry point:
+
+```js
+static async perform(step, context, process, item)
+```
+
+You will notice that three parameters are always passed for access.
+
+1. context
+1. process
+1. item
+
+In most all cases "item" is not defined.  
+When executing a process as part of a loop the current array item is the item accessed through "@item".
+
+## Math Intent
+
+```js
+crs.intent.math
+```
+
+This intent allows for math operations.
+It exposes basic arithmetic functions but also access to the Math system object for more complex functions.
+
+Basic arithmetic functions are:
+
+1. add
+1. subtract
+1. multiply
+1. divide
+
+```js
+const step = {
+    type: "math",
+    action: "multiply",
+    args: {
+        value1: 10,
+        value2: 1,
+        target: "@process.result"
+    }
+}
+```
+
+When dealing with add, subract, multiply or divide your args needs two properties.
+
+1. value1
+1. value2
+
+When using the Math object you need something more dynamic because different functions require different arguments.  
+For these scenarios you only have a value property of type array.
+
+```js
+const step = {
+    type: "math",
+    action: "max",
+    args: {
+        value: ["@process.data.max", 90],
+        target: "@process.data.max"
+    },
+    next_step: "do_something"
+}
+```
+
+The above example can also be used in a loop to find the max value of a collection.
+
+## Module Intent
+
+```js
+crs.intent.module
+```
+
+If you are using [crs-modules](https://github.com/caperaven/crs-modules) this intent allows you to execute operations exposed by crs-modules.
+
+This intent only exposes three actions but does a little more.
+
+1. call - call an exported or default function on a defined module
+1. create_class - create an instance of a defined or default exposed class
+1. get_constant - get a constant value defined on that module.
+
+In terms of crs-modules a module is just a javascript file that is registered with a particular key on the module system.
+Using crs-modules in tandom with crs-process-api is a great way to dynamically extend the api capability.  
+Since modules only load the files when and if you use it, it is also relatively light weight.
+
+<strong>call function step</strong>
+```js
+const step = {
+    type: "module",
+    action: "call",
+    args: {
+        module: "utils",
+        fnName: "updateMessage",
+        parameters: "Hello World",
+        target: "@context.result",
+        context: "@context"
+    }
+}
+```
+
+The context property in args here defines what the "this" object in the function call will be.  
+Under the hood it uses the `function.call` language feature using the context as the "this" object;
+
+When the function is exported as the default the args parameters change a bit.
+
+```js
+args: {
+    module: "default-function",
+    default: true,
+    target: "@context.result",
+    context: "@context"
+}
+```
+
+Instead of the fnName property, you just need to define that it is the default by setting the "default" property to true.
+The same concept applies when creating a class.
+
+<strong>create class step</strong>
+```js
+const step = {
+    type: "module",
+    action: "create_class",
+    args: {
+        module: "class",
+        class: "MyClass",
+        target: "@context.instance"
+    }
+}
+```
+
+```js
+args: {
+    module: "class",
+    default: true,
+    target: "@context.instance"
+}
+```
+
+<strong>get constant step</strong>
+```js
+const step = {
+    type: "module",
+    action: "get_constant",
+    args: {
+        module: "utils",
+        name: "GLOBAL_VALUE",
+        target: "@context.instance"
+    }
+}
+```
+
+## Object intent
+
+```js
+crs.intent.object
+```
+
+This only exposes a single action, "set".  
+Steps already have a way to get data and pass it on as parameters to steps, but setting a value is different.
+An example of this would be when you want to loop through a set of records and make changes to value on that record.
+
+```js
+const step = {
+    type: "loop",
+    args: {
+        source: "@context.records",
+        steps: {
+            set_value: {
+                type: "object",
+                action: "set",
+                args: {
+                    target: "@item.code",
+                    value: "@item.code.toUpperCase()"
+                }
+            }
+        }
+    }
+}
+```
