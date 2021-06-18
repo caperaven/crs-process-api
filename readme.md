@@ -188,3 +188,10 @@ stepName: {
     }    
 }
 ```
+
+## Action Intent
+
+```js
+crs.intent.action
+```
+

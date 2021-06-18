@@ -18,8 +18,8 @@ test("execute action - context", async () => {
 
     await crs.process.runStep({
         type: "action",
+        action: "@context.log",
         args: {
-            action: "@context.log",
             parameters: ["Hello World"]
         }
     }, context)
@@ -36,8 +36,8 @@ test("execute action - process", async () => {
 
     await crs.process.runStep({
         type: "action",
+        action: "@process.log",
         args: {
-            action: "@process.log",
             parameters: ["Hello World"]
         }
     }, null, process)
@@ -54,8 +54,8 @@ test("execute action - item", async () => {
 
     await crs.process.runStep({
         type: "action",
+        action: "@item.log",
         args: {
-            action: "@item.log",
             parameters: ["Hello World"]
         }
     }, null, null, item)
