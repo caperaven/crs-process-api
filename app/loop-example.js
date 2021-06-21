@@ -60,13 +60,9 @@ export const schema = {
             validate: {
                 type: "condition",
                 args: {
-                    condition: "@process.data.records.length > 0",
+                    condition: "@process.data.records.length > 30",
                     fail_step: {
-                        type: "console",
-                        action: "error",
-                        args: {
-                            message: "NO records to process"
-                        }
+                        abort: "You do not have enough records"
                     },
                     pass_step: "stop"
                 }

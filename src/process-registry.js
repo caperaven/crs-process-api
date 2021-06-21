@@ -7,28 +7,37 @@ export class SchemaRegistry {
         crsbinding.events.emitter.on("run-process", this._runProcess.bind(this));
     }
 
-    async _runProcess(args) {
-        const processName = args.step.action;
-        const schemaName = args.step.args.schema;
+    _runProcess(args) {
+        return new Promise(async (resolve, reject) => {
+            const processName = args.step.action;
+            const schemaName = args.step.args.schema;
 
-        let schema = this._schemas[schemaName];
-        if (schema == null && crs.process.fetch != null) {
-            schema = await crs.process.fetch(args.step);
-            this.add(schema);
-        }
+            let schema = this._schemas[schemaName];
+            if (schema == null && crs.process.fetch != null) {
+                schema = await crs.process.fetch(args.step);
+                this.add(schema);
+            }
 
-        // 1. Copy parameter values to process to run
-        const process = schema[processName];
-        await copyParametersToProcess(process, args.parameters);
+            // 1. Copy parameter values to process to run
+            const process = schema[processName];
+            await copyParametersToProcess(process, args.parameters);
 
-        // 2. Run process
-        const result = await crs.process.run(args.context, process);
+            // 2. Run process
+            const result = await crs.process.run(args.context, process).catch(error => {
+                if (crs.process.onError != null && error?.message) {
+                    crs.process.onError(error.message);
+                    reject();
+                }
+            });
 
-        // 3. Copy output from process to calling process
-        const resultPath = args.step.args?.target;
-        if (resultPath != null) {
-            await crs.process.setValue(resultPath, result, args.context, args.process, args.item);
-        }
+            // 3. Copy output from process to calling process
+            const resultPath = args.step.args?.target;
+            if (resultPath != null) {
+                await crs.process.setValue(resultPath, result, args.context, args.process, args.item);
+            }
+
+            resolve();
+        })
     }
 
     add(schema) {

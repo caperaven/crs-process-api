@@ -31,7 +31,9 @@ export class ProcessRunner {
      * @returns {Promise<void>}
      */
     static async runStep(step, context= null, process= null, item= null) {
+        console.log(step);
         if (step == null) return;
+        if (step.abort != null) throw new Error(step.abort);
 
         let result;
         if (step.type != null) {

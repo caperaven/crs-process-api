@@ -668,3 +668,14 @@ await crsbinding.events.emitter.emit("run-process", {
     parameters: parameters  // parameters to use in the process you are calling.
 });
 ```
+
+## Hooks
+There are several hooks that you need to take note of.
+
+1. fetch   - used to fetch profiles from remote locations when it is not registered on the processSchemaRegistry
+1. onError - used to handle error messages from the process.
+
+```js
+crs.process.fetch = (step) => { return ... fetch code };
+crs.process.onError = (error) => { console.error(error) };
+```
