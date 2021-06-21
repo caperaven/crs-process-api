@@ -1,10 +1,11 @@
-import {schema} from "./app/loop-example.js";
+import {schema as loopSchema} from "./app/loop-example.js";
+import {schema as domExample} from "./app/dom-example.js";
 
 export default class IndexViewModel extends crsbinding.classes.ViewBase {
     async connectedCallback() {
-        crs.processSchemaRegistry.add(schema);
         await super.connectedCallback();
-        console.log(crs.processSchemaRegistry);
+        crs.processSchemaRegistry.add(loopSchema);
+        crs.processSchemaRegistry.add(domExample);
     }
 
     preLoad() {
@@ -17,8 +18,10 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
         }
     }
 
-    performProcess() {
-        crsbinding.events.emitter.emit("run-process", {
+    async performProcess() {
+        performance.mark("start");
+
+        await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",
@@ -26,6 +29,27 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
                     schema: "loop-example"
                 }
             }
-        })
+        });
+
+        performance.mark("end");
+        performance.measure("performance", "start", "end");
+
+        const measure = performance.getEntriesByName("performance");
+
+        console.log(`performance: ${measure[0].duration}`);
+        performance.clearMarks();
+        performance.clearMeasures();
+    }
+
+    async performUIProcess() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "main",
+                args: {
+                    schema: "dom-example"
+                }
+            }
+        });
     }
 }

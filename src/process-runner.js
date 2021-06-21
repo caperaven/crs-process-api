@@ -31,7 +31,6 @@ export class ProcessRunner {
      * @returns {Promise<void>}
      */
     static async runStep(step, context= null, process= null, item= null) {
-        console.log(step);
         if (step == null) return;
         if (step.abort != null) throw new Error(step.abort);
 
@@ -59,6 +58,7 @@ export class ProcessRunner {
      */
     static async getValue(expr, context = null, process=  null, item = null) {
         if (typeof expr != "string") return expr;
+        if (expr.indexOf("(") != -1) return expr;
 
         if (expr == "@context") return context;
         if (expr == "@process") return process;
@@ -108,7 +108,8 @@ export class ProcessRunner {
                 obj = obj[part] = obj[part] || {};
             }
 
-            obj[parts[parts.length -1]] = await this.getValue(value, context, process, item);
+            value = await this.getValue(value, context, process, item);
+            obj[parts[parts.length -1]] = value;
         }
     }
 

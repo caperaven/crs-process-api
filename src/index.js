@@ -9,6 +9,7 @@ import {ActionActions} from './action-systems/action-actions.js';
 import {MathActions} from "./action-systems/math-actions.js";
 import {ProcessActions} from "./action-systems/process-actions.js";
 import {ModuleActions} from "./action-systems/module-actions.js";
+import {DomActions} from "./action-systems/dom-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -25,7 +26,8 @@ globalThis.crs.intent = {
     action: ActionActions,
     math: MathActions,
     process: ProcessActions,
-    module: ModuleActions
+    module: ModuleActions,
+    dom: DomActions
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
