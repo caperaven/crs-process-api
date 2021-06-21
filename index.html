@@ -8,6 +8,17 @@
     <title>Document</title>
 </head>
 <body>
+    <button click.call="performProcess">Perform Process</button>
+    <script type="module">
+        import "./node_modules/crs-binding/crs-binding.js";
+        import "./src/index.js";
+        import IndexViewModel from "./index.js";
 
+        document.viewModel = new IndexViewModel(document.body);
+
+        window.addEventListener("load", (event) => {
+            document.viewModel.connectedCallback();
+        });
+    </script>
 </body>
 </html>
