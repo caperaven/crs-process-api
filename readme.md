@@ -370,6 +370,36 @@ It is at this point where the "@item" comes into play.
 
 If you look at a standard intent entry point:
 
+As part of the loop args you can also define a target property.  
+When you do that, it will save the current item to that property path.  
+You can then use it later as a reference for other operations.  
+For example: 
+
+```js
+const context = {
+    records: [{value: 1}, {value: 2}, {value: 3}],
+    result: []
+}
+
+const step = {
+    type: "loop",
+    args: {
+        source: "@context.records",
+        target: "@context.current",
+        steps: {
+            copy: {
+                type: "array",
+                action: "add",
+                args: {
+                    target: "@context.result",
+                    value: "@context.current.value"
+                }
+            }
+        }
+    }
+};
+```
+
 ```js
 static async perform(step, context, process, item)
 ```

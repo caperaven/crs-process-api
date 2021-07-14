@@ -102,3 +102,34 @@ test("LoopActions - uppercase item value", async () => {
     expect(context.records[1].code).toEqual("B");
     expect(context.records[2].code).toEqual("C");
 })
+
+test("LoopActions - set target as reference", async () => {
+    const context = {
+        records: [{value: 1}, {value: 2}, {value: 3}],
+        result: []
+    }
+
+    const step = {
+        type: "loop",
+        args: {
+            source: "@context.records",
+            target: "@context.current",
+            steps: {
+                copy: {
+                    type: "array",
+                    action: "add",
+                    args: {
+                        target: "@context.result",
+                        value: "@context.current.value"
+                    }
+                }
+            }
+        }
+    };
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.result.length).toEqual(3);
+    expect(context.result[0]).toEqual(1);
+    expect(context.result[1]).toEqual(2);
+    expect(context.result[2]).toEqual(3);
+})
