@@ -73,13 +73,21 @@ export class ObjectActions {
         const source = await crs.process.getValue(step.args.source, context, process, item);
 
         if (step.args.fields == null) {
-            return Object.assign({}, source);
+            const result = Object.assign({}, source);
+            if (step.args.target != null) {
+                await crs.process.setValue(step.args.target, result, context, process, item);
+            }
+            return result;
         }
 
         const result = {};
 
         for (let field of step.args.fields) {
             result[field] = source[field];
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
         }
 
         return result;

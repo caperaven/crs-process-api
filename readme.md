@@ -553,27 +553,78 @@ const step = {
 crs.intent.object
 ```
 
-This only exposes a single action, "set".  
-Steps already have a way to get data and pass it on as parameters to steps, but setting a value is different.
-An example of this would be when you want to loop through a set of records and make changes to value on that record.
+The object intent exposes several utility functions to work with objects.
+
+1. set - set a property on path with a defined value
+1. get - get the value on a object path
+1. create - create a object literal at a given path
+1. assign - copy the properties from one object to another. uses Object.assign in the background
+1. clone - create a copy of the object.
+
+<strong>set step</strong>
+```js
+set_value: {
+    type: "object",
+    action: "set",
+    args: {
+        target: "@item.code",
+        value: "@item.code.toUpperCase()"
+    }
+}
+```
+
+<strong>get step</strong>
+```js
+const step = {
+    type: "object",
+    action: "get",
+    args: {
+        source: "@context.source",
+        target: "@context.result"
+    }
+}
+```
+
+<strong>create step</strong>
+```js
+const step = {
+    type: "object",
+    action: "clone",
+    args: {
+        source: "@context.source",
+        target: "@context.result"
+    }
+}
+```
+
+<strong>clone step</strong>
 
 ```js
 const step = {
-    type: "loop",
+    type: "object",
+    action: "clone",
     args: {
-        source: "@context.records",
-        steps: {
-            set_value: {
-                type: "object",
-                action: "set",
-                args: {
-                    target: "@item.code",
-                    value: "@item.code.toUpperCase()"
-                }
-            }
-        }
+        source: "@context.source",
+        target: "@context.result",
+        fields: ["code"]
     }
 }
+```
+
+If you leave the "fields" property out it will clone the entire object.  
+If you define the "fields" it will create a new object that contains only the fields you defined.
+
+<strong>assign step</strong>
+
+```js
+const step = {
+    type: "object",
+    action: "assign",
+    args: {
+        source: "@context.source",
+        target: "@context.result",
+    }
+};
 ```
 
 ## Process intent

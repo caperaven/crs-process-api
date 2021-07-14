@@ -106,7 +106,8 @@ test("LoopActions - uppercase item value", async () => {
 test("LoopActions - set target as reference", async () => {
     const context = {
         records: [{value: 1}, {value: 2}, {value: 3}],
-        result: []
+        result: [],
+        current: {value: 1}
     }
 
     const step = {

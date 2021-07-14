@@ -33,6 +33,102 @@ test("ObjectActions - set - with functions", async () => {
     expect(context.value).toEqual("HELLO WORLD");
 })
 
+test("ObjectActions - get", async () => {
+    const context = {source: "hello world"};
+
+    const step = {
+        type: "object",
+        action: "get",
+        args: {
+            source: "@context.source",
+            target: "@context.result"
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.result).toEqual(context.source);
+})
+
+test("ObjectActions - clone, no fields", async () => {
+    const context = {
+        source: {id: 0, code: "A", value: 10}
+    }
+
+    const step = {
+        type: "object",
+        action: "clone",
+        args: {
+            source: "@context.source",
+            target: "@context.result"
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.result).not.toBeUndefined();
+    expect(context.result.id).toEqual(0);
+    expect(context.result.code).toEqual("A");
+    expect(context.result.value).toEqual(10);
+})
+
+test("ObjectActions - clone, with fields", async () => {
+    const context = {
+        source: {id: 0, code: "A", value: 10}
+    }
+
+    const step = {
+        type: "object",
+        action: "clone",
+        args: {
+            source: "@context.source",
+            target: "@context.result",
+            fields: ["code"]
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.result).not.toBeUndefined();
+    expect(context.result.code).toEqual("A");
+    expect(context.result.id).toBeUndefined();
+    expect(context.result.value).toBeUndefined();
+})
+
+test("ObjectActions - assign", async () => {
+    const context = {
+        source: {id: 0, code: "A", value: 10},
+        result: {}
+    }
+
+    const step = {
+        type: "object",
+        action: "assign",
+        args: {
+            source: "@context.source",
+            target: "@context.result",
+        }
+    };
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.result).not.toBeUndefined();
+    expect(context.result.id).toEqual(0);
+    expect(context.result.code).toEqual("A");
+    expect(context.result.value).toEqual(10);
+})
+
+test("ObjectActions - create", async () => {
+    const context = {};
+
+    const step = {
+        type: "object",
+        action: "create",
+        args: {
+            target: "@context.result",
+        }
+    };
+
+    await globalThis.crs.process.runStep(step, context);
+    expect(context.result).not.toBeUndefined();
+})
+
 class SetDescriptor {
     static async new(target, value) {
         return {
