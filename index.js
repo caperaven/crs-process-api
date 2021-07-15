@@ -60,11 +60,12 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
     }
 
     async performFlattenProcess() {
+        console.log("start big batch");
         const t0 = performance.now();
-        const result = await crs.process.run(this.context, process);
+        let result = await crs.process.run(this.context, process);
         const t1 = performance.now();
 
         console.log(`${t1 - t0} milliseconds.`);
-        console.log(result);
+        result = null;
     }
 }

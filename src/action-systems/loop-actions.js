@@ -1,16 +1,18 @@
+const BATCH_SIZE = 500;
+
 export class LoopActions {
     static async perform(step, context, process) {
         const source    = await crs.process.getValue(step.args.source, context, process);
         const stepKeys  = Object.keys(step.args.steps);
         const target    = step.args.target;
 
-        if (source.length <= 500) {
+        if (source.length <= BATCH_SIZE) {
             await processBatch(step, stepKeys, source, target, context, process, 0, source.length);
         }
         else {
-            for (let i = 0; i < source.length; i += 500) {
+            for (let i = 0; i < source.length; i += BATCH_SIZE) {
                 const start = i;
-                let end   = i + 500;
+                let end   = i + BATCH_SIZE;
                 if (end > source.length) {
                     end = source.length;
                 }

@@ -118,9 +118,21 @@ export class ProcessRunner {
     }
 
     static async cleanProcess(process) {
+        await this.cleanObject(process.data);
         delete process.context;
         delete process.parameters;
         delete process.result;
+        delete process.data;
+        delete process.steps;
+    }
+
+    static async cleanObject(obj) {
+        if (obj == null) return;
+        const keys = Object.keys(obj);
+        for (let key of keys) {
+            delete obj[key];
+        }
+        return null;
     }
 }
 
