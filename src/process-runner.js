@@ -13,6 +13,7 @@ export class ProcessRunner {
             process = JSON.parse(JSON.stringify(process));
             process.data = process.data || {};
             process.context = context;
+            process.functions = {};
 
             crsbinding.idleTaskManager.add(async () => {
                 await validateParameters(context, process, item);
@@ -70,8 +71,13 @@ export class ProcessRunner {
 
         if (expr.indexOf("@") == -1 && expr.indexOf("(") == -1) return expr;
 
-        const exp = expr.split("@").join("");
-        const fn = new Function("context", "process", "item", `return ${exp};`);
+        let fn = process.functions[expr];
+        if (fn == null) {
+            const exp = expr.split("@").join("");
+            fn = new Function("context", "process", "item", `return ${exp};`);
+            process.functions[expr] = fn;
+        }
+
         return fn(context, process, item);
     }
 
@@ -119,7 +125,9 @@ export class ProcessRunner {
 
     static async cleanProcess(process) {
         await this.cleanObject(process.data);
+        await this.cleanObject(process.functions);
         delete process.context;
+        delete process.functions;
         delete process.parameters;
         delete process.result;
         delete process.data;
