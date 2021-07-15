@@ -8,17 +8,21 @@ export class ProcessRunner {
      * @param process {Object} process object @process
      * @returns {Promise<Object>} returns the process.data object
      */
-    static async run(context, process, item) {
-        process = JSON.parse(JSON.stringify(process));
-        process.data = process.data || {};
-        process.context = context;
+    static run(context, process, item) {
+        return new Promise(async resolve => {
+            process = JSON.parse(JSON.stringify(process));
+            process.data = process.data || {};
+            process.context = context;
 
-        await validateParameters(context, process, item);
-        await this.runStep(process.steps.start, context, process, item);
+            crsbinding.idleTaskManager.add(async () => {
+                await validateParameters(context, process, item);
+                await this.runStep(process.steps.start, context, process, item);
 
-        const result = process.result;
-        await this.cleanProcess(process);
-        return result;
+                const result = process.result;
+                await this.cleanProcess(process);
+                resolve(result);
+            })
+        })
     }
 
     /**

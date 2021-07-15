@@ -53,38 +53,3 @@ test("ArrayActions - fieldToCSV", async () => {
     expect(context.result).not.toBeUndefined();
     expect(context.result).toEqual("1;2;3");
 })
-
-test("ArrayActions - flatten array", async () => {
-    /**
-     * Source
-     * [
-     *      ["a", "b", "c"],
-     *      ["d", "e", "f"]
-     * ]
-     *
-     * Result
-     * ["a", "b", "c", "d", "e" "f"]
-     */
-})
-
-test("ArrayActions - flatten object array", async () => {
-    /**
-     * context.items = [
-     *      {
-     *          code: 'ABC',
-     *          errors: [
-     *              {
-     *                  error: "a"
-     *              },
-     *              {
-     *                  error: "b"
-     *              }
-     *          ]
-     *      }
-     * ]
-     *
-     *
-     * Result
-     * [{error: "a"}, ]
-     */
-})
