@@ -51,6 +51,7 @@ test("MathActions - subtract", async () => {
 
 test("MathActions - multiply", async () => {
     const process = {
+        functions: {},
         steps: {
             start: {
                 next_step: "multiply"

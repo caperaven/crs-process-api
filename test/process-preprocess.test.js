@@ -22,7 +22,7 @@ test("pre process - load parameter values - null value", async () => {
 
     let hasError = false;
     try {
-        await crs.process.run(context, process.parameterised);
+        await crs.process.run(context, process.parameterised).catch(error => hasError = true);
     }
     catch(e) {
         hasError = true;

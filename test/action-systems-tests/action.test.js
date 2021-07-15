@@ -29,6 +29,7 @@ test("execute action - context", async () => {
 
 test("execute action - process", async () => {
     const process = {
+        functions: {},
         log: (value) => {
             data.value = value
         }

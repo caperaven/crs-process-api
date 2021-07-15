@@ -37,7 +37,7 @@ test("ArrayActions - add - on context path", async () => {
 
 test("ArrayActions - add - context to array", async () => {
     const step = { type: "array", action: "add", args: {target: "@process.data.collection", value: "@item"}};
-    const process = {data: {collection: []}};
+    const process = {functions: {}, data: {collection: []}};
     const item = "Hello World";
     await globalThis.crs.intent.array.perform(step, null, process, item);
     expect(process.data.collection.length).toEqual(1);

@@ -9,14 +9,14 @@ export class ProcessRunner {
      * @returns {Promise<Object>} returns the process.data object
      */
     static run(context, process, item) {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve, reject) => {
             process = JSON.parse(JSON.stringify(process));
             process.data = process.data || {};
             process.context = context;
             process.functions = {};
 
             crsbinding.idleTaskManager.add(async () => {
-                await validateParameters(context, process, item);
+                await validateParameters(context, process, item).catch(error => reject(error));
                 await this.runStep(process.steps.start, context, process, item);
 
                 const result = process.result;
@@ -71,11 +71,14 @@ export class ProcessRunner {
 
         if (expr.indexOf("@") == -1 && expr.indexOf("(") == -1) return expr;
 
-        let fn = process.functions[expr];
+        let fn = process?.functions?.[expr];
         if (fn == null) {
             const exp = expr.split("@").join("");
             fn = new Function("context", "process", "item", `return ${exp};`);
-            process.functions[expr] = fn;
+
+            if (process != null && process.functions != null) {
+                process.functions[expr] = fn;
+            }
         }
 
         return fn(context, process, item);
