@@ -18,6 +18,10 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
                 value: `Item ${i}`
             })
         }
+
+        this.context = {
+            steps: createData(1, 100000)
+        }
     }
 
     async performProcess() {
@@ -56,16 +60,9 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
     }
 
     async performFlattenProcess() {
-        let context = {
-            steps: createData(1, 1000)
-        }
-
         const t0 = performance.now();
-        const result = await crs.process.run(context, process);
+        const result = await crs.process.run(this.context, process);
         const t1 = performance.now();
-
-        delete context.steps;
-        context = null;
 
         console.log(`${t1 - t0} milliseconds.`);
         console.log(result);

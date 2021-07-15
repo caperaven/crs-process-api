@@ -6,11 +6,35 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .anim {
+            background: red;
+            animation: mymove 4s infinite;
+            position: fixed;
+            transform: translate(200px, 200px);
+            width: 100px;
+            height: 100px;
+        }
+
+        @keyframes mymove {
+            0% {
+                transform: translate(200px, 200px);
+            }
+            50% {
+                transform: translate(400px, 200px);
+            }
+            100% {
+                transform: translate(200px, 200px);
+            }
+        }
+    </style>
 </head>
 <body>
     <button click.call="performProcess">Perform Process</button>
     <button click.call="performUIProcess">Perform UI Process</button>
     <button click.call="performFlattenProcess">Perform Flatten Process</button>
+
+    <div class="anim"></div>
 
     <div id="container"></div>
 
