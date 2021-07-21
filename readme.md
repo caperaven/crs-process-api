@@ -53,11 +53,11 @@ See the step section for more detail on steps.
 
 ## Target keywords
 
-1. @context - context object passed to the process
-1. @process - process object passed to the system
-1. @item - item object passed to the system
+1. $context - context object passed to the process
+1. $process - process object passed to the system
+1. $item - item object passed to the system
 
-@item is used when looping through an array and performing actions on the array item.
+$item is used when looping through an array and performing actions on the array item.
 
 ## Step
 Each process step has the same basic structure.
@@ -80,7 +80,7 @@ Use the target keywords to define the location as required.
 ```js
 ...
 args: {
-    target: "@context.property1"
+    target: "$context.property1"
 }
 ```
 
@@ -94,7 +94,7 @@ const process = {
         doSomething: {
             ...
             args: {
-                target: "@process.data.value"    
+                target: "$process.data.value"    
             }           
         }
     }
@@ -125,7 +125,7 @@ const process = {
             args: {
                 value1: 10,
                 value2: 11,
-                target: "@process.result"
+                target: "$process.result"
             }
         }
     }
@@ -217,14 +217,14 @@ crs.intent.action
 
 This intent allows you to execute a function on either
 
-1. @context
-1. @process
-1. @item
+1. $context
+1. $process
+1. $item
 
 ```js
 const step = {
     type: "action",
-    action: "@context.log",
+    action: "$context.log",
     args: {
         parameters: ["Hello World"]
     }
@@ -253,7 +253,7 @@ const step = {
     type: "array",
     action: "add", 
     args: {
-        target: "@context.values", 
+        target: "$context.values", 
         value: "Hello World"
     }
 }
@@ -272,8 +272,8 @@ const step = {
     type: "array",
     action: "field_to_csv",
     args: {
-        source: "@context.values",  // what array to use 
-        target: "@context.result",  // where to copy the result
+        source: "$context.values",  // what array to use 
+        target: "$context.result",  // where to copy the result
         delimiter: ";",             // what delimeter to use
         field: "value"              // what is the property name to use for the values
     }
@@ -300,7 +300,7 @@ The step for this does not require an action property.
 const step = {
     type: "condition",
     args: {
-        condition: "@context.value === 10",
+        condition: "$context.value === 10",
         pass_step: "doSomething",
         fail_step: "end"
     }
@@ -330,7 +330,7 @@ const step = {
     type: "console",
     action: "log",              // or eror, warn, table
     args: {
-        message: "Hello World"  // or @context.value / @process.value / @item.value
+        message: "Hello World"  // or $context.value / $process.value / $item.value
     }
 }
 ```
@@ -347,26 +347,26 @@ This intent allows you to loop through an array and works a little different to 
 const step = {
     type: "loop",
     args: {
-        source: "@context.records",
+        source: "$context.records",
         steps: {
             copy_to_array: {
                 type: "array",
                 action: "add",
                 args: {
-                    target: "@context.result",
-                    value: "@item"
+                    target: "$context.result",
+                    value: "$item"
                 }
             }
         }
     }
 }
 ```
-The above example loops through an array found at "@context.records".
-For each item we copy that array item "@item" to an array at "@context.result".
+The above example loops through an array found at "$context.records".
+For each item we copy that array item "$item" to an array at "$context.result".
 
 As you can see in the above example the loop args has a steps property that define what steps to take.
 These steps execute top down so if you have more than one step, it will execute step 1 then 2 then 3 ...
-It is at this point where the "@item" comes into play.
+It is at this point where the "$item" comes into play.
 
 If you look at a standard intent entry point:
 
@@ -384,15 +384,15 @@ const context = {
 const step = {
     type: "loop",
     args: {
-        source: "@context.records",
-        target: "@context.current",
+        source: "$context.records",
+        target: "$context.current",
         steps: {
             copy: {
                 type: "array",
                 action: "add",
                 args: {
-                    target: "@context.result",
-                    value: "@context.current.value"
+                    target: "$context.result",
+                    value: "$context.current.value"
                 }
             }
         }
@@ -411,7 +411,7 @@ You will notice that three parameters are always passed for access.
 1. item
 
 In most all cases "item" is not defined.  
-When executing a process as part of a loop the current array item is the item accessed through "@item".
+When executing a process as part of a loop the current array item is the item accessed through "$item".
 
 ## Math Intent
 
@@ -436,7 +436,7 @@ const step = {
     args: {
         value1: 10,
         value2: 1,
-        target: "@process.result"
+        target: "$process.result"
     }
 }
 ```
@@ -454,8 +454,8 @@ const step = {
     type: "math",
     action: "max",
     args: {
-        value: ["@process.data.max", 90],
-        target: "@process.data.max"
+        value: ["$process.data.max", 90],
+        target: "$process.data.max"
     },
     next_step: "do_something"
 }
@@ -490,8 +490,8 @@ const step = {
         module: "utils",
         fnName: "updateMessage",
         parameters: "Hello World",
-        target: "@context.result",
-        context: "@context"
+        target: "$context.result",
+        context: "$context"
     }
 }
 ```
@@ -505,8 +505,8 @@ When the function is exported as the default the args parameters change a bit.
 args: {
     module: "default-function",
     default: true,
-    target: "@context.result",
-    context: "@context"
+    target: "$context.result",
+    context: "$context"
 }
 ```
 
@@ -521,7 +521,7 @@ const step = {
     args: {
         module: "class",
         class: "MyClass",
-        target: "@context.instance"
+        target: "$context.instance"
     }
 }
 ```
@@ -530,7 +530,7 @@ const step = {
 args: {
     module: "class",
     default: true,
-    target: "@context.instance"
+    target: "$context.instance"
 }
 ```
 
@@ -542,7 +542,7 @@ const step = {
     args: {
         module: "utils",
         name: "GLOBAL_VALUE",
-        target: "@context.instance"
+        target: "$context.instance"
     }
 }
 ```
@@ -567,8 +567,8 @@ set_value: {
     type: "object",
     action: "set",
     args: {
-        target: "@item.code",
-        value: "@item.code.toUpperCase()"
+        target: "$item.code",
+        value: "$item.code.toUpperCase()"
     }
 }
 ```
@@ -579,8 +579,8 @@ const step = {
     type: "object",
     action: "get",
     args: {
-        source: "@context.source",
-        target: "@context.result"
+        source: "$context.source",
+        target: "$context.result"
     }
 }
 ```
@@ -591,8 +591,8 @@ const step = {
     type: "object",
     action: "clone",
     args: {
-        source: "@context.source",
-        target: "@context.result"
+        source: "$context.source",
+        target: "$context.result"
     }
 }
 ```
@@ -604,8 +604,8 @@ const step = {
     type: "object",
     action: "clone",
     args: {
-        source: "@context.source",
-        target: "@context.result",
+        source: "$context.source",
+        target: "$context.result",
         fields: ["code"]
     }
 }
@@ -621,8 +621,8 @@ const step = {
     type: "object",
     action: "assign",
     args: {
-        source: "@context.source",
-        target: "@context.result",
+        source: "$context.source",
+        target: "$context.result",
     }
 };
 ```
@@ -646,7 +646,7 @@ const step = {
         parameters: {
             value: 10
         },
-        target: "@context.result"
+        target: "$context.result"
     }
 }
 ```
@@ -681,9 +681,9 @@ const step = {
     type: "math",
     action: "add",
     args: {
-        value1: "@process.parameters.value1",
-        value2: "@process.parameters.value2",
-        target: "@process.result"
+        value1: "$process.parameters.value1",
+        value2: "$process.parameters.value2",
+        target: "$process.result"
     },
 }
 ```
@@ -743,9 +743,9 @@ const step = {
 
 await crsbinding.events.emitter.emit("run-process", {
     step: step,             // define what schema and process to run
-    context: context,       // what object to use as @context
-    process: process,       // what object to use as @process
-    item: item,             // what object to use as @item
+    context: context,       // what object to use as $context
+    process: process,       // what object to use as $process
+    item: item,             // what object to use as $item
     parameters: parameters  // parameters to use in the process you are calling.
 });
 ```
