@@ -13,9 +13,9 @@ test("ActionActions - call action", async () => {
     }
 
     const step = {
-        action: "@context.getValue",
+        action: "$context.getValue",
         args: {
-            target: "@context.result"
+            target: "$context.result"
         }
     }
 

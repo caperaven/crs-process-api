@@ -17,7 +17,7 @@ test("MathActions - add", async () => {
                 args: {
                     value1: 10,
                     value2: 11,
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }
@@ -39,7 +39,7 @@ test("MathActions - subtract", async () => {
                 args: {
                     value1: 10,
                     value2: 11,
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }
@@ -62,7 +62,7 @@ test("MathActions - multiply", async () => {
                 args: {
                     value1: 10,
                     value2: 1,
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }
@@ -84,7 +84,7 @@ test("MathActions - divide", async () => {
                 args: {
                     value1: 10,
                     value2: 1,
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }
@@ -105,7 +105,7 @@ test("MathActions - sin", async () => {
                 action: "sin",
                 args: {
                     value: [90],
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }
@@ -128,8 +128,8 @@ test("MathActions - max", async () => {
                 type: "math",
                 action: "max",
                 args: {
-                    value: ["@process.data.max", 90],
-                    target: "@process.data.max"
+                    value: ["$process.data.max", 90],
+                    target: "$process.data.max"
                 },
                 next_step: "max2"
             },
@@ -137,8 +137,8 @@ test("MathActions - max", async () => {
                 type: "math",
                 action: "max",
                 args: {
-                    value: ["@process.data.max", 100],
-                    target: "@process.result"
+                    value: ["$process.data.max", 100],
+                    target: "$process.result"
                 },
             }
         }

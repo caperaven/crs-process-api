@@ -4,8 +4,8 @@
 export class ProcessRunner {
     /**
      * Run a entire process and all it's steps
-     * @param context {Object} context object @context
-     * @param process {Object} process object @process
+     * @param context {Object} context object $context
+     * @param process {Object} process object $process
      * @returns {Promise<Object>} returns the process.data object
      */
     static run(context, process, item) {
@@ -30,9 +30,9 @@ export class ProcessRunner {
      * Run a process step definition.
      * Used internally and externally
      * @param step {Object} step definition
-     * @param context {Object} context object @context
-     * @param process {Object} process object @process
-     * @param item {Object} items object @item
+     * @param context {Object} context object $context
+     * @param process {Object} process object $process
+     * @param item {Object} items object $item
      * @returns {Promise<void>}
      */
     static async runStep(step, context= null, process= null, item= null) {
@@ -56,24 +56,24 @@ export class ProcessRunner {
     /**
      * Utility function used to get objects and values on paths defined by process
      * @param expr {string} path expression
-     * @param context {Object} context object @context
-     * @param process {Object} process object @process
-     * @param item {Object} items object @item
+     * @param context {Object} context object $context
+     * @param process {Object} process object $process
+     * @param item {Object} items object $item
      * @returns {Promise<string|*>}
      */
     static async getValue(expr, context = null, process=  null, item = null) {
         if (typeof expr != "string") return expr;
         //if (expr.indexOf("(") != -1) return expr;
 
-        if (expr == "@context") return context;
-        if (expr == "@process") return process;
-        if (expr == "@item") return item;
+        if (expr == "$context") return context;
+        if (expr == "$process") return process;
+        if (expr == "$item") return item;
 
-        if (expr.indexOf("@") == -1 && expr.indexOf("(") == -1) return expr;
+        if (expr.indexOf("$") == -1 && expr.indexOf("(") == -1) return expr;
 
         let fn = process?.functions?.[expr];
         if (fn == null) {
-            const exp = expr.split("@").join("");
+            const exp = expr.split("$").join("");
             fn = new Function("context", "process", "item", `return ${exp};`);
 
             if (process != null && process.functions != null) {
@@ -88,24 +88,24 @@ export class ProcessRunner {
      * Utility function to set the property of a object on a defined path
      * @param expr {string} path expression on what property to set
      * @param value {any} the value to set on the property
-     * @param context {Object} obj to use if expr references @context
-     * @param process {Object} obj to use if expr references @process
-     * @param item {Object} obj to use if expr references @item
+     * @param context {Object} obj to use if expr references $context
+     * @param process {Object} obj to use if expr references $process
+     * @param item {Object} obj to use if expr references $item
      * @returns {Promise<void>}
      */
     static async setValue(expr, value, context, process, item) {
         let ctx;
-        if (expr.indexOf("@item") != -1) {
+        if (expr.indexOf("$item") != -1) {
             ctx = item;
-            expr = expr.replace("@item.", "");
+            expr = expr.replace("$item.", "");
         }
-        else if (expr.indexOf("@process") != -1) {
+        else if (expr.indexOf("$process") != -1) {
             ctx = process;
-            expr = expr.replace("@process.", "");
+            expr = expr.replace("$process.", "");
         }
         else {
             ctx = context;
-            expr = expr.replace("@context.", "");
+            expr = expr.replace("$context.", "");
         }
 
         let obj = ctx;

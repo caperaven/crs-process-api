@@ -11,7 +11,7 @@ export const schema = {
                 action: "get_data_process",
                 args: {
                     schema: "loop-example",
-                    target: "@process.data.records"
+                    target: "$process.data.records"
                 },
                 next_step: "process_data"
             },
@@ -22,9 +22,9 @@ export const schema = {
                 args: {
                     schema: "loop-example",
                     parameters: {
-                        records: "@process.data.records"
+                        records: "$process.data.records"
                     },
-                    target: "@process.data.result"
+                    target: "$process.data.result"
                 },
                 next_step: "save_data"
             },
@@ -35,7 +35,7 @@ export const schema = {
                 args: {
                     schema: "loop-example",
                     parameters: {
-                        result: "@process.data.result"
+                        result: "$process.data.result"
                     }
                 }
             }
@@ -51,8 +51,8 @@ export const schema = {
                 type: "object",
                 action: "get",
                 args: {
-                    source: "@context.data",
-                    target: "@process.data.records"
+                    source: "$context.data",
+                    target: "$process.data.records"
                 },
                 next_step: "validate"
             },
@@ -60,7 +60,7 @@ export const schema = {
             validate: {
                 type: "condition",
                 args: {
-                    condition: "@process.data.records.length > 0",
+                    condition: "$process.data.records.length > 0",
                     fail_step: {
                         abort: "You do not have enough records"
                     },
@@ -72,8 +72,8 @@ export const schema = {
                 type: "object",
                 action: "set",
                 args: {
-                    target: "@process.result",
-                    value: "@process.data.records"
+                    target: "$process.result",
+                    value: "$process.data.records"
                 }
             }
         }
@@ -92,18 +92,18 @@ export const schema = {
             loop: {
                 type: "loop",
                 args: {
-                    source: "@process.parameters.records",
+                    source: "$process.parameters.records",
                     steps: {
                         check_lower: {
                             type: "condition",
                             args: {
-                                condition: "@item.id < 10",
+                                condition: "$item.id < 10",
                                 pass_step: {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "@process.data.collection1",
-                                        value: "@item"
+                                        target: "$process.data.collection1",
+                                        value: "$item"
                                     }
                                 }
                             }
@@ -111,13 +111,13 @@ export const schema = {
                         check_upper: {
                             type: "condition",
                             args: {
-                                condition: "@item.id >= 10",
+                                condition: "$item.id >= 10",
                                 pass_step: {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "@process.data.collection2",
-                                        value: "@item"
+                                        target: "$process.data.collection2",
+                                        value: "$item"
                                     }
                                 }
                             }
@@ -130,8 +130,8 @@ export const schema = {
                 type: "object",
                 action: "set",
                 args: {
-                    target: "@process.result",
-                    value: "@process.data"
+                    target: "$process.result",
+                    value: "$process.data"
                 }
             }
         }
@@ -147,7 +147,7 @@ export const schema = {
                 type: "console",
                 action: "table",
                 args: {
-                    message: "@process.parameters.result.collection1"
+                    message: "$process.parameters.result.collection1"
                 },
                 next_step: "log_collection2"
             },
@@ -155,7 +155,7 @@ export const schema = {
                 type: "console",
                 action: "table",
                 args: {
-                    message: "@process.parameters.result.collection2"
+                    message: "$process.parameters.result.collection2"
                 }
             }
         }

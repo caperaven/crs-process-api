@@ -1,6 +1,6 @@
 export class ActionActions {
     static async perform(step, context, process, item) {
-        let expr = `return await ${step.action.replace("@", "")}(...(args||[]))`;
+        let expr = `return await ${step.action.replace("$", "")}(...(args||[]))`;
 
         let fn = process?.functions[expr];
 

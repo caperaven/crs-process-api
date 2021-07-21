@@ -5,7 +5,7 @@
 export const process = {
     parameterised: {
         parameters_def: {
-            value: {required: true, default: "@context.value"}
+            value: {required: true, default: "$context.value"}
         },
 
         steps: {
@@ -17,9 +17,9 @@ export const process = {
                 type: "math",
                 action: "multiply",
                 args: {
-                    value1: "@process.parameters.value",
+                    value1: "$process.parameters.value",
                     value2: 10,
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }

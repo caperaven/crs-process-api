@@ -2,19 +2,19 @@ export class ConditionActions {
     static async perform(step, context, process, item) {
         let ctx;
         let exp;
-        if (step.args.condition.indexOf("@context") != -1) {
+        if (step.args.condition.indexOf("$context") != -1) {
             ctx = context;
-            exp = step.args.condition.replace("@context", "context");
+            exp = step.args.condition.replace("$context", "$context");
         }
 
-        if (step.args.condition.indexOf("@process") != -1) {
+        if (step.args.condition.indexOf("$process") != -1) {
             ctx = process;
-            exp = step.args.condition.replace("@process", "context");
+            exp = step.args.condition.replace("$process", "$context");
         }
 
-        if (step.args.condition.indexOf("@item") != -1) {
+        if (step.args.condition.indexOf("$item") != -1) {
             ctx = item;
-            exp = step.args.condition.replace("@item", "context");
+            exp = step.args.condition.replace("$item", "$context");
         }
 
         const expf = crsbinding.expression.compile(exp);

@@ -7,28 +7,28 @@ beforeAll(async () => {
 
 test("ObjectActions - set - context", async () => {
     const context = {};
-    const descriptor = await SetDescriptor.new("@context.value", 1);
+    const descriptor = await SetDescriptor.new("$context.value", 1);
     await globalThis.crs.process.runStep(descriptor, context);
     expect(context.value).toEqual(1);
 })
 
 test("ObjectActions - set - process", async () => {
     const process = {data: {}};
-    const descriptor = await SetDescriptor.new("@process.data.value", 1);
+    const descriptor = await SetDescriptor.new("$process.data.value", 1);
     await globalThis.crs.process.runStep(descriptor, null, process);
     expect(process.data.value).toEqual(1);
 })
 
 test("ObjectActions - set - item", async () => {
     const item = {};
-    const descriptor = await SetDescriptor.new("@item.value", 1);
+    const descriptor = await SetDescriptor.new("$item.value", 1);
     await globalThis.crs.process.runStep(descriptor, null, null, item);
     expect(item.value).toEqual(1);
 })
 
 test("ObjectActions - set - with functions", async () => {
     const context = {src: "hello world"};
-    const descriptor = await SetDescriptor.new("@context.value", "@context.src.toUpperCase()");
+    const descriptor = await SetDescriptor.new("$context.value", "$context.src.toUpperCase()");
     await globalThis.crs.process.runStep(descriptor, context);
     expect(context.value).toEqual("HELLO WORLD");
 })
@@ -40,8 +40,8 @@ test("ObjectActions - get", async () => {
         type: "object",
         action: "get",
         args: {
-            source: "@context.source",
-            target: "@context.result"
+            source: "$context.source",
+            target: "$context.result"
         }
     }
 
@@ -58,8 +58,8 @@ test("ObjectActions - clone, no fields", async () => {
         type: "object",
         action: "clone",
         args: {
-            source: "@context.source",
-            target: "@context.result"
+            source: "$context.source",
+            target: "$context.result"
         }
     }
 
@@ -79,8 +79,8 @@ test("ObjectActions - clone, with fields", async () => {
         type: "object",
         action: "clone",
         args: {
-            source: "@context.source",
-            target: "@context.result",
+            source: "$context.source",
+            target: "$context.result",
             fields: ["code"]
         }
     }
@@ -102,8 +102,8 @@ test("ObjectActions - assign", async () => {
         type: "object",
         action: "assign",
         args: {
-            source: "@context.source",
-            target: "@context.result",
+            source: "$context.source",
+            target: "$context.result",
         }
     };
 
@@ -121,7 +121,7 @@ test("ObjectActions - create", async () => {
         type: "object",
         action: "create",
         args: {
-            target: "@context.result",
+            target: "$context.result",
         }
     };
 

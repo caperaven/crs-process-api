@@ -26,8 +26,8 @@ test("module actions - call function", async () => {
                     module: "utils",
                     fnName: "updateMessage",
                     parameters: "Hello World",
-                    target: "@context.result",
-                    context: "@context"
+                    target: "$context.result",
+                    context: "$context"
                 }
             }
         }
@@ -50,8 +50,8 @@ test("module actions - call default function", async () => {
                 args: {
                     module: "default-function",
                     default: true,
-                    target: "@context.result",
-                    context: "@context"
+                    target: "$context.result",
+                    context: "$context"
                 }
             }
         }
@@ -74,7 +74,7 @@ test("module actions - create class", async () => {
                 args: {
                     module: "class",
                     class: "MyClass",
-                    target: "@context.instance"
+                    target: "$context.instance"
                 }
             }
         }
@@ -97,7 +97,7 @@ test("module actions - create default class", async () => {
                 args: {
                     module: "default-class",
                     default: true,
-                    target: "@context.instance"
+                    target: "$context.instance"
                 }
             }
         }
@@ -120,7 +120,7 @@ test("module actions - get constant value", async () => {
                 args: {
                     module: "utils",
                     name: "GlobalValue",
-                    target: "@context.instance"
+                    target: "$context.instance"
                 }
             }
         }

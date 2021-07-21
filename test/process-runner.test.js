@@ -28,25 +28,25 @@ test("ProcessRunner - run", async () => {
 
 test("ProcessRunner - getValue - context", async () => {
     const context = {value: 10};
-    const result = await crs.process.getValue("@context.value", context);
+    const result = await crs.process.getValue("$context.value", context);
     expect(result).toEqual(10);
 })
 
 test("ProcessRunner - getValue - process", async () => {
     const process = {value: 10};
-    const result = await crs.process.getValue("@process.value", null, process);
+    const result = await crs.process.getValue("$process.value", null, process);
     expect(result).toEqual(10);
 })
 
 test("ProcessRunner - getValue - item", async () => {
     const item = {value: 10};
-    const result = await crs.process.getValue("@item.value", null, null, item);
+    const result = await crs.process.getValue("$item.value", null, null, item);
     expect(result).toEqual(10);
 })
 
 test("ProcessRunner - getValue - with function", async () => {
     const context = {src: "Hello World"};
-    const result = await crs.process.getValue("@context.src.toUpperCase()", context, null, null);
+    const result = await crs.process.getValue("$context.src.toUpperCase()", context, null, null);
     expect(result).toEqual("HELLO WORLD");
 })
 
@@ -56,7 +56,7 @@ test("ProcessRunner - getValue - with expression", async () => {
 })
 
 test("ProcessRunner - getValue - calculate using context and process and item", async () => {
-    const result = await crs.process.getValue("@context.base * @item.value + @process.fraction", {base: 2}, {fraction: 0.123}, {value: 5});
+    const result = await crs.process.getValue("$context.base * $item.value + $process.fraction", {base: 2}, {fraction: 0.123}, {value: 5});
     expect(result).toEqual(10.123);
 })
 

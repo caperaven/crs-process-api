@@ -26,7 +26,7 @@ test("extend - add custom action", async () => {
     crs.intent.math = Math;
     const context = {};
 
-    const value = await crs.process.runStep({type: "math", action: "add", args: {v1: 2, v2: 3, target: "@context.result"}}, context);
+    const value = await crs.process.runStep({type: "math", action: "add", args: {v1: 2, v2: 3, target: "$context.result"}}, context);
 
     expect(value).toBe(5)
     expect(context.result).toBe(5);

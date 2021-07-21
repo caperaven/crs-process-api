@@ -18,32 +18,32 @@ beforeEach(() => {
 })
 
 test("ConditionActions - condition on context - pass step executed", async () => {
-    await crs.intent.condition.perform({args: {condition: "@context.isValid == true", pass_step: {type: "console", action: "log", args: {message: "pass"}}}}, {isValid: true})
+    await crs.intent.condition.perform({args: {condition: "$context.isValid == true", pass_step: {type: "console", action: "log", args: {message: "pass"}}}}, {isValid: true})
     expect(logs.log).toEqual("pass");
 })
 
 test("ConditionActions - condition on context - fail", async () => {
-    await crs.intent.condition.perform({args: {condition: "@context.isValid == true", fail_step: {type: "console", action: "log", args: {message: "fail"}}}}, {isValid: false})
+    await crs.intent.condition.perform({args: {condition: "$context.isValid == true", fail_step: {type: "console", action: "log", args: {message: "fail"}}}}, {isValid: false})
     expect(logs.log).toEqual("fail");
 })
 
 test("ConditionActions - condition on process - pass step executed", async () => {
-    await crs.intent.condition.perform({args: {condition: "@process.isValid == true", pass_step: {type: "console", action: "log", args: {message: "pass"}}}}, null, {isValid: true});
+    await crs.intent.condition.perform({args: {condition: "$process.isValid == true", pass_step: {type: "console", action: "log", args: {message: "pass"}}}}, null, {isValid: true});
     expect(logs.log).toEqual("pass");
 })
 
 test("ConditionActions - condition on process - fail", async () => {
-    await crs.intent.condition.perform({args: {condition: "@process.isValid == true", fail_step: {type: "console", action: "log", args: {message: "fail"}}}}, null, {isValid: false})
+    await crs.intent.condition.perform({args: {condition: "$process.isValid == true", fail_step: {type: "console", action: "log", args: {message: "fail"}}}}, null, {isValid: false})
     expect(logs.log).toEqual("fail");
 })
 
 test("ConditionActions - condition on item - pass step executed", async () => {
-    await crs.intent.condition.perform({args: {condition: "@item.isValid == true", pass_step: {type: "console", action: "log", args: {message: "pass"}}}}, null, null, {isValid: true})
+    await crs.intent.condition.perform({args: {condition: "$item.isValid == true", pass_step: {type: "console", action: "log", args: {message: "pass"}}}}, null, null, {isValid: true})
     expect(logs.log).toEqual("pass");
 })
 
 test("ConditionActions - condition on item - fail", async () => {
-    await crs.intent.condition.perform({args: {condition: "@item.isValid == true", fail_step: {type: "console", action: "log", args: {message: "fail"}}}}, null, null, {isValid: false})
+    await crs.intent.condition.perform({args: {condition: "$item.isValid == true", fail_step: {type: "console", action: "log", args: {message: "fail"}}}}, null, null, {isValid: false})
     expect(logs.log).toEqual("fail");
 })
 
@@ -60,7 +60,7 @@ test("ConditionActions - pass_step string", async () => {
         }
     }
 
-    await crs.intent.condition.perform({args: {condition: "@context.isValid == true", pass_step: "log_success"}}, {isValid: true}, process)
+    await crs.intent.condition.perform({args: {condition: "$context.isValid == true", pass_step: "log_success"}}, {isValid: true}, process)
     expect(logs.log).toEqual("pass");
 })
 
@@ -77,7 +77,7 @@ test("ConditionActions - fail_step string", async () => {
         }
     }
 
-    await crs.intent.condition.perform({args: {condition: "@context.isValid == true", fail_step: "log_failure"}}, {isValid: false}, process)
+    await crs.intent.condition.perform({args: {condition: "$context.isValid == true", fail_step: "log_failure"}}, {isValid: false}, process)
     expect(logs.log).toEqual("fail");
 })
 

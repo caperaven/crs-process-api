@@ -30,7 +30,7 @@ export const schema = {
                 args: {
                     query: "#element1",
                     attr: "data-value",
-                    target: "@process.data.value"
+                    target: "$process.data.value"
                 },
                 next_step: "set_text"
             },
@@ -39,7 +39,7 @@ export const schema = {
                 action: "set_text",
                 args: {
                     query: "#element3",
-                    value: "@process.data.value"
+                    value: "$process.data.value"
                 },
                 next_step: "set_style"
             },
@@ -59,7 +59,7 @@ export const schema = {
                 args: {
                     query: "#element3",
                     style: "background",
-                    target: "@process.data.color"
+                    target: "$process.data.color"
                 },
                 next_step: "set_colorText"
             },
@@ -68,7 +68,7 @@ export const schema = {
                 action: "set_text",
                 args: {
                     query: "#element4",
-                    value: "@process.data.color"
+                    value: "$process.data.color"
                 }
             },
         }

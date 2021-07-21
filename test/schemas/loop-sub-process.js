@@ -12,7 +12,7 @@ export const processes = {
             loop: {
                 type: "loop",
                 args: {
-                    source: "@context.records",
+                    source: "$context.records",
                     steps: {
                         sum: {
                             type: "process",
@@ -20,10 +20,10 @@ export const processes = {
                             args: {
                                 schema: "loop_sub",
                                 parameters: {
-                                    value1: "@process.data.sum",
-                                    value2: "@item.value"
+                                    value1: "$process.data.sum",
+                                    value2: "$item.value"
                                 },
-                                target: "@process.data.sum"
+                                target: "$process.data.sum"
                             }
                         }
                     }
@@ -34,9 +34,9 @@ export const processes = {
                 type: "math",
                 action: "divide",
                 args: {
-                    value1: "@process.data.sum",
-                    value2: "@context.records.length",
-                    target: "@process.result"
+                    value1: "$process.data.sum",
+                    value2: "$context.records.length",
+                    target: "$process.result"
                 }
             }
         }
@@ -51,9 +51,9 @@ export const processes = {
                 type: "math",
                 action: "add",
                 args: {
-                    value1: "@process.parameters.value1",
-                    value2: "@process.parameters.value2",
-                    target: "@process.result"
+                    value1: "$process.parameters.value1",
+                    value2: "$process.parameters.value2",
+                    target: "$process.result"
                 }
             }
         }

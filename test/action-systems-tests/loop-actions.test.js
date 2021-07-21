@@ -31,14 +31,14 @@ test("LoopActions - loop through - copy item to other arrays", async () => {
     const step = {
         type: "loop",
         args: {
-            source: "@context.records",
+            source: "$context.records",
             steps: {
                 copy_to_array: {
                     type: "array",
                     action: "add",
                     args: {
-                        target: "@context.result",
-                        value: "@item"
+                        target: "$context.result",
+                        value: "$item"
                     }
                 }
             }
@@ -55,13 +55,13 @@ test("LoopActions - loop through - set item value", async () => {
     const step = {
         type: "loop",
         args: {
-            source: "@context.records",
+            source: "$context.records",
             steps: {
                 set_value: {
                     type: "object",
                     action: "set",
                     args: {
-                        target: "@item.value",
+                        target: "$item.value",
                         value: 10
                     }
                 }
@@ -83,14 +83,14 @@ test("LoopActions - uppercase item value", async () => {
     const step = {
         type: "loop",
         args: {
-            source: "@context.records",
+            source: "$context.records",
             steps: {
                 set_value: {
                     type: "object",
                     action: "set",
                     args: {
-                        target: "@item.code",
-                        value: "@item.code.toUpperCase()"
+                        target: "$item.code",
+                        value: "$item.code.toUpperCase()"
                     }
                 }
             }
@@ -113,15 +113,15 @@ test("LoopActions - set target as reference", async () => {
     const step = {
         type: "loop",
         args: {
-            source: "@context.records",
-            target: "@context.current",
+            source: "$context.records",
+            target: "$context.current",
             steps: {
                 copy: {
                     type: "array",
                     action: "add",
                     args: {
-                        target: "@context.result",
-                        value: "@context.current.value"
+                        target: "$context.result",
+                        value: "$context.current.value"
                     }
                 }
             }

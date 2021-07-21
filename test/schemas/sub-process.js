@@ -15,7 +15,7 @@ export const processes = {
                         value1: 10,
                         value2: 11
                     },
-                    target: "@process.result"
+                    target: "$process.result"
                 }
             }
         }
@@ -41,31 +41,31 @@ export const processes = {
             // validate: {
             //     type: "validate",
             //     action: "requires", // isArray, isNumber, isDate, isLocalDate, isString
-            //     args: ["@process.parameters.value1", "@process.parameters.value2"],
+            //     args: ["$process.parameters.value1", "$process.parameters.value2"],
             //     next_step: "add"
             // },
             add: {
                 type: "math",
                 action: "add",
                 args: {
-                    value1: "@process.parameters.value1",
-                    value2: "@process.parameters.value2",
-                    target: "@process.result"
+                    value1: "$process.parameters.value1",
+                    value2: "$process.parameters.value2",
+                    target: "$process.result"
                 },
             }
             // branch: {
             //     type: "switch",
             //     args: [
             //         {
-            //             case: "@process.data.value < 5",
+            //             case: "$process.data.value < 5",
             //             next_step: "step1"
             //         },
             //         {
-            //             case: "@process.data.value > 5 && @process.data.value < 10",
+            //             case: "$process.data.value > 5 && $process.data.value < 10",
             //             next_step: "step2"
             //         },
             //         {
-            //             case: "@process.data.value > 10",
+            //             case: "$process.data.value > 10",
             //             next_step: "step3"
             //         },
             //         {

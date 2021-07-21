@@ -18,8 +18,8 @@ export const schema = {
                 type: "data",
                 action: "local",
                 args: {
-                    source: "@context.datasource.data",
-                    target: "@process.data.records"
+                    source: "$context.datasource.data",
+                    target: "$process.data.records"
                 },
                 next_step: "validate_record_count"
             },
@@ -27,7 +27,7 @@ export const schema = {
             validate_record_count: {
                 type: "conditions",
                 args: {
-                    condition: "@process.data?.records?.length > 0",
+                    condition: "$process.data?.records?.length > 0",
                     fail_step: {
                         type: "log",
                         action: "error",
@@ -36,25 +36,25 @@ export const schema = {
                         },
                         next_step: "done"
                     },
-                    pass_step: "@process.loop"
+                    pass_step: "$process.loop"
                 },
             },
 
             loop: {
                 type: "loop",
                 args: {
-                    source: "@process.data.records",
+                    source: "$process.data.records",
                     steps: {
                         smaller_condition: {
                             type: "condition",
                             args: {
-                                condition: "@item.value <= 10",
+                                condition: "$item.value <= 10",
                                 pass_step: {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "@process.data.min_collection",
-                                        value: "@item"
+                                        target: "$process.data.min_collection",
+                                        value: "$item"
                                     }
                                 }
                             },
@@ -64,13 +64,13 @@ export const schema = {
                         greater_condition: {
                             type: "condition",
                             args: {
-                                condition: "@item.value > 10",
+                                condition: "$item.value > 10",
                                 pass_step: {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "@process.data.max_collection",
-                                        value: "@item"
+                                        target: "$process.data.max_collection",
+                                        value: "$item"
                                     }
                                 }
                             }
@@ -83,7 +83,7 @@ export const schema = {
                 type: "console",
                 action: "log",
                 args: {
-                    messages: ["@process.data.min_collection", "@process.data.max_collection"]
+                    messages: ["$process.data.min_collection", "$process.data.max_collection"]
                 },
                 next_step: "done"
             },

@@ -30,13 +30,13 @@ test("ArrayActions - add - on context path", async () => {
         values: []
     }
 
-    await globalThis.crs.intent.array.perform({action: "add", args: {target: "@context.values", value: "Hello World"}}, context);
+    await globalThis.crs.intent.array.perform({action: "add", args: {target: "$context.values", value: "Hello World"}}, context);
     expect(context.values.length).toEqual(1);
     expect(context.values[0]).toEqual("Hello World");
 })
 
 test("ArrayActions - add - context to array", async () => {
-    const step = { type: "array", action: "add", args: {target: "@process.data.collection", value: "@item"}};
+    const step = { type: "array", action: "add", args: {target: "$process.data.collection", value: "$item"}};
     const process = {functions: {}, data: {collection: []}};
     const item = "Hello World";
     await globalThis.crs.intent.array.perform(step, null, process, item);
@@ -49,7 +49,7 @@ test("ArrayActions - fieldToCSV", async () => {
         values: [{value: 1}, {value: 2}, {value: 3}]
     };
 
-    await globalThis.crs.intent.array.perform({action: "field_to_csv", args: {source: "@context.values", target: "@context.result", delimiter: ";", field: "value"}}, context);
+    await globalThis.crs.intent.array.perform({action: "field_to_csv", args: {source: "$context.values", target: "$context.result", delimiter: ";", field: "value"}}, context);
     expect(context.result).not.toBeUndefined();
     expect(context.result).toEqual("1;2;3");
 })
