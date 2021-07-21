@@ -1,9 +1,10 @@
 export const schema = {
     distribute_array: {
+
         // data object used as a storage of data during the process.
         data: {
-            records: null,
             min_collection: [],
+            records: null,
             max_collection: []
         },
 
