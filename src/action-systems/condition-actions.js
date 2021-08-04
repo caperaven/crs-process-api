@@ -19,12 +19,12 @@ export class ConditionActions {
 
         const expf = crsbinding.expression.compile(exp);
 
-        if (expf.function(ctx) == true && step.args.pass_step != null) {
-            const nextStep = await this.getNextStep(process, step.args?.pass_step);
+        if (expf.function(ctx) == true && step.pass_step != null) {
+            const nextStep = await this.getNextStep(process, step.pass_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
-        else if (step.args.fail_step != null) {
-            const nextStep = await this.getNextStep(process, step.args?.fail_step);
+        else if (step.fail_step != null) {
+            const nextStep = await this.getNextStep(process, step.fail_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
     }

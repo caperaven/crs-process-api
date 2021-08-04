@@ -8,12 +8,14 @@ export class ProcessRunner {
      * @param process {Object} process object $process
      * @returns {Promise<Object>} returns the process.data object
      */
-    static run(context, process, item) {
+    static run(context, process, item, text, extensions) {
         return new Promise(async (resolve, reject) => {
             process = JSON.parse(JSON.stringify(process));
             process.data = process.data || {};
             process.context = context;
             process.functions = {};
+            process.text = text;
+            process.extensions = extensions;
 
             crsbinding.idleTaskManager.add(async () => {
                 await validateParameters(context, process, item).catch(error => reject(error));
@@ -135,6 +137,8 @@ export class ProcessRunner {
         delete process.result;
         delete process.data;
         delete process.steps;
+        delete process.text;
+        delete process.extensions;
     }
 
     static async cleanObject(obj) {

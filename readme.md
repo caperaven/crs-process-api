@@ -301,9 +301,9 @@ const step = {
     type: "condition",
     args: {
         condition: "$context.value === 10",
-        pass_step: "doSomething",
-        fail_step: "end"
-    }
+    },
+    pass_step: "doSomething",
+    fail_step: "end"
 }
 ```
 

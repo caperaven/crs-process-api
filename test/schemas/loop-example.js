@@ -15,17 +15,17 @@ export const loopExample = {
             validate_record_count: {
                 type: "condition",
                 args: {
-                    condition: "$context.records.length > 0",
-                    fail_step: {
-                        type: "log",
-                        action: "error",
-                        args: {
-                            message: "No records to process"
-                        },
-                        next_step: "done"
-                    },
-                    pass_step: "loop"
+                    condition: "$context.records.length > 0"
                 },
+                fail_step: {
+                    type: "log",
+                    action: "error",
+                    args: {
+                        message: "No records to process"
+                    },
+                    next_step: "done"
+                },
+                pass_step: "loop"
             },
 
             loop: {
@@ -36,14 +36,14 @@ export const loopExample = {
                         smaller_condition: {
                             type: "condition",
                             args: {
-                                condition: "$item.value <= 10",
-                                pass_step: {
-                                    type: "array",
-                                    action: "add",
-                                    args: {
-                                        target: "$process.result.min_collection",
-                                        value: "$item"
-                                    }
+                                condition: "$item.value <= 10"
+                            },
+                            pass_step: {
+                                type: "array",
+                                action: "add",
+                                args: {
+                                    target: "$process.result.min_collection",
+                                    value: "$item"
                                 }
                             }
                         },
@@ -51,14 +51,14 @@ export const loopExample = {
                         greater_condition: {
                             type: "condition",
                             args: {
-                                condition: "$item.value > 10",
-                                pass_step: {
-                                    type: "array",
-                                    action: "add",
-                                    args: {
-                                        target: "$process.result.max_collection",
-                                        value: "$item"
-                                    }
+                                condition: "$item.value > 10"
+                            },
+                            pass_step: {
+                                type: "array",
+                                action: "add",
+                                args: {
+                                    target: "$process.result.max_collection",
+                                    value: "$item"
                                 }
                             }
                         }

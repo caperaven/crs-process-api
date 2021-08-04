@@ -11,6 +11,7 @@ export const processes = {
                 action: "process2",
                 args: {
                     schema: "sub_example",
+                    context: "$context.model",
                     parameters: {
                         value1: 10,
                         value2: 11
