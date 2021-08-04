@@ -776,10 +776,7 @@ prefixes help you define shortcuts to use in your getValue.
 
 ```json
 {
-  "$variables": "$context.schema.variables",
-  "$obj": {
-    "property1": "Hello world"
-  }
+  "$variables": "$context.schema.variables"
 }
 ```
 
@@ -793,3 +790,12 @@ Internally there the following prefixes exist.
 
 1. "$text": refers to "$process.text" (one of the objects you sent in during the run process, else undefined)
 2. "$data": refers to "$process.data"
+
+You can also define the prefixes in the process for process specific things.
+
+```js
+prefixes: {
+    "$currentStep": "$process.data.currentStep",
+    "$currentClone": "$process.data.currentClone"
+}
+```

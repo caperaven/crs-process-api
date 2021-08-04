@@ -41,7 +41,7 @@ export class ProcessRunner {
      */
     static async runStep(step, context= null, process= null, item= null) {
         if (step == null) return;
-        if (step.abort != null) throw new Error(step.abort);
+        if (step.abort != null) throw new Error(`${process.currentStep}: ${step.abort}`);
 
         let result;
         if (step.type != null) {
@@ -54,6 +54,7 @@ export class ProcessRunner {
         }
 
         const nextStep = process?.steps?.[step.next_step];
+        process.currentStep = nextStep;
 
         if (nextStep != null) {
             return await this.runStep(nextStep, context, process, item);
