@@ -1,8 +1,15 @@
 import {loadBinding} from "../mockups/crsbinding.mock.js";
 
+const logs = {
+    log: null
+}
+
 beforeAll(async () => {
     await loadBinding();
     await import("./../../src/index.js");
+    global.console = {
+        log: (msg) => logs.log = msg,
+    }
 })
 
 test("MathActions - add", async () => {
@@ -17,7 +24,8 @@ test("MathActions - add", async () => {
                 args: {
                     value1: 10,
                     value2: 11,
-                    target: "$process.result"
+                    target: "$process.result",
+                    log: "$process.result"
                 }
             }
         }
@@ -25,6 +33,7 @@ test("MathActions - add", async () => {
 
     const result = await crs.process.run(null, process);
     expect(result).toEqual(21);
+    expect(logs.log).toEqual(21);
 })
 
 test("MathActions - subtract", async () => {

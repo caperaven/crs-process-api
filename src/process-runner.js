@@ -8,14 +8,16 @@ export class ProcessRunner {
      * @param process {Object} process object $process
      * @returns {Promise<Object>} returns the process.data object
      */
-    static run(context, process, item, text, extensions) {
+    static run(context, process, item, text, prefixes) {
         return new Promise(async (resolve, reject) => {
             process = JSON.parse(JSON.stringify(process));
             process.data = process.data || {};
             process.context = context;
             process.functions = {};
             process.text = text;
-            process.extensions = extensions;
+            process.expCache = {};
+
+            populatePrefixes(prefixes, process);
 
             crsbinding.idleTaskManager.add(async () => {
                 await validateParameters(context, process, item).catch(error => reject(error));
@@ -46,6 +48,11 @@ export class ProcessRunner {
             result = await crs.intent[step.type].perform(step, context, process, item);
         }
 
+        if (step.args?.log != null) {
+            const value = await this.getValue(step.args.log, context, process, item);
+            console.log(value);
+        }
+
         const nextStep = process?.steps?.[step.next_step];
 
         if (nextStep != null) {
@@ -65,13 +72,14 @@ export class ProcessRunner {
      */
     static async getValue(expr, context = null, process=  null, item = null) {
         if (typeof expr != "string") return expr;
-        //if (expr.indexOf("(") != -1) return expr;
 
         if (expr == "$context") return context;
         if (expr == "$process") return process;
         if (expr == "$item") return item;
 
         if (expr.indexOf("$") == -1 && expr.indexOf("(") == -1) return expr;
+
+        expr = process?.expCache == null ? expr : getFromCache(expr, process);
 
         let fn = process?.functions?.[expr];
         if (fn == null) {
@@ -97,6 +105,9 @@ export class ProcessRunner {
      */
     static async setValue(expr, value, context, process, item) {
         let ctx;
+
+        expr = process?.expCache == null ? expr : getFromCache(expr, process);
+
         if (expr.indexOf("$item") != -1) {
             ctx = item;
             expr = expr.replace("$item.", "");
@@ -138,7 +149,8 @@ export class ProcessRunner {
         delete process.data;
         delete process.steps;
         delete process.text;
-        delete process.extensions;
+        delete process.prefixes;
+        delete process.expCache;
     }
 
     static async cleanObject(obj) {
@@ -175,4 +187,31 @@ async function validateParameters(context, process,item) {
             throw new Error(`required parameter "${key}" not set or is null`);
         }
     }
+}
+
+function populatePrefixes(prefixes, process) {
+    process.prefixes = process.prefixes || {};
+
+    if (prefixes != null) {
+        Object.assign(process.prefixes, prefixes);
+    }
+
+    process.prefixes["$text"] = "$process.text";
+    process.prefixes["$data"] = "$process.data";
+}
+
+function getFromCache(expr, process) {
+    if (process == null) return expr;
+
+    if (process.expCache[expr] != null) {
+        return process.expCache[expr];
+    }
+
+    const prop = expr;
+    const exp = expr.split(".")[0];
+    if (process?.prefixes[exp] == null) return expr;
+
+    expr = expr.split(exp).join(process.prefixes[exp]);
+    process.expCache[prop] = expr;
+    return expr;
 }

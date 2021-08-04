@@ -41,8 +41,15 @@ There are two ways to run a process.
 <strong>Running the entire process</strong>
 ```js
 const process = {...};
-await crs.process.run(context, process);
+await crs.process.run(context, process, item, text, prefixes);
 ```
+
+1. context - object referenced as "$context"
+1. process - object referenced as "$process"
+1. item - object referenced as "$item"
+1. text - object referenced as "$text"
+1. prefixes - object that defines shortcut syntax and reference objects. see prefixes for details.
+
 <strong>Running a process step</strong>
 ```js
 const process = {...};
@@ -760,3 +767,29 @@ There are several hooks that you need to take note of.
 crs.process.fetch = (step) => { return ... fetch code };
 crs.process.onError = (error) => { console.error(error) };
 ```
+
+## prefixes 
+When you run a process you can pass in an prefixes object as one of the parameters.  
+prefixes help you define shortcuts to use in your getValue.
+
+<strong>prefix example</strong>
+
+```json
+{
+  "$variables": "$context.schema.variables",
+  "$obj": {
+    "property1": "Hello world"
+  }
+}
+```
+
+In this example, if you reference the value "$variables.property" it will look for the property value on the path "$context.schema.variables.property"
+
+As you can see it provides you with a convenient way to shorten some expressions.  
+The value does however not have to be a path.  
+If the prefix has a object attached to it, the getValue operation will instead return you that object.
+
+Internally there the following prefixes exist.
+
+1. "$text": refers to "$process.text" (one of the objects you sent in during the run process, else undefined)
+2. "$data": refers to "$process.data"

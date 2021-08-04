@@ -1,4 +1,8 @@
 export const process = {
+    prefixes: {
+        "$currentStep": "$process.data.currentStep",
+        "$currentClone": "$process.data.currentClone"
+    },
     data: {
         errors: []
     },
@@ -8,20 +12,20 @@ export const process = {
             type: "loop",
             args: {
                 source: "$context.steps",
-                target: "$process.data.currentStep",
+                target: "$data.currentStep",
                 steps: {
                     process_errors: {
                         type: "loop",
                         args: {
-                            source: "$process.data.currentStep.errors",
-                            target: "$process.data.currentError",
+                            source: "$currentStep.errors",
+                            target: "$data.currentError",
                             steps: {
                                 clone_step: {
                                     type: "object",
                                     action: "clone",
                                     args: {
-                                        source: "$process.data.currentStep",
-                                        target: "$process.data.currentClone",
+                                        source: "$currentStep",
+                                        target: "$currentClone",
                                         fields: ["code"]
                                     }
                                 },
@@ -29,16 +33,16 @@ export const process = {
                                     type: "object",
                                     action: "assign",
                                     args: {
-                                        source: "$process.data.currentError",
-                                        target: "$process.data.currentClone"
+                                        source: "$data.currentError",
+                                        target: "$currentClone"
                                     }
                                 },
                                 copy_to_new_errors: {
                                     type: "array",
                                     action: "add",
                                     args: {
-                                        target: "$process.data.errors",
-                                        value: "$process.data.currentClone"
+                                        target: "$data.errors",
+                                        value: "$currentClone"
                                     }
                                 }
                             }
@@ -53,7 +57,7 @@ export const process = {
             action: "set",
             args: {
                 target: "$process.result",
-                value: "$process.data.errors"
+                value: "$data.errors"
             }
         }
     }
