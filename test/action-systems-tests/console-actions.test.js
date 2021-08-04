@@ -21,32 +21,51 @@ beforeAll(() => {
     }
 })
 
-test("ConditionActions - log", async () => {
+test("ConsoleActions - log", async () => {
     logs.log = null;
     await globalThis.crs.intent.console.perform({action: "log", args: {message: "log-message"}});
     expect(logs.log).toEqual("log-message");
 })
 
-test("ConditionActions - log - messages", async () => {
+test("ConsoleActions - log - messages", async () => {
     logs.log = null;
     await globalThis.crs.intent.console.perform({action: "log", args: {messages: ["log-message"]}});
     expect(logs.log).toEqual("log-message");
 })
 
-test("ConditionActions - warn", async () => {
+test("ConsoleActions - warn", async () => {
     logs.log = null;
     await globalThis.crs.intent.console.perform({action: "warn", args: {message: "warn-message"}});
     expect(logs.warn).toEqual("warn-message");
 })
 
-test("ConditionActions - error", async () => {
+test("ConsoleActions - error", async () => {
     logs.log = null;
     await globalThis.crs.intent.console.perform({action: "error", args: {message: "error-message"}});
     expect(logs.error).toEqual("error-message");
 })
 
-test("ConditionActions - table", async () => {
+test("ConsoleActions - table", async () => {
     logs.log = null;
     await globalThis.crs.intent.console.perform({action: "table", args: {message: "table-message"}});
     expect(logs.table).toEqual("table-message");
 })
+
+test("ConsoleActions - log - text", async () => {
+   logs.log = null;
+   const process = {
+       steps: {
+           start: {next_step: "log"},
+           log: {
+               type: "console",
+               action: "log",
+               args: {
+                   message: "$text.message"
+               }
+           }
+       }
+   }
+
+    await crs.process.run(null, process, null, {message: "Hello World"});
+   expect(logs.log).toEqual("Hello World");
+});

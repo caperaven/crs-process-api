@@ -12,6 +12,6 @@ test("Flatten Array", async () => {
         steps: createData()
     }
 
-    const result = await globalThis.crs.process.run(context, process);
+    const result = await globalThis.crs.process.run(context, process, null);
     expect(result.length).toEqual(10);
 })

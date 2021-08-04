@@ -799,3 +799,13 @@ prefixes: {
     "$currentClone": "$process.data.currentClone"
 }
 ```
+
+## text
+
+Text is used to pass translation data to the process.
+Inside the process you reference the value as "$text.property".
+The translation is an object literal with properties.
+
+```js
+await crs.process.run(context, process, null, {property: "Hello World"});
+```
