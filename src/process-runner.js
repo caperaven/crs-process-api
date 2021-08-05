@@ -65,7 +65,10 @@ export class ProcessRunner {
 
         if (process?.aborted !== true && step.aborted !== true) {
             const nextStep = process?.steps?.[step.next_step];
-            process.currentStep = step.next_step;
+
+            if (process != null) {
+                process.currentStep = step.next_step;
+            }
 
             if (nextStep != null) {
                 return await this.runStep(nextStep, context, process, item);
