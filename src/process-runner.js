@@ -20,12 +20,17 @@ export class ProcessRunner {
             populatePrefixes(prefixes, process);
 
             crsbinding.idleTaskManager.add(async () => {
-                await validateParameters(context, process, item).catch(error => reject(error));
-                await this.runStep(process.steps.start, context, process, item);
+                let result;
 
-                const result = process.result;
-                await this.cleanProcess(process);
-                resolve(result);
+                await validateParameters(context, process, item).catch(error => reject({ process:process.name, step: process.currentStep, error: error }));
+
+                await this.runStep(process.steps.start, context, process, item)
+                    .then(async () => {
+                        result = process.result;
+                        await this.cleanProcess(process);
+                    })
+                    .then(() => resolve(result))
+                    .catch(error => reject({ process:process.name, step: process.currentStep, error: error }))
             })
         })
     }
@@ -41,7 +46,6 @@ export class ProcessRunner {
      */
     static async runStep(step, context= null, process= null, item= null) {
         if (step == null) return;
-        if (step.abort != null) throw new Error(`${process.currentStep}: ${step.abort}`);
 
         let result;
         if (step.type != null) {
@@ -54,7 +58,7 @@ export class ProcessRunner {
         }
 
         const nextStep = process?.steps?.[step.next_step];
-        process.currentStep = nextStep;
+        process.currentStep = step.next_step;
 
         if (nextStep != null) {
             return await this.runStep(nextStep, context, process, item);
@@ -185,6 +189,7 @@ async function validateParameters(context, process,item) {
         }
 
         if (isValid === false) {
+            process.currentStep = "validate process parameters";
             throw new Error(`required parameter "${key}" not set or is null`);
         }
     }

@@ -8,6 +8,9 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(loopSchema);
         crs.processSchemaRegistry.add(domExample);
+        crs.processSchemaRegistry.onError = (error) => {
+            console.error(error);
+        }
     }
 
     preLoad() {

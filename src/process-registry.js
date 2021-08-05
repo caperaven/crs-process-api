@@ -20,14 +20,15 @@ export class SchemaRegistry {
 
             // 1. Copy parameter values to process to run
             const process = schema[processName];
+            process.name = processName;
             await copyParametersToProcess(process, args.parameters);
 
             // 2. Run process
             const result = await crs.process.run(args.context, process).catch(error => {
-                if (crs.process.onError != null && error?.message) {
-                    crs.process.onError(error.message);
-                    reject();
+                if (this.onError != null) {
+                    this.onError(error);
                 }
+                return;
             });
 
             // 3. Copy output from process to calling process

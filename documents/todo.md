@@ -6,11 +6,9 @@
     "$var": "$context.schema.variables",
     "$obj": {}
 } // hook to process so that you can get access too it.
-4. 
-5. 
-6. 
-7. look at passing in translations object to reference with $text.
-    1. write tests for this and make sure it works
+//7. look at passing in translations object to reference with $text.
+//    1. write tests for this and make sure it works
+
 8. add step name to aborting and proper error handling
 9. ensure proper error messages on failures.
 10. how do I show progress on this.
