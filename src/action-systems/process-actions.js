@@ -16,7 +16,5 @@ export class ProcessActions {
             item: item,
             parameters: parameters
         });
-
-        console.log(result);
     }
 }

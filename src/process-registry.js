@@ -28,6 +28,7 @@ export class SchemaRegistry {
                 if (this.onError != null) {
                     this.onError(error);
                 }
+                args.step.aborted = true;
                 return;
             });
 

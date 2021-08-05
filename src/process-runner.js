@@ -63,7 +63,7 @@ export class ProcessRunner {
             console.log(value);
         }
 
-        if (process?.aborted !== true) {
+        if (process?.aborted !== true && step.aborted !== true) {
             const nextStep = process?.steps?.[step.next_step];
             process.currentStep = step.next_step;
 
