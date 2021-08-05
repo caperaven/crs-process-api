@@ -22,7 +22,10 @@ export class ProcessRunner {
             crsbinding.idleTaskManager.add(async () => {
                 let result;
 
-                await validateParameters(context, process, item).catch(error => reject({ process:process.name, step: process.currentStep, error: error }));
+                await validateParameters(context, process, item).catch(error => {
+                    process.aborted = true;
+                    reject({ process:process.name, step: process.currentStep, error: error });
+                });
 
                 await this.runStep(process.steps.start, context, process, item)
                     .then(async () => {
@@ -30,7 +33,10 @@ export class ProcessRunner {
                         await this.cleanProcess(process);
                     })
                     .then(() => resolve(result))
-                    .catch(error => reject({ process:process.name, step: process.currentStep, error: error }))
+                    .catch(error => {
+                        process.aborted = true;
+                        reject({ process:process.name, step: process.currentStep, error: error })
+                    })
             })
         })
     }
@@ -57,11 +63,13 @@ export class ProcessRunner {
             console.log(value);
         }
 
-        const nextStep = process?.steps?.[step.next_step];
-        process.currentStep = step.next_step;
+        if (process?.aborted !== true) {
+            const nextStep = process?.steps?.[step.next_step];
+            process.currentStep = step.next_step;
 
-        if (nextStep != null) {
-            return await this.runStep(nextStep, context, process, item);
+            if (nextStep != null) {
+                return await this.runStep(nextStep, context, process, item);
+            }
         }
 
         return result;

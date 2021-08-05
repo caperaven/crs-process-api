@@ -9,12 +9,14 @@ export class ProcessActions {
             }
         }
 
-        await crsbinding.events.emitter.emit("run-process", {
+        const result = await crsbinding.events.emitter.emit("run-process", {
             step: step,
             context: context,
             process: process,
             item: item,
             parameters: parameters
         });
+
+        console.log(result);
     }
 }
