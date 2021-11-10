@@ -164,6 +164,8 @@ export class DomActions {
                         url   : step.args.url
                     }
                 }, context, process, item);
+
+                widget.focus();
                 resolve();
             })
         })
