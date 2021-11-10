@@ -110,7 +110,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_element(step) {
-        //JHR: clean up binding of this element
+        //JHR: clean up binding of this element ------------------------------------- NB
 
         const element = document.querySelector(step.args.query);
         element?.parentElement?.removeChild(element);
@@ -180,7 +180,7 @@ export class DomActions {
         const html = await getHTML(step, context, process, item);
 
         await crsbinding.events.emitter.postMessage(query, {
-            context: process.bId,
+            context: process.parameters.bId,
             html: html
         })
     }

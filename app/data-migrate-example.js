@@ -13,14 +13,14 @@ export const schema = {
         steps: {
             start: {
                 binding: {
-                    taskId: "$process.parameters.taskId",
-                    assetId: "$process.parameters.assetId"
+                    taskId: "$parameters.taskId",
+                    assetId: "$parameters.assetId"
                 },
 
-                next_step: "step1"
+                next_step: "show_ui"
             },
 
-            step1: {
+            show_ui: {
                 type: "dom",
                 action: "show_widget_dialog",
 
@@ -30,46 +30,29 @@ export const schema = {
                     url: "/templates/current_process_ui.html"
                 },
 
-                binding: {
-                    title: "Starting Process",
-                },
-
-                next_step: "sleep" // don't wait just continue with process.
-
-                //pass_step: "copy_spares" // maps to ok button
+                next_step: "copy_spares" // don't wait just continue with process.
             },
 
-            sleep: {
-                type: "system",
-                action: "sleep",
+            copy_spares: {
+                type: "process",
+                action: "copy_spares",
                 args: {
-                    duration: 3000,
+                    schema: "data-migrate-process-schema",
+                    parameters: {
+                        bId: "$bId"
+                    }
                 },
-                next_step: "step2"
+                next_step: "copy_attributes"
             },
 
-            step2: {
-                binding: {
-                    title: "Step 2"
-                },
-
-                next_step: "sleep2"
-            },
-
-            sleep2: {
-                type: "system",
-                action: "sleep",
+            copy_attributes: {
+                type: "process",
+                action: "copy_attributes",
                 args: {
-                    duration: 1000,
-                },
-                next_step: "copy"
-            },
-
-            copy: {
-                type: "system",
-                action: "copy_to_clipboard",
-                args: {
-                    source: "Process Done",
+                    schema: "data-migrate-process-schema",
+                    parameters: {
+                        bId: "$bId"
+                    }
                 },
                 next_step: "close"
             },
@@ -81,87 +64,46 @@ export const schema = {
                     query: "#current-process-ui"
                 }
             }
+        }
+    },
 
-            // copy_spares: {
-            //     type: "process",
-            //     action: "copy_spares",
-            //     args: {
-            //         schema: "data-migrate-process-schema",
-            //         parameters: {
-            //             bId: "$process.bId"
-            //         }
-            //     },
-            //     next_step: "copy_attributes"
-            // },
-            //
-            // copy_attributes: {
-            //     type: "process",
-            //     action: "copy_attributes",
-            //     args: {
-            //         schema: "data-migrate-process-schema",
-            //         parameters: {
-            //             bId: "$process.bId"
-            //         }
-            //     },
-            //     next_step: "clipboard_errors"
-            // },
-            //
-            // clipboard_errors: {
-            //     type: "system",
-            //     action: "clipboard",
-            //     args: {
-            //         // stuff for clipboard
-            //     }
-            // }
+    copy_spares: {
+        parameters_def: {
+            bId: { type: "number", required: true }
+        },
+        steps: {
+            start: { next_step: "get_data" },
+
+            get_data: {
+                type: "system",
+                action: "sleep",
+                args: {
+                    duration: 3000,
+                },
+                binding: {
+                    title: "copy spares"
+                }
+            }
+        }
+    },
+
+    copy_attributes: {
+        parameters_def: {
+            bId: { type: "number", required: true }
+        },
+        steps: {
+            start: { next_step: "get_data" },
+
+            get_data: {
+                type: "system",
+                action: "sleep",
+                args: {
+                    duration: 3000,
+                },
+                binding: {
+                    title: "copy attributes"
+                }
+            }
         }
     }
-
-    // copy_spares: {
-    //     parameters_def: {
-    //         bId: { type: "number", required: true }
-    //     },
-    //     steps: {
-    //         start: { next_step: "get_data" },
-    //
-    //         get_data: {
-    //             type: "data",
-    //             action: "get_records",
-    //             args: {
-    //                 target: "$process.data.records"
-    //             },
-    //             next_step: "process_data"
-    //         },
-    //
-    //         process_data: {
-    //             // ...
-    //         },
-    //
-    //         save_new: {
-    //
-    //         }
-    //     }
-    // },
-    //
-    // copy_attributes: {
-    //     parameters_def: {
-    //         bId: { type: "number", required: true }
-    //     },
-    //
-    //     steps: {
-    //         start: { next_step: "get_data" }
-    //     },
-    //
-    //     get_data: {
-    //         type: "data",
-    //         action: "get_records",
-    //         args: {
-    //             target: "$process.data.records"
-    //         },
-    //         next_step: "process_data"
-    //     },
-    //
-    //     process_data: {
-    //         // ...
-    //     }
-    // }
 }

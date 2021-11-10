@@ -57,12 +57,7 @@ export class ProcessRunner {
     static async runStep(step, context= null, process= null, item= null) {
         if (step == null) return;
 
-        let result;
-        if (step.type != null) {
-            result = await crs.intent[step.type].perform(step, context, process, item);
-        }
-
-        if (step.binding != null && process.bId != null) {
+        if (step.binding != null && process.parameters?.bId != null) {
             const keys = Object.keys(step.binding);
             for (let key of keys) {
                 await crs.intent.binding.set_property({
@@ -72,6 +67,11 @@ export class ProcessRunner {
                     }
                 }, context, process, item);
             }
+        }
+
+        let result;
+        if (step.type != null) {
+            result = await crs.intent[step.type].perform(step, context, process, item);
         }
 
         if (step.args?.log != null) {
@@ -172,6 +172,10 @@ export class ProcessRunner {
     }
 
     static async cleanProcess(process) {
+        if (process.bindable == true) {
+            crsbinding.data.removeObject(process.parameters.bId);
+        }
+
         await this.cleanObject(process.data);
         await this.cleanObject(process.functions);
         delete process.context;
@@ -183,11 +187,6 @@ export class ProcessRunner {
         delete process.text;
         delete process.prefixes;
         delete process.expCache;
-
-        if (process.bId) {
-            crsbinding.data.removeObject(process.bId);
-            delete process.bId;
-        }
     }
 
     static async cleanObject(obj) {
@@ -234,8 +233,10 @@ function populatePrefixes(prefixes, process) {
         Object.assign(process.prefixes, prefixes);
     }
 
-    process.prefixes["$text"] = "$process.text";
-    process.prefixes["$data"] = "$process.data";
+    process.prefixes["$text"]       = "$process.text";
+    process.prefixes["$data"]       = "$process.data";
+    process.prefixes["$parameters"] = "$process.parameters";
+    process.prefixes["$bId"]        = "$process.parameters.bId";
 }
 
 function getFromCache(expr, process) {
