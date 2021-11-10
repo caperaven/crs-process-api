@@ -19,6 +19,10 @@ export class ProcessRunner {
 
             populatePrefixes(prefixes, process);
 
+            if (process.bindable == true) {
+                await crs.intent.binding.create_context(null, context, process, null);
+            }
+
             crsbinding.idleTaskManager.add(async () => {
                 let result;
 
@@ -56,6 +60,18 @@ export class ProcessRunner {
         let result;
         if (step.type != null) {
             result = await crs.intent[step.type].perform(step, context, process, item);
+        }
+
+        if (step.binding != null && process.bId != null) {
+            const keys = Object.keys(step.binding);
+            for (let key of keys) {
+                await crs.intent.binding.set_property({
+                    args: {
+                        property: key,
+                        value: step.binding[key]
+                    }
+                }, context, process, item);
+            }
         }
 
         if (step.args?.log != null) {
@@ -167,6 +183,11 @@ export class ProcessRunner {
         delete process.text;
         delete process.prefixes;
         delete process.expCache;
+
+        if (process.bId) {
+            crsbinding.data.removeObject(process.bId);
+            delete process.bId;
+        }
     }
 
     static async cleanObject(obj) {

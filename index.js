@@ -1,5 +1,6 @@
 import {schema as loopSchema} from "./app/loop-example.js";
 import {schema as domExample} from "./app/dom-example.js";
+import {schema as migrateSchema} from "./app/data-migrate-example.js";
 import {process} from "/test/scenario-tests/flatten-process.js";
 import {createData} from "/test/scenario-tests/flatten-data.js";
 
@@ -8,6 +9,7 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(loopSchema);
         crs.processSchemaRegistry.add(domExample);
+        crs.processSchemaRegistry.add(migrateSchema);
         crs.processSchemaRegistry.onError = (error) => {
             console.error(error);
         }
@@ -70,5 +72,21 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
 
         console.log(`${t1 - t0} milliseconds.`);
         result = null;
+    }
+
+    async performMigrateProcess() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "main",
+                args: {
+                    schema: "data-migrate-process-schema"
+                }
+            },
+            parameters: {
+                taskId  : "ABC",
+                assetId : "Asset 100"
+            }
+        });
     }
 }

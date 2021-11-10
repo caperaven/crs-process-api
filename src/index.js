@@ -10,6 +10,8 @@ import {MathActions} from "./action-systems/math-actions.js";
 import {ProcessActions} from "./action-systems/process-actions.js";
 import {ModuleActions} from "./action-systems/module-actions.js";
 import {DomActions} from "./action-systems/dom-actions.js";
+import {BindingActions} from "./action-systems/binding-actions.js";
+import {SystemActions} from "./action-systems/system-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -18,16 +20,18 @@ globalThis.crs = globalThis.crs || {};
  * This can be used programmatically.
  */
 globalThis.crs.intent = {
-    array: ArrayActions,
-    condition: ConditionActions,
-    console: ConsoleActions,
-    loop: LoopActions,
-    object: ObjectActions,
-    action: ActionActions,
-    math: MathActions,
-    process: ProcessActions,
-    module: ModuleActions,
-    dom: DomActions
+    array       : ArrayActions,
+    condition   : ConditionActions,
+    console     : ConsoleActions,
+    loop        : LoopActions,
+    object      : ObjectActions,
+    action      : ActionActions,
+    math        : MathActions,
+    process     : ProcessActions,
+    module      : ModuleActions,
+    dom         : DomActions,
+    binding     : BindingActions,
+    system      : SystemActions
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
@@ -40,3 +44,5 @@ globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constru
 // extensions
 // 1. fetch     -> processSchemaRegistry to fetch a schema requested but not yet registered.
 // 2. onError   -> give me the error information and I will deal with it.
+
+// crs.intent.system.copy_to_clipboard({args: {source: "@context.data.property"}}, context)
