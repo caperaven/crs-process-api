@@ -78,7 +78,7 @@ export const schema = {
                 type: "system",
                 action: "sleep",
                 args: {
-                    duration: 3000,
+                    duration: 1000,
                 },
                 binding: {
                     title: "copy spares"
@@ -98,7 +98,7 @@ export const schema = {
                 type: "system",
                 action: "sleep",
                 args: {
-                    duration: 3000,
+                    duration: 1000,
                 },
                 binding: {
                     title: "copy attributes"

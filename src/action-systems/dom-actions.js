@@ -110,10 +110,10 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_element(step) {
-        //JHR: clean up binding of this element ------------------------------------- NB
-
         const element = document.querySelector(step.args.query);
         element?.parentElement?.removeChild(element);
+
+        await crsbinding.providerManager.releaseElement(element);
     }
 
     /**
