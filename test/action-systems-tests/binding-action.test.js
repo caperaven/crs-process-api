@@ -19,10 +19,10 @@ test("binding - create_context", async () => {
     const process = {};
 
     await crs.process.runStep(step, context, process);
-    expect(process._dataId).not.toBeUndefined();
+    expect(process.parameters.bId).not.toBeUndefined();
 
     await crs.intent.binding.free_context(step, context, process);
-    expect(process._dataId).toBeUndefined();
+    expect(process.parameters.bId).toBeUndefined();
 })
 
 test("binding - get and set property", async() => {
