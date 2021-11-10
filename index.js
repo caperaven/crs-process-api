@@ -1,6 +1,8 @@
 import {schema as loopSchema} from "./app/loop-example.js";
 import {schema as domExample} from "./app/dom-example.js";
 import {schema as migrateSchema} from "./app/data-migrate-example.js";
+import {schema as visualNone} from "./app/visual-non-visual-steps.js";
+
 import {process} from "/test/scenario-tests/flatten-process.js";
 import {createData} from "/test/scenario-tests/flatten-data.js";
 
@@ -10,9 +12,25 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add(loopSchema);
         crs.processSchemaRegistry.add(domExample);
         crs.processSchemaRegistry.add(migrateSchema);
+        crs.processSchemaRegistry.add(visualNone);
         crs.processSchemaRegistry.onError = (error) => {
             console.error(error);
         }
+
+        const trans = {
+            buttons: {
+                save: "Save",
+                cancel: "Cancel",
+                ok: "Ok"
+            },
+            labels: {
+                firstName: "First Name",
+                lastName: "Last Name",
+                age: "Age"
+            }
+        }
+
+        await crsbinding.translations.add(trans);
     }
 
     preLoad() {
@@ -86,6 +104,18 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
             parameters: {
                 taskId  : "ABC",
                 assetId : "Asset 100"
+            }
+        });
+    }
+
+    async performVisualNone() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "main",
+                args: {
+                    schema: "visual-and-non"
+                }
             }
         });
     }

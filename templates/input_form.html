@@ -1,0 +1,31 @@
+<div style="padding: 1rem; border-radius: 5px; background: #dadada; display: flex; flex-direction: column; justify-content: center; align-items: center">
+    <form>
+        <label>
+            <div>&{labels.firstName}</div>
+            <input value.bind="firstName" required style="width: 150px" autofocus>
+        </label>
+
+        <label>
+            <div>&{labels.lastName}</div>
+            <input value.bind="lastName" required style="width: 150px">
+        </label>
+
+        <label>
+            <div>&{labels.age}</div>
+            <input value.bind="age" type="number" min="20" max="60" style="width: 150px">
+        </label>
+    </form>
+
+    <div id="errors" class="errors-collection">
+        <ul>
+            <template for="error of errors">
+                <li>${error}</li>
+            </template>
+        </ul>
+    </div>
+
+    <div>
+        <button click.call="fail">&{buttons.cancel}</button>
+        <button click.call="pass">&{buttons.ok}</button>
+    </div>
+</div>

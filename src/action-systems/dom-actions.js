@@ -165,8 +165,39 @@ export class DomActions {
                     }
                 }, context, process, item);
 
-                widget.focus();
-                resolve();
+                const element = widget.querySelector("[autofocus]");
+                if (element != null) {
+                    element.focus();
+                }
+                else {
+                    widget.focus();
+                }
+
+                let bc = crsbinding.data.getContext(process.parameters.bId);
+
+                if (step.pass_step != null || step.fail_step != null) {
+                    const callback = async (next_step) => {
+                        delete bc.pass;
+                        delete bc.fail;
+                        resolve();
+
+                        const stepName = step[next_step];
+
+                        if (stepName != null) {
+                            const nextStep = crsbinding.utils.getValueOnPath(process.steps, stepName);
+
+                            if (nextStep != null) {
+                                await crs.process.runStep(nextStep, context, process, item);
+                            }
+                        }
+                    }
+
+                    bc.pass = () => callback("pass_step");
+                    bc.fail = () => callback("fail_step");
+                }
+                else {
+                    resolve();
+                }
             })
         })
     }
