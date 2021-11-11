@@ -12,7 +12,15 @@ export class ObjectActions {
      * @returns {Promise<void>}
      */
     static async set(step, context, process, item) {
-        await globalThis.crs.process.setValue(step.args.target, step.args.value, context, process, item);
+        if (step.args.properties != null) {
+            const keys = Object.keys(step.args.properties);
+            for (let key of keys) {
+                await globalThis.crs.process.setValue(`${step.args.target}.${key}`, step.args.properties[key], context, process, item);
+            }
+            return;
+        }
+
+        return await globalThis.crs.process.setValue(step.args.target, step.args.value, context, process, item);
     }
 
     /**

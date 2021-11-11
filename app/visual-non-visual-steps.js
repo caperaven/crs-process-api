@@ -29,6 +29,15 @@ export const schema = {
         steps: {
             start: { next_step: "show_dialog" },
 
+            add_errors: {
+                type: "binding",
+                action: "set_errors",
+                args: {
+                    error_store: "input_validation",
+                    errors: ["Test Error"]
+                }
+            },
+
             show_dialog: {
                 type: "dom",
                 action: "show_form_dialog",
@@ -38,7 +47,8 @@ export const schema = {
                     url: "/templates/input_form.html",
                     error_store: "input_validation"
                 },
-            }
+            },
+
         }
     },
 

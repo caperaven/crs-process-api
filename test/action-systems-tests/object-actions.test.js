@@ -19,6 +19,28 @@ test("ObjectActions - set - process", async () => {
     expect(process.data.value).toEqual(1);
 })
 
+test("ObjectActions - set - multiple", async () => {
+    const context = {
+        origin: "origin value"
+    };
+
+    const step = {
+        type: "object",
+        action: "set",
+        args: {
+            target: "$context",
+            properties: {
+                p1: "property 1",
+                p2: "$context.origin"
+            }
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context, null, null);
+    expect(context.p1).toEqual("property 1");
+    expect(context.p2).toEqual("origin value");
+})
+
 test("ObjectActions - set - item", async () => {
     const item = {};
     const descriptor = await SetDescriptor.new("$item.value", 1);
