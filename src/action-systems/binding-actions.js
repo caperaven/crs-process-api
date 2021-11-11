@@ -70,4 +70,23 @@ export class BindingActions {
     static async add_array_items(step, context, process, item) {
 
     }
+
+    /**
+     * Set errors on a given error store.
+     * Default store is "errors" if you don't provide a store.
+     * @returns {Promise<void>}
+     */
+    static async set_errors(step, context, process, item) {
+        const store = step.args.error_store || "errors";
+        const source = step.args.errors;
+        const errors = [];
+
+        for (let error of source) {
+            errors.push({
+                message: error
+            })
+        }
+
+        await crsbinding.data.setProperty(process.parameters.bId, store, errors);
+    }
 }

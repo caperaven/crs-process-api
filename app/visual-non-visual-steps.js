@@ -31,30 +31,13 @@ export const schema = {
 
             show_dialog: {
                 type: "dom",
-                action: "show_widget_dialog",
+                action: "show_form_dialog",
                 args: {
                     id: "input-form-ui",
                     html: "$template.process-input-form",
-                    url: "/templates/input_form.html"
+                    url: "/templates/input_form.html",
+                    error_store: "input_validation"
                 },
-                pass_step: "validate_input",
-                fail_step: "close_dialog"
-            },
-
-            validate_input  : {
-                type: "dom",
-                action: "validate_form",
-                args: {
-                    query: "#input-form-ui form"
-                },
-                pass_step: "close_dialog"
-            },
-            close_dialog    : {
-                type: "dom",
-                action: "remove_element",
-                args: {
-                    query: "#input-form-ui"
-                }
             }
         }
     },

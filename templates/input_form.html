@@ -12,14 +12,14 @@
 
         <label>
             <div>&{labels.age}</div>
-            <input value.bind="age" type="number" min="20" max="60" style="width: 150px">
+            <input value.bind="age" type="number" required min="20" max="60" style="width: 150px">
         </label>
     </form>
 
     <div id="errors" class="errors-collection">
         <ul>
-            <template for="error of errors">
-                <li>${error}</li>
+            <template for="error of input_validation">
+                <li>${error.message}</li>
             </template>
         </ul>
     </div>

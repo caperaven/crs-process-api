@@ -173,31 +173,79 @@ export class DomActions {
                     widget.focus();
                 }
 
-                let bc = crsbinding.data.getContext(process.parameters.bId);
+                resolve();
+            })
+        })
+    }
 
-                if (step.pass_step != null || step.fail_step != null) {
-                    const callback = async (next_step) => {
-                        delete bc.pass;
-                        delete bc.fail;
-                        resolve();
+    static async show_form_dialog (step, context, process, item) {
+        return new Promise(resolve => {
+            const layer = document.createElement("div");
+            layer.style.zIndex          = "99999999";
+            layer.style.display         = "grid";
+            layer.style.alignItems      = "center";
+            layer.style.justifyContent  = "center";
+            layer.style.position        = "fixed";
+            layer.style.left            = "0";
+            layer.style.top             = "0";
+            layer.style.width           = "100%";
+            layer.style.height          = "100%";
+            layer.style.background      = "black";
+            layer.style.opacity         = "0.5";
+            layer.id                    = step.args.id || "widget_layer";
 
-                        const stepName = step[next_step];
+            const widget = document.createElement("crs-widget");
+            widget.id = `${layer.id}_widget`;
+            layer.appendChild(widget);
 
-                        if (stepName != null) {
-                            const nextStep = crsbinding.utils.getValueOnPath(process.steps, stepName);
+            document.documentElement.appendChild(layer);
+            requestAnimationFrame(async () => {
+                await this.set_widget({
+                    args: {
+                        query : `#${widget.id}`,
+                        html  : step.args.html,
+                        url   : step.args.url
+                    }
+                }, context, process, item);
 
-                            if (nextStep != null) {
-                                await crs.process.runStep(nextStep, context, process, item);
+                const element = widget.querySelector("[autofocus]");
+                if (element != null) {
+                    element.focus();
+                }
+                else {
+                    widget.focus();
+                }
+
+                const callback = async (next_step) => {
+                    if (next_step === "pass_step") {
+                        let errors = await validate_form(`#${layer.id} form`);
+                        if (errors.length > 0) {
+                            if (process.parameters?.bId !== null) {
+                                step.args.errors = errors;
+                                await crs.intent.binding.set_errors(step, context, process, item);
                             }
+
+                            return;
                         }
                     }
 
-                    bc.pass = () => callback("pass_step");
-                    bc.fail = () => callback("fail_step");
-                }
-                else {
+                    await this.remove_element({args: {query: `#${layer.id}`}});
+
+                    const stepName = step[next_step];
+                    if (stepName != null) {
+                        const nextStep = crsbinding.utils.getValueOnPath(process.steps, stepName);
+
+                        if (nextStep != null) {
+                            await crs.process.runStep(nextStep, context, process, item);
+                        }
+                    }
+
                     resolve();
                 }
+
+                let bc = crsbinding.data.getContext(process.parameters.bId);
+                bc.pass = () => callback("pass_step");
+                bc.fail = () => callback("fail_step");
             })
         })
     }
@@ -222,14 +270,38 @@ export class DomActions {
      */
     static async clear_widget(step, context, process, item) {
         const query = step.args.query;
+
         await crsbinding.events.emitter.postMessage(query, {
             context: null,
             html: ""
-        })
+        });
+
+        if (process.bindable == true) {
+            let bc = crsbinding.data.getContext(process.parameters.bId);
+            delete bc.pass;
+            delete bc.fail;
+        }
     }
 }
 
-async function getHTML(step, context, process, item) {
+async function validate_form(query) {
+    const form = document.querySelector(query);
+    const labels = form?.querySelectorAll("label");
+
+    const errors = [];
+    for (let label of labels) {
+        const input = label.querySelector("input");
+        const message = input.validationMessage;
+
+        if (message.length > 0) {
+            errors.push(`${label.children[0].textContent}: ${message}`);
+        }
+    }
+    return errors;
+}
+
+
+async function getHTML(step) {
     if (step.args.html.indexOf("$template") == 0) {
         const id = step.args.html.split(".")[1];
         const template = await crsbinding.templates.get(id, step.args.url);
