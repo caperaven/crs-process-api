@@ -137,42 +137,10 @@ export class DomActions {
      */
     static async show_widget_dialog(step, context, process, item) {
         return new Promise(resolve => {
-            const layer = document.createElement("div");
-            layer.style.zIndex          = "99999999";
-            layer.style.display         = "grid";
-            layer.style.alignItems      = "center";
-            layer.style.justifyContent  = "center";
-            layer.style.position        = "fixed";
-            layer.style.left            = "0";
-            layer.style.top             = "0";
-            layer.style.width           = "100%";
-            layer.style.height          = "100%";
-            layer.style.background      = "black";
-            layer.style.opacity         = "0.5";
-            layer.id                    = step.args.id || "widget_layer";
-
-            const widget = document.createElement("crs-widget");
-            widget.id = `${layer.id}_widget`;
-            layer.appendChild(widget);
-
-            document.documentElement.appendChild(layer);
+            const parts = createWidgetLayer(step);
+            document.documentElement.appendChild(parts.layer);
             requestAnimationFrame(async () => {
-                await this.set_widget({
-                    args: {
-                        query : `#${widget.id}`,
-                        html  : step.args.html,
-                        url   : step.args.url
-                    }
-                }, context, process, item);
-
-                const element = widget.querySelector("[autofocus]");
-                if (element != null) {
-                    element.focus();
-                }
-                else {
-                    widget.focus();
-                }
-
+                await setWidgetContent(parts.widget.id, step.args.html, step.args.url, context, process, item);
                 resolve();
             })
         })
@@ -180,45 +148,16 @@ export class DomActions {
 
     static async show_form_dialog (step, context, process, item) {
         return new Promise(resolve => {
-            const layer = document.createElement("div");
-            layer.style.zIndex          = "99999999";
-            layer.style.display         = "grid";
-            layer.style.alignItems      = "center";
-            layer.style.justifyContent  = "center";
-            layer.style.position        = "fixed";
-            layer.style.left            = "0";
-            layer.style.top             = "0";
-            layer.style.width           = "100%";
-            layer.style.height          = "100%";
-            layer.style.background      = "black";
-            layer.style.opacity         = "0.5";
-            layer.id                    = step.args.id || "widget_layer";
-
-            const widget = document.createElement("crs-widget");
-            widget.id = `${layer.id}_widget`;
-            layer.appendChild(widget);
-
-            document.documentElement.appendChild(layer);
+            const parts = createWidgetLayer(step);
+            document.documentElement.appendChild(parts.layer);
             requestAnimationFrame(async () => {
-                await this.set_widget({
-                    args: {
-                        query : `#${widget.id}`,
-                        html  : step.args.html,
-                        url   : step.args.url
-                    }
-                }, context, process, item);
+                await setWidgetContent(parts.widget.id, step.args.html, step.args.url, context, process, item);
 
-                const element = widget.querySelector("[autofocus]");
-                if (element != null) {
-                    element.focus();
-                }
-                else {
-                    widget.focus();
-                }
+                let bc = crsbinding.data.getContext(process.parameters.bId);
 
                 const callback = async (next_step) => {
                     if (next_step === "pass_step") {
-                        let errors = await validate_form(`#${layer.id} form`);
+                        let errors = await validate_form(`#${parts.layer.id} form`);
                         if (errors.length > 0) {
                             if (process.parameters?.bId !== null) {
                                 step.args.errors = errors;
@@ -229,7 +168,10 @@ export class DomActions {
                         }
                     }
 
-                    await this.remove_element({args: {query: `#${layer.id}`}});
+                    delete bc.pass;
+                    delete bc.fail;
+
+                    await this.remove_element({args: {query: `#${parts.layer.id}`}});
 
                     const stepName = step[next_step];
                     if (stepName != null) {
@@ -243,7 +185,6 @@ export class DomActions {
                     resolve();
                 }
 
-                let bc = crsbinding.data.getContext(process.parameters.bId);
                 bc.pass = () => callback("pass_step");
                 bc.fail = () => callback("fail_step");
             })
@@ -306,5 +247,48 @@ async function getHTML(step) {
         const id = step.args.html.split(".")[1];
         const template = await crsbinding.templates.get(id, step.args.url);
         return template;
+    }
+}
+
+function createWidgetLayer(step) {
+    const layer = document.createElement("div");
+    layer.style.zIndex          = "99999999";
+    layer.style.display         = "grid";
+    layer.style.alignItems      = "center";
+    layer.style.justifyContent  = "center";
+    layer.style.position        = "fixed";
+    layer.style.left            = "0";
+    layer.style.top             = "0";
+    layer.style.width           = "100%";
+    layer.style.height          = "100%";
+    layer.style.background      = "black";
+    layer.style.opacity         = "0.5";
+    layer.id                    = step.args.id || "widget_layer";
+
+    const widget = document.createElement("crs-widget");
+    widget.id = `${layer.id}_widget`;
+    layer.appendChild(widget);
+
+    return {
+        layer: layer,
+        widget: widget
+    }
+}
+
+async function setWidgetContent(id, html, url, context, process, item) {
+    await DomActions.set_widget({
+        args: {
+            query : `#${id}`,
+            html  : html,
+            url   : url
+        }
+    }, context, process, item);
+
+    const element = document.querySelector(`#${id} [autofocus]`);
+    if (element != null) {
+        element.focus();
+    }
+    else {
+        document.querySelector(`#${id}`).focus();
     }
 }
