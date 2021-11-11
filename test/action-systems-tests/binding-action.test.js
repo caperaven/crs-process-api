@@ -26,14 +26,46 @@ test("binding - create_context", async () => {
 })
 
 test("binding - get and set property", async() => {
-    const context = {};
+    const context = {
+        value: "Hello World"
+    };
 
-    const step = {
+    const process = {};
+
+    await crs.intent.binding.create_context(null, context, process, null);
+
+    const set_step = {
         type: "binding",
         action: "set_property",
         args: {
             property: "field1",
-            value: "@context.value"
+            value: "$context.value"
         }
     }
+
+    await crs.process.runStep(set_step, context, process);
+
+    const get_step = {
+        type: "binding",
+        action: "get_property",
+        args: {
+            property: "field1",
+            target: "$context.field1"
+        }
+    }
+
+    await crs.process.runStep(get_step, context, process);
+    expect(context.field1).toEqual(context.value);
+
+    const obj_set_step = {
+        type: "object",
+        action: "set",
+        args: {
+            target: "$context.field2",
+            value: "$binding.field1"
+        }
+    }
+
+    await crs.process.runStep(obj_set_step, context, process);
+    expect(context.field2).toEqual(context.value);
 })

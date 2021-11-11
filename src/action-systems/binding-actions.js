@@ -9,7 +9,7 @@ export class BindingActions {
      * @returns {Promise<void>}
      */
     static async create_context(step, context, process, item) {
-        const name = process.id || step.args.contextId || "process_context";
+        const name = process.id || step?.args?.contextId || "process_context";
         process.parameters = process.parameters || {};
         process.parameters.bId = crsbinding.data.addObject(name);
         crsbinding.data.addContext(process.parameters.bId, {});

@@ -111,6 +111,10 @@ export class ProcessRunner {
 
         if (expr.indexOf("$") == -1 && expr.indexOf("(") == -1) return expr;
 
+        if (expr.indexOf("$binding") != -1) {
+            return crsbinding.data.getValue(process.parameters.bId, expr.replace("$binding.", ""));
+        }
+
         expr = process?.expCache == null ? expr : getFromCache(expr, process);
 
         let fn = process?.functions?.[expr];
