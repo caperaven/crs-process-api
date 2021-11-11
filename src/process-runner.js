@@ -224,6 +224,7 @@ async function validateParameters(context, process,item) {
         }
 
         if (isValid === false) {
+            process.aborted = true;
             process.currentStep = "validate process parameters";
             throw new Error(`required parameter "${key}" not set or is null`);
         }

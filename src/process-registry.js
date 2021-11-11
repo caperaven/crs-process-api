@@ -25,9 +25,13 @@ export class SchemaRegistry {
 
             // 2. Run process
             const result = await crs.process.run(args.context, process).catch(error => {
-                if (this.onError != null) {
-                    this.onError(error);
-                }
+                let event = process.aborted == true ? "crs-process-aborted" : "crs-process-error";
+
+                crsbinding.events.emitter.emit(event, {
+                    step: process.currentStep,
+                    error: error
+                })
+
                 args.step.aborted = true;
                 return;
             });
