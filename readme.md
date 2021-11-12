@@ -107,6 +107,7 @@ const process = {
     }
 }
 ```
+
 ## Default process structure
 
 A process is just an object literal.   
@@ -580,6 +581,22 @@ set_value: {
 }
 ```
 
+You can also set multiple properties and values using the set step
+
+```js
+set_value: {
+    type: "object",
+    action: "set",
+    args: {
+        target: "$item",
+        properties: {
+            code: "$item.code.toUpperCase()",
+            description: "$item.description"
+        }
+    }
+}
+```
+
 <strong>get step</strong>
 ```js
 const step = {
@@ -790,6 +807,8 @@ Internally there the following prefixes exist.
 
 1. "$text": refers to "$process.text" (one of the objects you sent in during the run process, else undefined)
 2. "$data": refers to "$process.data"
+3. "$parameters": refers to "$process.parameters"
+4. "$bId": refers to "$process.parameters.bId"
 
 You can also define the prefixes in the process for process specific things.
 
