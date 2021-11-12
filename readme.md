@@ -108,6 +108,10 @@ const process = {
 }
 ```
 
+<strong>Binding</strong>
+
+
+
 ## Default process structure
 
 A process is just an object literal.   
@@ -740,6 +744,245 @@ export const processes = {
 Processes are object properties on the schema object.  
 Each schema object must have a unique id property.
 The id will be the name used to define what schema the process is on when executing a process step.
+
+## Dom Intent
+This allows you to read and write to the dom.
+
+<strong>set_attribute</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "set_attribute",
+    args: {
+        query: "#element1",
+        attr: "data-value",
+        value: 10
+    }
+}
+```
+
+<strong>get_attribute</strong>
+
+```js
+get_attribute: {
+    type: "dom",
+    action: "get_attribute",
+    args: {
+        query: "#element",
+        attr: "data-value",
+        target: "$process.data.value"
+    }
+}
+```
+
+<strong>set_style</strong>
+
+```js
+set_style: {
+    type: "dom",
+    action: "set_style",
+    args: {
+        query: "#element",
+        style: "background",
+        value: "#ff0090"
+    }
+}
+```
+
+<strong>get_style</strong>
+
+<strong>set_text</strong>
+
+```js
+set_text: {
+    type: "dom",
+    action: "set_text",
+    args: {
+        query: "#element",
+        value: "$process.data.value"
+    }
+}
+```
+
+<strong>get_text</strong>
+
+<strong>create_element</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "create_element",
+    args: {
+        id: "element1",
+        parentQuery: "#container",
+        tagName: "div",
+        textContent: "Element 1"
+    }
+}
+```
+
+<strong>remove_element</strong>
+```js
+step: {
+    type: "dom",
+    action: "remove_element",
+    args: {
+        query: "#element"
+    }
+}
+```
+<strong>post_message</strong>
+
+<strong>show_widget_dialog</strong>
+This step will create a html layer that consists out of two parts.
+
+1. background div to block input, thus modal.
+2. crs-widget component to contain UI.
+
+```js
+step: {
+    type: "dom",
+    action: "show_widget_dialog",
+    args: {
+        id: "my-element",
+        html: "$template.my_dialog",
+        url: "/templates/current_process_ui.html"
+    }
+}
+```
+
+This uses the crs binding widgets and template manager features.  
+```$template``` refers to the fact that the HTML is located on crsbinding template manager using the id "my_dialog".
+If the template has not yet been loaded, use the url as defined to load the template on the template manager and pass back the html.
+
+The html and url properties work hand in hand on this step.
+
+<strong>set_widget</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "set_widget",
+    args: {
+        query: "#my-widget"
+        html: "$template.my_dialog",
+        url: "/templates/current_process_ui.html"
+    }
+}
+```
+
+The crs-widget component is flexible where you can change the HTML and binding context at any time.
+This action allows you to do that.
+
+1. Define what html to show
+2. Define the object that you bind the UI too
+
+In this case we are not creating a new component so we need to pass a selector query on what element to use.
+
+<strong>clear_widget</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "clear_widget",
+    args: {
+        query: "#my-widget"
+    }
+}
+```
+
+This step clears the HTML on the defined crs-widget and unbinds the data.
+
+<strong>show_form_dialog</strong>
+
+```js
+show_dialog: {
+    type: "dom",
+    action: "show_form_dialog",
+    args: {
+        id: "input-form-ui",
+        html: "$template.process-input-form",
+        url: "/templates/input_form.html",
+        error_store: "input_validation"
+    }
+}
+```
+
+This creates two layers.
+
+1. background to block input
+2. An ui based on the template passed.
+
+There are a number of rules you need to follow.
+
+1. Your template must contain a form element that contains your inputs for validation reasons.
+2. Your input structure must follow this example.
+
+```html
+<label>
+    <div>&{labels.age}</div>
+    <input value.bind="age" type="number" required min="20" max="60" style="width: 150px">
+</label>
+```
+
+The first element is the with a text content.
+It must also contain an input or a control that follows standard dom validation api.
+
+Here is an example template.
+
+```html
+<div style="padding: 1rem; border-radius: 5px; background: #dadada; display: flex; flex-direction: column; justify-content: center; align-items: center">
+    <form>
+        <label>
+            <div>&{labels.firstName}</div>
+            <input value.bind="firstName" required style="width: 150px" autofocus>
+        </label>
+
+        <label>
+            <div>&{labels.lastName}</div>
+            <input value.bind="lastName" required style="width: 150px">
+        </label>
+
+        <label>
+            <div>&{labels.age}</div>
+            <input value.bind="age" type="number" required min="20" max="60" style="width: 150px">
+        </label>
+    </form>
+
+    <div id="errors" class="errors-collection">
+        <ul>
+            <template for="error of input_validation">
+                <li>${error.message}</li>
+            </template>
+        </ul>
+    </div>
+
+    <div>
+        <button click.call="fail">&{buttons.cancel}</button>
+        <button click.call="pass">&{buttons.ok}</button>
+    </div>
+</div>
+```
+
+Note that labels are using standard crsbinding translations expressions.
+
+In the process step you will notice a property under args called "error_store".  
+The purpose of this property is to define where on the binding context you want to save your validation errors.
+On the template example you can see where the errors are being rendered.
+If you don't define a custom property for this the errors will be stored on a property called "errors"
+
+The process will wait for this dialog to close before it continues.
+It is important that some action on the form calls either pass or fail.
+
+On the step you can define a "pass_step" or "fail_step".  
+When you call pass the pass step will be executed.  
+When you call fail, the fail step will be executed.  
+Either way the dialog will close on it's own.  
+
+Executing the pass step will cause an automatic validation check.  
+If the validation fails, the dialog will not close.  
+For the dailog to close on the pass, it must successfully validate.
 
 ## SchemaRegistry
 
