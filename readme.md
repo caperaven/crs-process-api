@@ -613,6 +613,18 @@ const step = {
 }
 ```
 
+<strong>delete step</strong>
+```js
+const step = {
+    type: "object",
+    action: "delete",
+    args: {
+        target: "$context",
+        properties: ["property1", "property2"]
+    }
+}
+```
+
 <strong>create step</strong>
 ```js
 const step = {

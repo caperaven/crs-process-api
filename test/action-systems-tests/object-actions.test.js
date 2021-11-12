@@ -19,6 +19,29 @@ test("ObjectActions - set - process", async () => {
     expect(process.data.value).toEqual(1);
 })
 
+test("ObjectActrions - delete", async() => {
+    const context = {
+        p1: "hello",
+        p2: "world",
+        p3: "value"
+    }
+
+    const step = {
+        type: "object",
+        action: "delete",
+        args: {
+            target: "$context",
+            properties: ["p1", "p2"]
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context, null, null);
+
+    expect(context.p1).toBeUndefined();
+    expect(context.p2).toBeUndefined();
+    expect(context.p3).not.toBeUndefined();
+})
+
 test("ObjectActions - set - multiple", async () => {
     const context = {
         origin: "origin value"

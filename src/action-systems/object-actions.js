@@ -42,6 +42,20 @@ export class ObjectActions {
     }
 
     /**
+     * Delete the defined properties from a object
+     * @returns {Promise<void>}
+     */
+    static async delete(step, context, process, item) {
+        const object = await crs.process.getValue(step.args.target, context, process, item);
+
+        if (object != null) {
+            for (let property of step.args.properties || []) {
+                delete object[property];
+            }
+        }
+    }
+
+    /**
      * Create object literal on target defined.
      * @param step
      * @param context
