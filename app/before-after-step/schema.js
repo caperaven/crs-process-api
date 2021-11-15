@@ -16,7 +16,7 @@ export const schema = {
                 type: "system",
                 action: "sleep",
                 args: {
-                    duration: 1000
+                    duration: 2000
                 },
 
                 next_step: "set_color"
