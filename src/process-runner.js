@@ -144,6 +144,12 @@ export class ProcessRunner {
 
         expr = process?.expCache == null ? expr : getFromCache(expr, process);
 
+        if (expr.indexOf("$binding") != -1) {
+            const bId = process.parameters?.bId;
+            const property = expr.split(".")[1];
+            return crsbinding.data.setProperty(bId, property, value);
+        }
+
         if (expr.indexOf("$item") != -1) {
             ctx = item;
             expr = expr.replace("$item.", "");

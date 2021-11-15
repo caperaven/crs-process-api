@@ -38,3 +38,6 @@ globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
+crsbinding.events.emitter.on("crs-process-error", (message) => {
+    console.error(message.error);
+})

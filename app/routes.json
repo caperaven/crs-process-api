@@ -13,6 +13,11 @@
       "title": "Dom",
       "hash": "#dom",
       "view": "dom"
+    },
+    {
+      "title": "Input",
+      "hash": "#input",
+      "view": "input"
     }
   ]
 }

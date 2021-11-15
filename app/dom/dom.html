@@ -10,9 +10,41 @@
         display: flex;
         align-items: center;
     }
+
+    .toolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .toolbar h2 {
+        flex: 1;
+        margin: 0;
+        padding: 0;
+    }
+
+    .toolbar button {
+        height: 2rem;
+    }
 </style>
 <h2>Dom Example</h2>
 
-<button click.call="performUIProcess">Run Process</button>
 
-<div id="container"></div>
+
+<section>
+    <div class="toolbar">
+        <h2>Creating Elements</h2>
+        <button click.call="performUIProcess">Run Process</button>
+    </div>
+    <div id="container"></div>
+</section>
+
+<section>
+    <div class="toolbar">
+        <h2>Attributes</h2>
+        <button click.call="getAttribute">Get Attributes</button>
+    </div>
+    <input id="edtAttr" data-value="Hello World" value.bind="attributeValue" />
+    <button click.call="setAttribute">Set Attribute</button>
+</section>

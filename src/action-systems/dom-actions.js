@@ -117,6 +117,20 @@ export class DomActions {
     }
 
     /**
+     * Clear a element, removing all the children
+     * @returns {Promise<void>}
+     */
+    static async clear_element(step) {
+        const element = document.querySelector(step.args.query);
+        if (element != null) {
+            await crsbinding.observation.releaseChildBinding(element);
+            while (element.firstChild != null) {
+                element.children.pop();
+            }
+        }
+    }
+
+    /**
      * Use crs binding to post a message to a listening component
      * @returns {Promise<void>}
      */

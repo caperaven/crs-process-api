@@ -680,9 +680,9 @@ This can go n levels deep.
 ```js
 const step = {
     type: "process",
-    action: "sub_process_name", // property name on the process domExample object that you want to execute.
+    action: "sub_process_name", // property name on the process schema object that you want to execute.
     args: {
-        domExample: "schema_registry_key", // id property on the process domExample object. see below
+        schema: "schema_registry_key", // id property on the process schema object. see below
         parameters: {
             value: 10
         },
@@ -730,14 +730,14 @@ const step = {
 
 A process's "result" must be set on the "result" property of the process object as can be seen above.
 
-An important part of running sub processes is the `process domExample registry`.
+An important part of running sub processes is the `process schema registry`.
 
 ```js
 crs.processSchemaRegistry
 ```
 
 This object acts as a registry and aggregator of processes.  
-A domExample is a JSON object that contains one or more processes.
+A schema is a JSON object that contains one or more processes.
 
 ```js
 export const processes = {
@@ -753,9 +753,9 @@ export const processes = {
 }
 ```
 
-Processes are object properties on the domExample object.  
-Each domExample object must have a unique id property.
-The id will be the name used to define what domExample the process is on when executing a process step.
+Processes are object properties on the schema object.  
+Each schema object must have a unique id property.
+The id will be the name used to define what schema the process is on when executing a process step.
 
 ## Dom Intent
 This allows you to read and write to the dom.
@@ -1008,7 +1008,7 @@ This only has two public functions:
 1. remove
 
 processSchemaRegistry stores process objects on a private object called _schemas.  
-The id of the domExample defines the property name on _schemas.
+The id of the schema defines the property name on _schemas.
 
 If you want to execute a process on the registry, you need to use event aggregation.
 
@@ -1016,12 +1016,12 @@ If you want to execute a process on the registry, you need to use event aggregat
 const step = {
     action: "process1",
     args: {
-        domExample: "loop_sub"
+        schema: "loop_sub"
     }  
 }
 
 await crsbinding.events.emitter.emit("run-process", {
-    step: step,             // define what domExample and process to run
+    step: step,             // define what schema and process to run
     context: context,       // what object to use as $context
     process: process,       // what object to use as $process
     item: item,             // what object to use as $item
@@ -1048,11 +1048,11 @@ prefixes help you define shortcuts to use in your getValue.
 
 ```json
 {
-  "$variables": "$context.domExample.variables"
+  "$variables": "$context.schema.variables"
 }
 ```
 
-In this example, if you reference the value "$variables.property" it will look for the property value on the path "$context.domExample.variables.property"
+In this example, if you reference the value "$variables.property" it will look for the property value on the path "$context.schema.variables.property"
 
 As you can see it provides you with a convenient way to shorten some expressions.  
 The value does however not have to be a path.  

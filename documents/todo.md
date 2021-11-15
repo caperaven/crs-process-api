@@ -1,13 +1,6 @@
-// 1. set pass and fail on root instead of the args.
-// 2. look at shortcuts e.g. $data for #process.data.
-// 3. add generic log feature that will work on any step
-// done5. how to extend domExample shortcuts from the outside e.g. $context.domExample.variables = $var.
-{
-    "$var": "$context.domExample.variables",
-    "$obj": {}
-} // hook to process so that you can get access too it.
-//7. look at passing in translations object to reference with $text.
-//    1. write tests for this and make sure it works
+1. change binding property on step to "before_binding"
+2. add "after_binding" property to step
+
 
 8. add step name to aborting and proper error handling
 9. ensure proper error messages on failures.

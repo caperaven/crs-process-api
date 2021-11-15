@@ -1,5 +1,5 @@
 export const schema = {
-    id: "data-migrate-process-domExample",
+    id: "data-migrate-process-schema",
 
     main: {
         parameters_def: {
@@ -37,7 +37,7 @@ export const schema = {
                 type: "process",
                 action: "copy_spares",
                 args: {
-                    schema: "data-migrate-process-domExample",
+                    schema: "data-migrate-process-schema",
                     parameters: {
                         bId: "$bId"
                     }
@@ -49,7 +49,7 @@ export const schema = {
                 type: "process",
                 action: "copy_attributes",
                 args: {
-                    schema: "data-migrate-process-domExample",
+                    schema: "data-migrate-process-schema",
                     parameters: {
                         bId: "$bId"
                     }

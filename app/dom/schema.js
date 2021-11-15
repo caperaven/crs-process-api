@@ -1,11 +1,21 @@
-export const domExample = {
+export const schema = {
     id: "dom-example",
 
     main: {
         data: {
         },
         steps: {
-            start: { next_step: "create" },
+            start: { next_step: "clear" },
+
+            clear: {
+                type: "dom",
+                action: "clear_element",
+                args: {
+                    query: "#container"
+                },
+                next_step: "create"
+            },
+
             create: {
                 type: "process",
                 action: "create_ui",
