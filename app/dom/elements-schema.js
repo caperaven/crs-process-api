@@ -1,4 +1,4 @@
-export const schema = {
+export const elementsSchema = {
     id: "dom-example",
 
     main: {

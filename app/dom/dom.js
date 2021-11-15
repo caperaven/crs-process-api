@@ -1,9 +1,9 @@
 export default class Dom extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
-        crs.processSchemaRegistry.add((await (import("./schema.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./attributes.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./styles.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./elements-schema.js"))).elementsSchema);
+        crs.processSchemaRegistry.add((await (import("./attributes-schema.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./styles-schema.js"))).schema);
     }
 
     async performUIProcess() {
