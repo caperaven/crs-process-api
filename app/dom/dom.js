@@ -4,6 +4,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add((await (import("./elements-schema.js"))).elementsSchema);
         crs.processSchemaRegistry.add((await (import("./attributes-schema.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./styles-schema.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./text-content-schema.js"))).schema);
     }
 
     async performUIProcess() {
@@ -61,6 +62,32 @@ export default class Dom extends crsbinding.classes.ViewBase {
             step: {
                 action: "set_style",
                 args: { schema: "styles-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
+
+    async getText() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "get_text",
+                args: { schema: "text-content-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
+
+    async setText() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "set_text",
+                args: { schema: "text-content-example" }
             },
             parameters: {
                 bId: this._dataId
