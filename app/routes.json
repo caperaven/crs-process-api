@@ -18,6 +18,11 @@
       "title": "Input",
       "hash": "#input",
       "view": "input"
+    },
+    {
+      "title": "Before and after step",
+      "hash": "#before_after_step",
+      "view": "before-after-step"
     }
   ]
 }

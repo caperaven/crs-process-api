@@ -57,17 +57,7 @@ export class ProcessRunner {
     static async runStep(step, context= null, process= null, item= null) {
         if (step == null) return;
 
-        if (step.binding != null && process.parameters?.bId != null) {
-            const keys = Object.keys(step.binding);
-            for (let key of keys) {
-                await crs.intent.binding.set_property({
-                    args: {
-                        property: key,
-                        value: step.binding[key]
-                    }
-                }, context, process, item);
-            }
-        }
+        await setBinding("binding_before", step, context, process, item)
 
         let result;
         if (step.type != null) {
@@ -78,6 +68,8 @@ export class ProcessRunner {
             const value = await this.getValue(step.args.log, context, process, item);
             console.log(value);
         }
+
+        await setBinding("binding_after", step, context, process, item)
 
         if (process?.aborted !== true && step.aborted !== true) {
             const nextStep = process?.steps?.[step.next_step];
@@ -210,6 +202,21 @@ export class ProcessRunner {
             delete obj[key];
         }
         return null;
+    }
+}
+
+async function setBinding(name, step, context, process, item) {
+    const obj = step[name];
+    if (obj == null || process.parameters?.bId == null) return;
+
+    const keys = Object.keys(obj);
+    for (let key of keys) {
+        await crs.intent.binding.set_property({
+            args: {
+                property: key,
+                value: obj[key]
+            }
+        }, context, process, item);
     }
 }
 

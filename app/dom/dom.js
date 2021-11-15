@@ -1,11 +1,15 @@
 export default class Dom extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
-        crs.processSchemaRegistry.add((await (import("./elements-schema.js"))).elementsSchema);
-        crs.processSchemaRegistry.add((await (import("./attributes-schema.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./styles-schema.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./text-content-schema.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./crs-widget-schema.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/elements.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/attributes.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/styles.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/text-content.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/crs-widget.js"))).schema);
+    }
+
+    async disconnectedCallback() {
+        // JHR: todo remove schemas from registry
     }
 
     async performUIProcess() {
