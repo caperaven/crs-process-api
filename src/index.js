@@ -38,11 +38,3 @@ globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-// JHR: TODO: add process top gap if you want to abort the process.
-
-
-// extensions
-// 1. fetch     -> processSchemaRegistry to fetch a schema requested but not yet registered.
-// 2. onError   -> give me the error information and I will deal with it.
-
-// crs.intent.system.copy_to_clipboard({args: {source: "@context.data.property"}}, context)

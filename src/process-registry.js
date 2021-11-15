@@ -18,6 +18,10 @@ export class SchemaRegistry {
                 this.add(schema);
             }
 
+            if (schema == null) {
+                throw new Error(`process "${schemaName}" not in registry and not loaded.`);
+            }
+
             // 1. Copy parameter values to process to run
             const process = schema[processName];
             process.name = processName;
