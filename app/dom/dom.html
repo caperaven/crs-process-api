@@ -48,3 +48,12 @@
     <input id="edtAttr" data-value="Hello World" value.bind="attributeValue" />
     <button click.call="setAttribute">Set Attribute</button>
 </section>
+
+<section>
+    <div class="toolbar">
+        <h2>Styles</h2>
+        <button click.call="getStyle">Get Style</button>
+    </div>
+    <input id="edtStyle" value.bind="styleValue" style="background: #dadada"/>
+    <button click.call="setStyle">Set Style</button>
+</section>
