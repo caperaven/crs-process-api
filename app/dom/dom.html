@@ -36,6 +36,7 @@
     <div class="toolbar">
         <h2>Creating Elements</h2>
         <button click.call="performUIProcess">Run Process</button>
+        <button click.call="clearChildren">Clear</button>
     </div>
     <div id="container"></div>
 </section>
@@ -72,6 +73,18 @@
     <div id="edtText">Content Element</div>
     <input value.bind="textValue" />
     <button click.call="setText">Set Style</button>
+</section>
+
+<hr />
+
+<section>
+    <div class="toolbar">
+        <h2>Widget Content</h2>
+        <button click.call="setWidget">Get Widget</button>
+        <button click.call="clearWidget">Clear Widget</button>
+    </div>
+
+    <crs-widget id="widget"></crs-widget>
 </section>
 
 <hr />

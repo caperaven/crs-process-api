@@ -5,6 +5,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add((await (import("./attributes-schema.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./styles-schema.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./text-content-schema.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./crs-widget-schema.js"))).schema);
     }
 
     async performUIProcess() {
@@ -12,6 +13,16 @@ export default class Dom extends crsbinding.classes.ViewBase {
             context: this,
             step: {
                 action: "main",
+                args: { schema: "dom-example" }
+            }
+        });
+    }
+
+    async clearChildren() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "clear",
                 args: { schema: "dom-example" }
             }
         });
@@ -91,6 +102,29 @@ export default class Dom extends crsbinding.classes.ViewBase {
             },
             parameters: {
                 bId: this._dataId
+            }
+        })
+    }
+
+    async setWidget() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "set_widget",
+                args: { schema: "crs-widget-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
+
+    async clearWidget() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "clear_widget",
+                args: { schema: "crs-widget-example" }
             }
         })
     }

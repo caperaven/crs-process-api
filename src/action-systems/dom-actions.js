@@ -125,7 +125,7 @@ export class DomActions {
         if (element != null) {
             await crsbinding.observation.releaseChildBinding(element);
             while (element.firstChild != null) {
-                element.children.pop();
+                element.removeChild(element.firstChild);
             }
         }
     }

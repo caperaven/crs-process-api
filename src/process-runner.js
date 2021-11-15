@@ -117,6 +117,10 @@ export class ProcessRunner {
 
         expr = process?.expCache == null ? expr : getFromCache(expr, process);
 
+        if (expr.indexOf("rgb(") != -1) {
+            return expr;
+        }
+
         let fn = process?.functions?.[expr];
         if (fn == null) {
             const exp = expr.split("$").join("");

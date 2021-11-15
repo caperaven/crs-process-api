@@ -135,5 +135,17 @@ export const elementsSchema = {
                 }
             }
         }
+    },
+
+    clear: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "clear_element",
+                args: {
+                    query: "#container"
+                }
+            }
+        }
     }
 }
