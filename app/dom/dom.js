@@ -98,6 +98,8 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async setText() {
+        debugger;
+
         await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {

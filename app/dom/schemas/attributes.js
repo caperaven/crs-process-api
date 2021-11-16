@@ -34,8 +34,10 @@ export const schema = {
                 args: {
                     query: "#edtAttr",
                     attr: "data-value",
-                    value: "$binding.attributeValue"
+                    value: "$binding.attributeValue",
+                    log: "setting attribute"
                 }
+
             }
         }
     }

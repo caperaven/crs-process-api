@@ -10,7 +10,7 @@ export const schema = {
             start: {
                 binding_before: {
                     title: "Updating color",
-                    progress: "Busy setting color - 1s delay"
+                    progress: "Busy setting color - 2s delay"
                 },
 
                 type: "system",

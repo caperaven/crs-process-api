@@ -35,8 +35,8 @@
 <section>
     <div class="toolbar">
         <h2>Creating Elements</h2>
-        <button click.call="performUIProcess">Run Process</button>
-        <button click.call="clearChildren">Clear</button>
+        <button id="btnCreateElements" click.call="performUIProcess">Run Process</button>
+        <button id="btnClearElements" click.call="clearChildren">Clear</button>
     </div>
     <div id="container"></div>
 </section>
@@ -46,10 +46,10 @@
 <section>
     <div class="toolbar">
         <h2>Attributes</h2>
-        <button click.call="getAttribute">Get Attributes</button>
+        <button id="btnGetAttribute" click.call="getAttribute">Get Attributes</button>
     </div>
     <input id="edtAttr" data-value="Hello World" value.bind="attributeValue" />
-    <button click.call="setAttribute">Set Attribute</button>
+    <button id="btnSetAttribute" click.call="setAttribute">Set Attribute</button>
 </section>
 
 <hr />
@@ -57,10 +57,10 @@
 <section>
     <div class="toolbar">
         <h2>Styles</h2>
-        <button click.call="getStyle">Get Style</button>
+        <button id="btnGetStyle" click.call="getStyle">Get Style</button>
     </div>
     <input id="edtStyle" value.bind="styleValue" style="background: #dadada"/>
-    <button click.call="setStyle">Set Style</button>
+    <button id="btnSetStyle" click.call="setStyle">Set Style</button>
 </section>
 
 <hr/>
@@ -68,11 +68,11 @@
 <section>
     <div class="toolbar">
         <h2>Text Content</h2>
-        <button click.call="getText">Get Style</button>
+        <button id="btnGetText" click.call="getText">Get Text</button>
     </div>
-    <div id="edtText">Content Element</div>
-    <input value.bind="textValue" />
-    <button click.call="setText">Set Style</button>
+    <div id="divText">Content Element</div>
+    <input id="edtText" value.bind="textValue" />
+    <button id="btnSetText" click.call="setText">Set Text</button>
 </section>
 
 <hr />
@@ -80,8 +80,8 @@
 <section>
     <div class="toolbar">
         <h2>Widget Content</h2>
-        <button click.call="setWidget">Get Widget</button>
-        <button click.call="clearWidget">Clear Widget</button>
+        <button id="btnGetWidget" click.call="setWidget">Get Widget</button>
+        <button id="btnClearWidget" click.call="clearWidget">Clear Widget</button>
     </div>
 
     <crs-widget id="widget"></crs-widget>

@@ -16,7 +16,21 @@
         import "./node_modules/crs-binding/crs-binding.js";
         import "./node_modules/crs-router/crs-router.js";
         import "./src/index.js";
-        import "./index.js";
+
+        const trans = {
+            buttons: {
+                save: "Save",
+                cancel: "Cancel",
+                ok: "Ok"
+            },
+            labels: {
+                firstName: "First Name",
+                lastName: "Last Name",
+                age: "Age"
+            }
+        }
+
+        crsbinding.translations.add(trans);
 
         crs.process.onError = (error) => {
             console.error(error);
