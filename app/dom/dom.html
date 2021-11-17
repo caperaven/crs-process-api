@@ -88,3 +88,42 @@
 </section>
 
 <hr />
+
+<section>
+    <div class="toolbar">
+        <h2>Move Element</h2>
+        <button id="btnMoveToList" click.call="moveToList">Move To List 2</button>
+        <button id="btnMoveInDeck" click.call="moveInDeck">Move In Deck</button>
+        <button id="btnMoveToFirst" click.call="moveToFirst">Move To First</button>
+        <button id="btnMoveToLast" click.call="moveToLast">Move To Last</button>
+    </div>
+
+    <strong>List 1</strong>
+    <ul id="list1" style="background: #dadada; border-radius: 5px; padding: 0.5rem; list-style: none">
+        <li id="item1">Item 1</li>
+        <li id="item2" style="background: #ff0090; color: white; padding :0.2rem">Item 2</li>
+        <li id="item3">Item 3</li>
+        <li id="item4">Item 4</li>
+        <li id="item5">Item 5</li>
+    </ul>
+
+    <strong>List 2</strong>
+    <ul id="list2" style="background: #dadada; border-radius: 5px; padding: 0.5rem"></ul>
+</section>
+
+<section>
+    <div class="toolbar">
+        <h2>Filter Element</h2>
+        <input value.bind="filter" />
+        <button id="btnApplyFilter" click.call="applyFilter">Apply Filter</button>
+        <button id="btnClearFilter" click.call="clearFilter">Clear Filter</button>
+    </div>
+
+    <ul id="lstFilter">
+        <li data-tags="aa">Item 1 (aa)</li>
+        <li data-tags="ab">Item 2 (ab)</li>
+        <li data-tags="ba">Item 3 (ba)</li>
+        <li data-tags="bc">Item 4 (bc)</li>
+        <li data-tags="ca">Item 5 (ca)</li>
+    </ul>
+</section>

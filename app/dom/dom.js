@@ -6,6 +6,8 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add((await (import("./schemas/styles.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/text-content.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/crs-widget.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/move-element.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/filter.js"))).schema);
     }
 
     async disconnectedCallback() {
@@ -131,6 +133,73 @@ export default class Dom extends crsbinding.classes.ViewBase {
             step: {
                 action: "clear_widget",
                 args: { schema: "crs-widget-example" }
+            }
+        })
+    }
+
+    async moveToList() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "move_to_list",
+                args: { schema: "move-element" }
+            }
+        })
+    }
+
+    async moveInDeck() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "move_in_deck",
+                args: { schema: "move-element" }
+            }
+        })
+    }
+
+    async moveToFirst() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "move_to_first",
+                args: { schema: "move-element" }
+            }
+        })
+    }
+
+    async moveToLast() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "move_to_last",
+                args: { schema: "move-element" }
+            }
+        })
+    }
+
+    async applyFilter() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "filter",
+                args: {
+                    schema: "filter",
+                }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
+
+    async clearFilter() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "clear",
+                args: {
+                    schema: "filter"
+                }
             }
         })
     }

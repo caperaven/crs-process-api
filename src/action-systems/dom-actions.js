@@ -237,6 +237,60 @@ export class DomActions {
             delete bc.fail;
         }
     }
+
+    /**
+     * Move a element from one parent to another
+     * @returns {Promise<void>}
+     */
+    static async move_element(step) {
+        await move_element(step.args.query, step.args.target, step.args.position);
+    }
+
+    /**
+     * Filter a element's children based on the child's data-tags attribute
+     * @returns {Promise<void>}
+     */
+    static async filter_children(step, context, process, item) {
+        const filterString = await crs.process.getValue(step.args.filter, context, process, item);
+        await filter(step.args.query, filterString);
+    }
+}
+
+async function move_element(query, target, position) {
+    const element = document.querySelector(query);
+    let parent = document.querySelector(target);
+
+    if (element == null || parent == null) {
+        return console.error(`move element: either the element (${query}) or parent (${target}) does not exist`);
+    }
+
+    element.parentElement.removeChild(element);
+
+    if (position == null) {
+        return parent.appendChild(element);
+    }
+
+    if (position == "before") {
+        return parent.parentElement.insertBefore(element, parent);
+    }
+
+    if (parent.nextSibling == null) {
+        return parent.parentElement.appendChild(element);
+    }
+
+    parent.parentElement.insertBefore(element, parent.nextSibling);
+}
+
+async function filter(query, filter) {
+    const element = document.querySelector(query);
+    const hasFilter = filter.length > 0;
+
+    for (let child of element.children) {
+        child.removeAttribute("hidden");
+        if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
+            child.setAttribute("hidden", "hidden");
+        }
+    }
 }
 
 async function validate_form(query) {
