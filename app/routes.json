@@ -10,6 +10,11 @@
       "view": "welcome"
     },
     {
+      "title": "Dialog",
+      "hash": "#dialog",
+      "view": "dialog"
+    },
+    {
       "title": "Dom",
       "hash": "#dom",
       "view": "dom"

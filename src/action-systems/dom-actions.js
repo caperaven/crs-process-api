@@ -321,20 +321,23 @@ async function getHTML(step) {
 function createWidgetLayer(step) {
     const layer = document.createElement("div");
     layer.style.zIndex          = "99999999";
-    layer.style.display         = "grid";
-    layer.style.alignItems      = "center";
-    layer.style.justifyContent  = "center";
     layer.style.position        = "fixed";
     layer.style.left            = "0";
     layer.style.top             = "0";
     layer.style.width           = "100%";
     layer.style.height          = "100%";
-    layer.style.background      = "black";
-    layer.style.opacity         = "0.5";
-    layer.id                    = step.args.id || "widget_layer";
+    layer.id = step.args.id || "widget_layer";
+
+    const background = document.createElement("div");
+    background.classList.add("modal-background");
 
     const widget = document.createElement("crs-widget");
+    widget.style.position = "fixed";
+    widget.style.left = "50%";
+    widget.style.top = "50%";
+    widget.style.transform = "translate(-50%, -50%)";
     widget.id = `${layer.id}_widget`;
+    layer.appendChild(background);
     layer.appendChild(widget);
 
     return {

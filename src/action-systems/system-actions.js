@@ -25,4 +25,39 @@ export class SystemActions {
             }, Number(step.args.duration || 0));
         })
     }
+
+    /**
+     * Wait here until I tell you to resume
+     * @returns {Promise<unknown>}
+     */
+    static async pause(step, context, process) {
+        return new Promise(resolve => {
+            process.status = "wait";
+
+            let bc;
+
+            const resume = () => {
+                delete process.status;
+                delete process.resume;
+                delete bc?.resume;
+
+                resolve();
+            }
+
+            if (process.parameters?.bId != null) {
+                bc = crsbinding.data.getContext(process.parameters.bId);
+                bc.resume = resume;
+            }
+
+            process.resume = resume;
+        })
+    }
+
+    /**
+     * If we are waiting then resume the process.
+     * @returns {Promise<void>}
+     */
+    static async resume(step, context, process, item) {
+        process.resume?.();
+    }
 }
