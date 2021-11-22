@@ -77,10 +77,10 @@ export class DomActions {
 
     /**
      * Create a dom element and append it to a defined parent
-     * @returns {Promise<void>}
+     * @returns {Promise<HTMLElement>}
      */
     static async create_element(step, context, process, item) {
-        const parentElement = document.querySelector(step.args.parentQuery);
+        const parentElement = step.args.parent || document.querySelector(step.args.parentQuery);
         const element = document.createElement(step.args.tagName);
 
         const attributes = Object.keys(step.args.attributes || {});
@@ -103,6 +103,7 @@ export class DomActions {
         }
 
         parentElement?.appendChild(element);
+        return element;
     }
 
     /**

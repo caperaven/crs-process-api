@@ -64,14 +64,6 @@ export class BindingActions {
     }
 
     /**
-     * Add an item to a existing array that is bound to
-     * @returns {Promise<void>}
-     */
-    static async add_array_items(step, context, process, item) {
-
-    }
-
-    /**
      * Set errors on a given error store.
      * Default store is "errors" if you don't provide a store.
      * @returns {Promise<void>}

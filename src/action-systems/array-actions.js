@@ -3,6 +3,10 @@ export class ArrayActions {
         await this[step.action](step, context, process, item);
     }
 
+    /**
+     * This function adds an value to an defined array
+     * @returns {Promise<void>}
+     */
     static async add(step, context, process, item) {
         const target = await crs.process.getValue(step.args.target, context, process, item);
         const value = await crs.process.getValue(step.args.value, context, process, item);
@@ -15,6 +19,10 @@ export class ArrayActions {
         }
     }
 
+    /**
+     * This function takes an array of objects and exports csv text
+     * @returns {Promise<void>}
+     */
     static async field_to_csv(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
 
@@ -25,6 +33,10 @@ export class ArrayActions {
         const map = source.map(item => item[step.args.field]);
         const result = map.join(step.args.delimiter || ",");
 
-        await crs.process.setValue(step.args.target, result, context, process, item);
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 }
