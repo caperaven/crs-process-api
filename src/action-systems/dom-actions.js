@@ -132,21 +132,6 @@ export class DomActions {
     }
 
     /**
-     * Use crs binding to post a message to a listening component
-     * @returns {Promise<void>}
-     */
-    static async post_message(step, context, process, item) {
-        const parameters = step.parameters == null ? {} : JSON.parse(JSON.stringify(step.args.parameters));
-        const keys = Object.keys(parameters);
-
-        for (let key of keys) {
-            parameters[key] = await crs.process.getValue(key, context, process, item);
-        }
-
-        await crsbinding.events.emitter.emit(step.args.event, parameters);
-    }
-
-    /**
      * Set a widgets html and context for binding after adding it to the UI
      * @returns {Promise<void>}
      */

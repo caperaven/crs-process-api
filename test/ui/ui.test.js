@@ -127,7 +127,7 @@ afterAll(async () => {
     browser.close();
 });
 
-test("dom", async ()=> {
+test.skip("dom", async ()=> {
     await navigateTo("dom");
     await page.waitForSelector("button");
 

@@ -28,6 +28,11 @@
       "title": "Before and after step",
       "hash": "#before_after_step",
       "view": "before-after-step"
+    },
+    {
+      "title": "Events",
+      "hash": "#events",
+      "view": "events"
     }
   ]
 }
