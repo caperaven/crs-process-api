@@ -201,7 +201,7 @@ export class MyActions {
         await this[step.action](step, context, process, item);
     }
     
-    static async customAction(step, context, process, item) {
+    static async custom_action(step, context, process, item) {
         // you can access the args of the step on the step parameter
     }
 }
@@ -1084,9 +1084,3 @@ The translation is an object literal with properties.
 await crs.process.run(context, process, null, {property: "Hello World"});
 ```
 
-
-
-/// todo
-
-add docus for show widgets
-include autofocus
