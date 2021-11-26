@@ -259,6 +259,7 @@ function populatePrefixes(prefixes, process) {
     process.prefixes["$data"]       = "$process.data";
     process.prefixes["$parameters"] = "$process.parameters";
     process.prefixes["$bId"]        = "$process.parameters.bId";
+    process.prefixes["$global"]     = "globalThis";
 }
 
 function getFromCache(expr, process) {

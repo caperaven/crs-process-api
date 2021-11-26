@@ -1,3 +1,5 @@
+// add code to generate uuid
+
 #[cfg(test)]
 mod tests {
     #[test]
