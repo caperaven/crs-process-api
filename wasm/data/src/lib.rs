@@ -5,6 +5,9 @@ use traits::Eval;
 #[evaluate(>)]
 struct GreaterThan {}
 
+#[evaluate(<)]
+struct LessThan {}
+
 #[cfg(test)]
 mod test {
     use serde_json::Value;
