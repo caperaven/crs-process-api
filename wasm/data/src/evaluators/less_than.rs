@@ -17,7 +17,7 @@ mod test {
     use traits::Eval;
 
     #[test]
-    fn test_positive_int() {
+    fn test_positive() {
         assert_eq!(LessThan::evaluate(Value::from(20), Value::from(10)), false);
         assert_eq!(LessThan::evaluate(Value::from(20.0), Value::from(10.0)), false);
         assert_eq!(LessThan::evaluate(Value::from(true), Value::from(false)), false);
@@ -26,7 +26,7 @@ mod test {
     }
 
     #[test]
-    fn test_negative_int() {
+    fn test_negative() {
         assert_eq!(LessThan::evaluate(Value::from(10), Value::from(20)), true);
         assert_eq!(LessThan::evaluate(Value::from(10.0), Value::from(20.0)), true);
         assert_eq!(LessThan::evaluate(Value::from(false), Value::from(true)), true);
