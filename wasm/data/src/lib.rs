@@ -1,22 +1,26 @@
-use serde_json::Value;
-use macros::evaluate;
-use traits::Eval;
+#[macro_use]
 
-#[evaluate(>)]
-struct GreaterThan {}
+mod evaluators;
 
-#[evaluate(<)]
-struct LessThan {}
+#[macro_export]
+macro_rules! eval {
+    ($obj1: expr, $opr: tt, $obj2: expr) => ({
+        if $obj1.is_i64() {
+            return $obj1.as_i64() $opr $obj2.as_i64();
+        }
 
-#[cfg(test)]
-mod test {
-    use serde_json::Value;
-    use crate::GreaterThan;
-    use traits::Eval;
+        if $obj1.is_f64() {
+            return $obj1.as_f64() $opr $obj2.as_f64();
+        }
 
-    #[test]
-    fn evaluate_test() {
-        assert_eq!(GreaterThan::evaluate(Value::from(10), Value::from(20)), false);
-    }
+        if $obj1.is_boolean() {
+            return $obj1.as_bool() $opr $obj2.as_bool();
+        }
+
+        if $obj1.is_string() {
+            return $obj1.as_str() $opr $obj2.as_str();
+        }
+
+        return false;
+    })
 }
-

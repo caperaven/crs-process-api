@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/wasm/data/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wasm/system/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wasm/data/crates/macros/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wasm/data/crates/core/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wasm/data/crates/traits/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
@@ -12,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/wasm/data/target" />
       <excludeFolder url="file://$MODULE_DIR$/wasm/system/target" />
       <excludeFolder url="file://$MODULE_DIR$/wasm/data/crates/macros/target" />
+      <excludeFolder url="file://$MODULE_DIR$/wasm/data/crates/core/target" />
       <excludeFolder url="file://$MODULE_DIR$/wasm/data/crates/traits/target" />
     </content>
     <orderEntry type="inheritedJdk" />
