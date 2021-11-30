@@ -1,13 +1,10 @@
 // https://docs.serde.rs/serde_json/value/enum.Value.html
 
 use serde_json::{json, Value};
-
-#[macro_use]
+use crate::evaluators::evaluate_object;
 
 mod evaluators;
 mod macros;
-mod filter;
-mod utils;
 
 /**
     1. Here is some data
@@ -18,40 +15,48 @@ mod utils;
     4. Aggregates -> Per grouping? -> Data
 **/
 
-fn Filter(intent: &Value, data: &Value) -> Value {
+fn process_filter(intent: &Value, data: &Value) -> Value {
     let mut index = 0;
     let mut filter_result = Vec::new();
 
+    let filters = intent.as_array().unwrap();
+
     for row in data.as_array().unwrap() {
-        filter_result.push(index);
+        for filter in filters {
+            if evaluate_object(filter, row) == true {
+                filter_result.push(index);
+                break;
+            }
+        }
+        index += 1;
     }
 
     Value::from(filter_result)
 }
 
-fn Sort(intent: Value, data: Value) -> Value {
-    return Value::Null;
-}
-
-fn Group(intent: Value, data: Value) -> Value {
-    return Value::Null;
-}
-
-fn Aggretate(intent: Value, data: Value) -> Value {
-    return Value::Null;
-}
+// fn process_sort(intent: Value, data: Value) -> Value {
+//     return Value::Null;
+// }
+//
+// fn process_group(intent: Value, data: Value) -> Value {
+//     return Value::Null;
+// }
+//
+// fn process_aggregate(intent: Value, data: Value) -> Value {
+//     return Value::Null;
+// }
 
 /// Calculate a intent description where the following actions or a subset of these actions took place.
 /// 1. Filter
 /// 2. Sort
 /// 3. Group
 /// 4. Aggregates
-pub fn GetPerspective(intent: Value, data: Value) -> Value {
+pub fn get_perspective(intent: Value, data: Value) -> Value {
     if data.is_array() == false {
         return Value::from("error: data must be an array");
     }
 
-    let filter_result = Filter(&intent["filter"], &data);
+    let filter_result = process_filter(&intent["filter"], &data);
 
     return json!({
         "rows": filter_result
@@ -61,7 +66,7 @@ pub fn GetPerspective(intent: Value, data: Value) -> Value {
 #[cfg(test)]
 mod test {
     use serde_json::json;
-    use crate::GetPerspective;
+    use crate::get_perspective;
 
     #[test]
     fn simple_filter_test() {
@@ -79,9 +84,9 @@ mod test {
             ]
         });
 
-        let result = GetPerspective(intent, data);
+        let result = get_perspective(intent, data);
         let array = result["rows"].as_array().unwrap();
 
-        assert_eq!(array.len(), 5);
+        assert_eq!(array.len(), 3);
     }
 }
