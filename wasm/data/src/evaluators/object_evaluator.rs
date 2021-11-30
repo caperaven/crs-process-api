@@ -10,6 +10,8 @@ use crate::evaluators::Equal;
 use crate::evaluators::NotEqual;
 use crate::evaluators::IsNull;
 use crate::evaluators::IsNotNull;
+use crate::evaluators::Like;
+use crate::evaluators::NotLike;
 
 pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
     let field= intent["field"].as_str().unwrap();
@@ -27,6 +29,8 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
         "!="        => NotEqual::evaluate(&row_value, &intent_value),
         "is_null"   => IsNull::evaluate(&row_value, &Null),
         "not_null"  => IsNotNull::evaluate(&row_value, &Null),
+        "like"      => Like::evaluate(&row_value, &intent_value),
+        "not_like"  => NotLike::evaluate(&row_value, &intent_value),
         _       => false
     }
 }
