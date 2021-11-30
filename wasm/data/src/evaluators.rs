@@ -7,6 +7,8 @@ mod not_equal;
 mod object_evaluator;
 mod is_null;
 mod is_not_null;
+mod like;
+mod not_like;
 
 pub use greater_than::GreaterThan;
 pub use less_than::LessThan;
@@ -16,4 +18,6 @@ pub use equal::Equal;
 pub use not_equal::NotEqual;
 pub use is_null::IsNull;
 pub use is_not_null::IsNotNull;
+pub use like::Like;
+pub use not_like::NotLike;
 pub use object_evaluator::evaluate_object;

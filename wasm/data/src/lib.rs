@@ -1,3 +1,4 @@
+#![feature(option_result_contains)]
 // https://docs.serde.rs/serde_json/value/enum.Value.html
 
 use serde_json::{json, Value};
