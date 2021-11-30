@@ -1,4 +1,5 @@
 use serde_json::Value;
+use serde_json::Value::Null;
 use traits::Eval;
 
 use crate::evaluators::GreaterThan;
@@ -7,6 +8,8 @@ use crate::evaluators::LessThan;
 use crate::evaluators::LessOrEqual;
 use crate::evaluators::Equal;
 use crate::evaluators::NotEqual;
+use crate::evaluators::IsNull;
+use crate::evaluators::IsNotNull;
 
 pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
     let field= intent["field"].as_str().unwrap();
@@ -16,12 +19,14 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
     let row_value= &row[field];
 
     return match operator {
-        ">"     => GreaterThan::evaluate(&row_value, &intent_value),
-        ">="    => GreaterOrEqual::evaluate(&row_value, &intent_value),
-        "<"     => LessThan::evaluate(&row_value, &intent_value),
-        "<="    => LessOrEqual::evaluate(&row_value, &intent_value),
-        "=="    => Equal::evaluate(&row_value, &intent_value),
-        "!="    => NotEqual::evaluate(&row_value, &intent_value),
+        ">"         => GreaterThan::evaluate(&row_value, &intent_value),
+        ">="        => GreaterOrEqual::evaluate(&row_value, &intent_value),
+        "<"         => LessThan::evaluate(&row_value, &intent_value),
+        "<="        => LessOrEqual::evaluate(&row_value, &intent_value),
+        "=="        => Equal::evaluate(&row_value, &intent_value),
+        "!="        => NotEqual::evaluate(&row_value, &intent_value),
+        "is_null"   => IsNull::evaluate(&row_value, &Null),
+        "not_null"  => IsNotNull::evaluate(&row_value, &Null),
         _       => false
     }
 }
