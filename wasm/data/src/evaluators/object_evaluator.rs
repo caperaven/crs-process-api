@@ -25,17 +25,21 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
         return evaluate_and(&intent["expressions"], &row);
     }
 
+    if operator == "not" || operator == "!" {
+        return evaluate_not(&intent["expressions"], &row);
+    }
+
     let field= intent["field"].as_str().unwrap();
     let intent_value= &intent["value"];
     let row_value= &row[field];
 
     return match operator {
-        ">"         |"gt"   => GreaterThan::evaluate(&row_value, &intent_value),
-        ">="        |"ge"   => GreaterOrEqual::evaluate(&row_value, &intent_value),
-        "<"         |"lt"   => LessThan::evaluate(&row_value, &intent_value),
-        "<="        |"le"   => LessOrEqual::evaluate(&row_value, &intent_value),
-        "=="        |"eq"   => Equal::evaluate(&row_value, &intent_value),
-        "!="        |"ne"   => NotEqual::evaluate(&row_value, &intent_value),
+        ">"         | "gt"  => GreaterThan::evaluate(&row_value, &intent_value),
+        ">="        | "ge"  => GreaterOrEqual::evaluate(&row_value, &intent_value),
+        "<"         | "lt"  => LessThan::evaluate(&row_value, &intent_value),
+        "<="        | "le"  => LessOrEqual::evaluate(&row_value, &intent_value),
+        "==" | "="  | "eq"  => Equal::evaluate(&row_value, &intent_value),
+        "!=" | "<>" | "ne"  => NotEqual::evaluate(&row_value, &intent_value),
         "is_null"           => IsNull::evaluate(&row_value, &Null),
         "not_null"          => IsNotNull::evaluate(&row_value, &Null),
         "like"              => Like::evaluate(&row_value, &intent_value),
@@ -44,7 +48,8 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
         "between"           => Between::evaluate(&row_value, &intent_value),
         _                   => false
 
-        // add startswith and endswith
+        // add startswith
+        // add endswith
     }
 }
 
@@ -73,6 +78,11 @@ pub fn evaluate_or(expressions: &Value, row: &Value) -> bool {
     return false;
 }
 
+pub fn evaluate_not(expressions: &Value, row: &Value) -> bool {
+    let result = evaluate_and(&expressions, &row);
+    return !result;
+}
+
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
@@ -89,14 +99,14 @@ mod test {
 
     #[test]
     fn evaluate_equal_test() {
-        let filter = create_filter("value", "==", Value::from(10));
+        let filter = create_filter("value", "=", Value::from(10));
         let row = json!({"value": 10});
         assert_eq!(evaluate_object(&filter, &row), true);
     }
 
     #[test]
     fn evaluate_notequal_test() {
-        let filter = create_filter("value", "!=", Value::from(20));
+        let filter = create_filter("value", "<>", Value::from(20));
         let row = json!({"value": 10});
         assert_eq!(evaluate_object(&filter, &row), true);
     }
@@ -200,6 +210,23 @@ mod test {
     }
 
     #[test]
+    fn evaluate_simple_not_test() {
+        // !(value == 1)
+        let filter = json!({
+            "operator": "not",
+            "expressions": [
+                create_filter("value", "eq", Value::from(1)),
+            ]
+        });
+
+        let row = json!({ "value": 1});
+        assert_eq!(evaluate_object(&filter, &row), false);
+
+        let row = json!({ "value": 2});
+        assert_eq!(evaluate_object(&filter, &row), true);
+    }
+
+    #[test]
     fn evaluate_simple_and_test() {
         // value == 1 && value2 == 2
         let filter = json!({
@@ -228,7 +255,10 @@ mod test {
             ]
         });
 
-        let row = json!({ "value": 1, "value2": 2 });
+        let row = json!({ "value": 1, "value2": 3 });
+        assert_eq!(evaluate_object(&filter, &row), true);
+
+        let row = json!({ "value": 3, "value2": 2 });
         assert_eq!(evaluate_object(&filter, &row), true);
 
         let row = json!({ "value": 3, "value2": 3 });
@@ -266,6 +296,46 @@ mod test {
 
         let row = json!({ "value": 2, "value2": 1 });
         assert_eq!(evaluate_object(&filter, &row), false);
+    }
+
+    #[test]
+    fn evaluate_composite_not_and_or_test() {
+        // !((value == 1 or value == 2) and (value2 == 3))
+        let filter = json!(
+            {
+                "operator": "not",
+                "expressions": [
+                    {
+                        "operator": "and",
+                        "expressions": [
+                            {
+                                "operator": "or",
+                                "expressions": [
+                                    create_filter("value", "eq", Value::from(1)),
+                                    create_filter("value", "eq", Value::from(2)),
+                                ]
+                            },
+                            create_filter("value2", "eq", Value::from(3)),
+                        ]
+                    }
+                ]
+            }
+        );
+
+        let row = json!({ "value": 1, "value2": 3 });
+        assert_eq!(evaluate_object(&filter, &row), false);
+
+        let row = json!({ "value": 2, "value2": 3 });
+        assert_eq!(evaluate_object(&filter, &row), false);
+
+        let row = json!({ "value": 3, "value2": 3 });
+        assert_eq!(evaluate_object(&filter, &row), true);
+
+        let row = json!({ "value": 1, "value2": 1 });
+        assert_eq!(evaluate_object(&filter, &row), true);
+
+        let row = json!({ "value": 2, "value2": 1 });
+        assert_eq!(evaluate_object(&filter, &row), true);
     }
 
 }
