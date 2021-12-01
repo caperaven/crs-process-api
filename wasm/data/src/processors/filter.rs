@@ -116,9 +116,10 @@ mod test {
     //     let intent = json!([
     //         {
     //             "operator": "or",
-    //             "expressions": [
+    //             "expression": [
     //                 { "field": "code", "operator": "==", "value": "A" },
-    //                 { "field": "value", "operator": "==" "value": 5}
+    //                 { "field": "value", "operator": "==" "value": 5},
+
     //             ]
     //         },
     //         {
@@ -131,5 +132,28 @@ mod test {
     //     let result = process_filter(&intent, &data);
     //     let array = result.as_array().unwrap();
     //     assert_eq!(array.len(), 2);
+    // }
+
+
+    // {
+    // "operator": "and",
+    // "expressions": [
+    // {
+    // "operator": "or",
+    // "expressions": [
+    // { "field": "..", "operator": "..", "value": ".."},
+    // { "field": "..", "operator": "..", "value": ".."},
+    // ]
+    // },
+    // {
+    // "operator": "or",
+    // "expressions": [
+    // { "field": "..", "operator": "..", "value": ".."},
+    // { "field": "..", "operator": "..", "value": ".."},
+    // { "field": "..", "operator": "..", "value": ".."},
+    // { "field": "..", "operator": "..", "value": ".."},
+    // ]
+    // }
+    // ]
     // }
 }
