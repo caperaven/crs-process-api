@@ -99,5 +99,37 @@ mod test {
         let array = result.as_array().unwrap();
 
         assert_eq!(array.len(), 2);
+        assert_eq!(array[0], 0);
+        assert_eq!(array[1], 1);
     }
+
+    // #[test]
+    // fn complex_filter_test() {
+    //     let data = json!([
+    //         {"id": 0, "code": "A", "value": 10, "isActive": true},
+    //         {"id": 1, "code": "B", "value": 10, "isActive": false},
+    //         {"id": 2, "code": "C", "value": 20, "isActive": true},
+    //         {"id": 3, "code": "D", "value": 20, "isActive": true},
+    //         {"id": 4, "code": "E", "value": 5, "isActive": false}
+    //     ]);
+    //
+    //     let intent = json!([
+    //         {
+    //             "operator": "or",
+    //             "expressions": [
+    //                 { "field": "code", "operator": "==", "value": "A" },
+    //                 { "field": "value", "operator": "==" "value": 5}
+    //             ]
+    //         },
+    //         {
+    //             "field": "isActive", "operator": "!=", "value": false
+    //         }
+    //     ]);
+    //
+    //     // code == "A" or value == 5
+    //
+    //     let result = process_filter(&intent, &data);
+    //     let array = result.as_array().unwrap();
+    //     assert_eq!(array.len(), 2);
+    // }
 }

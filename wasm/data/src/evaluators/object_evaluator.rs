@@ -38,6 +38,20 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
     }
 }
 
+pub fn evaluate_and(intent1: &Value, intent2: &Value, row: &Value) -> bool {
+    let b1 = evaluate_object(intent1, row);
+    let b2 = evaluate_object(intent2, row);
+
+    b1 && b2
+}
+
+pub fn evaluate_or(intent1: &Value, intent2: &Value, row: &Value) -> bool {
+    let b1 = evaluate_object(intent1, row);
+    let b2 = evaluate_object(intent2, row);
+
+    b1 || b2
+}
+
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
