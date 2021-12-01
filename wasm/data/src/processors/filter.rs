@@ -33,6 +33,7 @@ pub fn process_filter(intent: &Value, data: &Value) -> Value {
 mod test {
     use serde_json::json;
     use crate::{process_filter};
+    use serde_json::Value::Null;
 
     #[test]
     fn simple_filter_test() {
@@ -89,12 +90,14 @@ mod test {
         ]);
 
         let intent = json!([
-            { "field": "code", "operator": "in", "value": ["A", "B", "C"]}
+            { "field": "code", "operator": "in", "value": ["A", "B", "C"] },
+            { "field": "value", "operator": "==", "value": 10 },
+            { "field": "isActive", "operator": "not_null", "value": Null}
         ]);
 
         let result = process_filter(&intent, &data);
         let array = result.as_array().unwrap();
 
-        assert_eq!(array.len(), 3);
+        assert_eq!(array.len(), 2);
     }
 }
