@@ -90,7 +90,7 @@ mod test {
 
         let intent = json!({
            "filter": [
-                {"field": "value", "operator": "<", "value": 20}
+                { "field": "value", "operator": "<", "value": 20 }
             ]
         });
 
