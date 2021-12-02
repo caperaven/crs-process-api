@@ -7,6 +7,7 @@ use crate::evaluators::evaluate_object;
 mod evaluators;
 mod macros;
 mod processors;
+mod utils;
 
 use processors::process_filter;
 

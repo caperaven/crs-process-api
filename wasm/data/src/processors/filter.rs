@@ -31,20 +31,23 @@ pub fn process_filter(intent: &Value, data: &Value) -> Value {
 
 #[cfg(test)]
 mod test {
-    use serde_json::json;
+    use serde_json::{json, Value};
     use crate::{process_filter};
     use serde_json::Value::Null;
 
-    #[test]
-    fn simple_filter_test() {
-        let data = json!([
+    fn get_data() -> Value {
+        return json!([
             {"id": 0, "code": "A", "value": 10, "isActive": true},
             {"id": 1, "code": "B", "value": 10, "isActive": false},
             {"id": 2, "code": "C", "value": 20, "isActive": true},
             {"id": 3, "code": "D", "value": 20, "isActive": true},
             {"id": 4, "code": "E", "value": 5, "isActive": false}
         ]);
+    }
 
+    #[test]
+    fn simple_filter_test() {
+        let data = get_data();
         let intent = json!([{ "field": "value", "operator": "<", "value": 20 }]);
 
         let result = process_filter(&intent, &data);
@@ -58,14 +61,7 @@ mod test {
 
     #[test]
     fn composite_filter_test() {
-        let data = json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
-
+        let data = get_data();
         let intent = json!([
             {"field": "value", "operator": "<", "value": 20},
             {"field": "isActive", "operator": "==", "value": false}
@@ -81,14 +77,7 @@ mod test {
 
     #[test]
     fn complex_filter_test() {
-        let data = json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
-
+        let data = get_data();
         let intent = json!([
             { "field": "code", "operator": "in", "value": ["A", "B", "C"] },
             { "field": "value", "operator": "==", "value": 10 },

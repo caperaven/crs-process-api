@@ -51,9 +51,6 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
         "startswith"        => StartsWith::evaluate(&row_value, &intent_value),
         "endswith"          => EndsWith::evaluate(&row_value, &intent_value),
         _                   => false
-
-        // add startswith
-        // add endswith
     }
 }
 
