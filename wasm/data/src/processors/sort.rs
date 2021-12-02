@@ -1,7 +1,19 @@
 use serde_json::Value;
 use traits::Eval;
+use crate::duration::iso8601_placement;
 use crate::evaluators::LessThan;
 use crate::enums::Placement;
+
+struct Field {
+    name: String,
+    data_type: String
+}
+
+impl Field {
+    pub fn new(name: String, data_type: String) -> Field {
+        Field {name, data_type}
+    }
+}
 
 // use crate::utils::flood_indexes;
 
@@ -17,17 +29,18 @@ use crate::enums::Placement;
 //     return result;
 // }
 
-fn place_objects(intent: &Vec<Value>, evaluate: &Value, reference: &Value) -> Placement {
+fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Placement {
     for field in intent {
-        let field = field.as_str().unwrap();
-        let value1 = &evaluate[field];
-        let value2 = &reference[field];
-        let is_smaller = LessThan::evaluate(&value1, &value2);
+        let value1: &Value = &evaluate[&field.name];
+        let value2: &Value = &reference[&field.name];
 
-        return if is_smaller == true {
-            Placement::Before
-        } else {
-            Placement::After
+        if field.data_type == "duration" {
+            return iso8601_placement(&value1, &value2);
+        }
+
+        return match LessThan::evaluate(&value1, &value2) {
+            true => Placement::Before,
+            false => Placement::After
         }
     }
 
@@ -36,8 +49,8 @@ fn place_objects(intent: &Vec<Value>, evaluate: &Value, reference: &Value) -> Pl
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Value};
-    use crate::processors::sort::{Placement, place_objects};
+    use serde_json::{json};
+    use crate::processors::sort::{Placement, place_objects, Field};
 
     // fn get_data() -> Value {
     //     return json!([
@@ -68,8 +81,8 @@ mod test {
         let object1 = json!({"value": 1});
         let object2 = json!({"value": 2});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -83,8 +96,8 @@ mod test {
         let object1 = json!({"value": 1.0});
         let object2 = json!({"value": 1.1});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -98,8 +111,8 @@ mod test {
         let object1 = json!({"value": "a"});
         let object2 = json!({"value": "b"});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -113,8 +126,8 @@ mod test {
         let object1 = json!({"value": "*00123"});
         let object2 = json!({"value": "*01123"});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -128,8 +141,8 @@ mod test {
         let object1 = json!({"value": "10:00"});
         let object2 = json!({"value": "12:24"});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -143,8 +156,8 @@ mod test {
         let object1 = json!({"value": "2005/04/11 16:35:50.243"});
         let object2 = json!({"value": "2005/12/03 00:00:00.000"});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -158,8 +171,8 @@ mod test {
         let object1 = json!({"value": "2022/06/20"});
         let object2 = json!({"value": "2022/07/20"});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -173,8 +186,8 @@ mod test {
         let object1 = json!({"value": "08:00:00"});
         let object2 = json!({"value": "08:00:01"});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -188,8 +201,8 @@ mod test {
         let object1 = json!({"value": false});
         let object2 = json!({"value": true});
 
-        let mut fields: Vec<Value> = Vec::new();
-        fields.push(Value::from("value"));
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "".to_string()));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -197,4 +210,20 @@ mod test {
         let result = place_objects(&fields, &object2, &object1);
         assert_eq!(smaller(result), false);
     }
+
+    #[test]
+    fn test_duration_objects() {
+        let object1 = json!({"value": "PT010H30M"});
+        let object2 = json!({"value": "PT100H30M"});
+
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "duration".to_string()));
+
+        let result = place_objects(&fields, &object1, &object2);
+        assert_eq!(smaller(result), true);
+
+        let result = place_objects(&fields, &object2, &object1);
+        assert_eq!(smaller(result), false);
+    }
+
 }
