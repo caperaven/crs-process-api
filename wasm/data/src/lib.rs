@@ -12,6 +12,7 @@ mod duration;
 mod enums;
 
 use processors::process_filter;
+use crate::duration::iso8601_to_duration_str;
 
 /// Calculate a intent description where the following actions or a subset of these actions took place.
 /// 1. Filter
@@ -34,6 +35,11 @@ pub fn get_perspective(intent: Value, data: Value) -> Value {
 /// Test if a object is visible in the scope of the defined filter.
 pub fn in_filter(intent: Value, object: Value) -> bool {
     return evaluate_object(&intent, &object);
+}
+
+/// Convert PT100H30M into "0:0:100:30:0"
+pub fn iso8601_to_string(duration: String) -> String {
+    iso8601_to_duration_str(&Value::from(duration))
 }
 
 #[cfg(test)]

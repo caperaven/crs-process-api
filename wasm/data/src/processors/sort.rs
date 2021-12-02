@@ -6,41 +6,55 @@ use crate::enums::Placement;
 
 struct Field {
     name: String,
-    data_type: String
+    data_type: Option<String>
 }
 
 impl Field {
-    pub fn new(name: String, data_type: String) -> Field {
-        Field {name, data_type}
+    pub fn new(name: String, data_type: Option<&Value>) -> Field {
+        let data_type = match data_type {
+            None => None,
+            Some(value) => Some(value.to_string())
+        };
+
+        Field {
+            name,
+            data_type
+        }
     }
 }
 
-// use crate::utils::flood_indexes;
+use crate::utils::flood_indexes;
 
-// pub fn sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
-//     let rows = match rows {
-//         Some(array) => array,
-//         None => flood_indexes(&data)
-//     };
-//
-//
-//
-//     let result: Vec<usize> = Vec::new();
-//     return result;
-// }
+pub fn _sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
+    let _rows = match rows {
+        Some(array) => array,
+        None => flood_indexes(&data)
+    };
+
+    let mut fields: Vec<Field> = Vec::new();
+    for field_intent in intent.as_array().unwrap() {
+        fields.push(Field::new(field_intent["name"].to_string(), field_intent.get("type")));
+    }
+
+    let result: Vec<usize> = Vec::new();
+    return result;
+}
 
 fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Placement {
     for field in intent {
         let value1: &Value = &evaluate[&field.name];
         let value2: &Value = &reference[&field.name];
 
-        if field.data_type == "duration" {
-            return iso8601_placement(&value1, &value2);
-        }
-
-        return match LessThan::evaluate(&value1, &value2) {
-            true => Placement::Before,
-            false => Placement::After
+        match &field.data_type {
+            None => {
+                return match LessThan::evaluate(&value1, &value2) {
+                    true => Placement::Before,
+                    false => Placement::After
+                }
+            }
+            Some(_) => {
+                return iso8601_placement(&value1, &value2)
+            }
         }
     }
 
@@ -49,18 +63,18 @@ fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Pl
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json};
+    use serde_json::{json, Value};
     use crate::processors::sort::{Placement, place_objects, Field};
 
-    // fn get_data() -> Value {
-    //     return json!([
-    //         {"id": 0, "code": "A", "value": 10, "isActive": true},
-    //         {"id": 1, "code": "B", "value": 10, "isActive": false},
-    //         {"id": 2, "code": "C", "value": 20, "isActive": true},
-    //         {"id": 3, "code": "D", "value": 20, "isActive": true},
-    //         {"id": 4, "code": "E", "value": 5, "isActive": false}
-    //     ]);
-    // }
+    fn get_data() -> Value {
+        return json!([
+            {"id": 0, "code": "A", "value": 10, "isActive": true},
+            {"id": 1, "code": "B", "value": 10, "isActive": false},
+            {"id": 2, "code": "C", "value": 20, "isActive": true},
+            {"id": 3, "code": "D", "value": 20, "isActive": true},
+            {"id": 4, "code": "E", "value": 5, "isActive": false}
+        ]);
+    }
 
     fn smaller(p: Placement) -> bool {
         return match p {
@@ -69,12 +83,12 @@ mod test {
         }
     }
 
-    // #[test]
-    // fn test_simple_sort() {
-    //     let data = get_data();
-    //
-    //     let fields = json!(["value"]).as_array().unwrap();
-    // }
+    #[test]
+    fn test_simple_sort() {
+        let _data = get_data();
+
+        let _fields = json!(["value"]).as_array().unwrap();
+    }
 
     #[test]
     fn test_int_objects() {
@@ -82,7 +96,7 @@ mod test {
         let object2 = json!({"value": 2});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -97,7 +111,7 @@ mod test {
         let object2 = json!({"value": 1.1});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -112,7 +126,7 @@ mod test {
         let object2 = json!({"value": "b"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -127,7 +141,7 @@ mod test {
         let object2 = json!({"value": "*01123"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -142,7 +156,7 @@ mod test {
         let object2 = json!({"value": "12:24"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -157,7 +171,7 @@ mod test {
         let object2 = json!({"value": "2005/12/03 00:00:00.000"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -172,7 +186,7 @@ mod test {
         let object2 = json!({"value": "2022/07/20"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -187,7 +201,7 @@ mod test {
         let object2 = json!({"value": "08:00:01"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -202,7 +216,7 @@ mod test {
         let object2 = json!({"value": true});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "".to_string()));
+        fields.push(Field::new("value".to_string(), None));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -217,7 +231,7 @@ mod test {
         let object2 = json!({"value": "PT100H30M"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "duration".to_string()));
+        fields.push(Field::new("value".to_string(), Some(&Value::from("duration"))));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
@@ -232,7 +246,7 @@ mod test {
         let object2 = json!({"value": "PT1.3S"});
 
         let mut fields: Vec<Field> = Vec::new();
-        fields.push(Field::new("value".to_string(), "duration".to_string()));
+        fields.push(Field::new("value".to_string(), Some(&Value::from("duration"))));
 
         let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), true);
