@@ -1,6 +1,8 @@
 use serde_json::Value;
 use traits::Eval;
 use crate::evaluators::LessThan;
+use crate::enums::Placement;
+
 // use crate::utils::flood_indexes;
 
 // pub fn sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
@@ -14,11 +16,6 @@ use crate::evaluators::LessThan;
 //     let result: Vec<usize> = Vec::new();
 //     return result;
 // }
-
-enum Placement {
-    After,
-    Before
-}
 
 fn place_objects(intent: &Vec<Value>, evaluate: &Value, reference: &Value) -> Placement {
     for field in intent {

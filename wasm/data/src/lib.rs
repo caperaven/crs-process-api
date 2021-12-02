@@ -8,6 +8,8 @@ mod evaluators;
 mod macros;
 mod processors;
 mod utils;
+mod duration;
+mod enums;
 
 use processors::process_filter;
 
