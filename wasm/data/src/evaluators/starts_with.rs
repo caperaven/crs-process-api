@@ -27,7 +27,7 @@ impl Eval for StartsWith {
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Value};
+    use serde_json::{Value};
     use traits::Eval;
     use crate::evaluators::StartsWith;
 

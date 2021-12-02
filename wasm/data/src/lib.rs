@@ -28,6 +28,7 @@ pub fn get_perspective(intent: Value, data: Value) -> Value {
     })
 }
 
+/// Test if a object is visible in the scope of the defined filter.
 pub fn in_filter(intent: Value, object: Value) -> bool {
     return evaluate_object(&intent, &object);
 }
@@ -61,9 +62,4 @@ mod test {
         2.2 get from provided indexes
         2.3 get from filter expression
         2.4 give count of unique values
-
-    3. in_filter ?
-        3.1 provide filter expression and data object
-        3.2 does this object or array of objects pass the current filter's visibility
-
  */
