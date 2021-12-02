@@ -342,4 +342,23 @@ mod test {
         assert_eq!(evaluate_object(&filter, &row), true);
     }
 
+    #[test]
+    fn evaluate_startswith_test() {
+        let filter = create_filter("value", "startswith", Value::from("Hello"));
+        let row = json!({"value": "Hello World"});
+        assert_eq!(evaluate_object(&filter, &row), true);
+
+        let row = json!({"value": "Not Hello World"});
+        assert_eq!(evaluate_object(&filter, &row), false);
+    }
+
+    #[test]
+    fn evaluate_endswith_test() {
+        let filter = create_filter("value", "endswith", Value::from("World"));
+        let row = json!({"value": "Hello World"});
+        assert_eq!(evaluate_object(&filter, &row), true);
+
+        let row = json!({"value": "Hello World Not"});
+        assert_eq!(evaluate_object(&filter, &row), false);
+    }
 }
