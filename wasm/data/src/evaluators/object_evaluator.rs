@@ -13,6 +13,8 @@ use crate::evaluators::IsNotNull;
 use crate::evaluators::Like;
 use crate::evaluators::NotLike;
 use crate::evaluators::OneOf;
+use crate::evaluators::StartsWith;
+use crate::evaluators::EndsWith;
 
 pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
     let operator= intent["operator"].as_str().unwrap();
@@ -46,6 +48,8 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
         "not_like"          => NotLike::evaluate(&row_value, &intent_value),
         "in"                => OneOf::evaluate(&row_value, &intent_value),
         "between"           => Between::evaluate(&row_value, &intent_value),
+        "startswith"        => StartsWith::evaluate(&row_value, &intent_value),
+        "endswith"          => EndsWith::evaluate(&row_value, &intent_value),
         _                   => false
 
         // add startswith

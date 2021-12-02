@@ -11,6 +11,8 @@ mod like;
 mod not_like;
 mod one_of;
 mod between;
+mod starts_with;
+mod ends_with;
 
 pub use greater_than::GreaterThan;
 pub use less_than::LessThan;
@@ -24,4 +26,7 @@ pub use like::Like;
 pub use not_like::NotLike;
 pub use one_of::OneOf;
 pub use between::Between;
+pub use starts_with::StartsWith;
+pub use ends_with::EndsWith;
+
 pub use object_evaluator::evaluate_object;
