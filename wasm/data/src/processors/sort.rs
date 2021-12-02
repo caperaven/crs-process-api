@@ -226,4 +226,18 @@ mod test {
         assert_eq!(smaller(result), false);
     }
 
+    #[test]
+    fn test_duration_miliseconds_objects() {
+        let object1 = json!({"value": "PT1.2S"});
+        let object2 = json!({"value": "PT1.3S"});
+
+        let mut fields: Vec<Field> = Vec::new();
+        fields.push(Field::new("value".to_string(), "duration".to_string()));
+
+        let result = place_objects(&fields, &object1, &object2);
+        assert_eq!(smaller(result), true);
+
+        let result = place_objects(&fields, &object2, &object1);
+        assert_eq!(smaller(result), false);
+    }
 }
