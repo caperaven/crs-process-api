@@ -28,6 +28,22 @@ pub fn get_perspective(intent: Value, data: Value) -> Value {
     })
 }
 
+pub fn in_filter(intent: Value, object: Value) -> bool {
+    return evaluate_object(&intent, &object);
+}
+
+#[cfg(test)]
+mod test {
+    use serde_json::json;
+    use crate::in_filter;
+
+    #[test]
+    fn in_filter_test() {
+        assert_eq!(in_filter(json!({ "field": "value", "operator": "eq", "value": 10 }), json!({ "value": 10 })), true);
+        assert_eq!(in_filter(json!({ "field": "value", "operator": "eq", "value": 10 }), json!({ "value": 20 })), false);
+    }
+}
+
 /*
     Features:
     1. get_perspective
