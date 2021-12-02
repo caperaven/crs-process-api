@@ -45,15 +45,15 @@ fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Pl
         let value1: &Value = &evaluate[&field.name];
         let value2: &Value = &reference[&field.name];
 
-        match &field.data_type {
+        return match &field.data_type {
             None => {
-                return match LessThan::evaluate(&value1, &value2) {
+                match LessThan::evaluate(&value1, &value2) {
                     true => Placement::Before,
                     false => Placement::After
                 }
             }
             Some(_) => {
-                return iso8601_placement(&value1, &value2)
+                iso8601_placement(&value1, &value2)
             }
         }
     }
