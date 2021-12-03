@@ -201,6 +201,19 @@ mod test {
     }
 
     #[test]
+    fn test_multi_directional_sort() {
+        let data = get_data();
+        let fields = json!([{"name": "value"},{"name": "isActive", "direction": DESCENDING},{"name": "code", "direction": DESCENDING}]);
+        let result = sort(&fields, &data, None);
+        assert_eq!(result.len(), 5);
+        assert_eq!(result[0], 4);
+        assert_eq!(result[1], 0);
+        assert_eq!(result[2], 1);
+        assert_eq!(result[3], 3);
+        assert_eq!(result[4], 2);
+    }
+
+    #[test]
     fn test_int_objects() {
         let object1 = json!({"value": 1});
         let object2 = json!({"value": 2});
