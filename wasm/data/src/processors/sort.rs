@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 use serde_json::Value;
 use traits::Eval;
 use crate::duration::iso8601_placement;
-use crate::evaluators::{GreaterThan, LessThan};
+use crate::evaluators::{Equal, GreaterThan, LessThan};
 use crate::enums::{Placement, SortDirection};
 
 pub const ASCENDING: &str = "asc";
@@ -52,12 +52,25 @@ fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Or
         let value_a = &obj_a[&field_name];
         let value_b = &obj_b[&field_name];
 
-        if &field.direction == &SortDirection::Descending && LessThan::evaluate(value_a, value_b) == true {
-            return Ordering::Less
+        if Equal::evaluate(value_a, value_b) {
+            continue;
         }
 
-        if &field.direction == &SortDirection::Ascending && GreaterThan::evaluate(value_a, value_b) == true {
-            return Ordering::Greater
+        return match &field.direction {
+            SortDirection::Descending => {
+                if LessThan::evaluate(value_a, value_b) {
+                    return Ordering::Less;
+                }
+
+                Ordering::Greater
+            }
+            SortDirection::Ascending => {
+                if GreaterThan::evaluate(value_a, value_b) {
+                    return Ordering::Less;
+                }
+
+                Ordering::Greater
+            }
         }
     }
 
