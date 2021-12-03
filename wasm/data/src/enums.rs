@@ -5,3 +5,24 @@ pub enum Placement {
     Before,
     After
 }
+
+pub enum SortDirection {
+    Ascending,
+    Descending
+}
+
+impl PartialEq  for SortDirection {
+    fn eq(&self, other: &Self) -> bool {
+        let dec1 = match self {
+            SortDirection::Ascending => false,
+            SortDirection::Descending => true
+        };
+
+        let dec2 = match other {
+            SortDirection::Ascending => false,
+            SortDirection::Descending => true
+        };
+
+        dec1 == dec2
+    }
+}
