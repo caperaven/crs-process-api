@@ -1,5 +1,5 @@
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
 
 pub struct OneOf {}
 
@@ -22,7 +22,7 @@ impl Eval for OneOf {
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use traits::Eval;
+    use crate::traits::Eval;
     use crate::evaluators::OneOf;
 
     #[test]

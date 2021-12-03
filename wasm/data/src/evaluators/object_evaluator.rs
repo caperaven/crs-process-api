@@ -1,6 +1,6 @@
 use serde_json::Value;
 use serde_json::Value::Null;
-use traits::Eval;
+use crate::traits::Eval;
 
 use crate::evaluators::{Between, GreaterThan};
 use crate::evaluators::GreaterOrEqual;

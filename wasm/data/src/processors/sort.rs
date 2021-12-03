@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
 use crate::duration::iso8601_placement;
 use crate::evaluators::{Equal, GreaterThan, LessThan};
 use crate::enums::{Placement, SortDirection};

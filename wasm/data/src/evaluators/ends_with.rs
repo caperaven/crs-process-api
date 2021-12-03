@@ -1,5 +1,5 @@
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
 
 pub struct EndsWith {}
 
@@ -25,7 +25,7 @@ impl Eval for EndsWith {
 #[cfg(test)]
 mod test {
     use serde_json::{Value};
-    use traits::Eval;
+    use crate::traits::Eval;
     use crate::evaluators::EndsWith;
 
     #[test]

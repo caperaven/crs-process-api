@@ -10,6 +10,8 @@ mod processors;
 mod utils;
 mod duration;
 mod enums;
+mod aggregates;
+mod traits;
 
 use processors::process_filter;
 use crate::duration::iso8601_to_duration_str;

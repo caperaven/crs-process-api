@@ -1,5 +1,5 @@
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
 
 pub struct NotLike {}
 
@@ -23,7 +23,7 @@ impl Eval for NotLike {
 #[cfg(test)]
 mod test {
     use serde_json::Value;
-    use traits::Eval;
+    use crate::traits::Eval;
     use crate::evaluators::NotLike;
 
     #[test]

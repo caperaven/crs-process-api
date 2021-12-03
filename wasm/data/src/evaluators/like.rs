@@ -1,5 +1,5 @@
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
 
 pub struct Like {}
 
@@ -23,7 +23,7 @@ impl Eval for Like {
 #[cfg(test)]
 mod test {
     use serde_json::Value;
-    use traits::Eval;
+    use crate::traits::Eval;
     use crate::evaluators::like::Like;
 
     #[test]

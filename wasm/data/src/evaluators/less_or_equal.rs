@@ -1,6 +1,6 @@
 use serde_json::Value;
 use crate::eval;
-use traits::Eval;
+use crate::traits::Eval;
 
 pub struct LessOrEqual {}
 
@@ -14,7 +14,7 @@ impl Eval for LessOrEqual {
 mod test {
     use crate::evaluators::LessOrEqual;
     use serde_json::Value;
-    use traits::Eval;
+    use crate::traits::Eval;
 
     #[test]
     fn test_positive() {

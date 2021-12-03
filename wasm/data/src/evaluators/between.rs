@@ -1,5 +1,6 @@
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
+
 
 pub struct Between {}
 
@@ -42,7 +43,7 @@ impl Eval for Between {
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use traits::Eval;
+    use crate::traits::Eval;
     use crate::evaluators::Between;
 
     #[test]

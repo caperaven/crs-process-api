@@ -1,5 +1,5 @@
 use serde_json::Value;
-use traits::Eval;
+use crate::traits::Eval;
 
 pub struct IsNotNull {}
 
@@ -13,7 +13,7 @@ impl Eval for IsNotNull {
 mod test {
     use serde_json::Value;
     use serde_json::Value::Null;
-    use traits::Eval;
+    use crate::traits::Eval;
     use crate::evaluators::is_not_null::IsNotNull;
 
     #[test]
