@@ -6,6 +6,7 @@ use crate::evaluators::{Equal, GreaterThan, LessThan};
 use crate::enums::{Placement, SortDirection};
 
 pub const ASCENDING: &str = "asc";
+pub const DESCENDING: &str = "dec";
 
 struct Field {
     name: String,
@@ -20,7 +21,7 @@ impl Field {
         let data_type = data_type.and_then(Value::as_str).map(str::to_owned);
 
         let sort_direction = match direction {
-            None => SortDirection::Descending,
+            None => SortDirection::Ascending,
             Some(value) => {
                 let value_str = value.as_str().unwrap();
 
@@ -57,14 +58,14 @@ fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Or
         }
 
         return match &field.direction {
-            SortDirection::Descending => {
+            SortDirection::Ascending => {
                 if LessThan::evaluate(value_a, value_b) {
                     return Ordering::Less;
                 }
 
                 Ordering::Greater
             }
-            SortDirection::Ascending => {
+            SortDirection::Descending => {
                 if GreaterThan::evaluate(value_a, value_b) {
                     return Ordering::Less;
                 }
@@ -124,7 +125,7 @@ fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Pl
 mod test {
     use serde_json::{json, Value};
     use crate::processors::sort::{Placement, place_objects, Field, sort};
-    use crate::processors::ASCENDING;
+    use crate::processors::{ASCENDING, DESCENDING};
 
     fn get_data() -> Value {
         return json!([
@@ -146,6 +147,7 @@ mod test {
     #[test]
     fn test_simple_sort() {
         let data = get_data();
+
         let fields = json!([{"name": "value"}]);
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
@@ -155,7 +157,7 @@ mod test {
         assert_eq!(result[3], 2);
         assert_eq!(result[4], 3);
 
-        let fields = json!([{"name": "code"}]);
+        let fields = json!([{"name": "code", "direction": ASCENDING}]);
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 0);
@@ -173,7 +175,7 @@ mod test {
         assert_eq!(result[3], 2);
         assert_eq!(result[4], 3);
 
-        let fields = json!([{"name": "code", "direction": ASCENDING}]);
+        let fields = json!([{"name": "code", "direction": DESCENDING}]);
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 4);
