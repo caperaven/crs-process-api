@@ -1,7 +1,8 @@
+use std::cmp::Ordering;
 use serde_json::Value;
 use traits::Eval;
 use crate::duration::iso8601_placement;
-use crate::evaluators::LessThan;
+use crate::evaluators::{GreaterThan, LessThan};
 use crate::enums::Placement;
 
 struct Field {
@@ -11,10 +12,13 @@ struct Field {
 
 impl Field {
     pub fn new(name: String, data_type: Option<&Value>) -> Field {
-        let data_type = match data_type {
-            None => None,
-            Some(value) => Some(value.to_string())
-        };
+        // let data_type = match data_type {
+        //     None => None,
+        //     Some(value) => Some(value.to_string())
+        // };
+        // https://users.rust-lang.org/t/string-compare-in-some-failing/68181/14
+
+        let data_type = data_type.and_then(Value::as_str).map(str::to_owned);
 
         Field {
             name,
@@ -25,8 +29,12 @@ impl Field {
 
 use crate::utils::flood_indexes;
 
-pub fn _sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
-    let _rows = match rows {
+fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Ordering {
+    Ordering::Less
+}
+
+pub fn sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
+    let mut rows = match rows {
         Some(array) => array,
         None => flood_indexes(&data)
     };
@@ -36,8 +44,11 @@ pub fn _sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usiz
         fields.push(Field::new(field_intent["name"].to_string(), field_intent.get("type")));
     }
 
-    let result: Vec<usize> = Vec::new();
-    return result;
+    let data = data.as_array().unwrap();
+
+    rows.sort_by(|a, b| sort_eval(a, b, &fields, &data));
+
+    return rows;
 }
 
 fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Placement {
@@ -52,8 +63,12 @@ fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Pl
                     false => Placement::After
                 }
             }
-            Some(_) => {
-                iso8601_placement(&value1, &value2)
+            Some(data_type) => {
+                if data_type == "duration" {
+                    return iso8601_placement(&value1, &value2);
+                }
+
+                return Placement::Before;
             }
         }
     }
@@ -64,7 +79,7 @@ fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Pl
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::processors::sort::{Placement, place_objects, Field};
+    use crate::processors::sort::{Placement, place_objects, Field, sort};
 
     fn get_data() -> Value {
         return json!([
@@ -85,9 +100,10 @@ mod test {
 
     #[test]
     fn test_simple_sort() {
-        let _data = get_data();
+        let data = get_data();
+        let fields = json!([{"name": "value"}]);
 
-        let _fields = json!(["value"]).as_array().unwrap();
+        let result = sort(&fields, &data, None);
     }
 
     #[test]
