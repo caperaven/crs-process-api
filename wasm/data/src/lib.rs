@@ -20,15 +20,12 @@ use crate::duration::iso8601_to_duration_str;
 /// 3. Group
 /// 4. Aggregates
 /// 5. Unique Value
-pub fn get_perspective(intent: Value, data: Value) -> Value {
+pub fn get_perspective(_intent: Value, data: Value) -> Value {
     if data.is_array() == false {
         return Value::from("error: data must be an array");
     }
 
-    let filter_result = process_filter(&intent["filter"], &data);
-
     return json!({
-        "rows": filter_result,
     })
 }
 

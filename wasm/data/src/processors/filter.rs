@@ -1,7 +1,7 @@
 use serde_json::Value;
 use crate::evaluate_object;
 
-pub fn process_filter(intent: &Value, data: &Value) -> Value {
+pub fn process_filter(intent: &Value, data: &Value) -> Vec<usize> {
     let mut index = 0;
     let mut filter_result = Vec::new();
 
@@ -26,7 +26,7 @@ pub fn process_filter(intent: &Value, data: &Value) -> Value {
         index += 1;
     }
 
-    Value::from(filter_result)
+    filter_result
 }
 
 #[cfg(test)]
@@ -51,12 +51,11 @@ mod test {
         let intent = json!([{ "field": "value", "operator": "<", "value": 20 }]);
 
         let result = process_filter(&intent, &data);
-        let array = result.as_array().unwrap();
 
-        assert_eq!(array.len(), 3);
-        assert_eq!(array[0], 0);
-        assert_eq!(array[1], 1);
-        assert_eq!(array[2], 4);
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0], 0);
+        assert_eq!(result[1], 1);
+        assert_eq!(result[2], 4);
     }
 
     #[test]
@@ -68,11 +67,10 @@ mod test {
         ]);
 
         let result = process_filter(&intent, &data);
-        let array = result.as_array().unwrap();
 
-        assert_eq!(array.len(), 2);
-        assert_eq!(array[0], 1);
-        assert_eq!(array[1], 4);
+        assert_eq!(result.len(), 2);
+        assert_eq!(result[0], 1);
+        assert_eq!(result[1], 4);
     }
 
     #[test]
@@ -85,10 +83,9 @@ mod test {
         ]);
 
         let result = process_filter(&intent, &data);
-        let array = result.as_array().unwrap();
 
-        assert_eq!(array.len(), 2);
-        assert_eq!(array[0], 0);
-        assert_eq!(array[1], 1);
+        assert_eq!(result.len(), 2);
+        assert_eq!(result[0], 0);
+        assert_eq!(result[1], 1);
     }
 }
