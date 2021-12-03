@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 use serde_json::Value;
 use traits::Eval;
 use crate::duration::iso8601_placement;
-use crate::evaluators::{GreaterThan, LessThan};
+use crate::evaluators::{LessThan};
 use crate::enums::Placement;
 
 struct Field {
@@ -30,7 +30,20 @@ impl Field {
 use crate::utils::flood_indexes;
 
 fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Ordering {
-    Ordering::Less
+    let obj_a = &data[*a];
+    let obj_b = &data[*b];
+
+    for field in fields {
+        let field_name = &field.name;
+        let value_a = &obj_a[&field_name];
+        let value_b = &obj_b[&field_name];
+
+        if LessThan::evaluate(value_a, value_b) == true {
+            return Ordering::Less
+        }
+    }
+
+    Ordering::Greater
 }
 
 pub fn sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
@@ -41,7 +54,7 @@ pub fn sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize
 
     let mut fields: Vec<Field> = Vec::new();
     for field_intent in intent.as_array().unwrap() {
-        fields.push(Field::new(field_intent["name"].to_string(), field_intent.get("type")));
+        fields.push(Field::new(field_intent["name"].as_str().unwrap().to_string(), field_intent.get("type")));
     }
 
     let data = data.as_array().unwrap();
@@ -102,8 +115,19 @@ mod test {
     fn test_simple_sort() {
         let data = get_data();
         let fields = json!([{"name": "value"}]);
-
         let result = sort(&fields, &data, None);
+        assert_eq!(result.len(), 5);
+        println!("{:?}", result);
+
+        let fields = json!([{"name": "code"}]);
+        let result = sort(&fields, &data, None);
+        assert_eq!(result.len(), 5);
+        println!("{:?}", result);
+
+        let fields = json!([{"name": "isActive"}]);
+        let result = sort(&fields, &data, None);
+        assert_eq!(result.len(), 5);
+        println!("{:?}", result);
     }
 
     #[test]
