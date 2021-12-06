@@ -38,16 +38,23 @@ fn add_row_index_to_array(target: &mut Value, row_index: usize) {
 
 fn create_object_path(target: &mut Value, fields: &Vec<&str>, field_ind: usize, record: &Value, row_index: usize) {
     let field = fields[field_ind];
-    let value_str = &record[field].to_string();
+    let value_str: String;
 
-    match target.get_mut(value_str) {
+    if record[field].is_string() {
+        value_str = String::from(record[field].as_str().unwrap())
+    }
+    else {
+        value_str = record[field].to_string();
+    }
+
+    match target.get_mut(&value_str) {
         None => {
             if field_ind == fields.len() -1 {
-                add_value_array(target, value_str, row_index);
+                add_value_array(target, &value_str, row_index);
             }
             else {
-                add_value_object(target, value_str);
-                create_object_path(&mut target[value_str], &fields, field_ind + 1, record, row_index);
+                add_value_object(target, &value_str);
+                create_object_path(&mut target[&value_str], &fields, field_ind + 1, record, row_index);
             }
         }
         Some(value) => {
@@ -56,7 +63,7 @@ fn create_object_path(target: &mut Value, fields: &Vec<&str>, field_ind: usize, 
                 add_row_index_to_array(rows, row_index);
             }
             else {
-                create_object_path(&mut target[value_str], &fields, field_ind + 1, record, row_index);
+                create_object_path(&mut target[&value_str], &fields, field_ind + 1, record, row_index);
             }
         }
     }
