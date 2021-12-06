@@ -63,7 +63,10 @@ fn create_object_path(target: &mut Value, fields: &Vec<&str>, field_ind: usize, 
                 add_row_index_to_array(rows, row_index);
             }
             else {
-                create_object_path(&mut target[&value_str], &fields, field_ind + 1, record, row_index);
+                let obj = target.get_mut(&value_str).unwrap();
+                let count = obj["_count"].as_i64().unwrap();
+                obj["_count"] = Value::from(count + 1);
+                create_object_path(obj, &fields, field_ind + 1, record, row_index);
             }
         }
     }
@@ -104,6 +107,6 @@ mod test {
 
         let result = group(&fields, &data);
 
-        println!("{:?}", result.to_string());
+        println!("{}", result);
     }
 }
