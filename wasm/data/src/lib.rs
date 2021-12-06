@@ -13,7 +13,7 @@ mod enums;
 mod aggregates;
 mod traits;
 
-use processors::process_filter;
+use processors::filter;
 use crate::duration::iso8601_to_duration_str;
 
 /// Calculate a intent description where the following actions or a subset of these actions took place.

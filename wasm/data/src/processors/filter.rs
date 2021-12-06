@@ -1,7 +1,7 @@
 use serde_json::Value;
 use crate::evaluate_object;
 
-pub fn process_filter(intent: &Value, data: &Value) -> Vec<usize> {
+pub fn filter(intent: &Value, data: &Value) -> Vec<usize> {
     let mut index = 0;
     let mut filter_result = Vec::new();
 
@@ -32,7 +32,7 @@ pub fn process_filter(intent: &Value, data: &Value) -> Vec<usize> {
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::{process_filter};
+    use crate::{filter};
     use serde_json::Value::Null;
 
     fn get_data() -> Value {
@@ -50,7 +50,7 @@ mod test {
         let data = get_data();
         let intent = json!([{ "field": "value", "operator": "<", "value": 20 }]);
 
-        let result = process_filter(&intent, &data);
+        let result = filter(&intent, &data);
 
         assert_eq!(result.len(), 3);
         assert_eq!(result[0], 0);
@@ -66,7 +66,7 @@ mod test {
             {"field": "isActive", "operator": "==", "value": false}
         ]);
 
-        let result = process_filter(&intent, &data);
+        let result = filter(&intent, &data);
 
         assert_eq!(result.len(), 2);
         assert_eq!(result[0], 1);
@@ -82,7 +82,7 @@ mod test {
             { "field": "isActive", "operator": "not_null", "value": Null}
         ]);
 
-        let result = process_filter(&intent, &data);
+        let result = filter(&intent, &data);
 
         assert_eq!(result.len(), 2);
         assert_eq!(result[0], 0);
