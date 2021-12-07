@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde_json::Value;
 
 #[derive(Debug)]
-struct Field {
+pub struct Field {
     name     : String,
     value    : String,
     children : HashMap<String, Field>,
@@ -47,7 +47,7 @@ impl Field {
             let mut child = Field::new(String::from(field), String::from(value.clone()));
             let key = String::from(value.clone());
 
-            &child.process_row(&row, &fields, field_index + 1, row_index);
+            let _ = &child.process_row(&row, &fields, field_index + 1, row_index);
             self.children.insert(key, child);
         }
     }
@@ -61,9 +61,16 @@ fn get_value(row: &Value, field: &str) -> String {
     return row[&field].to_string();
 }
 
-pub fn group(intent: &Value, data: &Value) -> Value {
+pub fn _group(intent: &Value, data: &Value) -> Value {
     let fields = intent.as_array().unwrap().iter().map(|x| x.as_str().unwrap()).collect::<Vec<&str>>();
 
+    let root = build_field_structure(&data, &fields);
+    println!("{:?}", root);
+
+    Value::Object(Default::default())
+}
+
+pub fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
     let mut row_index = 0;
     let mut root = Field::new("grouping".into(), "".into());
 
@@ -72,96 +79,35 @@ pub fn group(intent: &Value, data: &Value) -> Value {
         row_index += 1;
     }
 
-    println!("{:?}", root);
-
-    Value::Object(Default::default())
+    root
 }
-
-// fn add_value_object(target: &mut Value, field: &String) {
-//     let result = Value::Object(Default::default());
-//     target[&field] = result;
-//     target["_count"] = Value::from(1);
-// }
-//
-// fn add_value_array(target: &mut Value, field: &String, row_index: usize) {
-//     add_value_object(target, &field);
-//     let obj = &mut target[field];
-//
-//     let mut array: Vec<Value> = Vec::new();
-//     array.push(Value::from(row_index as i64));
-//     obj["rows"] = Value::Array(array);
-//     obj["_count"] = Value::from(1);
-// }
-//
-// fn add_row_index_to_array(target: &mut Value, row_index: usize) {
-//     let mut collection: Vec<Value> = target.as_array().unwrap().to_vec();
-//     let index_value = Value::from(row_index as i64);
-//     collection.push(index_value);
-// }
-//
-// fn create_object_path(target: &mut Value, fields: &Vec<&str>, field_ind: usize, record: &Value, row_index: usize) {
-//     let field = fields[field_ind];
-//     let value_str: String;
-//
-//     if record[field].is_string() {
-//         value_str = String::from(record[field].as_str().unwrap())
-//     }
-//     else {
-//         value_str = record[field].to_string();
-//     }
-//
-// //println!("target: {:?}, field: {:?}, value: {:?}", target, &value_str, target[&value_str]);
-//
-//     match target.get_mut(&value_str) {
-//         None => {
-//             if field_ind == fields.len() -1 {
-//                 add_value_array(target, &value_str, row_index);
-//             }
-//             else {
-//                 add_value_object(target, &value_str);
-//                 create_object_path(&mut target[&value_str], &fields, field_ind + 1, record, row_index);
-//             }
-//         }
-//         Some(value) => {
-//             if field_ind == fields.len() - 1 {
-//                 let rows = &mut value["rows"];
-//                 add_row_index_to_array(rows, row_index);
-//             }
-//             else {
-//                 let obj = target.get_mut(&value_str).unwrap();
-//                 let count = obj["_count"].as_i64().unwrap();
-//                 obj["_count"] = Value::from(count + 1);
-//                 create_object_path(obj, &fields, field_ind + 1, record, row_index);
-//             }
-//         }
-//     }
-// }
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Value};
-    use crate::processors::group::group;
+    use serde_json::{json};
+    use crate::processors::group::{build_field_structure};
 
-    fn get_data() -> Value {
-        return json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
-    }
+    // fn get_data() -> Value {
+    //     return json!([
+    //         {"id": 0, "code": "A", "value": 10, "isActive": true},
+    //         {"id": 1, "code": "B", "value": 10, "isActive": false},
+    //         {"id": 2, "code": "C", "value": 20, "isActive": true},
+    //         {"id": 3, "code": "D", "value": 20, "isActive": true},
+    //         {"id": 4, "code": "E", "value": 5, "isActive": false}
+    //     ]);
+    // }
+
+    // #[test]
+    // fn group_test() {
+    //     let data = get_data();
+    //     let intent = json!(["value"]);
+    //     let result = group(&intent, &data);
+    // }
 
     #[test]
-    fn group_test() {
-        let data = get_data();
-        let intent = json!(["value"]);
-        let result = group(&intent, &data);
-    }
+    fn field_structure_test() {
+        let fields: Vec<&str> = vec!["field1", "field2"];
 
-    #[test]
-    fn test() {
-        let fields = json!(["field1", "field2"]);
         let data = json!([
             {"field1": 10, "field2": "a", "value": 1},
             {"field1": 10, "field2": "b", "value": 2},
@@ -169,6 +115,42 @@ mod test {
             {"field1": 10, "field2": "a", "value": 4}
         ]);
 
-        let result = group(&fields, &data);
+        let result = build_field_structure(&data, &fields);
+        println!("{:?}", result);
+
+        let child_10 = result.children.get("10").unwrap();
+        assert_eq!(child_10.name, "field1");
+        assert_eq!(child_10.value, "10");
+        assert_eq!(child_10.children.len(), 2);
+
+        let child_10_a = child_10.children.get("a").unwrap();
+        let child_10_a_rows = child_10_a.rows.as_ref().unwrap();
+        assert_eq!(child_10_a.name, "field2");
+        assert_eq!(child_10_a.value, "a");
+        assert_eq!(child_10_a.children.len(), 0);
+        assert_eq!(child_10_a_rows.len(), 2);
+        assert_eq!(child_10_a_rows[0], 0);
+        assert_eq!(child_10_a_rows[1], 3);
+
+        let child_10_b = child_10.children.get("b").unwrap();
+        let child_10_b_rows = child_10_b.rows.as_ref().unwrap();
+        assert_eq!(child_10_b.name, "field2");
+        assert_eq!(child_10_b.value, "b");
+        assert_eq!(child_10_b.children.len(), 0);
+        assert_eq!(child_10_b_rows.len(), 1);
+        assert_eq!(child_10_b_rows[0], 1);
+
+        let child_11 = result.children.get("11").unwrap();
+        assert_eq!(child_11.name, "field1");
+        assert_eq!(child_11.value, "11");
+        assert_eq!(child_11.children.len(), 1);
+
+        let child_11_c = child_11.children.get("c").unwrap();
+        let child_11_c_rows = child_11_c.rows.as_ref().unwrap();
+        assert_eq!(child_11_c.name, "field2");
+        assert_eq!(child_11_c.value, "c");
+        assert_eq!(child_11_c.children.len(), 0);
+        assert_eq!(child_11_c_rows.len(), 1);
+        assert_eq!(child_11_c_rows[0], 2);
     }
 }
