@@ -53,6 +53,21 @@ impl Field {
             self.children.insert(key, child);
         }
     }
+
+    pub fn calculate_count(&mut self) {
+        match &self.rows {
+            None => {
+                self.count = self.children.len() as i64;
+
+                for (_k, v) in self.children.iter_mut() {
+                    v.calculate_count();
+                }
+            }
+            Some(rows) => {
+                self.count = rows.len() as i64;
+            }
+        }
+    }
 }
 
 fn get_value(row: &Value, field: &str) -> String {
@@ -81,7 +96,8 @@ pub fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
         row_index += 1;
     }
 
-    root
+    root.calculate_count();
+    return root;
 }
 
 #[cfg(test)]
@@ -124,12 +140,14 @@ mod test {
         assert_eq!(child_10.name, "field1");
         assert_eq!(child_10.value, "10");
         assert_eq!(child_10.children.len(), 2);
+        assert_eq!(child_10.count, 2);
 
         let child_10_a = child_10.children.get("a").unwrap();
         let child_10_a_rows = child_10_a.rows.as_ref().unwrap();
         assert_eq!(child_10_a.name, "field2");
         assert_eq!(child_10_a.value, "a");
         assert_eq!(child_10_a.children.len(), 0);
+        assert_eq!(child_10_a.count, 2);
         assert_eq!(child_10_a_rows.len(), 2);
         assert_eq!(child_10_a_rows[0], 0);
         assert_eq!(child_10_a_rows[1], 3);
@@ -139,6 +157,7 @@ mod test {
         assert_eq!(child_10_b.name, "field2");
         assert_eq!(child_10_b.value, "b");
         assert_eq!(child_10_b.children.len(), 0);
+        assert_eq!(child_10_b.count, 1);
         assert_eq!(child_10_b_rows.len(), 1);
         assert_eq!(child_10_b_rows[0], 1);
 
@@ -146,12 +165,14 @@ mod test {
         assert_eq!(child_11.name, "field1");
         assert_eq!(child_11.value, "11");
         assert_eq!(child_11.children.len(), 1);
+        assert_eq!(child_11.count, 1);
 
         let child_11_c = child_11.children.get("c").unwrap();
         let child_11_c_rows = child_11_c.rows.as_ref().unwrap();
         assert_eq!(child_11_c.name, "field2");
         assert_eq!(child_11_c.value, "c");
         assert_eq!(child_11_c.children.len(), 0);
+        assert_eq!(child_11_c.count, 1);
         assert_eq!(child_11_c_rows.len(), 1);
         assert_eq!(child_11_c_rows[0], 2);
     }
