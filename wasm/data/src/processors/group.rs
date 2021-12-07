@@ -145,7 +145,29 @@ mod test {
         let intent = json!(["value", "isActive"]);
         let result = group(&intent, &data);
 
-        println!("{}", result.to_string());
+        let group_5 = result.get("root")
+            .and_then(|value| value.get("children"))
+            .and_then(|value| value.get("5"))
+            .unwrap();
+
+        let group_10 = result.get("root")
+            .and_then(|value| value.get("children"))
+            .and_then(|value| value.get("10"))
+            .unwrap();
+
+        let group_20 = result.get("root")
+            .and_then(|value| value.get("children"))
+            .and_then(|value| value.get("20"))
+            .unwrap();
+
+        assert_eq!(group_5["count"], Value::from(1));
+        assert_eq!(group_10["count"], Value::from(2));
+        assert_eq!(group_20["count"], Value::from(1));
+
+        assert_eq!(group_5["children"]["false"]["count"], Value::from(1));
+        assert_eq!(group_10["children"]["false"]["count"], Value::from(1));
+        assert_eq!(group_10["children"]["true"]["count"], Value::from(1));
+        assert_eq!(group_20["children"]["true"]["count"], Value::from(2));
     }
 
     #[test]
