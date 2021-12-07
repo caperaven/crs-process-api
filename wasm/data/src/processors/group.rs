@@ -68,6 +68,28 @@ impl Field {
             }
         }
     }
+
+    pub fn to_json(&self, parent: &mut Value) {
+        let mut obj     = Value::Object(Default::default());
+        obj["count"]    = Value::from(self.count.clone());
+
+        match &self.rows {
+            None => {
+                let mut children = Value::Object(Default::default());
+
+                for (_k, child) in &self.children {
+                    child.to_json(&mut children);
+                }
+
+                obj["children"] = children;
+            }
+            Some(rows) => {
+                obj["rows"]     = Value::from(rows.clone());
+            }
+        }
+
+        parent[&self.value] = obj;
+    }
 }
 
 fn get_value(row: &Value, field: &str) -> String {
@@ -78,18 +100,20 @@ fn get_value(row: &Value, field: &str) -> String {
     return row[&field].to_string();
 }
 
-pub fn _group(intent: &Value, data: &Value) -> Value {
+pub fn group(intent: &Value, data: &Value) -> Value {
     let fields = intent.as_array().unwrap().iter().map(|x| x.as_str().unwrap()).collect::<Vec<&str>>();
 
     let root = build_field_structure(&data, &fields);
-    println!("{:?}", root);
+    let mut result = Value::Object(Default::default());
 
-    Value::Object(Default::default())
+    root.to_json(&mut result);
+
+    return result;
 }
 
 pub fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
     let mut row_index = 0;
-    let mut root = Field::new("grouping".into(), "".into());
+    let mut root = Field::new("grouping".into(), "root".into());
 
     for row in data.as_array().unwrap() {
         root.process_row(&row, &fields, 0, row_index);
@@ -102,25 +126,27 @@ pub fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json};
-    use crate::processors::group::{build_field_structure};
+    use serde_json::{json, Value};
+    use crate::processors::group::{build_field_structure, group};
 
-    // fn get_data() -> Value {
-    //     return json!([
-    //         {"id": 0, "code": "A", "value": 10, "isActive": true},
-    //         {"id": 1, "code": "B", "value": 10, "isActive": false},
-    //         {"id": 2, "code": "C", "value": 20, "isActive": true},
-    //         {"id": 3, "code": "D", "value": 20, "isActive": true},
-    //         {"id": 4, "code": "E", "value": 5, "isActive": false}
-    //     ]);
-    // }
+    fn get_data() -> Value {
+        return json!([
+            {"id": 0, "code": "A", "value": 10, "isActive": true},
+            {"id": 1, "code": "B", "value": 10, "isActive": false},
+            {"id": 2, "code": "C", "value": 20, "isActive": true},
+            {"id": 3, "code": "D", "value": 20, "isActive": true},
+            {"id": 4, "code": "E", "value": 5, "isActive": false}
+        ]);
+    }
 
-    // #[test]
-    // fn group_test() {
-    //     let data = get_data();
-    //     let intent = json!(["value"]);
-    //     let result = group(&intent, &data);
-    // }
+    #[test]
+    fn group_test() {
+        let data = get_data();
+        let intent = json!(["value", "isActive"]);
+        let result = group(&intent, &data);
+
+        println!("{}", result.to_string());
+    }
 
     #[test]
     fn field_structure_test() {
