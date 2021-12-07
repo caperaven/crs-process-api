@@ -92,6 +92,19 @@ mod test {
     }
 
     #[test]
+    fn count_simple_test() {
+        let intent = json!({
+            "count": "value"
+        });
+
+        let data = get_data();
+        let rows = json!([0, 1]);
+        let result = aggregate_rows(&intent, &data, &rows);
+
+        assert_eq!(result[0]["value"], Value::from(2.));
+    }
+
+    #[test]
     fn aggregate_test() {
         let intent = json!({
             "min": "value",
