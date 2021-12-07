@@ -7,7 +7,8 @@ pub struct Field {
     name     : String,
     value    : String,
     children : HashMap<String, Field>,
-    rows     : Option<Vec<i64>>
+    rows     : Option<Vec<i64>>,
+    count    : i64
 }
 
 impl Field {
@@ -16,7 +17,8 @@ impl Field {
             name,
             value,
             children    : HashMap::new(),
-            rows        : None
+            rows        : None,
+            count       : 0
         }
     }
 
