@@ -6,4 +6,5 @@ pub trait Eval {
 
 pub trait Aggregate {
     fn add_value(&mut self, obj: &Value);
+    fn value(&self) -> f64;
 }

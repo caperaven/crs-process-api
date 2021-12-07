@@ -1,8 +1,8 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
 
-struct Count {
-    value: f64
+pub struct Count {
+    pub value: f64
 }
 
 impl Count {
@@ -16,6 +16,10 @@ impl Count {
 impl Aggregate for Count {
     fn add_value(&mut self, _obj: &Value) {
         self.value += 1.
+    }
+
+    fn value(&self) -> f64 {
+        self.value
     }
 }
 

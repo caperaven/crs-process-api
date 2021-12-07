@@ -1,8 +1,8 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
 
-struct Ave {
-    value: f64,
+pub struct Ave {
+    pub value: f64,
     sum: f64,
     count: f64
 }
@@ -23,6 +23,10 @@ impl Aggregate for Ave {
         self.sum += value;
         self.count += 1.;
         self.value = self.sum / self.count;
+    }
+
+    fn value(&self) -> f64 {
+        self.value
     }
 }
 

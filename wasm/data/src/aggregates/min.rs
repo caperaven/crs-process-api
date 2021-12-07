@@ -1,8 +1,8 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
 
-struct Min {
-    value: f64
+pub struct Min {
+    pub value: f64
 }
 
 impl Min {
@@ -19,6 +19,10 @@ impl Aggregate for Min {
         if value < self.value {
             self.value = value;
         }
+    }
+
+    fn value(&self) -> f64 {
+        self.value
     }
 }
 

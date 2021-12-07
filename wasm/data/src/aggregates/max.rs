@@ -1,8 +1,8 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
 
-struct Max {
-    value: f64
+pub struct Max {
+    pub value: f64
 }
 
 impl Max {
@@ -19,6 +19,10 @@ impl Aggregate for Max {
         if value > self.value {
             self.value = value;
         }
+    }
+
+    fn value(&self) -> f64 {
+        self.value
     }
 }
 

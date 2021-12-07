@@ -2,7 +2,7 @@ use serde_json::Value;
 use crate::traits::Aggregate;
 
 pub struct Sum {
-    value: f64
+    pub value: f64
 }
 
 impl Sum {
@@ -16,6 +16,10 @@ impl Sum {
 impl Aggregate for Sum {
     fn add_value(&mut self, obj: &Value) {
         self.value += obj.as_f64().unwrap();
+    }
+
+    fn value(&self) -> f64 {
+        self.value
     }
 }
 
