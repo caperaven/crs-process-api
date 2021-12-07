@@ -7,10 +7,13 @@ use crate::aggregates::{Min, Max, Ave, Sum, Count};
 
 pub fn aggregate_rows(intent: &Value, data: &Value, rows: &Value) -> Value {
     let mut aggregator = create_aggregator(&intent);
+    let data_array = data.as_array().unwrap();
 
-    let mut i = 0;
-    for row in data.as_array().unwrap() {
+    let mut i;
+    for row_index in rows.as_array().unwrap() {
         i = 0;
+        let row = &data_array[row_index.as_i64().unwrap() as usize];
+
         for (_agg, field) in intent.as_object().unwrap().iter() {
             match row.get(&field.as_str().unwrap()) {
                 None => {}
@@ -87,6 +90,11 @@ mod test {
         let rows = json!([0,1,2,3,4]);
 
         let result = aggregate_rows(&intent, &data, &rows);
+
+        assert_eq!(result.as_array().unwrap().len(), 3);
+        assert_eq!(result[0]["value"], 13.);
+        assert_eq!(result[1]["value"], 20.);
+        assert_eq!(result[2]["value"], 5.);
 
         println!("{:?}", result.to_string());
     }
