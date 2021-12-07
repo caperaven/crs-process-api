@@ -41,6 +41,12 @@ pub fn iso8601_to_string(duration: String) -> String {
     iso8601_to_duration_str(&Value::from(duration))
 }
 
+/// Take a grouping structure and sort it according to the intent.
+/// todo
+// pub fn sort_grouping(intent: Value, grouping: Value) -> Value {
+//     return Value::Object(Default::default());
+// }
+
 #[cfg(test)]
 mod test {
     use serde_json::json;
@@ -59,11 +65,13 @@ mod test {
         1.1 filter
             1.1.1 add flag to indicate that it is case insensitive, default is case sensitive
             1.1.2 allow rows where the property is not a value but a object ... use path as field "field": "field1.code"
-        1.2 sort
-        1.3 group
-        1.4 aggregates
+        1.2 sort - done
+        1.3 group - done
+        1.3.1 add sorting to group - todo
+        1.4 aggregates - in progress
+            1.5 add features to help with duration aggregation
         1.5 give unique values
-        1.6 duration PT types (iso) https://en.wikipedia.org/wiki/ISO_8601
+        1.6 duration PT types (iso) https://en.wikipedia.org/wiki/ISO_8601 - done
 
     2. get_unique_values
         2.1 get from the entire table

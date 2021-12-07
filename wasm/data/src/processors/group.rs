@@ -4,11 +4,11 @@ use serde_json::Value;
 
 #[derive(Debug)]
 pub struct Field {
-    name     : String,
-    value    : String,
-    children : HashMap<String, Field>,
-    rows     : Option<Vec<i64>>,
-    count    : i64
+    name        : String,
+    value       : String,
+    children    : HashMap<String, Field>,
+    rows        : Option<Vec<i64>>,
+    child_count : i64
 }
 
 impl Field {
@@ -18,7 +18,7 @@ impl Field {
             value,
             children    : HashMap::new(),
             rows        : None,
-            count       : 0
+            child_count : 0
         }
     }
 
@@ -57,21 +57,21 @@ impl Field {
     pub fn calculate_count(&mut self) {
         match &self.rows {
             None => {
-                self.count = self.children.len() as i64;
+                self.child_count = self.children.len() as i64;
 
                 for (_k, v) in self.children.iter_mut() {
                     v.calculate_count();
                 }
             }
             Some(rows) => {
-                self.count = rows.len() as i64;
+                self.child_count = rows.len() as i64;
             }
         }
     }
 
     pub fn to_json(&self, parent: &mut Value) {
-        let mut obj     = Value::Object(Default::default());
-        obj["count"]    = Value::from(self.count.clone());
+        let mut obj         = Value::Object(Default::default());
+        obj["child_count"]  = Value::from(self.child_count.clone());
 
         match &self.rows {
             None => {
@@ -145,6 +145,8 @@ mod test {
         let intent = json!(["value", "isActive"]);
         let result = group(&intent, &data);
 
+        println!("{}", result.to_string());
+
         let group_5 = result.get("root")
             .and_then(|value| value.get("children"))
             .and_then(|value| value.get("5"))
@@ -160,14 +162,14 @@ mod test {
             .and_then(|value| value.get("20"))
             .unwrap();
 
-        assert_eq!(group_5["count"], Value::from(1));
-        assert_eq!(group_10["count"], Value::from(2));
-        assert_eq!(group_20["count"], Value::from(1));
+        assert_eq!(group_5["child_count"], Value::from(1));
+        assert_eq!(group_10["child_count"], Value::from(2));
+        assert_eq!(group_20["child_count"], Value::from(1));
 
-        assert_eq!(group_5["children"]["false"]["count"], Value::from(1));
-        assert_eq!(group_10["children"]["false"]["count"], Value::from(1));
-        assert_eq!(group_10["children"]["true"]["count"], Value::from(1));
-        assert_eq!(group_20["children"]["true"]["count"], Value::from(2));
+        assert_eq!(group_5["children"]["false"]["child_count"], Value::from(1));
+        assert_eq!(group_10["children"]["false"]["child_count"], Value::from(1));
+        assert_eq!(group_10["children"]["true"]["child_count"], Value::from(1));
+        assert_eq!(group_20["children"]["true"]["child_count"], Value::from(2));
     }
 
     #[test]
@@ -188,14 +190,14 @@ mod test {
         assert_eq!(child_10.name, "field1");
         assert_eq!(child_10.value, "10");
         assert_eq!(child_10.children.len(), 2);
-        assert_eq!(child_10.count, 2);
+        assert_eq!(child_10.child_count, 2);
 
         let child_10_a = child_10.children.get("a").unwrap();
         let child_10_a_rows = child_10_a.rows.as_ref().unwrap();
         assert_eq!(child_10_a.name, "field2");
         assert_eq!(child_10_a.value, "a");
         assert_eq!(child_10_a.children.len(), 0);
-        assert_eq!(child_10_a.count, 2);
+        assert_eq!(child_10_a.child_count, 2);
         assert_eq!(child_10_a_rows.len(), 2);
         assert_eq!(child_10_a_rows[0], 0);
         assert_eq!(child_10_a_rows[1], 3);
@@ -205,7 +207,7 @@ mod test {
         assert_eq!(child_10_b.name, "field2");
         assert_eq!(child_10_b.value, "b");
         assert_eq!(child_10_b.children.len(), 0);
-        assert_eq!(child_10_b.count, 1);
+        assert_eq!(child_10_b.child_count, 1);
         assert_eq!(child_10_b_rows.len(), 1);
         assert_eq!(child_10_b_rows[0], 1);
 
@@ -213,14 +215,14 @@ mod test {
         assert_eq!(child_11.name, "field1");
         assert_eq!(child_11.value, "11");
         assert_eq!(child_11.children.len(), 1);
-        assert_eq!(child_11.count, 1);
+        assert_eq!(child_11.child_count, 1);
 
         let child_11_c = child_11.children.get("c").unwrap();
         let child_11_c_rows = child_11_c.rows.as_ref().unwrap();
         assert_eq!(child_11_c.name, "field2");
         assert_eq!(child_11_c.value, "c");
         assert_eq!(child_11_c.children.len(), 0);
-        assert_eq!(child_11_c.count, 1);
+        assert_eq!(child_11_c.child_count, 1);
         assert_eq!(child_11_c_rows.len(), 1);
         assert_eq!(child_11_c_rows[0], 2);
     }
