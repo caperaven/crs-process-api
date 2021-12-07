@@ -79,6 +79,19 @@ mod test {
     }
 
     #[test]
+    fn aggregate_simple_test() {
+        let intent = json!({
+            "sum": "value"
+        });
+
+        let data = get_data();
+        let rows = json!([0, 1]);
+        let result = aggregate_rows(&intent, &data, &rows);
+
+        assert_eq!(result[0]["value"], Value::from(20.));
+    }
+
+    #[test]
     fn aggregate_test() {
         let intent = json!({
             "min": "value",
