@@ -24,3 +24,11 @@
 
 <button click.call="getInput">Get Input</button>
 
+
+<label>
+    <div>Test</div>
+    <input id="edtTest" value.bind="code">
+    <button for="edtTest" is="lookup" data-lookup="...."></button>
+</label>
+
+<button click.process="lookups.rest_lookup($args.lookup_work)";

@@ -1,6 +1,7 @@
 use std::borrow::BorrowMut;
 use std::collections::HashMap;
-use serde_json::Value;
+use serde_json::{Value};
+use crate::processors::aggregate::aggregate_rows;
 
 #[derive(Debug)]
 pub struct Field {
@@ -116,8 +117,41 @@ pub fn get_group_rows(group_data: &Value) -> Value {
     Value::from(rows)
 }
 
-pub fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value) {
+fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Value) {
+    // aggregate lower parts first ten move up and build it up from there.
+    match group_data.get("rows") {
+        None => {
+            let rows = get_group_rows(group_data);
+            let aggregate = aggregate_rows(&aggregate_intent, &data, &rows);
+            group_data["aggregates"] = aggregate;
+        }
+        Some(rows) => {
+            let aggregate = aggregate_rows(&aggregate_intent, &data, &rows);
+            group_data["aggregates"] = aggregate;
+        }
+    }
+}
 
+fn aggregate_group_children(group_data: &mut Value, aggregate_intent: &Value, data: &Value) {
+    match group_data.get_mut("children") {
+        None => {}
+        Some(children) => {
+            for (_key, child) in children.as_object_mut().unwrap().iter_mut() {
+                aggregate_group(child, &aggregate_intent, &data);
+            }
+        }
+    }
+}
+
+pub fn calculate_group_aggregate(group_data: &mut Value, aggregate_intent: &Value, data: &Value) {
+    match group_data.get_mut("root") {
+        None => {
+            aggregate_group(group_data, &aggregate_intent, &data);
+        }
+        Some(root) => {
+            aggregate_group(root, &aggregate_intent, &data);
+        }
+    }
 }
 
 fn get_value(row: &Value, field: &str) -> String {
@@ -164,7 +198,7 @@ fn populate_group_rows(group_data: &Value, rows: &mut Vec<i64>) {
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::processors::group::{build_field_structure, get_group_rows, group};
+    use crate::processors::group::{aggregate_group_children, build_field_structure, calculate_group_aggregate, get_group_rows, group};
 
     fn get_data() -> Value {
         return json!([
@@ -181,8 +215,6 @@ mod test {
         let data = get_data();
         let intent = json!(["value", "isActive"]);
         let result = group(&intent, &data);
-
-        println!("{}", result.to_string());
 
         let group_5 = result.get("root")
             .and_then(|value| value.get("children"))
@@ -275,5 +307,75 @@ mod test {
         let group_10 = &group["root"]["children"]["10"];
         let result = get_group_rows(&group_10);
         assert_eq!(result.as_array().unwrap().len(), 2);
+    }
+
+    #[test]
+    fn aggregate_group_test() {
+        let data = get_data();
+        let group_intent = json!(["value", "isActive"]);
+        let mut group = group(&group_intent, &data);
+        let ag_intent = json!({
+            "min": "value",
+            "max": "value",
+            "ave": "value"
+        });
+
+        calculate_group_aggregate(&mut group, &ag_intent, &data);
+
+        assert_eq!(group["root"]["aggregates"][0]["value"], 13.);
+        assert_eq!(group["root"]["aggregates"][0]["agg"], "ave");
+        assert_eq!(group["root"]["aggregates"][0]["field"], "value");
+        assert_eq!(group["root"]["aggregates"][1]["value"], 20.);
+        assert_eq!(group["root"]["aggregates"][1]["agg"], "max");
+        assert_eq!(group["root"]["aggregates"][1]["field"], "value");
+        assert_eq!(group["root"]["aggregates"][2]["value"], 5.);
+        assert_eq!(group["root"]["aggregates"][2]["agg"], "min");
+        assert_eq!(group["root"]["aggregates"][2]["field"], "value");
+    }
+
+    #[test]
+    fn aggregate_children_test() {
+        let data = get_data();
+        let group_intent = json!(["value", "isActive"]);
+        let mut group = group(&group_intent, &data);
+        let ag_intent = json!({
+            "min": "value",
+            "max": "value",
+            "ave": "value"
+        });
+
+        let mut root = group.get_mut("root").unwrap();
+
+        aggregate_group_children(&mut root, &ag_intent, &data);
+
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][0]["value"], 10.);
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][0]["agg"], "ave");
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][0]["field"], "value");
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][1]["value"], 10.);
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][1]["agg"], "max");
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][1]["field"], "value");
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][2]["value"], 10.);
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][2]["agg"], "min");
+        assert_eq!(group["root"]["children"]["10"]["aggregates"][2]["field"], "value");
+
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][0]["value"], 20.);
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][0]["agg"], "ave");
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][0]["field"], "value");
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][1]["value"], 20.);
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][1]["agg"], "max");
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][1]["field"], "value");
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][2]["value"], 20.);
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][2]["agg"], "min");
+        assert_eq!(group["root"]["children"]["20"]["aggregates"][2]["field"], "value");
+
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][0]["value"], 5.);
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][0]["agg"], "ave");
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][0]["field"], "value");
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][1]["value"], 5.);
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][1]["agg"], "max");
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][1]["field"], "value");
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][2]["value"], 5.);
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][2]["agg"], "min");
+        assert_eq!(group["root"]["children"]["5"]["aggregates"][2]["field"], "value");
     }
 }

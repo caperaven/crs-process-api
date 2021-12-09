@@ -5,8 +5,9 @@ use serde_json::Value;
 use crate::traits::Aggregate;
 use crate::aggregates::{Min, Max, Ave, Sum, Count};
 
+/// Create aggregate objects based on the rows and data provided
 pub fn aggregate_rows(intent: &Value, data: &Value, rows: &Value) -> Value {
-    let mut aggregator = create_aggregator(&intent);
+    let mut aggregator = create_aggregator_from_intent(&intent);
     let data_array = data.as_array().unwrap();
 
     let mut i;
@@ -45,7 +46,7 @@ pub fn aggregate_rows(intent: &Value, data: &Value, rows: &Value) -> Value {
     return Value::from(result);
 }
 
-fn create_aggregator(intent: &Value) -> Vec<Box<dyn Aggregate>> {
+fn create_aggregator_from_intent(intent: &Value) -> Vec<Box<dyn Aggregate>> {
     let mut aggregates: Vec<Box<dyn Aggregate>> = Vec::new();
 
     for (name, _value) in intent.as_object().unwrap().iter() {
@@ -62,11 +63,10 @@ fn create_aggregator(intent: &Value) -> Vec<Box<dyn Aggregate>> {
     return aggregates;
 }
 
-
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::processors::aggregate::aggregate_rows;
+    use crate::processors::aggregate::{aggregate_rows};
 
     fn get_data() -> Value {
         return json!([

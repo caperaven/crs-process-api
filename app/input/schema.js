@@ -2,6 +2,12 @@ export const schema = {
     id: "user-input",
 
     main: {
+        args: {
+            lookup_work: {
+
+            }
+        },
+
         parameters_def: {
             bId: { type: "number", required: true }
         },
@@ -18,9 +24,12 @@ export const schema = {
                     url: "/templates/input_form.html",
                     error_store: "input_validation"
                 },
+
+                /**
+                 * args: "$args.lookup_work"
+                 */
             }
         }
     },
-
 
 }
