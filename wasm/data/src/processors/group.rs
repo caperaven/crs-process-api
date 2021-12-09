@@ -92,14 +92,7 @@ impl Field {
     }
 }
 
-fn get_value(row: &Value, field: &str) -> String {
-    if row[field].is_string() {
-        return String::from(&row[field].as_str().unwrap().to_string());
-    }
-
-    return row[&field].to_string();
-}
-
+/// Given a group intent, group the data based on their values
 pub fn group(intent: &Value, data: &Value) -> Value {
     let fields = intent.as_array().unwrap().iter().map(|x| x.as_str().unwrap()).collect::<Vec<&str>>();
 
@@ -111,7 +104,31 @@ pub fn group(intent: &Value, data: &Value) -> Value {
     return result;
 }
 
-pub fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
+/// For a given group or sub group, give me the records for that group including it's sub groups
+pub fn get_group_rows(group_data: &Value) -> Value {
+    let mut rows: Vec<i64> = Vec::new();
+
+    match group_data.get("children") {
+        None => populate_group_rows(group_data, &mut rows),
+        Some(children) => populate_group_rows(children, &mut rows)
+    }
+
+    Value::from(rows)
+}
+
+pub fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value) {
+
+}
+
+fn get_value(row: &Value, field: &str) -> String {
+    if row[field].is_string() {
+        return String::from(&row[field].as_str().unwrap().to_string());
+    }
+
+    return row[&field].to_string();
+}
+
+fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
     let mut row_index = 0;
     let mut root = Field::new("grouping".into(), "root".into());
 
@@ -124,10 +141,30 @@ pub fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
     return root;
 }
 
+fn populate_group_rows(group_data: &Value, rows: &mut Vec<i64>) {
+    for (_name, obj) in group_data.as_object().unwrap().iter() {
+        match obj.get("children") {
+            None => {
+                match obj.get("rows") {
+                    None => {}
+                    Some(rows_obj) => {
+                        for row in rows_obj.as_array().unwrap() {
+                            rows.push(row.as_i64().unwrap());
+                        }
+                    }
+                }
+            }
+            Some(children) => {
+                populate_group_rows(children, rows);
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::processors::group::{build_field_structure, group};
+    use crate::processors::group::{build_field_structure, get_group_rows, group};
 
     fn get_data() -> Value {
         return json!([
@@ -225,5 +262,18 @@ mod test {
         assert_eq!(child_11_c.child_count, 1);
         assert_eq!(child_11_c_rows.len(), 1);
         assert_eq!(child_11_c_rows[0], 2);
+    }
+
+    #[test]
+    fn get_group_rows_test() {
+        let data = get_data();
+        let intent = json!(["value", "isActive"]);
+        let group = group(&intent, &data);
+        let result = get_group_rows(&group);
+        assert_eq!(result.as_array().unwrap().len(), 5);
+
+        let group_10 = &group["root"]["children"]["10"];
+        let result = get_group_rows(&group_10);
+        assert_eq!(result.as_array().unwrap().len(), 2);
     }
 }
