@@ -6,9 +6,9 @@ use crate::traits::Aggregate;
 use crate::aggregates::{Min, Max, Ave, Sum, Count};
 
 /// Create aggregate objects based on the rows and data provided
-pub fn aggregate_rows(intent: &Value, data: &Value, rows: &Value) -> Value {
+pub fn aggregate_rows(intent: &Value, data: &Vec<Value>, rows: &Value) -> Value {
     let mut aggregator = create_aggregator_from_intent(&intent);
-    let data_array = data.as_array().unwrap();
+    let data_array = data;
 
     let mut i;
     for row_index in rows.as_array().unwrap() {
@@ -68,14 +68,14 @@ mod test {
     use serde_json::{json, Value};
     use crate::processors::aggregate::{aggregate_rows};
 
-    fn get_data() -> Value {
-        return json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
+    fn get_data() -> Vec<Value> {
+        let mut result: Vec<Value> = Vec::new();
+        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
+        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
+        return result;
     }
 
     #[test]

@@ -1,7 +1,6 @@
 use std::borrow::BorrowMut;
 use std::collections::HashMap;
 use serde_json::{Value};
-use wasm_bindgen::JsValue;
 use crate::processors::aggregate::aggregate_rows;
 
 #[derive(Debug)]
@@ -41,7 +40,7 @@ impl Field {
         }
 
         let field = fields[field_index];
-        let value= get_value(&row, field);
+        let value= get_value(&row, &field);
 
         if self.children.contains_key(value.as_str()) {
             let child = self.children.get_mut(value.as_str()).unwrap();
@@ -95,9 +94,8 @@ impl Field {
 }
 
 /// Given a group intent, group the data based on their values
-pub fn group(intent: &Value, data: &Value) -> Value {
-    let fields = intent.as_array().unwrap().iter().map(|x| x.as_str().unwrap()).collect::<Vec<&str>>();
-    let root = build_field_structure(&data, &fields);
+pub fn group(intent: &Vec<&str>, data: &Vec<Value>) -> Value {
+    let root = build_field_structure(&data, &intent);
     let mut result = Value::Object(Default::default());
 
     root.to_json(&mut result);
@@ -116,7 +114,7 @@ pub fn get_group_rows(group_data: &Value) -> Value {
     Value::from(rows)
 }
 
-fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Value) {
+fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<Value>) {
     // aggregate lower parts first ten move up and build it up from there.
     match group_data.get("rows") {
         None => {
@@ -131,7 +129,7 @@ fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Valu
     }
 }
 
-fn aggregate_group_children(group_data: &mut Value, aggregate_intent: &Value, data: &Value) {
+fn aggregate_group_children(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<Value>) {
     match group_data.get_mut("children") {
         None => {}
         Some(children) => {
@@ -142,7 +140,7 @@ fn aggregate_group_children(group_data: &mut Value, aggregate_intent: &Value, da
     }
 }
 
-pub fn calculate_group_aggregate(group_data: &mut Value, aggregate_intent: &Value, data: &Value) {
+pub fn calculate_group_aggregate(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<Value>) {
     match group_data.get_mut("root") {
         None => {
             aggregate_group(group_data, &aggregate_intent, &data);
@@ -154,18 +152,20 @@ pub fn calculate_group_aggregate(group_data: &mut Value, aggregate_intent: &Valu
 }
 
 fn get_value(row: &Value, field: &str) -> String {
-    if row[field].is_string() {
-        return String::from(&row[field].as_str().unwrap().to_string());
+    let value = &row[&field];
+
+    if value.is_string() {
+        return String::from(value.as_str().unwrap().to_string());
     }
 
-    return row[&field].to_string();
+    return value.to_string();
 }
 
-fn build_field_structure(data: &Value, fields: &Vec<&str>) -> Field {
+fn build_field_structure(data: &Vec<Value>, fields: &Vec<&str>) -> Field {
     let mut row_index = 0;
     let mut root = Field::new("grouping".into(), "root".into());
 
-    for row in data.as_array().unwrap() {
+    for row in data {
         root.process_row(&row, &fields, 0, row_index);
         row_index += 1;
     }
@@ -199,20 +199,20 @@ mod test {
     use serde_json::{json, Value};
     use crate::processors::group::{aggregate_group_children, build_field_structure, calculate_group_aggregate, get_group_rows, group};
 
-    fn get_data() -> Value {
-        return json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
+    fn get_data() -> Vec<Value> {
+        let mut result: Vec<Value> = Vec::new();
+        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
+        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
+        return result;
     }
 
     #[test]
     fn group_test() {
         let data = get_data();
-        let intent = json!(["value", "isActive"]);
+        let intent = Vec::from(["value", "isActive"]);
         let result = group(&intent, &data);
 
         let group_5 = result.get("root")
@@ -244,15 +244,13 @@ mod test {
     fn field_structure_test() {
         let fields: Vec<&str> = vec!["field1", "field2"];
 
-        let data = json!([
-            {"field1": 10, "field2": "a", "value": 1},
-            {"field1": 10, "field2": "b", "value": 2},
-            {"field1": 11, "field2": "c", "value": 3},
-            {"field1": 10, "field2": "a", "value": 4}
-        ]);
+        let mut data: Vec<Value> = Vec::new();
+        data.push(json!({"field1": 10, "field2": "a", "value": 1}));
+        data.push(json!({"field1": 10, "field2": "b", "value": 2}));
+        data.push(json!({"field1": 11, "field2": "c", "value": 3}));
+        data.push(json!({"field1": 10, "field2": "a", "value": 4}));
 
         let result = build_field_structure(&data, &fields);
-        println!("{:?}", result);
 
         let child_10 = result.children.get("10").unwrap();
         assert_eq!(child_10.name, "field1");
@@ -298,7 +296,7 @@ mod test {
     #[test]
     fn get_group_rows_test() {
         let data = get_data();
-        let intent = json!(["value", "isActive"]);
+        let intent = Vec::from(["value", "isActive"]);
         let group = group(&intent, &data);
         let result = get_group_rows(&group);
         assert_eq!(result.as_array().unwrap().len(), 5);
@@ -311,7 +309,7 @@ mod test {
     #[test]
     fn aggregate_group_test() {
         let data = get_data();
-        let group_intent = json!(["value", "isActive"]);
+        let group_intent = Vec::from(["value", "isActive"]);
         let mut group = group(&group_intent, &data);
         let ag_intent = json!({
             "min": "value",
@@ -335,7 +333,7 @@ mod test {
     #[test]
     fn aggregate_children_test() {
         let data = get_data();
-        let group_intent = json!(["value", "isActive"]);
+        let group_intent = Vec::from(["value", "isActive"]);
         let mut group = group(&group_intent, &data);
         let ag_intent = json!({
             "min": "value",

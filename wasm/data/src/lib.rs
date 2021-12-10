@@ -3,7 +3,6 @@
 
 use wasm_bindgen::prelude::*;
 use serde_json::{json, Value};
-use wasm_bindgen::JsObject;
 use crate::evaluators::evaluate_object;
 
 mod evaluators;
@@ -59,21 +58,18 @@ pub fn filter_data(intent: JsValue, data: JsValue) -> Vec<usize> {
 #[wasm_bindgen]
 pub fn group_data(intent: String, data: String) -> String {
     let intent_array: Vec<&str> = serde_json::from_str(intent.as_str()).unwrap();
-    let intent_val = Value::from(intent_array);
-
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
-    let data_val = Value::from(data_array);
 
-    let result = processors::group(&intent_val, &data_val);
+    let result = processors::group(&intent_array, &data_array);
 
     return String::from(result.to_string());
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"
-// #[wasm_bindgen]
-// pub fn iso8601_to_string(duration: String) -> String {
-//     iso8601_to_duration_str(&Value::from(duration))
-// }
+#[wasm_bindgen]
+pub fn iso8601_to_string(duration: String) -> String {
+    iso8601_to_duration_str(&Value::from(duration))
+}
 
 /// Take a grouping structure and sort it according to the intent.
 /// todo
@@ -83,14 +79,6 @@ pub fn group_data(intent: String, data: String) -> String {
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Value};
-    use serde_json::Value::Array;
-
-    #[test]
-    fn test() {
-        let array: Vec<&str> = serde_json::from_str("[\"hello\", \"world\"]").unwrap();
-        assert_eq!(array.len(), 2);
-    }
 }
 
 /*
