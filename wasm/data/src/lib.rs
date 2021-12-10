@@ -33,26 +33,22 @@ use crate::duration::iso8601_to_duration_str;
 
 /// Test if a object is visible in the scope of the defined filter.
 #[wasm_bindgen]
-pub fn in_filter(intent: JsValue, object: JsValue) -> bool {
-    let intent_str = intent.as_string().unwrap();
-    let intent_val = json!(intent_str);
-
-    let object_str = object.as_string().unwrap();
-    let object_val = json!(object_str);
+pub fn in_filter(intent: String, object: String) -> bool {
+    let intent_val = json!(intent);
+    let object_val = json!(object);
 
     return evaluate_object(&intent_val, &object_val);
 }
 
 /// Filter a set of records and give back the indexes of the records visible in the filter.
 #[wasm_bindgen]
-pub fn filter_data(intent: JsValue, data: JsValue) -> Vec<usize> {
-    let intent_str = intent.as_string().unwrap();
-    let intent_val = json!(intent_str);
+pub fn filter_data(intent: String, data: String) -> Vec<usize> {
+    console_error_panic_hook::set_once();
 
-    let data_str = data.as_string().unwrap();
-    let data_val = json!(data_str);
+    let intent_val: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    return processors::filter(&intent_val, &data_val);
+    return processors::filter(&intent_val, &data_array);
 }
 
 #[wasm_bindgen]

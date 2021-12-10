@@ -13,7 +13,7 @@ iso8601-duration = "0.1.0"
 wasm-bindgen = "0.2.78"
 #serde-wasm-bindgen = "0.3.1"
 #
-#console_error_panic_hook = "0.1.7"
+console_error_panic_hook = "0.1.7"
 #
 #[dependencies.web-sys]
 #version = "0.3.55"

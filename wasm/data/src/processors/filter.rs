@@ -1,14 +1,14 @@
 use serde_json::Value;
 use crate::evaluate_object;
 
-pub fn filter(intent: &Value, data: &Value) -> Vec<usize> {
+pub fn filter(intent: &Vec<Value>, data: &Vec<Value>) -> Vec<usize> {
     let mut index = 0;
     let mut filter_result = Vec::new();
 
-    let filters = intent.as_array().unwrap();
+    let filters = intent;
     let mut pass: bool;
 
-    for row in data.as_array().unwrap() {
+    for row in data {
         pass = true;
 
         for filter in filters {
@@ -35,20 +35,21 @@ mod test {
     use crate::processors::filter;
     use serde_json::Value::Null;
 
-    fn get_data() -> Value {
-        return json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
+    fn get_data() -> Vec<Value> {
+        let mut result: Vec<Value> = Vec::new();
+        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
+        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
+        return result;
     }
 
     #[test]
     fn simple_filter_test() {
         let data = get_data();
-        let intent = json!([{ "field": "value", "operator": "<", "value": 20 }]);
+        let mut intent: Vec<Value> = Vec::new();
+        intent.push(json!({ "field": "value", "operator": "<", "value": 20 }));
 
         let result = filter(&intent, &data);
 
@@ -61,10 +62,9 @@ mod test {
     #[test]
     fn composite_filter_test() {
         let data = get_data();
-        let intent = json!([
-            {"field": "value", "operator": "<", "value": 20},
-            {"field": "isActive", "operator": "==", "value": false}
-        ]);
+        let mut intent: Vec<Value> = Vec::new();
+        intent.push(json!({"field": "value", "operator": "<", "value": 20}));
+        intent.push(json!({"field": "isActive", "operator": "==", "value": false}));
 
         let result = filter(&intent, &data);
 
@@ -76,11 +76,11 @@ mod test {
     #[test]
     fn complex_filter_test() {
         let data = get_data();
-        let intent = json!([
-            { "field": "code", "operator": "in", "value": ["A", "B", "C"] },
-            { "field": "value", "operator": "==", "value": 10 },
-            { "field": "isActive", "operator": "not_null", "value": Null}
-        ]);
+
+        let mut intent: Vec<Value> = Vec::new();
+        intent.push(json!({ "field": "code", "operator": "in", "value": ["A", "B", "C"] }));
+        intent.push(json!({ "field": "value", "operator": "==", "value": 10 }));
+        intent.push(json!({ "field": "isActive", "operator": "not_null", "value": Null}));
 
         let result = filter(&intent, &data);
 

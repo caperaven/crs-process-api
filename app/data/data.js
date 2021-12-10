@@ -13,11 +13,23 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async groupData() {
-        let json = JSON.stringify(Object.assign([], this.data));
+        let json = JSON.stringify(this.data);
         let fields = JSON.stringify(["site", "value"]);
         let result = group_data(fields, json);
         console.log(result);
         // alert("done");
+    }
+
+    async filterData() {
+        let json = JSON.stringify(this.data);
+        let intent = JSON.stringify([{ "field": "site", "operator": "==", "value": "Site 1" }]);
+        let result = filter_data(intent, json);
+        console.log(result);
+
+        for (let i = 0; i < 10; i++) {
+            let index = result[i];
+            console.log(this.data[index]);
+        }
     }
 
     async convertDuration() {
