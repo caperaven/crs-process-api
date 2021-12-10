@@ -1,4 +1,4 @@
-import init, {filter_data, group_data} from "./../../src/bin/data.js";
+import init, {filter_data, group_data, iso8601_to_string} from "./../../src/bin/data.js";
 
 init();
 
@@ -18,6 +18,10 @@ export default class Data extends crsbinding.classes.ViewBase {
         let result = group_data(fields, json);
         console.log(result);
         // alert("done");
+    }
+
+    async convertDuration() {
+        console.log(iso8601_to_string("PT100H30M"));
     }
 }
 
