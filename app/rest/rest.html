@@ -1,0 +1,31 @@
+<style>
+    .toolbar {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: max-content max-content max-content max-content;
+    }
+
+    .grid div {
+        padding: 0.5rem;
+    }
+</style>
+<h2>${title}</h2>
+
+<div class="toolbar">
+    <button click.call="get">Get Records</button>
+    <button click.call="update">Update Records</button>
+</div>
+
+<div class="grid">
+    <template for="record of records.data">
+        <div>${record.name}</div>
+        <div>${record.gender}</div>
+        <div>${record.email}</div>
+        <div>${record.status}</div>
+    </template>
+</div>

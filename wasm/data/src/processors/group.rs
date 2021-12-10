@@ -1,6 +1,7 @@
 use std::borrow::BorrowMut;
 use std::collections::HashMap;
 use serde_json::{Value};
+use wasm_bindgen::JsValue;
 use crate::processors::aggregate::aggregate_rows;
 
 #[derive(Debug)]
@@ -96,12 +97,10 @@ impl Field {
 /// Given a group intent, group the data based on their values
 pub fn group(intent: &Value, data: &Value) -> Value {
     let fields = intent.as_array().unwrap().iter().map(|x| x.as_str().unwrap()).collect::<Vec<&str>>();
-
     let root = build_field_structure(&data, &fields);
     let mut result = Value::Object(Default::default());
 
     root.to_json(&mut result);
-
     return result;
 }
 

@@ -32,7 +32,7 @@ pub fn filter(intent: &Value, data: &Value) -> Vec<usize> {
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::{filter};
+    use crate::processors::filter;
     use serde_json::Value::Null;
 
     fn get_data() -> Value {

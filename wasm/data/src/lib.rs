@@ -1,7 +1,9 @@
 #![feature(option_result_contains)]
 // https://docs.serde.rs/serde_json/value/enum.Value.html
 
+use wasm_bindgen::prelude::*;
 use serde_json::{json, Value};
+use wasm_bindgen::JsObject;
 use crate::evaluators::evaluate_object;
 
 mod evaluators;
@@ -13,7 +15,6 @@ mod enums;
 mod aggregates;
 mod traits;
 
-use processors::filter;
 use crate::duration::iso8601_to_duration_str;
 
 /// Calculate a intent description where the following actions or a subset of these actions took place.
@@ -22,24 +23,57 @@ use crate::duration::iso8601_to_duration_str;
 /// 3. Group
 /// 4. Aggregates
 /// 5. Unique Value
-pub fn get_perspective(_intent: Value, data: Value) -> Value {
-    if data.is_array() == false {
-        return Value::from("error: data must be an array");
-    }
-
-    return json!({
-    })
-}
+// pub fn get_perspective(_intent: Value, data: Value) -> Value {
+//     if data.is_array() == false {
+//         return Value::from("error: data must be an array");
+//     }
+//
+//     return json!({
+//     })
+// }
 
 /// Test if a object is visible in the scope of the defined filter.
-pub fn in_filter(intent: Value, object: Value) -> bool {
-    return evaluate_object(&intent, &object);
+#[wasm_bindgen]
+pub fn in_filter(intent: JsValue, object: JsValue) -> bool {
+    let intent_str = intent.as_string().unwrap();
+    let intent_val = json!(intent_str);
+
+    let object_str = object.as_string().unwrap();
+    let object_val = json!(object_str);
+
+    return evaluate_object(&intent_val, &object_val);
+}
+
+/// Filter a set of records and give back the indexes of the records visible in the filter.
+#[wasm_bindgen]
+pub fn filter_data(intent: JsValue, data: JsValue) -> Vec<usize> {
+    let intent_str = intent.as_string().unwrap();
+    let intent_val = json!(intent_str);
+
+    let data_str = data.as_string().unwrap();
+    let data_val = json!(data_str);
+
+    return processors::filter(&intent_val, &data_val);
+}
+
+#[wasm_bindgen]
+pub fn group_data(intent: String, data: String) -> String {
+    let intent_array: Vec<&str> = serde_json::from_str(intent.as_str()).unwrap();
+    let intent_val = Value::from(intent_array);
+
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
+    let data_val = Value::from(data_array);
+
+    let result = processors::group(&intent_val, &data_val);
+
+    return String::from(result.to_string());
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"
-pub fn iso8601_to_string(duration: String) -> String {
-    iso8601_to_duration_str(&Value::from(duration))
-}
+// #[wasm_bindgen]
+// pub fn iso8601_to_string(duration: String) -> String {
+//     iso8601_to_duration_str(&Value::from(duration))
+// }
 
 /// Take a grouping structure and sort it according to the intent.
 /// todo
@@ -49,13 +83,13 @@ pub fn iso8601_to_string(duration: String) -> String {
 
 #[cfg(test)]
 mod test {
-    use serde_json::json;
-    use crate::in_filter;
+    use serde_json::{json, Value};
+    use serde_json::Value::Array;
 
     #[test]
-    fn in_filter_test() {
-        assert_eq!(in_filter(json!({ "field": "value", "operator": "eq", "value": 10 }), json!({ "value": 10 })), true);
-        assert_eq!(in_filter(json!({ "field": "value", "operator": "eq", "value": 10 }), json!({ "value": 20 })), false);
+    fn test() {
+        let array: Vec<&str> = serde_json::from_str("[\"hello\", \"world\"]").unwrap();
+        assert_eq!(array.len(), 2);
     }
 }
 
@@ -78,4 +112,8 @@ mod test {
         2.2 get from provided indexes
         2.3 get from filter expression
         2.4 give count of unique values
+
+
+    console_error_panic_hook::set_once();
+
  */

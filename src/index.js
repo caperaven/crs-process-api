@@ -13,6 +13,8 @@ import {DomActions} from "./action-systems/dom-actions.js";
 import {BindingActions} from "./action-systems/binding-actions.js";
 import {SystemActions} from "./action-systems/system-actions.js";
 import {EventsActions} from "./action-systems/events.js";
+import {RestServicesAction} from "./action-systems/rest-services-action.js";
+import {RandomActions} from "./action-systems/random.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -33,7 +35,9 @@ globalThis.crs.intent = {
     dom         : DomActions,
     binding     : BindingActions,
     system      : SystemActions,
-    events      : EventsActions
+    events      : EventsActions,
+    rest        : RestServicesAction,
+    random      : RandomActions
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();

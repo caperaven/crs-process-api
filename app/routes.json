@@ -33,6 +33,16 @@
       "title": "Events",
       "hash": "#events",
       "view": "events"
+    },
+    {
+      "title": "Rest Api",
+      "hash": "#rest",
+      "view": "rest"
+    },
+    {
+      "title": "Data Operations",
+      "hash": "#data",
+      "view": "data"
     }
   ]
 }
