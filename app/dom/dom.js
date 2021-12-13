@@ -1,4 +1,8 @@
 export default class Dom extends crsbinding.classes.ViewBase {
+    get typeId() {
+        return "MyTypeIdValue"
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add((await (import("./schemas/elements.js"))).schema);
@@ -8,6 +12,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add((await (import("./schemas/crs-widget.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/move-element.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/filter.js"))).schema);
+        crs.processSchemaRegistry.add((await (import("./schemas/tabs.js"))).schema);
     }
 
     async disconnectedCallback() {
@@ -199,6 +204,42 @@ export default class Dom extends crsbinding.classes.ViewBase {
                 action: "clear",
                 args: {
                     schema: "filter"
+                }
+            }
+        })
+    }
+
+    async openGoogle() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "google",
+                args: {
+                    schema: "tabs-example"
+                }
+            }
+        })
+    }
+
+    async openInput() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "input",
+                args: {
+                    schema: "tabs-example"
+                }
+            }
+        })
+    }
+
+    async openParameters() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "parameters",
+                args: {
+                    schema: "tabs-example"
                 }
             }
         })

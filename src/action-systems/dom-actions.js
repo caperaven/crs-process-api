@@ -240,6 +240,17 @@ export class DomActions {
         const filterString = await crs.process.getValue(step.args.filter, context, process, item);
         await filter(step.args.query, filterString);
     }
+
+    static async open_tab(step, context, process, item) {
+        let url = await crs.intent.string.inflate({
+            args: {
+                template: step.args.url,
+                parameters: step.args.parameters
+            }
+        }, context, process, item);
+
+        window.open(url, "_blank");
+    }
 }
 
 async function move_element(query, target, position) {

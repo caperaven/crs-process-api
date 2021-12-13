@@ -15,6 +15,7 @@ import {SystemActions} from "./action-systems/system-actions.js";
 import {EventsActions} from "./action-systems/events.js";
 import {RestServicesAction} from "./action-systems/rest-services-action.js";
 import {RandomActions} from "./action-systems/random.js";
+import {StringActions} from "./action-systems/string-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -37,8 +38,12 @@ globalThis.crs.intent = {
     system      : SystemActions,
     events      : EventsActions,
     rest        : RestServicesAction,
-    random      : RandomActions
+    random      : RandomActions,
+    string      : StringActions
 }
+
+//import {DataActions} from "./action-systems/data-actions.js";
+//globalThis.crs.process.addFeature("data-actions");
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
