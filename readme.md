@@ -151,15 +151,23 @@ Intent is defined on `globalThis.crs.intent`.
 
 Default intent are:
 
-1. array
-1. condition
-1. console
-1. loop
-1. object
-1. action
-1. math
-1. process
-1. module
+1. actions
+2. array
+3. binding
+4. condition
+5. console
+6. data
+7. dom
+8. events
+9. loop
+10. math
+11. module
+12. object
+13. process
+14. random
+15. rest services
+16. string manipulation
+17. system
 
 Each of these has the same functional entry point called "perform".  
 They all have the same parameters.  
@@ -732,6 +740,7 @@ A process's "result" must be set on the "result" property of the process object 
 
 An important part of running sub processes is the `process elementsSchema registry`.
 
+
 ```js
 crs.processSchemaRegistry
 ```
@@ -995,6 +1004,89 @@ Either way the dialog will close on it's own.
 Executing the pass step will cause an automatic validation check.  
 If the validation fails, the dialog will not close.  
 For the dailog to close on the pass, it must successfully validate.
+
+<strong>Open new tab</strong>
+
+This feature allows you to add a new tab on a defined url.  
+There are two scenarios.
+
+1. static url 
+2. url with parameters
+
+<strong>Static example</strong>
+```js
+google: {
+    steps: {
+        start: {
+            type: "dom",
+            action: "open_tab",
+
+            args: {
+                url: "http://www.google.com"
+            }
+        }
+    }
+},
+```
+
+<strong>Parameters example</strong>
+
+```js
+parameters: {
+    steps: {
+        start: {
+            type: "dom",
+            action: "open_tab",
+
+            args: {
+                url: "#input/${id}?type='tasks'&typeId='${typeId}'", // http://localhost/#input/1001?type='tasks'&typeId='2000'
+                parameters: {
+                    id: 1000,
+                    typeId: "$context.typeId"
+                }
+            }
+        }
+    }
+}
+```
+
+The static url is simple enough so lets focus instead on the parameters instead.  
+Note the url has js string literal markers in the url.
+
+1. ${id}
+2. ${typeId}
+
+This means, put the parameter with property "id" here and property "typeId" here.  
+The parameters property defines the properties and values to use.  
+These properties can be static values. The id property is a example of that.  
+The property can also use the same source expression as used in other features referencing the prefix syntax.
+In this case the `$context.typeId` indicating that we want to use the typeId value defined on the context as the value of ${typeId}
+
+## Strings
+
+The strings system provides features for working with strings.
+
+<strong>inflate</strong>
+
+```js
+const step = {
+    action: "string",
+    args: {
+        template: "Hello ${value}",
+        parameters: {
+            value: "World"
+        },
+        target: "$context.greeting"
+    }
+}
+```
+
+The url feature above uses this under the hood.  
+The rules around the parameters applies the same here.  
+Use the string literal to mark where the value must be placed and define the details in the parameters.
+The parameter property value being either a static value of based on a prefix.
+
+## Random
 
 ## SchemaRegistry
 

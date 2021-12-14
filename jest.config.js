@@ -25,7 +25,8 @@ module.exports = {
 
   coveragePathIgnorePatterns: [
     "\\\\node_modules\\\\",
-      "src/bin/"
+      "src/bin/",
+      "src/action-systems/data-actions.js"
   ],
 
   // A list of reporter names that Jest uses when writing coverage reports

@@ -33,6 +33,7 @@ export default class Data extends crsbinding.classes.ViewBase {
         let start = performance.now();
         let result = filter_data(intent, json);
         let end = performance.now();
+
         console.log(`filter time: ${end - start} milliseconds - result: ${result.length}`);
 
         for (let i = 0; i < 10; i++) {

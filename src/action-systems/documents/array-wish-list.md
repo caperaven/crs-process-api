@@ -43,3 +43,52 @@ This will swap two items in the array
     }
 }
 ```
+
+
+
+    /**
+     * Combine these two arrays into a single result.
+     * @returns {Promise<void>}
+     */
+    static async concat(step, context, process, item) {
+
+    }
+
+    /**
+     * Replace an item in the array with a different item at the same location.
+     * @returns {Promise<void>}
+     */
+    static async replace(step, context, process, item) {
+
+    }
+
+    /**
+     * Given an array of objects, provide an index of the item and return a property from the object at that location.
+     * If property is not defined, return the entire object instead.
+     * @returns {Promise<void>}
+     */
+    static async get_value(step, context, process, item) {
+
+    }
+
+    /**
+     * Change the value of a field in this array for each item in the array.
+     * Can also define condition and only apply change if condition is met
+     * @returns {Promise<void>}
+     */
+    static async change_field_value(step, context, process, item) {
+        /**
+         * {
+         *     property: "value",
+         *     value: "$context.myvalue"
+         * }
+         */
+
+        /**
+         * {
+         *     property: "value",
+         *     value: "$context.myvalue",
+         *     condition: "siteCode == 'A11'"
+         * }
+         */
+    }
