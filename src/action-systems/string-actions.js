@@ -48,31 +48,6 @@ export class StringActions {
 
         return result;
     }
-
-    /**
-     * Concat values on a object to form a string
-     * @param step
-     * @param context
-     * @param process
-     * @param item
-     * @returns {Promise<void>}
-     */
-    static async from_values(step, context, process, item) {
-        let obj = await crs.process.getValue(step.args.source, context, process, item);
-        let results = [];
-
-        for (let key of step.args.properties) {
-            results.push(obj[key]);
-        }
-
-        let result = results.join(step.args.separator || " ");
-
-        if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, result, context, process, item);
-        }
-
-        return result;
-    }
 }
 
 async function inflate_string(string, parameters, context, process, item) {

@@ -75,28 +75,3 @@ test("string from_array", async () => {
 
     expect(context.result).toEqual("Hello There Array");
 })
-
-test("string from_values", async () => {
-    let context = {
-        person: {
-            firstName: "John",
-            lastName: "Doe",
-            age: 30
-        }
-    }
-
-    const step = {
-        type: "string",
-        action: "from_values",
-        args: {
-            source: "$context.person",
-            properties: ["firstName", "lastName", "age"],
-            separator: " ",
-            target: "$context.result"
-        }
-    }
-
-    await globalThis.crs.process.runStep(step, context, null, null);
-
-    expect(context.result).toEqual("John Doe 30");
-})
