@@ -45,6 +45,25 @@ export class ArrayActions {
 
         return result;
     }
+
+    /**
+     * Create a new array that contains the content of the defined source arrays.
+     * @returns {Promise<*[]>}
+     */
+    static async concat(step, context, process, item) {
+        let result = [];
+
+        for (let source of step.args.sources) {
+            let array = await crs.process.getValue(source, context, process, item);
+            result = [...result, ...array];
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function field_to_csv(array, field, delimiter) {

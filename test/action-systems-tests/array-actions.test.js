@@ -76,3 +76,24 @@ test("ArrayActions - fields to CSV", async () => {
     expect(context.result[0]).toEqual("code1;value1");
     expect(context.result[1]).toEqual("code2;value2");
 })
+
+test("ArrayActions - concat", async () => {
+    const context = {
+        collection1: [1, 2, 3],
+        collection2: [4, 5, 6]
+    }
+
+    const step = {
+        action: "concat",
+        args: {
+            sources: ["$context.collection1", "$context.collection2"],
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+
+    expect(context.result.length).toEqual(6);
+    expect(context.result[0]).toEqual(1);
+    expect(context.result[5]).toEqual(6);
+})
