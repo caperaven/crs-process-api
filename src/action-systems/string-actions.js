@@ -5,7 +5,9 @@ export class StringActions {
 
     /**
      * Given this format, inflate a string and replace the string literal markers with the actual value.
-     * Example. "#input/${id}?type='tasks'&typeId='${typeId}'"
+     * Examples.
+     *      "#input/${id}?type='tasks'&typeId='${typeId}'"
+     *      "${firstName} ${lastName} = ${age} old"
      */
     static async inflate (step, context, process, item) {
         if (step.args.parameters == null) {
@@ -16,6 +18,54 @@ export class StringActions {
         let parameters = step.args.parameters;
 
         let result = await inflate_string(template, parameters, context, process, item);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async to_array(step, context, process, item) {
+        let str = await crs.process.getValue(step.args.source, context, process, item);
+        let result = str.split(step.args.pattern);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async from_array(step, context, process, item) {
+        let array = await crs.process.getValue(step.args.source, context, process, item);
+        let separator = step.args.separator || "";
+        let result = array.join(separator);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * Concat values on a object to form a string
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     * @returns {Promise<void>}
+     */
+    static async from_values(step, context, process, item) {
+        let obj = await crs.process.getValue(step.args.source, context, process, item);
+        let results = [];
+
+        for (let key of step.args.properties) {
+            results.push(obj[key]);
+        }
+
+        let result = results.join(step.args.separator || " ");
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

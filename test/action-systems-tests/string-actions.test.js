@@ -5,7 +5,7 @@ beforeAll(async () => {
     await import("./../../src/index.js");
 })
 
-test ("string format", async () => {
+test ("inflate string format", async () => {
     let context = {
         typeId: 1001
     }
@@ -28,7 +28,75 @@ test ("string format", async () => {
     expect(context.result).toEqual("#input/100?type='tasks'&typeId='1001'");
 })
 
-test ("standard string", async () => {
+test ("inflate standard string", async () => {
     let result = await globalThis.crs.intent.string.inflate({args: {template: "www.test.com"}});
     expect(result).toEqual("www.test.com")
+})
+
+test("string to_array", async () => {
+    let context = {
+        value: "Hello There World"
+    }
+
+    const step = {
+        type: "string",
+        action: "to_array",
+        args: {
+            source: "$context.value",
+            pattern: " ",
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context, null, null);
+
+    expect(context.result.length).toEqual(3);
+    expect(context.result[0]).toEqual("Hello");
+    expect(context.result[1]).toEqual("There");
+    expect(context.result[2]).toEqual("World");
+})
+
+test("string from_array", async () => {
+    let context = {
+        value: ["Hello", "There", "Array"]
+    }
+
+    const step = {
+        type: "string",
+        action: "from_array",
+        args: {
+            source: "$context.value",
+            separator: " ",
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context, null, null);
+
+    expect(context.result).toEqual("Hello There Array");
+})
+
+test("string from_values", async () => {
+    let context = {
+        person: {
+            firstName: "John",
+            lastName: "Doe",
+            age: 30
+        }
+    }
+
+    const step = {
+        type: "string",
+        action: "from_values",
+        args: {
+            source: "$context.person",
+            properties: ["firstName", "lastName", "age"],
+            separator: " ",
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context, null, null);
+
+    expect(context.result).toEqual("John Doe 30");
 })
