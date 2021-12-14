@@ -44,7 +44,7 @@ test("ArrayActions - add - context to array", async () => {
     expect(process.data.collection[0]).toEqual("Hello World");
 });
 
-test("ArrayActions - fieldToCSV", async () => {
+test("ArrayActions - field to CSV", async () => {
     const context = {
         values: [{value: 1}, {value: 2}, {value: 3}]
     };
@@ -52,4 +52,27 @@ test("ArrayActions - fieldToCSV", async () => {
     await globalThis.crs.intent.array.perform({action: "field_to_csv", args: {source: "$context.values", target: "$context.result", delimiter: ";", field: "value"}}, context);
     expect(context.result).not.toBeUndefined();
     expect(context.result).toEqual("1;2;3");
+})
+
+test("ArrayActions - fields to CSV", async () => {
+    const context = {
+        values: [
+            { code: "code1", value: "value1" },
+            { code: "code2", value: "value2" }
+        ]
+    }
+
+    await globalThis.crs.intent.array.perform({action: "field_to_csv",
+        args: {
+            source: "$context.values",
+            fields: ["code", "value"],
+            target: "$context.result",
+            delimiter: ";"
+        }
+    }, context, null, null);
+
+    expect(context.result).not.toBeUndefined();
+    expect(context.result.length).toEqual(2);
+    expect(context.result[0]).toEqual("code1;value1");
+    expect(context.result[1]).toEqual("code2;value2");
 })

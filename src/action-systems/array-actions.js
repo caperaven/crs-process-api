@@ -30,8 +30,14 @@ export class ArrayActions {
             return console.error("fieldToCSV - target array does not exist");
         }
 
-        const map = source.map(item => item[step.args.field]);
-        const result = map.join(step.args.delimiter || ",");
+        let result;
+
+        if (step.args.field != null) {
+            result = field_to_csv(source, step.args.field, step.args.delimiter);
+        }
+        else if (step.args.fields != null) {
+            result = fields_to_csv(source, step.args.fields, step.args.delimiter);
+        }
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -39,4 +45,25 @@ export class ArrayActions {
 
         return result;
     }
+}
+
+async function field_to_csv(array, field, delimiter) {
+    const map = array.map(item => item[field]);
+    return map.join(delimiter || ",");
+}
+
+async function fields_to_csv(array, fields, delimiter) {
+    let result = [];
+
+    for (let row of array) {
+        let values = [];
+
+        for (let field of fields) {
+            values.push(row[field]);
+        }
+
+        result.push(values.join(delimiter));
+    }
+
+    return result;
 }
