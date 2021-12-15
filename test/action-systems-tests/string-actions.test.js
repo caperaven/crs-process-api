@@ -75,3 +75,25 @@ test("string from_array", async () => {
 
     expect(context.result).toEqual("Hello There Array");
 })
+
+test("string replace pattern", async () => {
+    const context = {
+        expr: "@property = value"
+    }
+
+    const step = {
+        type: "string",
+        action: "replace",
+        args: {
+            source: "$context.expr",
+            pattern: "@",
+            value: "schema.variables.",
+            target: "$context.expr"
+        }
+    }
+
+    await globalThis.crs.process.runStep(step, context, null, null);
+
+    expect(context.expr).toEqual("schema.variables.property = value");
+
+})

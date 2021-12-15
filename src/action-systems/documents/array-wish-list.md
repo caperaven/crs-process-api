@@ -44,16 +44,6 @@ This will swap two items in the array
 }
 ```
 
-
-
-    /**
-     * Combine these two arrays into a single result.
-     * @returns {Promise<void>}
-     */
-    static async concat(step, context, process, item) {
-
-    }
-
     /**
      * Replace an item in the array with a different item at the same location.
      * @returns {Promise<void>}

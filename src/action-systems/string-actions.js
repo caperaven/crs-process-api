@@ -48,6 +48,17 @@ export class StringActions {
 
         return result;
     }
+
+    static async replace(step, context, process, item) {
+        let str = await crs.process.getValue(step.args.source, context, process, item);
+        let result = str.split(step.args.pattern).join(step.args.value);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function inflate_string(string, parameters, context, process, item) {

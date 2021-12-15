@@ -307,6 +307,12 @@ const step = {
 }
 ```
 
+result
+
+```js
+"1,2,3"
+```
+
 <strong>multi field example</strong>
 ```js
 const step = {
@@ -320,6 +326,15 @@ const step = {
     }
 }
 ```
+
+result
+
+result
+
+```js
+["10;code1", "20;code2", ...]
+```
+
 
 <strong>concat</strong>
 

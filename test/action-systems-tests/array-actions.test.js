@@ -62,7 +62,8 @@ test("ArrayActions - fields to CSV", async () => {
         ]
     }
 
-    await globalThis.crs.intent.array.perform({action: "field_to_csv",
+    await globalThis.crs.intent.array.perform({
+        action: "field_to_csv",
         args: {
             source: "$context.values",
             fields: ["code", "value"],
