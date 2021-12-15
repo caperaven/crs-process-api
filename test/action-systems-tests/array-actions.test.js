@@ -98,3 +98,30 @@ test("ArrayActions - concat", async () => {
     expect(context.result[0]).toEqual(1);
     expect(context.result[5]).toEqual(6);
 })
+
+test("ArrayActions - change_values", async () => {
+    const context = {
+        values: [{value: 1}, {value: 2}, {value: 3}],
+        value: 10
+    };
+
+    const step = {
+        action: "change_values",
+        args: {
+            source: "$context.values",
+            changes: {
+                "value": "$context.value",
+                "site": "Site 1"
+            }
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+
+    expect(context.values[0].value).toEqual(10);
+    expect(context.values[0].site).toEqual("Site 1");
+    expect(context.values[1].value).toEqual(10);
+    expect(context.values[1].site).toEqual("Site 1");
+    expect(context.values[2].value).toEqual(10);
+    expect(context.values[2].site).toEqual("Site 1");
+})

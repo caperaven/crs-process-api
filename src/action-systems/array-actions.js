@@ -64,6 +64,22 @@ export class ArrayActions {
 
         return result;
     }
+
+    static async change_values(step, context, process, item) {
+        const collection = await crs.process.getValue(step.args.source, context, process, item);
+        const keys = Object.keys(step.args.changes);
+
+        let obj = {};
+        for (let key of keys) {
+            obj[key] = await crs.process.getValue(step.args.changes[key], context, process, item);
+        }
+
+        for (let record of collection) {
+            for (let key of keys) {
+                record[key] = obj[key]
+            }
+        }
+    }
 }
 
 async function field_to_csv(array, field, delimiter) {
