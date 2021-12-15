@@ -265,7 +265,8 @@ This intent provides simple array access.
 The default functions are:
 
 1. add - add a value or object to array
-1. field_to_csv - using an array of objects, export a csv text for a given property on the stored objects.
+2. field_to_csv - using an array of objects, export a csv text for a given property on the stored objects.
+3. concat - combine 2 or more arrays into a single array
 
 <strong>add step</strong>
 ```js
@@ -287,6 +288,12 @@ await crs.intent.array.perform({action: "add", args: {target: values, value: "He
 ```
 
 <strong>field_to_csv step</strong>
+
+There are two scenarios here.
+1. Give me a csv where I only use a single field's value and get a string back with those values in csv.
+2. I want a csv array for each row in the array build up from a number of fields.
+
+<strong>single field example</strong>
 ```js
 const step = {
     type: "array",
@@ -296,6 +303,32 @@ const step = {
         target: "$context.result",  // where to copy the result
         delimiter: ";",             // what delimeter to use
         field: "value"              // what is the property name to use for the values
+    }
+}
+```
+
+<strong>multi field example</strong>
+```js
+const step = {
+    type: "array",
+    action: "field_to_csv",
+    args: {
+        source: "$context.values",  // what array to use 
+        target: "$context.result",  // where to copy the result
+        delimiter: ";",             // what delimeter to use
+        fields: ["value", "code"]   // what is the property name to use for the values
+    }
+}
+```
+
+<strong>concat</strong>
+
+```js
+const step = {
+    action: "concat",
+    args: {
+        sources: ["$context.collection1", "$context.collection2"],
+        target: "$context.result"
     }
 }
 ```
@@ -1064,7 +1097,11 @@ In this case the `$context.typeId` indicating that we want to use the typeId val
 
 ## Strings
 
-The strings system provides features for working with strings.
+The string system provides features for working with strings.
+
+1. inflate
+2. to_array
+3. from_array
 
 <strong>inflate</strong>
 
@@ -1085,6 +1122,54 @@ The url feature above uses this under the hood.
 The rules around the parameters applies the same here.  
 Use the string literal to mark where the value must be placed and define the details in the parameters.
 The parameter property value being either a static value of based on a prefix.
+
+<strong>to_array</strong>
+
+```js
+let context = {
+    value: "Hello There World"
+}
+
+const step = {
+    type: "string",
+    action: "to_array",
+    args: {
+        source: "$context.value",
+        pattern: " ",
+        target: "$context.result"
+    }
+}
+```
+
+results in
+
+```js
+["Hello", "There", "World"]
+```
+
+<strong>from_array</strong>
+
+```js
+let context = {
+    value: ["Hello", "There", "Array"]
+}
+
+const step = {
+    type: "string",
+    action: "from_array",
+    args: {
+        source: "$context.value",
+        separator: " ",
+        target: "$context.result"
+    }
+}
+```
+
+results in
+
+```js
+"Hello There Array"
+```
 
 ## Random
 
