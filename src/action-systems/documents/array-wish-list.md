@@ -60,25 +60,3 @@ This will swap two items in the array
     static async get_value(step, context, process, item) {
 
     }
-
-    /**
-     * Change the value of a field in this array for each item in the array.
-     * Can also define condition and only apply change if condition is met
-     * @returns {Promise<void>}
-     */
-    static async change_field_value(step, context, process, item) {
-        /**
-         * {
-         *     property: "value",
-         *     value: "$context.myvalue"
-         * }
-         */
-
-        /**
-         * {
-         *     property: "value",
-         *     value: "$context.myvalue",
-         *     condition: "siteCode == 'A11'"
-         * }
-         */
-    }

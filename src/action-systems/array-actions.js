@@ -65,6 +65,10 @@ export class ArrayActions {
         return result;
     }
 
+    /**
+     * Change the values of fields in a object array
+     * @returns {Promise<void>}
+     */
     static async change_values(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item);
         const keys = Object.keys(step.args.changes);
@@ -79,6 +83,21 @@ export class ArrayActions {
                 record[key] = obj[key]
             }
         }
+    }
+
+    /**
+     * For a given record at index provided, get the value of defined property
+     * @returns {Promise<*>}
+     */
+    static async get_value(step, context, process, item) {
+        const collection = await crs.process.getValue(step.args.source, context, process, item);
+        let result = collection[step.args.index][step.args.field];
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 }
 

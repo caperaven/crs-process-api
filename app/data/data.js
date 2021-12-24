@@ -8,7 +8,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async buildData() {
-        this.data = await createData(100000);
+        this.data = await createData(10);
         console.log("data loaded done");
     }
 
@@ -44,6 +44,61 @@ export default class Data extends crsbinding.classes.ViewBase {
 
     async convertDuration() {
         console.log(iso8601_to_string("PT100H30M10S"));
+    }
+
+    async create_db() {
+        await crs.intent.db.open({args: {
+            db: "test_db",
+            version: 1,
+            tables: {
+                people: {
+                    parameters: {
+                        keyPath: "id",
+                        autoIncrement: true
+                    },
+                    indexes: {
+                        id: { unique: true }
+                    }
+                }
+            }
+        }});
+    }
+
+    async delete_db() {
+        await crs.intent.db.delete({args: {db: "test_db"}});
+    }
+
+    async save_record() {
+        await crs.intent.db.set_record({
+            args: {
+                db: "test_db",
+                table: "people",
+                record: {
+                    id: 1,
+                    firstName : "John",
+                    lastName : "Smith"
+                }
+            }
+        });
+    }
+
+    async delete_record() {
+        await crs.intent.db.delete_record({
+            args: {
+                db: "test_db",
+                table: "people",
+                key: 1
+            }
+        });
+    }
+
+    async clear_table() {
+        await crs.intent.db.clear_table({
+            args: {
+                db: "test_db",
+                table: "people"
+            }
+        });
     }
 }
 

@@ -16,6 +16,7 @@ import {EventsActions} from "./action-systems/events.js";
 import {RestServicesAction} from "./action-systems/rest-services-action.js";
 import {RandomActions} from "./action-systems/random.js";
 import {StringActions} from "./action-systems/string-actions.js";
+import {DatabaseActions} from "./action-systems/database-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -39,7 +40,8 @@ globalThis.crs.intent = {
     events      : EventsActions,
     rest        : RestServicesAction,
     random      : RandomActions,
-    string      : StringActions
+    string      : StringActions,
+    db          : DatabaseActions
 }
 
 //import {DataActions} from "./action-systems/data-actions.js";

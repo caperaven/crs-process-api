@@ -125,3 +125,22 @@ test("ArrayActions - change_values", async () => {
     expect(context.values[2].value).toEqual(10);
     expect(context.values[2].site).toEqual("Site 1");
 })
+
+test("ArrayActions - get value", async () => {
+    const context = {
+        values: [{value: 1.1}, {value: 2.2}, {value: 3.3}]
+    };
+
+    const step = {
+        action: "get_value",
+        args: {
+            source: "$context.values",
+            index: 0,
+            field: "value",
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+    expect(context.result).toEqual(1.1)
+})
