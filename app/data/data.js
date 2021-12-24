@@ -89,15 +89,18 @@ export default class Data extends crsbinding.classes.ViewBase {
                 records: [
                     {
                         firstName : "Person 1",
-                        lastName : "Smith"
+                        lastName : "Smith",
+                        age: 20
                     },
                     {
                         firstName : "Person 2",
-                        lastName : "Johnson"
+                        lastName : "Johnson",
+                        age: 30
                     },
                     {
                         firstName : "Person 3",
-                        lastName : "Rover"
+                        lastName : "Rover",
+                        age: 40
                     }
                 ]
             }

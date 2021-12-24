@@ -200,7 +200,7 @@ export class DomActions {
         const html = await getHTML(step, context, process, item);
 
         await crsbinding.events.emitter.postMessage(query, {
-            context: process.parameters.bId,
+            context: step.args.context || process?.parameters?.bId,
             html: html
         })
     }
