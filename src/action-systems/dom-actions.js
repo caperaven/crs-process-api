@@ -8,7 +8,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_attribute(step, context, process, item) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
 
@@ -17,7 +17,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_attribute(step, context, process, item) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         const value = element?.getAttribute(step.args.attr);
 
         if (step.args.target != null) {
@@ -32,8 +32,19 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_style(step, context, process, item) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         element.style[step.args.style] = await crs.process.getValue(step.args.value, context, process, item);
+    }
+
+    /**
+     * Set multiple styles on a element
+     * @returns {Promise<void>}
+     */
+    static async set_styles(step, context, process, item) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        for (let style of Object.keys(step.args.styles)) {
+            element.style[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
+        }
     }
 
     /**
@@ -41,7 +52,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_style(step, context, process, item) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         const value = element?.style[step.args.style];
 
         if (step.args.target != null) {
@@ -56,7 +67,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_text(step, context, process, item) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         element.textContent = await crs.process.getValue(step.args.value, context, process, item);
     }
 
@@ -65,7 +76,7 @@ export class DomActions {
      * @returns {Promise<*|string|*|string|*|*>}
      */
     static async get_text(step, context, process, item) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         const value = element.textContent;
 
         if (step.args.target != null) {
@@ -91,7 +102,7 @@ export class DomActions {
         }
 
         for (let style of styles) {
-            element.styles[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
+            element.style[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
         }
 
         if (step.args.textContent != null) {
@@ -111,7 +122,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_element(step) {
-        const element = document.querySelector(step.args.query);
+        const element = step.args.element || document.querySelector(step.args.query);
         element?.parentElement?.removeChild(element);
 
         await crsbinding.providerManager.releaseElement(element);
