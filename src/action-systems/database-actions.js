@@ -52,7 +52,7 @@ export class DatabaseActions {
     static async get_all(step, context, process, item) {
         return new Promise(async resolve => {
             const store = await get_store(step, context, process, item);
-            const request = store.getAll();
+            const request = store.getAll(step.args.keys);
 
             request.onsuccess = event => {
                 request.onsuccess = null;
