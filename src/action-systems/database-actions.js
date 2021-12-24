@@ -35,6 +35,31 @@ export class DatabaseActions {
         const store = await get_store(step, context, process, item);
         store.clear();
     }
+
+    static async get_record(step, context, process, item) {
+        return new Promise(async (resolve, reject) => {
+            const store = await get_store(step, context, process, item);
+            const res = store.get(step.args.key);
+
+            res.onsuccess = event => {
+                res.onsuccess = null;
+                const value = event.target.result;
+                resolve(value);
+            };
+        })
+    }
+
+    static async get_all(step, context, process, item) {
+        return new Promise(async resolve => {
+            const store = await get_store(step, context, process, item);
+            const request = store.getAll();
+
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                resolve(event.target.result);
+            }
+        })
+    }
 }
 
 function open_db(dbName, version, tables) {

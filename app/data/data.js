@@ -74,7 +74,6 @@ export default class Data extends crsbinding.classes.ViewBase {
                 db: "test_db",
                 table: "people",
                 record: {
-                    id: 1,
                     firstName : "John",
                     lastName : "Smith"
                 }
@@ -99,6 +98,29 @@ export default class Data extends crsbinding.classes.ViewBase {
                 table: "people"
             }
         });
+    }
+
+    async get_record() {
+        let result = await crs.intent.db.get_record({
+            args: {
+                db: "test_db",
+                table: "people",
+                key: 1
+            }
+        });
+
+        console.log(result);
+    }
+
+    async get_all() {
+        let result = await crs.intent.db.get_all({
+            args: {
+                db: "test_db",
+                table: "people"
+            }
+        });
+
+        console.log(result);
     }
 }
 
