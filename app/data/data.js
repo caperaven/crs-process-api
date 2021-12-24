@@ -81,6 +81,29 @@ export default class Data extends crsbinding.classes.ViewBase {
         });
     }
 
+    async add_multiple() {
+        await crs.intent.db.add_records({
+            args: {
+                db: "test_db",
+                table: "people",
+                records: [
+                    {
+                        firstName : "Person 1",
+                        lastName : "Smith"
+                    },
+                    {
+                        firstName : "Person 2",
+                        lastName : "Johnson"
+                    },
+                    {
+                        firstName : "Person 3",
+                        lastName : "Rover"
+                    }
+                ]
+            }
+        });
+    }
+
     async delete_record() {
         await crs.intent.db.delete_record({
             args: {

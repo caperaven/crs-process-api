@@ -26,6 +26,13 @@ export class DatabaseActions {
         store.put(step.args.record);
     }
 
+    static async add_records(step, context, process, item) {
+        const store = await get_store(step, context, process, item);
+        for (let record of step.args.records) {
+            store.add(record);
+        }
+    }
+
     static async delete_record(step, context, process, item) {
         const store = await get_store(step, context, process, item);
         store.delete(step.args.key);
