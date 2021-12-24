@@ -23,19 +23,22 @@ export class DatabaseActions {
 
     static async set_record(step, context, process, item) {
         const store = await get_store(step, context, process, item);
-        store.put(step.args.record);
+        const record = await crs.process.getValue(step.args.record, context, process, item);
+        store.put(record);
     }
 
     static async add_records(step, context, process, item) {
         const store = await get_store(step, context, process, item);
-        for (let record of step.args.records) {
+        const records = await crs.process.getValue(step.args.records, context, process, item);
+        for (let record of records) {
             store.add(record);
         }
     }
 
     static async delete_record(step, context, process, item) {
         const store = await get_store(step, context, process, item);
-        store.delete(step.args.key);
+        const key = await crs.process.getValue(step.args.key, context, process, item);
+        store.delete(key);
     }
 
     static async clear_table(step, context, process, item) {
@@ -48,9 +51,14 @@ export class DatabaseActions {
             const store = await get_store(step, context, process, item);
             const res = store.get(step.args.key);
 
-            res.onsuccess = event => {
+            res.onsuccess = async event => {
                 res.onsuccess = null;
                 const value = event.target.result;
+
+                if (step.args.target != null) {
+                    await crs.process.setValue(step.args.target, value, context, process, item);
+                }
+
                 resolve(value);
             };
         })
@@ -61,9 +69,16 @@ export class DatabaseActions {
             const store = await get_store(step, context, process, item);
             const request = store.getAll(step.args.keys);
 
-            request.onsuccess = event => {
+            request.onsuccess = async event => {
                 request.onsuccess = null;
-                resolve(event.target.result);
+
+                const value = event.target.result;
+
+                if (step.args.target != null) {
+                    await crs.process.setValue(step.args.target, value, context, process, item);
+                }
+
+                resolve(value);
             }
         })
     }
