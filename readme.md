@@ -925,6 +925,17 @@ step: {
 
 <strong>get_text</strong>
 
+```js
+step: {
+    type: "dom",
+    action: "get_text",
+    args: {
+        query: "#element",
+        target: "$context.value"
+    }
+}
+```
+
 <strong>create_element</strong>
 
 ```js
@@ -955,6 +966,20 @@ step: {
 }
 ```
 <strong>post_message</strong>
+
+<strong>clone_for_movement</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "clone_for_movement",
+    args: {
+        query: "#clickClone",
+        parentQuery: "#cloneTarget",
+        position: {x: 300, y: 0}
+    }
+}
+```
 
 <strong>show_widget_dialog</strong>
 This step will create a html layer that consists out of two parts.

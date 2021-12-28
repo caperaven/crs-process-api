@@ -283,4 +283,17 @@ export default class Dom extends crsbinding.classes.ViewBase {
             }
         })
     }
+
+    async clone() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "clone",
+                args: { schema: "dom-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
 }

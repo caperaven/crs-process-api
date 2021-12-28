@@ -291,6 +291,20 @@ export class DomActions {
 
         window.open(url, "_blank");
     }
+
+    static async clone_for_movement(step, context, process, item) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const parent = step.args.parent || document.querySelector(step.args.parentQuery);
+        const position = await crs.process.getValue(step.args.position || {x: 0, y: 0}, context, process, item);
+
+        const result = element.cloneNode(true);
+
+        if (parent != null) {
+            parent.appendChild(result);
+            result.style.position = "absolute";
+            result.style.transform = `translate(${position.x}px, ${position.y}px)`;
+        }
+    }
 }
 
 async function move_element(query, target, position) {

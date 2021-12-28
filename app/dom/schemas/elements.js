@@ -148,5 +148,19 @@ export const schema = {
                 }
             }
         }
+    },
+
+    clone: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "clone_for_movement",
+                args: {
+                    query: "#clickClone",
+                    parentQuery: "#cloneTarget",
+                    position: {x: 300, y: 0}
+                }
+            }
+        }
     }
 }
