@@ -320,6 +320,8 @@ export class DomActions {
             result.style.position = "absolute";
             result.style.transform = `translate(${position.x}px, ${position.y}px)`;
         }
+
+        return result;
     }
 }
 
