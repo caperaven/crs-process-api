@@ -38,5 +38,44 @@ export const schema = {
                 }
             }
         }
+    },
+
+    add_class: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "add_class",
+                args: {
+                    query: "#class-target",
+                    value: "bg_red"
+                }
+            }
+        }
+    },
+
+    add_classes: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "add_class",
+                args: {
+                    query: "#class-target",
+                    value: ["bg_red", "fg_white"]
+                }
+            }
+        }
+    },
+
+    remove_class: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "remove_class",
+                args: {
+                    query: "#class-target",
+                    value: ["bg_red", "fg_white"]
+                }
+            }
+        }
     }
 }

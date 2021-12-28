@@ -28,6 +28,30 @@ export class DomActions {
     }
 
     /**
+     * Add a class to the classlist
+     * @returns {Promise<void>}
+     */
+    static async add_class(step, context, process, item) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const cls = await crs.process.getValue(step.args.value, context, process, item);
+
+        let collection = Array.isArray(cls) == true ? cls : [cls];
+        element.classList.add(...collection);
+    }
+
+    /**
+     * Add a class to the classlist
+     * @returns {Promise<void>}
+     */
+    static async remove_class(step, context, process, item) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const cls = await crs.process.getValue(step.args.value, context, process, item);
+
+        let collection = Array.isArray(cls) == true ? cls : [cls];
+        element.classList.remove(...collection);
+    }
+
+    /**
      * Set a style property value
      * @returns {Promise<void>}
      */
@@ -96,6 +120,7 @@ export class DomActions {
 
         const attributes = Object.keys(step.args.attributes || {});
         const styles = Object.keys(step.args.styles || {});
+        const classes = step.args.classes || [];
 
         for (let attr of attributes) {
             element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
@@ -103,6 +128,10 @@ export class DomActions {
 
         for (let style of styles) {
             element.style[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
+        }
+
+        for (let cls of classes) {
+            element.classList.add(cls);
         }
 
         if (step.args.textContent != null) {

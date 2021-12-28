@@ -244,4 +244,43 @@ export default class Dom extends crsbinding.classes.ViewBase {
             }
         })
     }
+
+    async addClass() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "add_class",
+                args: { schema: "styles-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
+
+    async addMClass() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "add_classes",
+                args: { schema: "styles-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
+
+    async removeClass() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "remove_class",
+                args: { schema: "styles-example" }
+            },
+            parameters: {
+                bId: this._dataId
+            }
+        })
+    }
 }

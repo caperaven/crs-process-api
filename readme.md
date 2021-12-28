@@ -861,10 +861,59 @@ set_style: {
 
 <strong>get_style</strong>
 
+```js
+step: {
+    type: "dom",
+    action: "get_style",
+    args: {
+        query: "#edtStyle",
+        style: "background",
+        target: "$binding.styleValue"
+    }
+}
+```
+
+<strong>add_class</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "add_class",
+    args: {
+        query: "#class-target",
+        value: "bg_red"
+    }
+}
+```
+
+```js
+step: {
+    type: "dom",
+    action: "add_class",
+    args: {
+        query: "#class-target",
+        value: ["bg_red", "fg_white"]
+    }
+}
+```
+
+<strong>remove_class</strong>
+
+```js
+start: {
+    type: "dom",
+    action: "remove_class",
+    args: {
+        query: "#class-target",
+        value: ["bg_red", "fg_white"]
+    }
+}
+```
+
 <strong>set_text</strong>
 
 ```js
-set_text: {
+step: {
     type: "dom",
     action: "set_text",
     args: {
@@ -886,7 +935,11 @@ step: {
         id: "element1",
         parentQuery: "#container",
         tagName: "div",
-        textContent: "Element 1"
+        textContent: "Element 1",
+        styles: {
+            width: "100%"
+        },
+        classes: ["class1", "class2"]
     }
 }
 ```

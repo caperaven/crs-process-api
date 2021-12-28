@@ -27,6 +27,14 @@
     .toolbar button {
         height: 2rem;
     }
+
+    .bg_red {
+        background: red;
+    }
+
+    .fg_white {
+        color: white;
+    }
 </style>
 <h2>Dom Example</h2>
 
@@ -61,6 +69,17 @@
     </div>
     <input id="edtStyle" value.bind="styleValue" style="background: #dadada"/>
     <button id="btnSetStyle" click.call="setStyle">Set Style</button>
+</section>
+
+<hr/>
+
+<section>
+    <div class="toolbar">
+        <h2 id="class-target">Classes</h2>
+        <button id="btnAddClass" click.call="addClass">Add Class</button>
+        <button id="btnAddMClass" click.call="addMClass">Add Multiple Class</button>
+        <button id="btnRemoveClass" click.call="removeClass">Remove Class</button>
+    </div>
 </section>
 
 <hr/>

@@ -95,7 +95,8 @@ export const schema = {
                     id: "element1",
                     parentQuery: "#container",
                     tagName: "div",
-                    textContent: "Element 1"
+                    textContent: "Element 1",
+                    classes: ["class1", "class2"]
                 },
                 next_step: "create2"
             },
