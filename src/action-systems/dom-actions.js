@@ -299,6 +299,22 @@ export class DomActions {
 
         const result = element.cloneNode(true);
 
+        const attributes = Object.keys(step.args.attributes || {});
+        const styles = Object.keys(step.args.styles || {});
+        const classes = step.args.classes || [];
+
+        for (let attr of attributes) {
+            result.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
+        }
+
+        for (let style of styles) {
+            result.style[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
+        }
+
+        for (let cls of classes) {
+            result.classList.add(cls);
+        }
+
         if (parent != null) {
             parent.appendChild(result);
             result.style.position = "absolute";
