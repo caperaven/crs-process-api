@@ -222,6 +222,10 @@ export class DomActions {
                         }
                     }
 
+                    if (step.args.callback != null) {
+                        step.args.callback();
+                    }
+
                     resolve();
                 }
 
