@@ -17,6 +17,7 @@ import {RestServicesAction} from "./action-systems/rest-services-action.js";
 import {RandomActions} from "./action-systems/random.js";
 import {StringActions} from "./action-systems/string-actions.js";
 import {DatabaseActions} from "./action-systems/database-actions.js";
+import {StorageAction} from "./action-systems/storage.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -41,7 +42,8 @@ globalThis.crs.intent = {
     rest        : RestServicesAction,
     random      : RandomActions,
     string      : StringActions,
-    db          : DatabaseActions
+    db          : DatabaseActions,
+    storage     : StorageAction
 }
 
 //import {DataActions} from "./action-systems/data-actions.js";
