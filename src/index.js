@@ -46,9 +46,6 @@ globalThis.crs.intent = {
     storage     : StorageAction
 }
 
-//import {DataActions} from "./action-systems/data-actions.js";
-//globalThis.crs.process.addFeature("data-actions");
-
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
