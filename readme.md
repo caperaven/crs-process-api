@@ -110,8 +110,6 @@ const process = {
 
 <strong>Binding</strong>
 
-
-
 ## Default process structure
 
 A process is just an object literal.   
@@ -981,6 +979,41 @@ step: {
 }
 ```
 
+<strong>move_element</strong>
+
+```js
+step: {
+    type: "dom",
+    action: "move_element",
+    args: {
+        query: "#item2",
+        target: "#item5",
+        position: "after" // "before" || "after"
+    }
+}
+```
+
+<strong>move_down</strong>
+```js
+step: {
+    type: "dom",
+    action: "move_element_down",
+    args: {
+        query: "#item2"
+    }
+}
+```
+
+<strong>move_up</strong>
+```js
+step: {
+    type: "dom",
+    action: "move_element_up",
+    args: {
+        query: "#item2"
+    }
+}
+```
 <strong>show_widget_dialog</strong>
 This step will create a html layer that consists out of two parts.
 
@@ -1263,6 +1296,182 @@ results in
 ```js
 "Hello There Array"
 ```
+
+## Local Storage
+
+<strong>Open</strong>
+Open indexDB database.
+
+```js
+const step = {
+    type: "db",
+    action: "open",
+    args: {
+        db: "test_db",
+        version: 1,
+        tables: {
+            people: {
+                parameters: {
+                    keyPath: "id",
+                    autoIncrement: true
+                },
+                indexes: {
+                    id: { unique: true }
+                }
+            }
+        }
+    }
+}
+```
+The table section is just objects where the property is the name of the table.  
+The parameters section contains standard indexDB properties
+
+<strong>delete</strong>
+```js
+const step = {
+    type: "db",
+    action: "delete",
+    args: {
+        db: "test_db"
+    }
+}
+```
+
+<strong>set_record</strong>
+Save a new record or update an existing one if the keys match.
+
+```js
+const step = {
+    type: "db",
+    action: "set_record",
+    args: {
+        db: "test_db",
+        table: "people",
+        record: {
+            firstName : "John",
+            lastName : "Smith"
+        }
+    }
+}
+```
+The record property can use the usual context prefixes.
+e.g. "$context.record"
+
+<strong>add_records</strong>
+
+```js
+const step = {
+    type: "db",
+    action: "add_records",
+    args: {
+        db: "test_db",
+        table: "people",
+        records: "$context.records" // can also use an array of objects
+    }
+});
+```
+
+<strong>delete_record</strong>
+```js
+const step = {
+    type: "db",
+    action: "add_records",
+    args: {
+        db: "test_db",
+        table: "people",
+        key: 1  // key value on key defined during creation of table.
+    }
+};
+```
+
+<strong>clear_table</strong>
+Remove all the content from a table
+```js
+const step = {
+    type: "db",
+    action: "clear_table",
+    args: {
+        db: "test_db",
+        table: "people"
+    }
+};
+```
+
+<strong>get_record</strong>
+```js
+const step = {
+    type: "db",
+    action: "clear_table",
+    args: {
+        db: "test_db",
+        table: "people",
+        key: 1
+    }
+};
+```
+
+<strong>get_all</strong>
+Get all the records for a given table
+```js
+const step = {
+    type: "db",
+    action: "clear_table",
+    args: {
+        db: "test_db",
+        table: "people"
+    }
+};
+```
+
+## Local Storage
+
+<strong>set_value</strong>
+```js
+const step = {
+    type: "storage",
+    action: "set_value",
+    args: {
+        key: "name",
+        value: "John Doe"
+    }
+};
+```
+Value may not be an object.
+
+<strong>get_value</strong>
+```js
+const step = {
+    type: "storage",
+    action: "set_value",
+    args: {
+        key: "name"
+    }
+};
+```
+
+<strong>set_object</strong>
+```js
+const step = {
+    type: "storage",
+    action: "set_value",
+    args: {
+        key: "name"
+    }
+};
+```
+This uses json in the background so must be something that can be pared using JSON.
+
+<strong>get_object</strong>
+```js
+const step = {
+    type: "storage",
+    action: "get_object",
+    args: {
+        key: "person"
+    }
+};
+```
+This uses json in the background so must be something that can be pared using JSON.
 
 ## Random
 

@@ -52,7 +52,7 @@ export default class Data extends crsbinding.classes.ViewBase {
             version: 1,
             tables: {
                 people: {
-                    parmaeters: {
+                    parameters: {
                         keyPath: "id",
                         autoIncrement: true
                     },
