@@ -182,6 +182,26 @@ export default class Dom extends crsbinding.classes.ViewBase {
         })
     }
 
+    async moveDown() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "move_down",
+                args: { schema: "move-element" }
+            }
+        })
+    }
+
+    async moveUp() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "move_up",
+                args: { schema: "move-element" }
+            }
+        })
+    }
+
     async applyFilter() {
         await crsbinding.events.emitter.emit("run-process", {
             context: this,

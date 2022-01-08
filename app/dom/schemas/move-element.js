@@ -54,5 +54,29 @@ export const schema = {
                 }
             }
         }
+    },
+
+    move_down: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "move_element_down",
+                args: {
+                    query: "#item2"
+                }
+            }
+        }
+    },
+
+    move_up: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "move_element_up",
+                args: {
+                    query: "#item2"
+                }
+            }
+        }
     }
 }

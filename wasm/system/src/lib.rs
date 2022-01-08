@@ -1,5 +1,7 @@
 // add code to generate uuid
 
+use wasm_bindgen::prelude::*;
+
 #[cfg(test)]
 mod tests {
     #[test]

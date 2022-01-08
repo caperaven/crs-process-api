@@ -273,7 +273,28 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async move_element(step) {
-        await move_element(step.args.query, step.args.target, step.args.position);
+        const element = step.args.element || document.querySelector(step.args.query);
+        const parent = step.args.parent || document.querySelector(step.args.target);
+
+        await move_element(element, parent, step.args.position);
+    }
+
+    static async move_element_down(step) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const target = element.nextElementSibling;
+
+        if (target != null) {
+            await move_element(element, target, "after");
+        }
+    }
+
+    static async move_element_up(step) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const target = element.previousElementSibling;
+
+        if (target != null) {
+            await move_element(element, target, "before");
+        }
     }
 
     /**
@@ -329,29 +350,26 @@ export class DomActions {
     }
 }
 
-async function move_element(query, target, position) {
-    const element = document.querySelector(query);
-    let parent = document.querySelector(target);
-
-    if (element == null || parent == null) {
-        return console.error(`move element: either the element (${query}) or parent (${target}) does not exist`);
+async function move_element(element, target, position) {
+    if (element == null || target == null) {
+        return console.error(`both element and parent must exist to move the element`);
     }
 
     element.parentElement.removeChild(element);
 
     if (position == null) {
-        return parent.appendChild(element);
+        return target.appendChild(element);
     }
 
     if (position == "before") {
-        return parent.parentElement.insertBefore(element, parent);
+        return target.parentElement.insertBefore(element, target);
     }
 
-    if (parent.nextSibling == null) {
-        return parent.parentElement.appendChild(element);
+    if (target.nextSibling == null) {
+        return target.parentElement.appendChild(element);
     }
 
-    parent.parentElement.insertBefore(element, parent.nextSibling);
+    target.parentElement.insertBefore(element, target.nextSibling);
 }
 
 async function filter(query, filter) {
