@@ -81,3 +81,17 @@ test("ConditionActions - fail_step string", async () => {
     expect(logs.log).toEqual("fail");
 })
 
+test ("ConditionActions - binding expression", async () => {
+    const bId = crsbinding.data.addObject("test");
+    crsbinding.data.setProperty(bId, "value", 100);
+
+    const process = {
+        parameters: {
+            bId: bId
+        }
+    }
+
+    const success = await crs.intent.condition.perform({args: {condition: "$binding.value == 100"}}, null, process);
+    expect(success).toBeTruthy();
+    crsbinding.data.removeObject(bId);
+})
