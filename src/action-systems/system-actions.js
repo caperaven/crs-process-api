@@ -36,10 +36,14 @@ export class SystemActions {
 
             let bc;
 
-            const resume = () => {
+            const resume = (nextStep) => {
                 delete process.status;
                 delete process.resume;
                 delete bc?.resume;
+
+                if (typeof nextStep != "object") {
+                    step.alt_next_step = nextStep;
+                }
 
                 resolve();
             }

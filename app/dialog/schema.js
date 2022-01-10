@@ -24,6 +24,15 @@ export const schema = {
                 next_step: "close"
             },
 
+            log: {
+                type: "console",
+                action: "log",
+                args: {
+                    message: "resumed"
+                },
+                next_step: "close"
+            },
+
             close: {
                 type: "dom",
                 action: "remove_element",

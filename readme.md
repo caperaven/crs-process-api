@@ -1297,6 +1297,60 @@ results in
 "Hello There Array"
 ```
 
+## System
+
+<strong>copy_to_clipboard</strong>
+```js
+const step = {
+    type: "system",
+    action: "copy_to_clipboard",
+    args: {
+        source: "$context.value",
+    }
+}
+```
+
+<strong>sleep</strong>
+```js
+const step = {
+    type: "system",
+    action: "sleep",
+    args: {
+        duration: 1000,
+    },
+    next_step: "step2"
+}
+```
+Internally this uses setInterval for the duration specified.
+
+<strong>pause</strong>
+```js
+const step = {
+    type: "system",
+    action: "pause",
+    next_step: "close"
+}
+```
+
+Pause is for waiting on UI.
+This means you must provide a binding context to the process that uses pause.
+During pause a resume function is added to the binding context.
+See resume for details
+
+<strong>resume</strong>
+Normally you will not use resume directly as part of a process because it is waiting at pause.
+You use pause while waiting for UI input to be done.
+To resume you need to bind against the resume function.
+
+```html
+<button click.call="resume">Close</button>
+<button click.call="resume('log')">Log and Close</button>
+```
+
+In the second example we add an alternative next step.
+In the examples case, "log".
+This means you can change the flow of the process depending on the UI.
+
 ## Local Storage
 
 <strong>Open</strong>
