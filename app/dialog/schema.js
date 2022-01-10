@@ -13,7 +13,8 @@ export const schema = {
                 args: {
                     id: "dialog-ui",
                     html: "$template.process-dialog",
-                    url: "/templates/dialog.html"
+                    //url: "/templates/dialog.html"
+                    url: "$fn.getTemplate"
                 },
                 next_step: "pause"
             },

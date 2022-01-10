@@ -401,7 +401,18 @@ async function validate_form(query) {
 }
 
 
-async function getHTML(step) {
+async function getHTML(step, context) {
+    if (step.args.url.indexOf("$fn") != -1) {
+        const fn = step.args.url.replace("$fn.", "");
+        const html = await context[fn](step.args);
+        const template = document.createElement("template");
+        const id = step.args.html.split(".")[1];
+
+        template.innerHTML = html;
+        crsbinding.templates.add(id, template);
+        return html;
+    }
+
     if (step.args.html.indexOf("$template") == 0) {
         const id = step.args.html.split(".")[1];
         const template = await crsbinding.templates.get(id, step.args.url);
