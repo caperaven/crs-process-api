@@ -57,8 +57,11 @@ export default class Data extends crsbinding.classes.ViewBase {
             { "name": "site", "direction": "asc" }
         ])
 
-        let result = sort_data(intent, json, [1, 2, 3]);
-        console.log(result);
+        let result = sort_data(intent, json, [0, 1, 2, 3]);
+
+        for (const item of result) {
+            console.log(this.data[item]);
+        }
     }
 
     async convertDuration() {

@@ -72,20 +72,15 @@ pub fn sort_data(intent: String, data: String, rows: Vec<usize>) -> Vec<usize> {
     let intent_value = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    //
-    // let sort_rows;
-    // if rows.len() == 0 {
-    //     sort_rows = None;
-    // }
-    // else {
-    //     sort_rows = Some(rows);
-    // }
-    //
+    let sort_rows;
+    if rows.len() == 0 {
+        sort_rows = None;
+    }
+    else {
+        sort_rows = Some(rows);
+    }
 
-    let result = processors::sort(&intent_value, &data_array, None);
-    return result;
-
-    return rows;
+    return processors::sort(&intent_value, &data_array, sort_rows);
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"
