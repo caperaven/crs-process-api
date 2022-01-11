@@ -1,6 +1,6 @@
-import init, {init_panic_hook, aggregate_rows, filter_data, group_data, sort_data, iso8601_to_string} from "./../../src/bin/data.js";
+// import init, {init_panic_hook, aggregate_rows, filter_data, group_data, sort_data, iso8601_to_string} from "./../../src/bin/data.js";
 
-init();
+import "./../../src/action-systems/data-actions.js";
 
 export default class Data extends crsbinding.classes.ViewBase {
     async connectedCallback() {
@@ -13,51 +13,37 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async groupData() {
-        let json = JSON.stringify(this.data);
-        let fields = JSON.stringify(["site", "value"]);
-
-        let start = performance.now();
-        let result = group_data(fields, json);
-        let end = performance.now();
-        console.log(`group time: ${end - start} milliseconds`);
-        console.log(result);
-
-
-        let group = crs.intent.perspective.group({args: {
-            data: "$context.data",
-            fields: ["site", "value"]
-        }}, context);
+        // let json = JSON.stringify(this.data);
+        // let fields = JSON.stringify(["site", "value"]);
+        //
+        // let start = performance.now();
+        // let result = group_data(fields, json);
+        // let end = performance.now();
+        // console.log(`group time: ${end - start} milliseconds`);
+        // console.log(result);
     }
 
     async filterData() {
-        let json = JSON.stringify(this.data);
+        const result = await crs.intent.data.filter({ args: {
+            source: "$context.data",
+            filter: [
+                { "field": "site", "operator": "==", "value": "Site 1" }
+            ]
+        }}, this);
 
-        let intent = JSON.stringify([
-            { "field": "site", "operator": "==", "value": "Site 1" },
-            { "field": "value", "operator": "==", "value": 1 },
-        ]);
-
-        let start = performance.now();
-        let result = filter_data(intent, json);
-        let end = performance.now();
-
-        console.log(`filter time: ${end - start} milliseconds - result: ${result.length}`);
-
-        for (let i = 0; i < 10; i++) {
-            let index = result[i];
-            console.log(this.data[index]);
+        for (let record of result) {
+            console.log(this.data[record]);
         }
     }
 
     async sortData() {
-        let json = JSON.stringify(this.data);
-
-        let intent = JSON.stringify([
-            { "name": "site", "direction": "asc" },
-            { "name": "value", "direction": "asc" }
-        ])
-
-        let result = sort_data(intent, json, []);
+        const result = await crs.intent.data.sort( { args: {
+            source: "$context.data",
+            sort: [
+                { "name": "site", "direction": "asc" },
+                { "name": "value", "direction": "dec" }
+            ]
+        }}, this)
 
         for (const item of result) {
             console.log(this.data[item]);
@@ -65,22 +51,22 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async aggData() {
-        init_panic_hook();
-
-        let json = JSON.stringify(this.data);
-
-        let intent = JSON.stringify({
-            "min": "value",
-            "max": "value",
-            "ave": "value"
-        });
-
-        let result = aggregate_rows(intent, json, [0, 1, 2, 3]);
-        console.log(result);
+        // init_panic_hook();
+        //
+        // let json = JSON.stringify(this.data);
+        //
+        // let intent = JSON.stringify({
+        //     "min": "value",
+        //     "max": "value",
+        //     "ave": "value"
+        // });
+        //
+        // let result = aggregate_rows(intent, json, [0, 1, 2, 3]);
+        // console.log(result);
     }
 
     async convertDuration() {
-        console.log(iso8601_to_string("PT100H30M10S"));
+        // console.log(iso8601_to_string("PT100H30M10S"));
     }
 
     async create_db() {
