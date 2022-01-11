@@ -1,4 +1,4 @@
-import init, {filter_data, group_data, iso8601_to_string} from "./../../src/bin/data.js";
+import init, {init_panic_hook, filter_data, group_data, sort_data, iso8601_to_string} from "./../../src/bin/data.js";
 
 init();
 
@@ -20,6 +20,13 @@ export default class Data extends crsbinding.classes.ViewBase {
         let result = group_data(fields, json);
         let end = performance.now();
         console.log(`group time: ${end - start} milliseconds`);
+        console.log(result);
+
+
+        let group = crs.intent.perspective.group({args: {
+            data: "$context.data",
+            fields: ["site", "value"]
+        }}, context);
     }
 
     async filterData() {
@@ -40,6 +47,18 @@ export default class Data extends crsbinding.classes.ViewBase {
             let index = result[i];
             console.log(this.data[index]);
         }
+    }
+
+    async sortData() {
+        init_panic_hook();
+        let json = JSON.stringify(this.data);
+
+        let intent = JSON.stringify([
+            { "name": "site", "direction": "asc" }
+        ])
+
+        let result = sort_data(intent, json, [1, 2, 3]);
+        console.log(result);
     }
 
     async convertDuration() {

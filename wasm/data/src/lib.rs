@@ -15,6 +15,7 @@ mod aggregates;
 mod traits;
 
 use crate::duration::iso8601_to_duration_str;
+use crate::processors::sort;
 
 /// Calculate a intent description where the following actions or a subset of these actions took place.
 /// 1. Filter
@@ -30,6 +31,11 @@ use crate::duration::iso8601_to_duration_str;
 //     return json!({
 //     })
 // }
+
+#[wasm_bindgen]
+pub fn init_panic_hook() {
+    console_error_panic_hook::set_once();
+}
 
 /// Test if a object is visible in the scope of the defined filter.
 #[wasm_bindgen]
@@ -59,6 +65,27 @@ pub fn group_data(intent: String, data: String) -> String {
     let result = processors::group(&intent_array, &data_array);
 
     return String::from(result.to_string());
+}
+
+#[wasm_bindgen]
+pub fn sort_data(intent: String, data: String, rows: Vec<usize>) -> Vec<usize> {
+    let intent_value = serde_json::from_str(intent.as_str()).unwrap();
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
+
+    //
+    // let sort_rows;
+    // if rows.len() == 0 {
+    //     sort_rows = None;
+    // }
+    // else {
+    //     sort_rows = Some(rows);
+    // }
+    //
+
+    let result = processors::sort(&intent_value, &data_array, None);
+    return result;
+
+    return rows;
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"
@@ -95,9 +122,13 @@ mod test {
         2.1 get from the entire table
         2.2 get from provided indexes
         2.3 get from filter expression
-        2.4 give count of unique values
+        2.4 give count of uniqeu values
 
 
     console_error_panic_hook::set_once();
+
+
+2022
+    * grouping should sort by default ascending
 
  */

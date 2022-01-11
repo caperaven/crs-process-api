@@ -78,18 +78,16 @@ fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Or
     Ordering::Equal
 }
 
-pub fn sort(intent: &Value, data: &Value, rows: Option<Vec<usize>>) -> Vec<usize> {
+pub fn sort(intent: &Vec<Value>, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Vec<usize> {
     let mut rows = match rows {
         Some(array) => array,
         None => flood_indexes(&data)
     };
 
     let mut fields: Vec<Field> = Vec::new();
-    for field_intent in intent.as_array().unwrap() {
+    for field_intent in intent {
         fields.push(Field::new(field_intent["name"].as_str().unwrap().to_string(), field_intent.get("type"), field_intent.get("direction")));
     }
-
-    let data = data.as_array().unwrap();
 
     rows.sort_by(|a, b| sort_eval(a, b, &fields, &data));
 
@@ -127,14 +125,14 @@ mod test {
     use crate::processors::sort::{Placement, place_objects, Field, sort};
     use crate::processors::{ASCENDING, DESCENDING};
 
-    fn get_data() -> Value {
-        return json!([
-            {"id": 0, "code": "A", "value": 10, "isActive": true},
-            {"id": 1, "code": "B", "value": 10, "isActive": false},
-            {"id": 2, "code": "C", "value": 20, "isActive": true},
-            {"id": 3, "code": "D", "value": 20, "isActive": true},
-            {"id": 4, "code": "E", "value": 5, "isActive": false}
-        ]);
+    fn get_data() -> Vec<Value> {
+        let mut data: Vec<Value> = Vec::new();
+        data.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
+        data.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
+        data.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
+        data.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
+        data.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
+        return data;
     }
 
     fn smaller(p: Placement) -> bool {
@@ -147,8 +145,9 @@ mod test {
     #[test]
     fn test_simple_sort() {
         let data = get_data();
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value"}));
 
-        let fields = json!([{"name": "value"}]);
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 4);
@@ -157,7 +156,8 @@ mod test {
         assert_eq!(result[3], 2);
         assert_eq!(result[4], 3);
 
-        let fields = json!([{"name": "code", "direction": ASCENDING}]);
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "code", "direction": ASCENDING}));
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 0);
@@ -166,7 +166,8 @@ mod test {
         assert_eq!(result[3], 3);
         assert_eq!(result[4], 4);
 
-        let fields = json!([{"name": "isActive"}]);
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "isActive"}));
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 1);
@@ -175,7 +176,8 @@ mod test {
         assert_eq!(result[3], 2);
         assert_eq!(result[4], 3);
 
-        let fields = json!([{"name": "code", "direction": DESCENDING}]);
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "code", "direction": DESCENDING}));
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 4);
@@ -189,7 +191,10 @@ mod test {
     #[test]
     fn test_multi_sort() {
         let data = get_data();
-        let fields = json!([{"name": "value"},{"name": "isActive"},{"name": "code"}]);
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value"}));
+        fields.push(json!({"name": "isActive"}));
+        fields.push(json!({"name": "code"}));
         let result = sort(&fields, &data, None);
 
         assert_eq!(result.len(), 5);
@@ -203,7 +208,11 @@ mod test {
     #[test]
     fn test_multi_directional_sort() {
         let data = get_data();
-        let fields = json!([{"name": "value"},{"name": "isActive", "direction": DESCENDING},{"name": "code", "direction": DESCENDING}]);
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value"}));
+        fields.push(json!({"name": "isActive", "direction": DESCENDING}));
+        fields.push(json!({"name": "code", "direction": DESCENDING}));
+
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 4);
