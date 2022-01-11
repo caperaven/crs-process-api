@@ -1,4 +1,4 @@
-import init, {init_panic_hook, filter_data, group_data, sort_data, iso8601_to_string} from "./../../src/bin/data.js";
+import init, {init_panic_hook, aggregate_rows, filter_data, group_data, sort_data, iso8601_to_string} from "./../../src/bin/data.js";
 
 init();
 
@@ -50,7 +50,6 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async sortData() {
-        init_panic_hook();
         let json = JSON.stringify(this.data);
 
         let intent = JSON.stringify([
@@ -63,6 +62,21 @@ export default class Data extends crsbinding.classes.ViewBase {
         for (const item of result) {
             console.log(this.data[item]);
         }
+    }
+
+    async aggData() {
+        init_panic_hook();
+
+        let json = JSON.stringify(this.data);
+
+        let intent = JSON.stringify({
+            "min": "value",
+            "max": "value",
+            "ave": "value"
+        });
+
+        let result = aggregate_rows(intent, json, [0, 1, 2, 3]);
+        console.log(result);
     }
 
     async convertDuration() {

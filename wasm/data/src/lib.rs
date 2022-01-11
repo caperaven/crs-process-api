@@ -40,8 +40,8 @@ pub fn init_panic_hook() {
 /// Test if a object is visible in the scope of the defined filter.
 #[wasm_bindgen]
 pub fn in_filter(intent: String, object: String) -> bool {
-    let intent_val = json!(intent);
-    let object_val = json!(object);
+    let intent_val = serde_json::from_str(intent.as_str()).unwrap();
+    let object_val = serde_json::from_str(object.as_str()).unwrap();
 
     return evaluate_object(&intent_val, &object_val);
 }
@@ -81,6 +81,24 @@ pub fn sort_data(intent: String, data: String, rows: Vec<usize>) -> Vec<usize> {
     }
 
     return processors::sort(&intent_value, &data_array, sort_rows);
+}
+
+#[wasm_bindgen]
+pub fn aggregate_rows(intent: String, data: String, rows: Vec<usize>) -> String {
+    let intent_obj = serde_json::from_str(intent.as_str()).unwrap();
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
+
+    let agg_rows;
+    if rows.len() == 0 {
+        agg_rows = None;
+    }
+    else {
+        agg_rows = Some(rows);
+    }
+
+    let result = processors::aggregate_rows(&intent_obj, &data_array, agg_rows);
+
+    return String::from(result.to_string());
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"
