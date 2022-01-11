@@ -4,16 +4,22 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
 use crate::aggregates::{Min, Max, Ave, Sum, Count};
+use crate::utils::flood_indexes;
 
 /// Create aggregate objects based on the rows and data provided
-pub fn aggregate_rows(intent: &Value, data: &Vec<Value>, rows: &Value) -> Value {
+pub fn aggregate_rows(intent: &Value, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Value {
+    let mut rows = match rows {
+        Some(array) => array,
+        None => flood_indexes(&data)
+    };
+
     let mut aggregator = create_aggregator_from_intent(&intent);
     let data_array = data;
 
     let mut i;
-    for row_index in rows.as_array().unwrap() {
+    for row_index in rows {
         i = 0;
-        let row = &data_array[row_index.as_i64().unwrap() as usize];
+        let row = &data_array[row_index];
 
         for (_agg, field) in intent.as_object().unwrap().iter() {
             match row.get(&field.as_str().unwrap()) {
@@ -85,8 +91,10 @@ mod test {
         });
 
         let data = get_data();
-        let rows = json!([0, 1]);
-        let result = aggregate_rows(&intent, &data, &rows);
+        let mut rows = Vec::new();
+        rows.push(0);
+        rows.push(1);
+        let result = aggregate_rows(&intent, &data, Some(rows));
 
         assert_eq!(result[0]["value"], Value::from(20.));
     }
@@ -98,8 +106,11 @@ mod test {
         });
 
         let data = get_data();
-        let rows = json!([0, 1]);
-        let result = aggregate_rows(&intent, &data, &rows);
+        let mut rows = Vec::new();
+        rows.push(0);
+        rows.push(1);
+
+        let result = aggregate_rows(&intent, &data, Some(rows));
 
         assert_eq!(result[0]["value"], Value::from(2.));
     }
@@ -113,9 +124,14 @@ mod test {
         });
 
         let data = get_data();
-        let rows = json!([0,1,2,3,4]);
+        let mut rows = Vec::new();
+        rows.push(0);
+        rows.push(1);
+        rows.push(2);
+        rows.push(3);
+        rows.push(4);
 
-        let result = aggregate_rows(&intent, &data, &rows);
+        let result = aggregate_rows(&intent, &data, Some(rows));
 
         assert_eq!(result.as_array().unwrap().len(), 3);
         assert_eq!(result[0]["value"], 13.);

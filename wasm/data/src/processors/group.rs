@@ -103,15 +103,15 @@ pub fn group(intent: &Vec<&str>, data: &Vec<Value>) -> Value {
 }
 
 /// For a given group or sub group, give me the records for that group including it's sub groups
-pub fn get_group_rows(group_data: &Value) -> Value {
-    let mut rows: Vec<i64> = Vec::new();
+pub fn get_group_rows(group_data: &Value) -> Vec<usize> {
+    let mut rows: Vec<usize> = Vec::new();
 
     match group_data.get("children") {
         None => populate_group_rows(group_data, &mut rows),
         Some(children) => populate_group_rows(children, &mut rows)
     }
 
-    Value::from(rows)
+    return rows;
 }
 
 fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<Value>) {
@@ -119,11 +119,18 @@ fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<
     match group_data.get("rows") {
         None => {
             let rows = get_group_rows(group_data);
-            let aggregate = aggregate_rows(&aggregate_intent, &data, &rows);
+            let aggregate = aggregate_rows(&aggregate_intent, &data, Some(rows));
             group_data["aggregates"] = aggregate;
         }
         Some(rows) => {
-            let aggregate = aggregate_rows(&aggregate_intent, &data, &rows);
+            let rows_array = rows.as_array().unwrap();
+            let mut rows_result: Vec<usize> = Vec::new();
+
+            for rv in rows_array.iter() {
+                rows_result.push(rv.as_i64().unwrap() as usize);
+            }
+
+            let aggregate = aggregate_rows(&aggregate_intent, &data, Some(rows_result));
             group_data["aggregates"] = aggregate;
         }
     }
@@ -174,7 +181,7 @@ fn build_field_structure(data: &Vec<Value>, fields: &Vec<&str>) -> Field {
     return root;
 }
 
-fn populate_group_rows(group_data: &Value, rows: &mut Vec<i64>) {
+fn populate_group_rows(group_data: &Value, rows: &mut Vec<usize>) {
     for (_name, obj) in group_data.as_object().unwrap().iter() {
         match obj.get("children") {
             None => {
@@ -182,7 +189,7 @@ fn populate_group_rows(group_data: &Value, rows: &mut Vec<i64>) {
                     None => {}
                     Some(rows_obj) => {
                         for row in rows_obj.as_array().unwrap() {
-                            rows.push(row.as_i64().unwrap());
+                            rows.push(row.as_i64().unwrap() as usize);
                         }
                     }
                 }
@@ -299,11 +306,11 @@ mod test {
         let intent = Vec::from(["value", "isActive"]);
         let group = group(&intent, &data);
         let result = get_group_rows(&group);
-        assert_eq!(result.as_array().unwrap().len(), 5);
+        assert_eq!(result.len(), 5);
 
         let group_10 = &group["root"]["children"]["10"];
         let result = get_group_rows(&group_10);
-        assert_eq!(result.as_array().unwrap().len(), 2);
+        assert_eq!(result.len(), 2);
     }
 
     #[test]
