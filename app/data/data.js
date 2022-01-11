@@ -13,14 +13,12 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async groupData() {
-        // let json = JSON.stringify(this.data);
-        // let fields = JSON.stringify(["site", "value"]);
-        //
-        // let start = performance.now();
-        // let result = group_data(fields, json);
-        // let end = performance.now();
-        // console.log(`group time: ${end - start} milliseconds`);
-        // console.log(result);
+        const result = await crs.intent.data.group({ args: {
+            source: "$context.data",
+            fields: ["site", "value"]
+        }}, this);
+
+        console.log(result);
     }
 
     async filterData() {
@@ -51,22 +49,21 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async aggData() {
-        // init_panic_hook();
-        //
-        // let json = JSON.stringify(this.data);
-        //
-        // let intent = JSON.stringify({
-        //     "min": "value",
-        //     "max": "value",
-        //     "ave": "value"
-        // });
-        //
-        // let result = aggregate_rows(intent, json, [0, 1, 2, 3]);
-        // console.log(result);
+        const result = await crs.intent.data.aggregate( { args: {
+            source: "$context.data",
+            aggregate: {
+                "min": "value",
+                "max": "value",
+                "ave": "value"
+            }
+        }}, this)
+
+        console.log(result);
     }
 
     async convertDuration() {
-        // console.log(iso8601_to_string("PT100H30M10S"));
+        const result = await crs.intent.data.iso8601_to_string({args: {value: "PT100H30M10S"}});
+        console.log(result);
     }
 
     async create_db() {
