@@ -101,20 +101,21 @@ pub fn aggregate_rows(intent: String, data: String, rows: Vec<usize>) -> String 
     return String::from(result.to_string());
 }
 
+#[wasm_bindgen]
+pub fn calculate_group_aggregate(group: String, aggregate_intent: String, data: String) -> String {
+    let mut group_obj = serde_json::from_str(group.as_str()).unwrap();
+    let agg_obj = serde_json::from_str(aggregate_intent.as_str()).unwrap();
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
+
+    processors::calculate_group_aggregate(&mut group_obj, &agg_obj, &data_array);
+
+    return String::from(group_obj.to_string());
+}
+
 /// Convert PT100H30M into "0:0:100:30:0"
 #[wasm_bindgen]
 pub fn iso8601_to_string(duration: String) -> String {
     iso8601_to_duration_str(&Value::from(duration))
-}
-
-/// Take a grouping structure and sort it according to the intent.
-/// todo
-// pub fn sort_grouping(intent: Value, grouping: Value) -> Value {
-//     return Value::Object(Default::default());
-// }
-
-#[cfg(test)]
-mod test {
 }
 
 /*
@@ -135,7 +136,7 @@ mod test {
         2.1 get from the entire table
         2.2 get from provided indexes
         2.3 get from filter expression
-        2.4 give count of uniqeu values
+        2.4 give count of unique values
 
 
     console_error_panic_hook::set_once();
@@ -143,5 +144,5 @@ mod test {
 
 2022
     * grouping should sort by default ascending
-
+    * can I send back row and id
  */

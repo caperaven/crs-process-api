@@ -1,5 +1,3 @@
-// import init, {init_panic_hook, aggregate_rows, filter_data, group_data, sort_data, iso8601_to_string} from "./../../src/bin/data.js";
-
 import "./../../src/action-systems/data-actions.js";
 
 export default class Data extends crsbinding.classes.ViewBase {
@@ -25,9 +23,12 @@ export default class Data extends crsbinding.classes.ViewBase {
         const result = await crs.intent.data.filter({ args: {
             source: "$context.data",
             filter: [
-                { "field": "site", "operator": "==", "value": "Site 1" }
+                { "field": "site", "operator": "==", "value": "Site 1" },
+                { "field": "value", "operator": "gt", "value": 10    }
             ]
         }}, this);
+
+        console.table(this.data);
 
         for (let record of result) {
             console.log(this.data[record]);
@@ -38,8 +39,8 @@ export default class Data extends crsbinding.classes.ViewBase {
         const result = await crs.intent.data.sort( { args: {
             source: "$context.data",
             sort: [
-                { "name": "site", "direction": "asc" },
-                { "name": "value", "direction": "dec" }
+                { "name": "site", "direction": "dec" },
+                { "name": "value", "direction": "asc" }
             ]
         }}, this)
 
@@ -54,10 +55,49 @@ export default class Data extends crsbinding.classes.ViewBase {
             aggregate: {
                 "min": "value",
                 "max": "value",
-                "ave": "value"
+                "ave": "value",
+                "sum": "value2"
             }
         }}, this)
 
+        console.log(result);
+        console.table(this.data);
+    }
+
+    async aggGroup() {
+        await crs.intent.data.debug();
+
+        let group = await crs.intent.data.group({ args: {
+            source: "$context.data",
+            fields: ["site", "value"]
+        }}, this);
+
+        let result = await crs.intent.data.aggregateGroup({ args: {
+            source: "$context.data",
+            group: group,
+            aggregate: {
+                "min": "value",
+                "max": "value",
+                "ave": "value",
+                "sum": "value2"
+            }
+        }}, this);
+
+        console.log(result);
+        group = result.root.children["Site 1"];
+
+        const site1 = await crs.intent.data.aggregateGroup({ args: {
+                source: "$context.data",
+                group: group,
+                aggregate: {
+                    "min": "value",
+                    "max": "value",
+                    "ave": "value",
+                    "sum": "value2"
+                }
+            }}, this);
+
+        result.root.children["Site 1"] = site1;
         console.log(result);
     }
 
@@ -203,6 +243,8 @@ async function createData(count) {
     let result = [];
     for (let i = 0; i < count; i++) {
         let value = await crs.intent.random.integer({args: {min: 0, max: 100}});
+        let value2 = await crs.intent.random.integer({args: {min: -10, max: 10}});
+
         let site;
         if (value < 20) {
             site = "Site 1";
@@ -218,6 +260,7 @@ async function createData(count) {
             id      : i,
             code    : `Code ${i}`,
             value   : value,
+            value2  : value2,
             site    : site
         })
     }
