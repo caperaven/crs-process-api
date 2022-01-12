@@ -35,6 +35,30 @@ export default class Data extends crsbinding.classes.ViewBase {
         }
     }
 
+    async inFilter() {
+        await crs.intent.data.debug();
+
+        let result = await crs.intent.data.in_filter({ args: {
+            source: {site: "Site 1", value: 15},
+            filter: [
+                { "field": "site", "operator": "==", "value": "Site 1" },
+                { "field": "value", "operator": "gt", "value": 10    }
+            ]
+        }}, this);
+
+        console.log(result);
+
+        result = await crs.intent.data.in_filter({ args: {
+                source: {site: "Site 1", value: 5},
+                filter: [
+                    { "field": "site", "operator": "==", "value": "Site 1" },
+                    { "field": "value", "operator": "gt", "value": 10    }
+                ]
+            }}, this);
+
+        console.log(result);
+    }
+
     async sortData() {
         const result = await crs.intent.data.sort( { args: {
             source: "$context.data",
@@ -65,8 +89,6 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async aggGroup() {
-        await crs.intent.data.debug();
-
         let group = await crs.intent.data.group({ args: {
             source: "$context.data",
             fields: ["site", "value"]

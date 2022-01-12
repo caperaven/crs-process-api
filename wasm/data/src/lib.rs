@@ -40,10 +40,16 @@ pub fn init_panic_hook() {
 /// Test if a object is visible in the scope of the defined filter.
 #[wasm_bindgen]
 pub fn in_filter(intent: String, object: String) -> bool {
-    let intent_val = serde_json::from_str(intent.as_str()).unwrap();
-    let object_val = serde_json::from_str(object.as_str()).unwrap();
+    let filters: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
+    let obj = serde_json::from_str(object.as_str()).unwrap();
 
-    return evaluate_object(&intent_val, &object_val);
+    for filter in filters {
+        if evaluate_object(&filter, &obj) == false {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /// Filter a set of records and give back the indexes of the records visible in the filter.
