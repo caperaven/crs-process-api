@@ -2,7 +2,7 @@
 // https://docs.serde.rs/serde_json/value/enum.Value.html
 
 use wasm_bindgen::prelude::*;
-use serde_json::{json, Value};
+use serde_json::{Value};
 use crate::evaluators::evaluate_object;
 
 mod evaluators;
@@ -15,7 +15,6 @@ mod aggregates;
 mod traits;
 
 use crate::duration::iso8601_to_duration_str;
-use crate::processors::sort;
 
 /// Calculate a intent description where the following actions or a subset of these actions took place.
 /// 1. Filter
@@ -116,6 +115,24 @@ pub fn calculate_group_aggregate(group: String, aggregate_intent: String, data: 
     processors::calculate_group_aggregate(&mut group_obj, &agg_obj, &data_array);
 
     return String::from(group_obj.to_string());
+}
+
+#[wasm_bindgen]
+pub fn unique_values(intent: String, data: String, rows: Vec<usize>) -> String {
+    let intent_array: Vec<&str> = serde_json::from_str(intent.as_str()).unwrap();
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
+
+    let unq_rows;
+    if rows.len() == 0 {
+        unq_rows = None;
+    }
+    else {
+        unq_rows = Some(rows);
+    }
+
+    let result = processors::get_unique(&intent_array, &data_array, unq_rows);
+
+    return String::from(result.to_string());
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"

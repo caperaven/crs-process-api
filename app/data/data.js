@@ -88,6 +88,24 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.table(this.data);
     }
 
+    async unique() {
+        let result = await crs.intent.data.unique_values({args: {
+            source: "$context.data",
+            fields: ["code", "value", "site"],
+            rows: []
+        }}, this);
+
+        console.log(result);
+
+        result = await crs.intent.data.unique_values({args: {
+                source: "$context.data",
+                fields: ["code", "value", "site"],
+                rows: [0, 1]
+            }}, this);
+
+        console.log(result);
+    }
+
     async aggGroup() {
         let group = await crs.intent.data.group({ args: {
             source: "$context.data",

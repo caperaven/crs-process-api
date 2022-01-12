@@ -6,7 +6,8 @@ import init, {
     calculate_group_aggregate,
     iso8601_to_string,
     in_filter,
-    init_panic_hook
+    init_panic_hook,
+    unique_values
 } from "./../bin/data.js";
 
 await init();
@@ -103,6 +104,21 @@ export class DataActions {
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
+        return result;
+    }
+
+    static async unique_values(step, context, process, item) {
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const intent = await crs.process.getValue(step.args.fields, context, process, item);
+        const rows = await crs.process.getValue(step.args.rows, context, process, item) || [];
+
+        let result = unique_values(JSON.stringify(intent), JSON.stringify(source), rows);
+        result = JSON.parse(result);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
         return result;
     }
 }

@@ -8,7 +8,7 @@ use crate::utils::flood_indexes;
 
 /// Create aggregate objects based on the rows and data provided
 pub fn aggregate_rows(intent: &Value, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Value {
-    let mut rows = match rows {
+    let rows = match rows {
         Some(array) => array,
         None => flood_indexes(&data)
     };
