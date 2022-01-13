@@ -3,6 +3,7 @@ mod sort;
 mod group;
 mod aggregate;
 mod unique;
+mod summary;
 
 pub use filter::filter;
 pub use sort::{sort, ASCENDING, DESCENDING};

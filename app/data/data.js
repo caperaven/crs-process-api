@@ -6,7 +6,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async buildData() {
-        this.data = await createData(10);
+        this.data = await createData(100000);
         console.log("data loaded done");
     }
 
