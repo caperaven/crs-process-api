@@ -7,7 +7,9 @@ class Publish {
     static async distribute() {
         const instance = new Publish();
         instance.copyFiles("./dist/*.*");
+        instance.copyFiles("./dist/action-systems/*.*", "action-systems");
         instance.copyFiles("./readme.md");
+        instance.copyFiles("./src/bin/data_bg.wasm", "action-systems");
         //instance.copyFiles("./examples/*.html", "examples");
         instance.bumpVersion();
     }

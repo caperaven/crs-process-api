@@ -6,7 +6,6 @@ import init, {
     calculate_group_aggregate,
     iso8601_to_string,
     in_filter,
-    init_panic_hook,
     unique_values
 } from "./../bin/data.js";
 

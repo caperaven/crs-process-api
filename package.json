@@ -1,6 +1,6 @@
 {
     "name": "crs-process-api",
-    "version": "0.0.44",
+    "version": "0.0.52",
     "description": "process api for executing loging using json structure",
     "main": "crs-process-api.js",
     "directories": {
@@ -9,7 +9,8 @@
     "scripts": {
         "test": "jest",
         "bundle": "rollup -c",
-        "build-publish": "rollup -c & node build/publish.js"
+        "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
+        "build-publish": "npm run bundle & npm run build-wasm &  node build/publish.js"
     },
     "keywords": [],
     "author": "",

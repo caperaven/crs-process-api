@@ -31,10 +31,10 @@ use crate::duration::iso8601_to_duration_str;
 //     })
 // }
 
-#[wasm_bindgen]
-pub fn init_panic_hook() {
-    console_error_panic_hook::set_once();
-}
+// #[wasm_bindgen]
+// pub fn init_panic_hook() {
+//     console_error_panic_hook::set_once();
+// }
 
 /// Test if a object is visible in the scope of the defined filter.
 #[wasm_bindgen]
@@ -54,8 +54,6 @@ pub fn in_filter(intent: String, object: String) -> bool {
 /// Filter a set of records and give back the indexes of the records visible in the filter.
 #[wasm_bindgen]
 pub fn filter_data(intent: String, data: String) -> Vec<usize> {
-    console_error_panic_hook::set_once();
-
     let intent_val: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
