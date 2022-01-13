@@ -36,6 +36,22 @@ export default class Data extends crsbinding.classes.ViewBase {
         }
     }
 
+    async filterPath() {
+        const result = await crs.intent.data.filter({ args: {
+                source: "$context.data",
+                filter: [
+                    { "field": "person.age", "operator": ">", "value": 50 }
+                ],
+                case_sensitive: false
+            }}, this);
+
+        console.table(this.data);
+
+        for (let record of result) {
+            console.log(this.data[record]);
+        }
+    }
+
     async inFilter() {
         let result = await crs.intent.data.in_filter({ args: {
             source: {site: "Site 1", value: 15},
@@ -285,6 +301,7 @@ async function createData(count) {
     for (let i = 0; i < count; i++) {
         let value = await crs.intent.random.integer({args: {min: 0, max: 100}});
         let value2 = await crs.intent.random.integer({args: {min: -10, max: 10}});
+        let age = await crs.intent.random.integer({args: {min: 20, max: 60}});
 
         let site;
         if (value < 20) {
@@ -302,6 +319,9 @@ async function createData(count) {
             code    : `Code ${i}`,
             value   : value,
             value2  : value2,
+            person  : {
+                age: age
+            },
             site    : site
         })
     }

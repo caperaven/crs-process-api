@@ -37,11 +37,11 @@ mod test {
 
     fn get_data() -> Vec<Value> {
         let mut result: Vec<Value> = Vec::new();
-        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
-        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
-        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
-        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
-        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
+        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true, "person": {"name": "John"}}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false, "person": {"name": "John"}}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true, "person": {"name": "Jane"}}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true, "person": {"name": "Jane"}}));
+        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false, "person": {"name": "Andrew"}}));
         return result;
     }
 
@@ -98,5 +98,16 @@ mod test {
 
         let result = filter(&intent, &data, false);
         assert_eq!(result.len(), 1);
+    }
+
+    #[test]
+    fn filter_on_object_path_test() {
+        let data = get_data();
+        let mut intent: Vec<Value> = Vec::new();
+        intent.push(json!({ "field": "person.name", "operator": "==", "value": "John"}));
+        intent.push(json!({ "field": "value", "operator": "==", "value": 10 }));
+
+        let result = filter(&intent, &data, false);
+        assert_eq!(result.len(), 2);
     }
 }

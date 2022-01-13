@@ -139,11 +139,19 @@ pub fn iso8601_to_string(duration: String) -> String {
     iso8601_to_duration_str(&Value::from(duration))
 }
 
+#[wasm_bindgen]
+pub fn evaluate_obj(expr: String, object: String, case_sensitive: bool) -> bool {
+    let intent_obj = serde_json::from_str(expr.as_str()).unwrap();
+    let object_obj = serde_json::from_str(object.as_str()).unwrap();
+
+    evaluate_object(&intent_obj, &object_obj, case_sensitive)
+}
+
 /*
     Features:
     1. get_perspective
         1.1 filter
-            1.1.1 add flag to indicate that it is case insensitive, default is case sensitive
+            1.1.1 add flag to indicate that it is case insensitive, default is case sensitive - done
             1.1.2 allow rows where the property is not a value but a object ... use path as field "field": "field1.code"
         1.2 sort - done
         1.3 group - done

@@ -16,6 +16,27 @@ use crate::evaluators::OneOf;
 use crate::evaluators::StartsWith;
 use crate::evaluators::EndsWith;
 
+fn get_value_on_path(row: &Value, path: &str) -> Value {
+    if path.contains(".") == false {
+        return row[path].clone();
+    }
+
+    let parts = path.split(".");
+    let mut path = "".to_owned();
+
+    for part in parts {
+        path.push_str("/");
+        path.push_str(part);
+    }
+
+    let result = row.pointer(path.as_str());
+
+    return match result {
+        None => Value::Null,
+        Some(value) => value.clone()
+    }
+}
+
 pub fn evaluate_object(intent: &Value, row: &Value, case_sensitive: bool) -> bool {
     let operator= intent["operator"].as_str().unwrap();
 
@@ -33,8 +54,7 @@ pub fn evaluate_object(intent: &Value, row: &Value, case_sensitive: bool) -> boo
 
     let field= intent["field"].as_str().unwrap();
     let mut intent_value= intent["value"].clone();
-    let mut row_value= row[field].clone();
-
+    let mut row_value= get_value_on_path(row, field);
 
     if intent_value.is_string() && case_sensitive == false {
         let intent_string = intent_value.as_str().unwrap().to_lowercase();
@@ -98,6 +118,7 @@ mod test {
     use serde_json::{json, Value};
     use serde_json::Value::Null;
     use crate::evaluate_object;
+    use crate::evaluators::object_evaluator::get_value_on_path;
 
     fn create_filter(field: &str, operator: &str, value: Value) -> Value {
         json!({
@@ -376,10 +397,16 @@ mod test {
     }
 
     #[test]
-    fn evaluate_case_insensitive_test() {
-        let filter = create_filter("value", "eq", Value::from("a"));
-        let row = json!({"value": "A"});
-        let result = evaluate_object(&filter, &row, false);
-        assert_eq!(result, true);
+    fn filter_on_path_test() {
+        let row = json!({"value": "A", "person": {"name": "john"}});
+        let v = get_value_on_path(&row, "person.name");
+        assert_eq!(v, "john");
+    }
+
+    #[test]
+    fn get_value_on_path_test() {
+        let filter = create_filter("person.name", "eq", Value::from("john"));
+        let row = json!({"value": "A", "person": {"name": "john"}});
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 }
