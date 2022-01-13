@@ -6,7 +6,8 @@ import init, {
     calculate_group_aggregate,
     iso8601_to_string,
     in_filter,
-    unique_values
+    unique_values,
+    evaluate_obj
 } from "./../bin/data.js";
 
 await init();
@@ -115,6 +116,20 @@ export class DataActions {
 
         let result = unique_values(JSON.stringify(intent), JSON.stringify(source), rows);
         result = JSON.parse(result);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async assert_equal(step, context, process, item) {
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const intent = await crs.process.getValue(step.args.expr, context, process, item);
+        const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
+
+        let result = evaluate_obj(JSON.stringify(intent), JSON.stringify(source), case_sensitive == true);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

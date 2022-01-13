@@ -163,6 +163,22 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
     }
 
+    async assertObj() {
+        let result = await crs.intent.data.assert_equal({ args: {
+                source: {person: {name: "John"}},
+                expr: {"field": "person.name", "operator": "==", "value": "John"}
+            }})
+
+        console.log(result);
+
+        result = await crs.intent.data.assert_equal({ args: {
+                source: {person: {name: "John"}},
+                expr: {"field": "person.name", "operator": "==", "value": "Jane"}
+            }})
+
+        console.log(result);
+    }
+
     async create_db() {
         await crs.intent.db.open({args: {
             db: "test_db",
