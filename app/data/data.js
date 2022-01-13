@@ -23,9 +23,10 @@ export default class Data extends crsbinding.classes.ViewBase {
         const result = await crs.intent.data.filter({ args: {
             source: "$context.data",
             filter: [
-                { "field": "site", "operator": "==", "value": "Site 1" },
+                { "field": "site", "operator": "==", "value": "site 1" },
                 { "field": "value", "operator": "gt", "value": 10    }
-            ]
+            ],
+            case_sensitive: false
         }}, this);
 
         console.table(this.data);
@@ -36,14 +37,13 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async inFilter() {
-        await crs.intent.data.debug();
-
         let result = await crs.intent.data.in_filter({ args: {
             source: {site: "Site 1", value: 15},
             filter: [
-                { "field": "site", "operator": "==", "value": "Site 1" },
+                { "field": "site", "operator": "==", "value": "site 1" },
                 { "field": "value", "operator": "gt", "value": 10    }
-            ]
+            ],
+            case_sensitive: false
         }}, this);
 
         console.log(result);
@@ -51,9 +51,10 @@ export default class Data extends crsbinding.classes.ViewBase {
         result = await crs.intent.data.in_filter({ args: {
                 source: {site: "Site 1", value: 5},
                 filter: [
-                    { "field": "site", "operator": "==", "value": "Site 1" },
+                    { "field": "site", "operator": "==", "value": "site 1" },
                     { "field": "value", "operator": "gt", "value": 10    }
-                ]
+                ],
+                case_sensitive: false
             }}, this);
 
         console.log(result);

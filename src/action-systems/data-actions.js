@@ -16,15 +16,16 @@ export class DataActions {
         await this[step.action](step, context, process, item);
     }
 
-    static async debug() {
-        init_panic_hook();
-    }
+    // static async debug() {
+    //     init_panic_hook();
+    // }
 
     static async filter(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const intent = await crs.process.getValue(step.args.filter, context, process, item) || [];
+        const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
 
-        let result = filter_data(JSON.stringify(intent), JSON.stringify(source));
+        let result = filter_data(JSON.stringify(intent), JSON.stringify(source), case_sensitive == true);
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
@@ -98,8 +99,9 @@ export class DataActions {
     static async in_filter(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const intent = await crs.process.getValue(step.args.filter, context, process, item) || [];
+        const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
 
-        const result = in_filter(JSON.stringify(intent), JSON.stringify(source));
+        const result = in_filter(JSON.stringify(intent), JSON.stringify(source), case_sensitive == true);
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }

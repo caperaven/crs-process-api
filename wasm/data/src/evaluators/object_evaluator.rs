@@ -16,7 +16,7 @@ use crate::evaluators::OneOf;
 use crate::evaluators::StartsWith;
 use crate::evaluators::EndsWith;
 
-pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
+pub fn evaluate_object(intent: &Value, row: &Value, case_sensitive: bool) -> bool {
     let operator= intent["operator"].as_str().unwrap();
 
     if operator == "or" || operator == "||" {
@@ -32,8 +32,17 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
     }
 
     let field= intent["field"].as_str().unwrap();
-    let intent_value= &intent["value"];
-    let row_value= &row[field];
+    let mut intent_value= intent["value"].clone();
+    let mut row_value= row[field].clone();
+
+
+    if intent_value.is_string() && case_sensitive == false {
+        let intent_string = intent_value.as_str().unwrap().to_lowercase();
+        let row_value_string = row_value.as_str().unwrap().to_lowercase();
+
+        intent_value = Value::from(intent_string);
+        row_value = Value::from(row_value_string);
+    }
 
     return match operator {
         ">"         | "gt"  => GreaterThan::evaluate(&row_value, &intent_value),
@@ -57,7 +66,7 @@ pub fn evaluate_object(intent: &Value, row: &Value) -> bool {
 pub fn evaluate_and(expressions: &Value, row: &Value) -> bool {
     // as soon as a expression is false, the row fails and we stop the process
     for filter in expressions.as_array().unwrap() {
-        let result = evaluate_object(&filter, &row);
+        let result = evaluate_object(&filter, &row, true);
         if result == false {
             return false;
         }
@@ -69,7 +78,7 @@ pub fn evaluate_and(expressions: &Value, row: &Value) -> bool {
 pub fn evaluate_or(expressions: &Value, row: &Value) -> bool {
     // as soon as the expression passes, stop and the row succeeds
     for filter in expressions.as_array().unwrap() {
-        let result = evaluate_object(&filter, &row);
+        let result = evaluate_object(&filter, &row, true);
         if result == true {
             return true;
         }
@@ -102,63 +111,63 @@ mod test {
     fn evaluate_equal_test() {
         let filter = create_filter("value", "=", Value::from(10));
         let row = json!({"value": 10});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 
     #[test]
     fn evaluate_notequal_test() {
         let filter = create_filter("value", "<>", Value::from(20));
         let row = json!({"value": 10});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 
     #[test]
     fn evaluate_greater_than_test() {
         let filter = create_filter("value", ">", Value::from(10));
         let row = json!({"value": 20});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 
     #[test]
     fn evaluate_greater_or_equal_test() {
         let filter = create_filter("value", ">=", Value::from(10));
         let row = json!({"value": 10});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": 11});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": 9});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
     fn evaluate_less_than_test() {
         let filter = create_filter("value", "<", Value::from(20));
         let row = json!({"value": 10});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 
     #[test]
     fn evaluate_less_or_equal_test() {
         let filter = create_filter("value", "<=", Value::from(20));
         let row = json!({"value": 20});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": 19});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": 21});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
     fn evaluate_is_null_test() {
         let filter = create_filter("value", "is_null", Null);
-        assert_eq!(evaluate_object(&filter, &Null), true);
+        assert_eq!(evaluate_object(&filter, &Null, true), true);
 
         let row = json!({"value": 21});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
@@ -166,48 +175,48 @@ mod test {
         let filter = create_filter("value", "not_null", Null);
         let row = json!({"value": 21});
 
-        assert_eq!(evaluate_object(&filter, &row), true);
-        assert_eq!(evaluate_object(&filter, &Null), false);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
+        assert_eq!(evaluate_object(&filter, &Null, true), false);
     }
 
     #[test]
     fn evaluate_is_like_test() {
         let filter = create_filter("value", "like", Value::from("hello"));
         let row = json!({"value": "hello world"});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": "test string"});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
     fn evaluate_not_like_test() {
         let filter = create_filter("value", "not_like", Value::from("test"));
         let row = json!({"value": "hello world"});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": "test string"});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
     fn evaluate_in_test() {
         let filter = create_filter("value", "in", json!([1, 2, 3]));
         let row = json!({"value": 1});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": 5});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
     fn evaluate_between_test() {
         let filter = create_filter("value", "between", json!([1, 3]));
         let row = json!({"value": 1});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": 5});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
@@ -221,10 +230,10 @@ mod test {
         });
 
         let row = json!({ "value": 1});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
 
         let row = json!({ "value": 2});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 
     #[test]
@@ -239,10 +248,10 @@ mod test {
         });
 
         let row = json!({ "value": 1, "value2": 2 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 1, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
@@ -257,13 +266,13 @@ mod test {
         });
 
         let row = json!({ "value": 1, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 3, "value2": 2 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 3, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
@@ -284,19 +293,19 @@ mod test {
         });
 
         let row = json!({ "value": 1, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 2, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 3, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
 
         let row = json!({ "value": 1, "value2": 1 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
 
         let row = json!({ "value": 2, "value2": 1 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
@@ -324,38 +333,53 @@ mod test {
         );
 
         let row = json!({ "value": 1, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
 
         let row = json!({ "value": 2, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
 
         let row = json!({ "value": 3, "value2": 3 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 1, "value2": 1 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({ "value": 2, "value2": 1 });
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
     }
 
     #[test]
     fn evaluate_startswith_test() {
         let filter = create_filter("value", "startswith", Value::from("Hello"));
         let row = json!({"value": "Hello World"});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": "Not Hello World"});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
     }
 
     #[test]
     fn evaluate_endswith_test() {
         let filter = create_filter("value", "endswith", Value::from("World"));
         let row = json!({"value": "Hello World"});
-        assert_eq!(evaluate_object(&filter, &row), true);
+        assert_eq!(evaluate_object(&filter, &row, true), true);
 
         let row = json!({"value": "Hello World Not"});
-        assert_eq!(evaluate_object(&filter, &row), false);
+        assert_eq!(evaluate_object(&filter, &row, true), false);
+    }
+
+    #[test]
+    fn evaluate_case_sensitive_test() {
+        let filter = create_filter("value", "eq", Value::from("a"));
+        let row = json!({"value": "A"});
+        assert_eq!(evaluate_object(&filter, &row, true), false);
+    }
+
+    #[test]
+    fn evaluate_case_insensitive_test() {
+        let filter = create_filter("value", "eq", Value::from("a"));
+        let row = json!({"value": "A"});
+        let result = evaluate_object(&filter, &row, false);
+        assert_eq!(result, true);
     }
 }

@@ -1,7 +1,7 @@
 use serde_json::Value;
 use crate::evaluate_object;
 
-pub fn filter(intent: &Vec<Value>, data: &Vec<Value>) -> Vec<usize> {
+pub fn filter(intent: &Vec<Value>, data: &Vec<Value>, case_sensitive: bool) -> Vec<usize> {
     let mut index = 0;
     let mut filter_result = Vec::new();
 
@@ -12,7 +12,7 @@ pub fn filter(intent: &Vec<Value>, data: &Vec<Value>) -> Vec<usize> {
         pass = true;
 
         for filter in filters {
-            pass = evaluate_object(filter, row);
+            pass = evaluate_object(filter, row, case_sensitive);
 
             if pass == false {
                 break;
@@ -51,7 +51,7 @@ mod test {
         let mut intent: Vec<Value> = Vec::new();
         intent.push(json!({ "field": "value", "operator": "<", "value": 20 }));
 
-        let result = filter(&intent, &data);
+        let result = filter(&intent, &data, true);
 
         assert_eq!(result.len(), 3);
         assert_eq!(result[0], 0);
@@ -66,7 +66,7 @@ mod test {
         intent.push(json!({"field": "value", "operator": "<", "value": 20}));
         intent.push(json!({"field": "isActive", "operator": "==", "value": false}));
 
-        let result = filter(&intent, &data);
+        let result = filter(&intent, &data, true);
 
         assert_eq!(result.len(), 2);
         assert_eq!(result[0], 1);
@@ -82,10 +82,21 @@ mod test {
         intent.push(json!({ "field": "value", "operator": "==", "value": 10 }));
         intent.push(json!({ "field": "isActive", "operator": "not_null", "value": Null}));
 
-        let result = filter(&intent, &data);
+        let result = filter(&intent, &data, true);
 
         assert_eq!(result.len(), 2);
         assert_eq!(result[0], 0);
         assert_eq!(result[1], 1);
+    }
+
+    #[test]
+    fn filter_case_insensitive_test() {
+        let data = get_data();
+        let mut intent: Vec<Value> = Vec::new();
+        intent.push(json!({ "field": "code", "operator": "==", "value": "A"}));
+        intent.push(json!({ "field": "value", "operator": "==", "value": 10 }));
+
+        let result = filter(&intent, &data, false);
+        assert_eq!(result.len(), 1);
     }
 }

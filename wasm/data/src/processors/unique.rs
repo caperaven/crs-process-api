@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap};
 use serde_json::Value;
 
 pub fn get_unique(intent: &Vec<&str>, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Value {
