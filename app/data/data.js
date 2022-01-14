@@ -6,7 +6,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async buildData() {
-        this.data = await createData(100000);
+        this.data = await createData(10);
         console.log("data loaded done");
     }
 
@@ -85,9 +85,11 @@ export default class Data extends crsbinding.classes.ViewBase {
             ]
         }}, this)
 
+        const print = [];
         for (const item of result) {
-            console.log(this.data[item]);
+            print.push(this.data[item]);
         }
+        console.table(print);
     }
 
     async aggData() {

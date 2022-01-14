@@ -1,7 +1,7 @@
 use std::collections::{HashMap};
 use serde_json::Value;
 
-pub fn get_unique(intent: &Vec<&str>, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Value {
+pub fn get_unique(intent: &[&str], data: &[Value], rows: Option<Vec<usize>>) -> Value {
     let mut fields_map: HashMap<String, HashMap<String, i32>> = HashMap::new();
 
     match rows {
@@ -33,7 +33,7 @@ pub fn get_unique(intent: &Vec<&str>, data: &Vec<Value>, rows: Option<Vec<usize>
     return result;
 }
 
-fn set_fields_map(row: &Value, fields: &Vec<&str>, fields_map: &mut HashMap<String, HashMap<String, i32>>) {
+fn set_fields_map(row: &Value, fields: &[&str], fields_map: &mut HashMap<String, HashMap<String, i32>>) {
     for field in fields {
         let record_value: &String = &row[&field].clone().to_string();
         let field_name: String = String::from(*field);
@@ -62,20 +62,22 @@ mod test {
     use serde_json::{json, Value};
     use crate::processors::get_unique;
 
-    fn get_data() -> Vec<Value> {
-        let mut result: Vec<Value> = Vec::new();
-        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
-        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
-        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
-        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
-        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
-        return result;
+    fn get_data() -> [Value; 5] {
+        let result = [
+            json!({"id": 0, "code": "A", "value": 10, "isActive": true}),
+            json!({"id": 1, "code": "B", "value": 10, "isActive": false}),
+            json!({"id": 2, "code": "C", "value": 20, "isActive": true}),
+            json!({"id": 3, "code": "D", "value": 20, "isActive": true}),
+            json!({"id": 4, "code": "E", "value": 5, "isActive": false})
+        ];
+
+        result
     }
 
     #[test]
     fn get_unique_test() {
-        let data: Vec<Value> = get_data();
-        let fields: Vec<&str> = vec!["code", "value", "isActive"];
+        let data: [Value; 5] = get_data();
+        let fields: [&str; 3] = ["code", "value", "isActive"];
         let result = get_unique(&fields, &data, None);
 
         assert_eq!(result["code"]["\"A\""].as_i64().unwrap(), 1);
@@ -85,8 +87,8 @@ mod test {
 
     #[test]
     fn get_unique_rows_test() {
-        let data: Vec<Value> = get_data();
-        let fields: Vec<&str> = vec!["code", "value", "isActive"];
+        let data: [Value; 5] = get_data();
+        let fields: [&str; 3] = ["code", "value", "isActive"];
         let rows: Vec<usize> = vec![0, 1, 2];
         let result = get_unique(&fields, &data, Some(rows));
 

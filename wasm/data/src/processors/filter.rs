@@ -1,7 +1,7 @@
 use serde_json::Value;
 use crate::evaluate_object;
 
-pub fn filter(intent: &Vec<Value>, data: &Vec<Value>, case_sensitive: bool) -> Vec<usize> {
+pub fn filter(intent: &[Value], data: &[Value], case_sensitive: bool) -> Vec<usize> {
     let mut index = 0;
     let mut filter_result = Vec::new();
 

@@ -23,7 +23,7 @@ impl Field {
         }
     }
 
-    pub fn process_row(&mut self, row: &Value, fields: &Vec<&str>, field_index: usize, row_index: usize) {
+    pub fn process_row(&mut self, row: &Value, fields: &[&str], field_index: usize, row_index: usize) {
         if field_index >= fields.len() {
             match self.rows.borrow_mut() {
                 None => {
@@ -94,7 +94,7 @@ impl Field {
 }
 
 /// Given a group intent, group the data based on their values
-pub fn group(intent: &Vec<&str>, data: &Vec<Value>) -> Value {
+pub fn group(intent: &Vec<&str>, data: &[Value]) -> Value {
     let root = build_field_structure(&data, &intent);
     let mut result = Value::Object(Default::default());
 
@@ -168,7 +168,7 @@ fn get_value(row: &Value, field: &str) -> String {
     return value.to_string();
 }
 
-fn build_field_structure(data: &Vec<Value>, fields: &Vec<&str>) -> Field {
+fn build_field_structure(data: &[Value], fields: &[&str]) -> Field {
     let mut row_index = 0;
     let mut root = Field::new("grouping".into(), "root".into());
 

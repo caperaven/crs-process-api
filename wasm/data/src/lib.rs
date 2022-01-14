@@ -52,7 +52,7 @@ pub fn group_data(intent: String, data: String) -> String {
 
 #[wasm_bindgen]
 pub fn sort_data(intent: String, data: String, rows: Vec<usize>) -> Vec<usize> {
-    let intent_value = serde_json::from_str(intent.as_str()).unwrap();
+    let intent_value: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
     let sort_rows;
@@ -68,7 +68,7 @@ pub fn sort_data(intent: String, data: String, rows: Vec<usize>) -> Vec<usize> {
 
 #[wasm_bindgen]
 pub fn aggregate_rows(intent: String, data: String, rows: Vec<usize>) -> String {
-    let intent_obj = serde_json::from_str(intent.as_str()).unwrap();
+    let intent_obj: Value = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
     let agg_rows;

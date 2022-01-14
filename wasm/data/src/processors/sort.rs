@@ -44,7 +44,7 @@ impl Field {
 
 use crate::utils::flood_indexes;
 
-fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Ordering {
+fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &[Value]) -> Ordering {
     let obj_a = &data[*a];
     let obj_b = &data[*b];
 
@@ -78,7 +78,7 @@ fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &Vec<Value>) -> Or
     Ordering::Equal
 }
 
-pub fn sort(intent: &Vec<Value>, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Vec<usize> {
+pub fn sort(intent: &[Value], data: &[Value], rows: Option<Vec<usize>>) -> Vec<usize> {
     let mut rows = match rows {
         Some(array) => array,
         None => flood_indexes(&data)

@@ -1,6 +1,6 @@
 use serde_json::Value;
 
-pub fn flood_indexes(data: &Vec<Value>) -> Vec<usize> {
+pub fn flood_indexes(data: &[Value]) -> Vec<usize> {
     let mut result: Vec<usize> = Vec::new();
 
     let len = data.len();

@@ -7,7 +7,7 @@ use crate::aggregates::{Min, Max, Ave, Sum, Count};
 use crate::utils::flood_indexes;
 
 /// Create aggregate objects based on the rows and data provided
-pub fn aggregate_rows(intent: &Value, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Value {
+pub fn aggregate_rows(intent: &Value, data: &[Value], rows: Option<Vec<usize>>) -> Value {
     let rows = match rows {
         Some(array) => array,
         None => flood_indexes(&data)
