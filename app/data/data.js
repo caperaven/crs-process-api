@@ -92,6 +92,28 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.table(print);
     }
 
+    async sortDuration() {
+        const data = [
+            {value: "PT010H40M00S"},
+            {value: "PT001H00M00S"},
+            {value: "PT000H10M00S"},
+            {value: "PT010H00M00S"},
+        ]
+
+        const result = await crs.intent.data.sort( { args: {
+                source: data,
+                sort: [
+                    { "name": "value", "direction": "asc" }
+                ]
+            }}, this)
+
+        const print = [];
+        for (const item of result) {
+            print.push(data[item]);
+        }
+        console.table(print);
+    }
+
     async aggData() {
         const result = await crs.intent.data.aggregate( { args: {
             source: "$context.data",
@@ -345,3 +367,4 @@ async function createData(count) {
     }
     return result;
 }
+
