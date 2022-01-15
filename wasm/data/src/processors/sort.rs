@@ -2,8 +2,10 @@ use std::cmp::Ordering;
 use serde_json::Value;
 use crate::traits::Eval;
 use crate::duration::iso8601_placement;
-use crate::evaluators::{Equal, GreaterThan, LessThan};
+use crate::evaluators::{Equal, LessThan};
 use crate::enums::{Placement, SortDirection};
+use crate::enums::Placement::Before;
+use crate::enums::SortDirection::Descending;
 
 pub const ASCENDING: &str = "asc";
 pub const DESCENDING: &str = "dec";
@@ -44,38 +46,16 @@ impl Field {
 
 use crate::utils::flood_indexes;
 
-fn sort_eval(a: &usize, b: &usize, fields: &Vec<Field>, data: &[Value]) -> Ordering {
+fn sort_eval(a: &usize, b: &usize, fields: &[Field], data: &[Value]) -> Ordering {
     let obj_a = &data[*a];
     let obj_b = &data[*b];
 
-    for field in fields {
-        let field_name = &field.name;
-        let value_a = &obj_a[&field_name];
-        let value_b = &obj_b[&field_name];
+    let result: Placement = place_objects(fields, obj_b, obj_a);
 
-        if Equal::evaluate(value_a, value_b) {
-            continue;
-        }
-
-        return match &field.direction {
-            SortDirection::Ascending => {
-                if LessThan::evaluate(value_a, value_b) {
-                    return Ordering::Less;
-                }
-
-                Ordering::Greater
-            }
-            SortDirection::Descending => {
-                if GreaterThan::evaluate(value_a, value_b) {
-                    return Ordering::Less;
-                }
-
-                Ordering::Greater
-            }
-        }
+    match result {
+        Placement::Before => Ordering::Greater,
+        Placement::After => Ordering::Less
     }
-
-    Ordering::Equal
 }
 
 pub fn sort(intent: &[Value], data: &[Value], rows: Option<Vec<usize>>) -> Vec<usize> {
@@ -94,13 +74,19 @@ pub fn sort(intent: &[Value], data: &[Value], rows: Option<Vec<usize>>) -> Vec<u
     return rows;
 }
 
-fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Placement {
+/// Is the evaluator before or after the reference
+fn place_objects(intent: &[Field], evaluate: &Value, reference: &Value) -> Placement {
     for field in intent {
         let value1: &Value = &evaluate[&field.name];
         let value2: &Value = &reference[&field.name];
 
-        return match &field.data_type {
+        if Equal::evaluate(value1, value2) {
+            continue;
+        }
+
+        let placement = match &field.data_type {
             None => {
+                // value1 < value2
                 match LessThan::evaluate(&value1, &value2) {
                     true => Placement::Before,
                     false => Placement::After
@@ -113,7 +99,16 @@ fn place_objects(intent: &Vec<Field>, evaluate: &Value, reference: &Value) -> Pl
 
                 return Placement::Before;
             }
+        };
+
+        if field.direction == Descending {
+            if placement == Before {
+                return Placement::After;
+            }
+            return Placement::Before;
         }
+
+        return placement;
     }
 
     return Placement::Before;
@@ -384,6 +379,21 @@ mod test {
         assert_eq!(smaller(result), true);
 
         let result = place_objects(&fields, &object2, &object1);
+        assert_eq!(smaller(result), false);
+    }
+
+    #[test]
+    fn test_multi_field() {
+        // is object 2 before or after object 1
+        let object1 = json!({"value": "PT1.2S", "number": 2});
+        let object2 = json!({"value": "PT1.2S", "number": 1});
+
+        let fields = [
+            Field::new("value".to_string(), Some(&Value::from("duration")), Some(&Value::from(ASCENDING))),
+            Field::new("number".to_string(), None, Some(&Value::from(ASCENDING)))
+        ];
+
+        let result = place_objects(&fields, &object1, &object2);
         assert_eq!(smaller(result), false);
     }
 }
