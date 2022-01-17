@@ -15,7 +15,12 @@ impl Sum {
 
 impl Aggregate for Sum {
     fn add_value(&mut self, obj: &Value) {
-        self.value += obj.as_f64().unwrap();
+        let value: f64 = match obj {
+            Value::Null => 0.,
+            _ => obj.as_f64().unwrap()
+        };
+
+        self.value += value;
     }
 
     fn value(&self) -> f64 {
@@ -35,6 +40,7 @@ mod test {
         sum.add_value(&Value::from(10));
         sum.add_value(&Value::from(11));
         sum.add_value(&Value::from(12));
+        sum.add_value(&Value::Null);
 
         assert_eq!(sum.value, 33.);
     }

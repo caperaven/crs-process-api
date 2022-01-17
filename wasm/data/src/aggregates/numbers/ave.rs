@@ -19,7 +19,11 @@ impl Ave {
 
 impl Aggregate for Ave {
     fn add_value(&mut self, obj: &Value) {
-        let value = obj.as_f64().unwrap();
+        let value: f64 = match obj {
+            Value::Null => 0.,
+            _ => obj.as_f64().unwrap()
+        };
+
         self.sum += value;
         self.count += 1.;
         self.value = self.sum / self.count;
@@ -42,7 +46,8 @@ mod test {
         ave.add_value(&Value::from(10));
         ave.add_value(&Value::from(20));
         ave.add_value(&Value::from(30));
+        ave.add_value(&Value::Null);
 
-        assert_eq!(ave.value, 20.);
+        assert_eq!(ave.value, 15.);
     }
 }

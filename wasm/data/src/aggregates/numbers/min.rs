@@ -15,7 +15,12 @@ impl Min {
 
 impl Aggregate for Min {
     fn add_value(&mut self, obj: &Value) {
+        if obj == &Value::Null {
+            return;
+        }
+
         let value = obj.as_f64().unwrap();
+
         if value < self.value {
             self.value = value;
         }
@@ -38,6 +43,7 @@ mod test {
         min.add_value(&Value::from(10));
         min.add_value(&Value::from(20));
         min.add_value(&Value::from(5));
+        min.add_value(&Value::Null);
 
         assert_eq!(min.value, 5.);
     }

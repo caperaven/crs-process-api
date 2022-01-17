@@ -15,7 +15,11 @@ impl Max {
 
 impl Aggregate for Max {
     fn add_value(&mut self, obj: &Value) {
-        let value = obj.as_f64().unwrap();
+        let value: f64 = match obj {
+            Value::Null => 0.,
+            _ => obj.as_f64().unwrap()
+        };
+
         if value > self.value {
             self.value = value;
         }
@@ -38,6 +42,7 @@ mod test {
         max.add_value(&Value::from(10));
         max.add_value(&Value::from(20));
         max.add_value(&Value::from(5));
+        max.add_value(&Value::Null);
 
         assert_eq!(max.value, 20.);
     }
