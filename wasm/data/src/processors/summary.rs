@@ -1,8 +1,10 @@
 use serde_json::Value;
 use crate::utils::get_properties;
 
-pub fn summarize(data: &Vec<Value>, fields: Vec<String>) -> Value {
+pub fn summarize(data: &[Value], fields: Vec<String>) -> Value {
     let _field_names = get_field_names(&data[0], fields);
+
+
 
     Value::Null
 }

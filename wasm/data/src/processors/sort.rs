@@ -218,6 +218,38 @@ mod test {
     }
 
     #[test]
+    fn test_duration_collection() {
+        let data = [
+            json!({"value": "P1D"}),
+            json!({"value": "PT1H"}),
+            json!({"value": "PT1M"}),
+            json!({"value": "PT1S"})
+        ];
+
+        let fields = [json!({"name": "value", "type": "duration"})];
+
+        let result = sort(&fields, &data, None);
+        assert_eq!(result.len(), 4);
+        assert_eq!(result[0], 3);
+        assert_eq!(result[1], 2);
+        assert_eq!(result[2], 1);
+        assert_eq!(result[3], 0);
+
+        let data = [
+            json!({"value": "P13DT21H21M45S"}),
+            json!({"value": "P0DT21H22M45.97096S"}),
+            json!({"value": "P13DT21H23M45S"}),
+        ];
+
+        let result = sort(&fields, &data, None);
+
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0], 1);
+        assert_eq!(result[1], 0);
+        assert_eq!(result[2], 2);
+    }
+
+    #[test]
     fn test_int_objects() {
         let object1 = json!({"value": 1});
         let object2 = json!({"value": 2});
