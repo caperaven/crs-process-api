@@ -47,7 +47,7 @@ pub fn group_data(intent: String, data: String) -> String {
 
     let result = processors::group(&intent_array, &data_array);
 
-    return String::from(result.to_string());
+    return result.to_string();
 }
 
 #[wasm_bindgen]
@@ -81,7 +81,7 @@ pub fn aggregate_rows(intent: String, data: String, rows: Vec<usize>) -> String 
 
     let result = processors::aggregate_rows(&intent_obj, &data_array, agg_rows);
 
-    return String::from(result.to_string());
+    return result.to_string();
 }
 
 #[wasm_bindgen]
@@ -92,7 +92,7 @@ pub fn calculate_group_aggregate(group: String, aggregate_intent: String, data: 
 
     processors::calculate_group_aggregate(&mut group_obj, &agg_obj, &data_array);
 
-    return String::from(group_obj.to_string());
+    return group_obj.to_string();
 }
 
 #[wasm_bindgen]
@@ -110,7 +110,7 @@ pub fn unique_values(intent: String, data: String, rows: Vec<usize>) -> String {
 
     let result = processors::get_unique(&intent_array, &data_array, unq_rows);
 
-    return String::from(result.to_string());
+    return result.to_string();
 }
 
 /// Convert PT100H30M into "0:0:100:30:0"
