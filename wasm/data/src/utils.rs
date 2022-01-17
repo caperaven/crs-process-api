@@ -11,16 +11,10 @@ pub fn flood_indexes(data: &[Value]) -> Vec<usize> {
     return result;
 }
 
-pub fn get_properties(obj: &Value) -> Vec<String> {
-    let map = obj.as_object().unwrap();
-    let keys: Vec<String> = map.keys().cloned().collect();
-    return keys;
-}
-
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::utils::{flood_indexes, get_properties};
+    use crate::utils::{flood_indexes};
 
     #[test]
     fn flood_indexes_test() {
@@ -38,16 +32,5 @@ mod test {
         assert_eq!(result[2], 2);
         assert_eq!(result[3], 3);
         assert_eq!(result[4], 4);
-    }
-
-    #[test]
-    fn get_properties_test() {
-        let obj = json!({"id": 0, "name": "John", "code": "AA"});
-        let properties = get_properties(&obj);
-
-        assert_eq!(properties.len(), 3);
-        assert_eq!(properties[0], "code");
-        assert_eq!(properties[1], "id");
-        assert_eq!(properties[2], "name");
     }
 }

@@ -26,19 +26,19 @@ impl Aggregate for Max {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use serde_json::Value;
-    use crate::aggregates::max::Max;
-    use crate::traits::Aggregate;
-
-    #[test]
-    fn sum_test() {
-        let mut max = Max::new();
-        max.add_value(&Value::from(10));
-        max.add_value(&Value::from(20));
-        max.add_value(&Value::from(5));
-
-        assert_eq!(max.value, 20.);
-    }
-}
+// #[cfg(test)]
+// mod test {
+//     use serde_json::Value;
+//     use crate::aggregates::max::Max;
+//     use crate::traits::Aggregate;
+//
+//     #[test]
+//     fn sum_test() {
+//         let mut max = Max::new();
+//         max.add_value(&Value::from(10));
+//         max.add_value(&Value::from(20));
+//         max.add_value(&Value::from(5));
+//
+//         assert_eq!(max.value, 20.);
+//     }
+// }

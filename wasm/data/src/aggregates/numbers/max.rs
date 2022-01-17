@@ -1,22 +1,22 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
 
-pub struct Min {
+pub struct Max {
     pub value: f64
 }
 
-impl Min {
-    pub fn new() -> Min {
-        Min {
-            value: f64::MAX
+impl Max {
+    pub fn new() -> Max {
+        Max {
+            value: f64::MIN
         }
     }
 }
 
-impl Aggregate for Min {
+impl Aggregate for Max {
     fn add_value(&mut self, obj: &Value) {
         let value = obj.as_f64().unwrap();
-        if value < self.value {
+        if value > self.value {
             self.value = value;
         }
     }
@@ -29,16 +29,16 @@ impl Aggregate for Min {
 #[cfg(test)]
 mod test {
     use serde_json::Value;
-    use crate::aggregates::min::Min;
+    use crate::aggregates::Max;
     use crate::traits::Aggregate;
 
     #[test]
     fn sum_test() {
-        let mut min = Min::new();
-        min.add_value(&Value::from(10));
-        min.add_value(&Value::from(20));
-        min.add_value(&Value::from(5));
+        let mut max = Max::new();
+        max.add_value(&Value::from(10));
+        max.add_value(&Value::from(20));
+        max.add_value(&Value::from(5));
 
-        assert_eq!(min.value, 5.);
+        assert_eq!(max.value, 20.);
     }
 }

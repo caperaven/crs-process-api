@@ -26,7 +26,7 @@ impl Aggregate for Sum {
 #[cfg(test)]
 mod test {
     use serde_json::Value;
-    use crate::aggregates::sum::Sum;
+    use crate::aggregates::Sum;
     use crate::traits::Aggregate;
 
     #[test]

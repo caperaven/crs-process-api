@@ -220,33 +220,41 @@ mod test {
     #[test]
     fn test_duration_collection() {
         let data = [
+            json!({"value": "P1Y"}),
+            json!({"value": "P1M"}),
             json!({"value": "P1D"}),
             json!({"value": "PT1H"}),
             json!({"value": "PT1M"}),
-            json!({"value": "PT1S"})
+            json!({"value": "PT1S"}),
+            json!({"value": "PT0S"}),
         ];
 
         let fields = [json!({"name": "value", "type": "duration"})];
 
         let result = sort(&fields, &data, None);
-        assert_eq!(result.len(), 4);
-        assert_eq!(result[0], 3);
-        assert_eq!(result[1], 2);
-        assert_eq!(result[2], 1);
-        assert_eq!(result[3], 0);
+        assert_eq!(result.len(), 7);
+        assert_eq!(result[0], 6);
+        assert_eq!(result[1], 5);
+        assert_eq!(result[2], 4);
+        assert_eq!(result[3], 3);
+        assert_eq!(result[4], 2);
+        assert_eq!(result[5], 1);
+        assert_eq!(result[6], 0);
 
         let data = [
             json!({"value": "P13DT21H21M45S"}),
             json!({"value": "P0DT21H22M45.97096S"}),
             json!({"value": "P13DT21H23M45S"}),
+            Value::Null
         ];
 
         let result = sort(&fields, &data, None);
 
-        assert_eq!(result.len(), 3);
-        assert_eq!(result[0], 1);
-        assert_eq!(result[1], 0);
-        assert_eq!(result[2], 2);
+        assert_eq!(result.len(), 4);
+        assert_eq!(result[0], 3);
+        assert_eq!(result[1], 1);
+        assert_eq!(result[2], 0);
+        assert_eq!(result[3], 2);
     }
 
     #[test]

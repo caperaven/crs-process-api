@@ -1,20 +1,10 @@
-use serde_json::Value;
-use crate::utils::get_properties;
+use std::collections::HashMap;
+use serde_json::{Number, Value};
+use crate::aggregates;
+use crate::traits::Aggregate;
 
-pub fn summarize(data: &[Value], fields: Vec<String>) -> Value {
-    let _field_names = get_field_names(&data[0], fields);
-
-
-
+pub fn summarize(data: &[Value], fields: Vec<Value>) -> Value {
     Value::Null
-}
-
-fn get_field_names(obj: &Value, fields: Vec<String>) -> Vec<String> {
-    if fields.len() > 0 {
-        return fields;
-    }
-
-    return get_properties(&obj);
 }
 
 #[cfg(test)]
@@ -35,7 +25,11 @@ mod test {
     #[test]
     fn summarize_test() {
         let data = get_data();
-        let fields: Vec<String> = vec!["code".into(), "value".into()];
+        let fields: Vec<Value> = vec![
+            json!({"name": "code", "data_type": "string"}),
+            json!({"name": "value", "data_type": "number"})
+        ];
+
         let summary = summarize(&data, fields);
         assert_eq!(summary, Value::Null);
     }

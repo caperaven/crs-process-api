@@ -21,8 +21,18 @@ pub fn iso8601_to_duration_str(date: &Value) -> String {
 /// We evaluate these values ascending so we use the reference object as the base.
 /// Does the reference object come before or after the evaluate object
 pub fn iso8601_placement(reference: &Value, evaluate: &Value,) -> Placement {
-    let evd = Duration::parse(evaluate.as_str().unwrap()).unwrap();
-    let rfd = Duration::parse(reference.as_str().unwrap()).unwrap();
+    let evds = match evaluate {
+        Value::Null => "PT0S",
+        _ => evaluate.as_str().unwrap()
+    };
+
+    let rfds = match evaluate {
+        Value::Null => "PT0S",
+        _ => reference.as_str().unwrap()
+    };
+
+    let evd = Duration::parse(evds).unwrap();
+    let rfd = Duration::parse(rfds).unwrap();
 
     if evd.year != rfd.year {
         return match evd.year > rfd.year {

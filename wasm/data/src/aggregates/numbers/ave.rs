@@ -33,7 +33,7 @@ impl Aggregate for Ave {
 #[cfg(test)]
 mod test {
     use serde_json::Value;
-    use crate::aggregates::ave::Ave;
+    use crate::aggregates::Ave;
     use crate::traits::Aggregate;
 
     #[test]
