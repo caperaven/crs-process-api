@@ -18,6 +18,7 @@ pub fn iso8601_to_duration_str(date: &Value) -> String {
 
 /// check the evaluate value against the reference value
 /// tell me if must come before or after the reference.
+/// We evaluate these values ascending so we use the reference object as the base.
 /// Does the reference object come before or after the evaluate object
 pub fn iso8601_placement(reference: &Value, evaluate: &Value,) -> Placement {
     let evd = Duration::parse(evaluate.as_str().unwrap()).unwrap();
