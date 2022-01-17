@@ -13,7 +13,7 @@ impl Max {
     }
 }
 
-impl Aggregate for Max {
+impl Aggregate<f64> for Max {
     fn add_value(&mut self, obj: &Value) {
         let value = obj.as_f64().unwrap();
         if value > self.value {

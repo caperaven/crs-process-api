@@ -4,7 +4,7 @@ pub trait Eval {
     fn evaluate(obj1: &Value, obj2: &Value) -> bool;
 }
 
-pub trait Aggregate {
+pub trait Aggregate<T> {
     fn add_value(&mut self, obj: &Value);
-    fn value(&self) -> f64;
+    fn value(&self) -> T;
 }

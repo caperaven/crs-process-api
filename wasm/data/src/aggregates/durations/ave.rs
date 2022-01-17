@@ -17,7 +17,7 @@ impl Ave {
     }
 }
 
-impl Aggregate for Ave {
+impl Aggregate<f64> for Ave {
     fn add_value(&mut self, obj: &Value) {
         let value = obj.as_f64().unwrap();
         self.sum += value;

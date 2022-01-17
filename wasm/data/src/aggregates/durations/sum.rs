@@ -13,7 +13,7 @@ impl Sum {
     }
 }
 
-impl Aggregate for Sum {
+impl Aggregate<f64> for Sum {
     fn add_value(&mut self, obj: &Value) {
         self.value += obj.as_f64().unwrap();
     }

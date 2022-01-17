@@ -13,7 +13,7 @@ impl Min {
     }
 }
 
-impl Aggregate for Min {
+impl Aggregate<f64> for Min {
     fn add_value(&mut self, obj: &Value) {
         let value = obj.as_f64().unwrap();
         if value < self.value {
