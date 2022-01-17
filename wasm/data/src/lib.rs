@@ -16,6 +16,11 @@ mod traits;
 
 use crate::duration::iso8601_to_duration_str;
 
+#[wasm_bindgen]
+pub fn init_panic_hook() {
+    console_error_panic_hook::set_once();
+}
+
 /// Test if a object is visible in the scope of the defined filter.
 #[wasm_bindgen]
 pub fn in_filter(intent: String, object: String, case_sensitive: bool) -> bool {

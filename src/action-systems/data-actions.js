@@ -7,6 +7,7 @@ import init, {
     iso8601_to_string,
     in_filter,
     unique_values,
+    init_panic_hook,
     evaluate_obj
 } from "./../bin/data.js";
 
@@ -17,11 +18,13 @@ export class DataActions {
         await this[step.action](step, context, process, item);
     }
 
-    // static async debug() {
-    //     init_panic_hook();
-    // }
+    static async debug() {
+        init_panic_hook();
+    }
 
     static async filter(step, context, process, item) {
+        await crs.intent.data.debug();
+
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const intent = await crs.process.getValue(step.args.filter, context, process, item) || [];
         const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
