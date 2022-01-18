@@ -7,6 +7,7 @@ pub enum Placement {
     After
 }
 
+#[derive(Debug)]
 pub enum SortDirection {
     Ascending,
     Descending

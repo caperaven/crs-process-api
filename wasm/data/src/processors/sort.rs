@@ -10,10 +10,11 @@ use crate::enums::SortDirection::Descending;
 pub const ASCENDING: &str = "asc";
 pub const DESCENDING: &str = "dec";
 
+#[derive(Debug)]
 pub struct Field {
-    name: String,
-    data_type: Option<String>,
-    direction: SortDirection
+    pub name: String,
+    pub data_type: Option<String>,
+    pub direction: SortDirection
 }
 
 impl Field {
@@ -64,14 +65,19 @@ pub fn sort(intent: &[Value], data: &[Value], rows: Option<Vec<usize>>) -> Vec<u
         None => flood_indexes(&data)
     };
 
-    let mut fields: Vec<Field> = Vec::new();
-    for field_intent in intent {
-        fields.push(Field::new(field_intent["name"].as_str().unwrap().to_string(), field_intent.get("type"), field_intent.get("direction")));
-    }
+    let mut fields = sort_intent_to_vec(intent);
 
     rows.sort_by(|a, b| sort_eval(a, b, &fields, &data));
 
     return rows;
+}
+
+pub fn sort_intent_to_vec(intent: &[Value]) -> Vec<Field> {
+    let mut fields: Vec<Field> = Vec::new();
+    for field_intent in intent {
+        fields.push(Field::new(field_intent["name"].as_str().unwrap().to_string(), field_intent.get("type"), field_intent.get("direction")));
+    }
+    fields
 }
 
 /// Is the evaluator before or after the reference

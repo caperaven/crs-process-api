@@ -1,4 +1,5 @@
 use std::collections::{HashMap};
+use std::hash::Hash;
 use serde_json::Value;
 use crate::processors::sort::{place_objects, Field};
 
@@ -53,8 +54,11 @@ impl ValueMap {
     }
 }
 
-pub fn get_unique(fields: &[&str], data: &[Value], rows: Option<Vec<usize>>, sort: Option<String>) -> Value {
+pub fn get_unique(fields: &[&str], data: &[Value], sort: Vec<Value>, rows: Option<Vec<usize>>) -> Value {
     let result_map: HashMap<String, ValueMap> = get_field_map(&fields, &data, rows);
+    let sort_map: HashMap<String, Vec<ValueCount>> = field_map_to_instance_map(result_map, sort);
+
+
 
     Value::Null
 }
@@ -89,11 +93,50 @@ fn set_field_map(record: &Value, fields: &[&str], map: &mut HashMap<String, Valu
     }
 }
 
+fn field_map_to_instance_map(field_map: HashMap<String, ValueMap>, sort: Vec<Value>) -> HashMap<String, Vec<ValueCount>> {
+    let fields = sort_intent_to_map(sort);
+    let mut result: HashMap<String, Vec<ValueCount>> = HashMap::new();
+
+    for (field, value_map) in field_map {
+        let value_count_collection = value_map.to_vec();
+
+        let field_intent = fields.get(field.as_str());
+
+        match field_intent {
+            None => {
+                println!("no sort for field: {}", &field);
+            }
+            Some(sort_field) => {
+                println!("{:?}", sort_field);
+            }
+        }
+
+        result.insert(field, value_count_collection);
+    }
+
+    result
+}
+
+fn sort_intent_to_map(sort: Vec<Value>) -> HashMap<String, Field> {
+    let mut result: HashMap<String, Field> = HashMap::new();
+
+    for field_intent in sort {
+        let field_name = field_intent["name"].as_str().unwrap().to_string();
+        let data_type = field_intent.get("type");
+        let direction = field_intent.get("direction");
+        let field = Field::new(field_name.clone(), data_type, direction);
+
+        result.insert(field_name, field);
+    }
+
+    result
+}
 
 #[cfg(test)]
 mod test {
     use std::collections::HashMap;
     use serde_json::{json, Value};
+    use crate::processors::get_unique;
     use crate::processors::unique::{get_field_map, ValueCount, ValueMap};
 
     fn get_data() -> [Value; 5] {
@@ -143,6 +186,19 @@ mod test {
         assert_eq!(code_values.len(), 5);
         assert_eq!(value_values.len(), 3);
         assert_eq!(is_active_values.len(), 2);
+    }
+
+    #[test]
+    fn get_unique_test() {
+        let data = get_data();
+        let fields: [&str; 3] = ["code", "value", "isActive"];
+
+        let mut sort: Vec<Value> = Vec::new();
+        sort.push(json!({"name": "value"}));
+        sort.push(json!({"name": "isActive", "direction": "dec"}));
+        sort.push(json!({"name": "code", "direction": "dec"}));
+
+        get_unique(&fields, &data, sort, None);
     }
 }
 
