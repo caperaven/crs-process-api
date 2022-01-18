@@ -1,5 +1,3 @@
-#![feature(option_result_contains)]
-#![feature(is_sorted)]
 // https://docs.serde.rs/serde_json/value/enum.Value.html
 
 use wasm_bindgen::prelude::*;
@@ -16,6 +14,7 @@ mod aggregates;
 mod traits;
 
 use crate::duration::iso8601_to_duration_str;
+use crate::processors::get_unique;
 
 #[wasm_bindgen]
 pub fn init_panic_hook() {
@@ -102,13 +101,11 @@ pub fn calculate_group_aggregate(group: String, aggregate_intent: String, data: 
 }
 
 #[wasm_bindgen]
-pub fn unique_values(intent: String, data: String, sort: String, rows: Option<Vec<usize>>) -> String {
-    let sort_array: Vec<Value> = serde_json::from_str(sort.as_str()).unwrap();
-    let intent_array: Vec<&str> = serde_json::from_str(intent.as_str()).unwrap();
+pub fn unique_values(intent: String, data: String) -> String {
+    let fields_array: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    let result = processors::get_unique(&intent_array, &data_array, sort_array, rows);
-
+    let result = get_unique(fields_array, data_array);
     return result.to_string();
 }
 

@@ -1,370 +1,158 @@
-use std::collections::{HashMap};
-use std::hash::Hash;
-use serde_json::Value;
-use crate::processors::sort::{place_objects, Field};
+use std::collections::HashMap;
+use serde_json::{json, Value};
 
-#[derive(Debug)]
-struct ValueCount {
-    value: String,
-    count: i64
+pub fn get_unique(fields: Vec<Value>, data: Vec<Value>) -> Value {
+    let mut unique_sorted: UniqueSorted = UniqueSorted::new(fields, data);
+    unique_sorted.get_value()
 }
 
-struct ValueMap {
+/// This represents a field, the data type and the data
+struct FieldData {
     field: String,
-    map: HashMap<String, i64>
+    data_type: String,
+    value_count: HashMap<String, i64>
 }
 
-impl ValueMap {
-    pub fn new(field: String, object: &Value) -> ValueMap {
-        let mut result = ValueMap {
-            field,
-            map: Default::default()
+impl FieldData {
+    pub fn new(field_obj: Value) -> FieldData {
+        FieldData {
+            field: field_obj["name"].as_str().unwrap().to_string(),
+            data_type: field_obj["type"].as_str().unwrap().to_string(),
+            value_count: Default::default()
+        }
+    }
+
+    pub fn process_value(&mut self, value: &Value) {
+        let value_str: String = match value {
+            Value::Null => "null".to_string(),
+            Value::String(_) => value.as_str().unwrap().to_string(),
+            _ => value.to_string()
         };
 
-        result.process(object);
-        result
+        self.value_count.entry(value_str)
+            .and_modify(|count| *count += 1)
+            .or_insert(1);
     }
 
-    pub fn process(&mut self, object: &Value) {
-        let value = object.get(&self.field);
+    pub fn get_values(&mut self) -> Vec<Value> {
+        let mut result: Vec<Value> = Vec::new();
 
-        match value {
-            None => {}
-            Some(value) => {
-                let value_str: String = value.to_string();
+        for (value, count) in &self.value_count {
+            let mut value_obj = Value::Object(Default::default());
+            value_obj["count"] = Value::from(count.clone());
 
-                self.map.entry(value_str)
-                    .and_modify(|count|*count += 1)
-                    .or_insert(1);
+            let value_str = value.clone();
+            match self.data_type.as_ref() {
+                "string" => {
+                    value_obj["value"] = Value::from(value_str);
+                },
+                "duration" => {
+                    value_obj["value"] = Value::from(value_str);
+                },
+                "int" => {
+                    let i_value = value_str.parse::<i64>().unwrap();
+                    value_obj["value"] = Value::from(i_value);
+                }
+                "float" => {
+                    let f_value = value_str.parse::<f64>().unwrap();
+                    value_obj["value"] = Value::from(f_value);
+                }
+                "boolean" => {
+                    let b_value = value_str.parse::<bool>().unwrap();
+                    value_obj["value"] = Value::from(b_value);
+                }
+                _ => {}
+            }
+
+            result.push(value_obj);
+        }
+
+        return result;
+    }
+}
+
+/// main class that you interface with to get and set data
+struct UniqueSorted {
+    fields: HashMap<String, FieldData>
+}
+
+impl UniqueSorted {
+    pub fn new(fields: Vec<Value>, data: Vec<Value>) -> UniqueSorted {
+        let mut result = UniqueSorted {
+            fields: UniqueSorted::process_fields(fields)
+        };
+
+        result.process_data(data);
+        return result;
+    }
+
+    pub fn process_fields(fields_collection: Vec<Value>) -> HashMap<String, FieldData>{
+        let mut fields: HashMap<String, FieldData> = HashMap::new();
+
+        for field in fields_collection {
+            let field = FieldData::new(field);
+            fields.insert(field.field.clone(), field);
+        }
+
+        fields.insert("null".to_string(), FieldData::new(json!({"name": "null", "type": "string"})));
+
+        fields
+    }
+
+    pub fn process_data(&mut self, data: Vec<Value>) {
+        for record in data {
+            for (field, field_data) in &mut self.fields {
+                let value = record.get(field);
+
+                match value {
+                    None => {}
+                    Some(value_obj) => {
+                        field_data.process_value(value_obj);
+                    }
+                }
             }
         }
     }
 
-    pub fn to_vec(&self) -> Vec<ValueCount> {
-        let mut result: Vec<ValueCount> = Vec::new();
+    pub fn get_value(&mut self) -> Value {
+        let mut result: Value = Value::Object(Default::default());
 
-        for (key, value) in &self.map {
-            result.push(ValueCount{
-                value: key.clone(),
-                count: *value
-            });
+        for (field, field_data) in &mut self.fields {
+            let values: Vec<Value> = field_data.get_values();
+            result[field] = Value::from(values);
         }
 
-        result
+        return result;
     }
-}
-
-pub fn get_unique(fields: &[&str], data: &[Value], sort: Vec<Value>, rows: Option<Vec<usize>>) -> Value {
-    let result_map: HashMap<String, ValueMap> = get_field_map(&fields, &data, rows);
-    let sort_map: HashMap<String, Vec<ValueCount>> = field_map_to_instance_map(result_map, sort);
-
-
-
-    Value::Null
-}
-
-fn get_field_map(fields: &[&str], data: &[Value], rows: Option<Vec<usize>>) -> HashMap<String, ValueMap> {
-    let mut result: HashMap<String, ValueMap> = HashMap::new();
-
-    match rows {
-        None => {
-            for record in data {
-                set_field_map(record, fields, &mut result);
-            }
-        }
-        Some(indexes) => {
-            for index in indexes {
-                let record = &data[index];
-                set_field_map(record, fields, &mut result);
-            }
-        }
-    }
-
-    result
-}
-
-fn set_field_map(record: &Value, fields: &[&str], map: &mut HashMap<String, ValueMap>) {
-    for field_name in fields {
-        let name: String = field_name.to_owned().to_string();
-
-        map.entry(name.clone())
-            .and_modify(|value_map| value_map.process(record))
-            .or_insert(ValueMap::new(name, record));
-    }
-}
-
-fn field_map_to_instance_map(field_map: HashMap<String, ValueMap>, sort: Vec<Value>) -> HashMap<String, Vec<ValueCount>> {
-    let fields = sort_intent_to_map(sort);
-    let mut result: HashMap<String, Vec<ValueCount>> = HashMap::new();
-
-    for (field, value_map) in field_map {
-        let value_count_collection = value_map.to_vec();
-
-        let field_intent = fields.get(field.as_str());
-
-        match field_intent {
-            None => {
-                println!("no sort for field: {}", &field);
-            }
-            Some(sort_field) => {
-                println!("{:?}", sort_field);
-            }
-        }
-
-        result.insert(field, value_count_collection);
-    }
-
-    result
-}
-
-fn sort_intent_to_map(sort: Vec<Value>) -> HashMap<String, Field> {
-    let mut result: HashMap<String, Field> = HashMap::new();
-
-    for field_intent in sort {
-        let field_name = field_intent["name"].as_str().unwrap().to_string();
-        let data_type = field_intent.get("type");
-        let direction = field_intent.get("direction");
-        let field = Field::new(field_name.clone(), data_type, direction);
-
-        result.insert(field_name, field);
-    }
-
-    result
 }
 
 #[cfg(test)]
 mod test {
-    use std::collections::HashMap;
     use serde_json::{json, Value};
-    use crate::processors::get_unique;
-    use crate::processors::unique::{get_field_map, ValueCount, ValueMap};
+    use crate::get_unique;
 
-    fn get_data() -> [Value; 5] {
-        let result = [
-            json!({"id": 0, "code": "A", "value": 10, "isActive": true}),
-            json!({"id": 1, "code": "B", "value": 10, "isActive": false}),
-            json!({"id": 2, "code": "C", "value": 20, "isActive": true}),
-            json!({"id": 3, "code": "D", "value": 20, "isActive": true}),
-            json!({"id": 4, "code": "E", "value": 5, "isActive": false})
-        ];
-
+    fn get_data() -> Vec<Value> {
+        let mut result: Vec<Value> = Vec::new();
+        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
+        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
         result
     }
 
     #[test]
-    fn value_map_test() {
+    fn structure_test() {
         let data = get_data();
-        let mut instance = ValueMap::new("code".to_string(), &data[0]);
-        instance.process(&data[1]);
-        instance.process(&data[2]);
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value", "type": "int"}));
+        fields.push(json!({"name": "isActive", "type": "boolean"}));
+        fields.push(json!({"name": "code", "type": "string"}));
 
-        let result: Vec<ValueCount> = instance.to_vec();
-        assert_eq!(result.len(), 3);
-        for item in result {
-            assert_eq!(item.count, 1);
-        }
-    }
+        let result = get_unique(fields, data);
 
-    #[test]
-    fn get_field_map_test() {
-        let data = get_data();
-        let fields: [&str; 3] = ["code", "value", "isActive"];
-        let result: HashMap<String, ValueMap>  = get_field_map(&fields, &data, None);
+        println!("{:?}", result);
 
-        let code = result.get("code").unwrap();
-        let value = result.get("value").unwrap();
-        let is_active = result.get("isActive").unwrap();
-
-        assert_eq!(code.field, "code");
-        assert_eq!(value.field, "value");
-        assert_eq!(is_active.field, "isActive");
-
-        let code_values = code.to_vec();
-        let value_values = value.to_vec();
-        let is_active_values = is_active.to_vec();
-
-        assert_eq!(code_values.len(), 5);
-        assert_eq!(value_values.len(), 3);
-        assert_eq!(is_active_values.len(), 2);
-    }
-
-    #[test]
-    fn get_unique_test() {
-        let data = get_data();
-        let fields: [&str; 3] = ["code", "value", "isActive"];
-
-        let mut sort: Vec<Value> = Vec::new();
-        sort.push(json!({"name": "value"}));
-        sort.push(json!({"name": "isActive", "direction": "dec"}));
-        sort.push(json!({"name": "code", "direction": "dec"}));
-
-        get_unique(&fields, &data, sort, None);
+        assert!(result != Value::Null);
     }
 }
-
-// pub fn get_unique(intent: &[&str], data: &[Value], rows: Option<Vec<usize>>, sort: Option<String>) -> Value {
-//     let mut fields_map: HashMap<String, HashMap<String, i32>> = HashMap::new();
-//
-//     match rows {
-//         None => {
-//             for row in data {
-//                 set_fields_map(&row, &intent, &mut fields_map);
-//             }
-//         }
-//         Some(rows) => {
-//             for row_index in rows {
-//                 let row = &data[row_index];
-//                 set_fields_map(&row, &intent, &mut fields_map);
-//             }
-//         }
-//     }
-//
-//     let mut result = Value::Object(Default::default());
-//
-//     for (field, value_count_map) in fields_map.into_iter() {
-//         let mut field_obj: Vec<Value> = vec![];
-//
-//         for (value, count) in value_count_map.into_iter() {
-//             let mut value_count = Value::Object(Default::default());
-//             value_count["value"] = value.parse().unwrap();
-//             value_count["count"] = Value::from(count);
-//             field_obj.push(value_count);
-//         }
-//
-//         result[field] = Value::from(field_obj);
-//     }
-//
-//     // match sort {
-//     //     None => {}
-//     //     Some(sort) => {
-//     //         return sort_unique_result(&mut result, sort);
-//     //     }
-//     // };
-//
-//     return result;
-// }
-//
-// // fn sort_unique_result(result: &mut Value, sort: String) -> Value {
-// //     let sort_intent: Vec<Value> = serde_json::from_str(sort.as_str()).unwrap();
-// //     let mut sort_iter = sort_intent.into_iter();
-// //
-// //     let mut obj = result.as_object().unwrap().to_owned();
-// //     for (key, value) in obj.iter_mut() {
-// //         let field = key;
-// //         let field_intent = &sort_iter.find(|x| x["name"].eq(&Value::from(field.as_str())));
-// //
-// //         match field_intent {
-// //             None => {
-// //                 println!("no sort defined for {:?}", field);
-// //             },
-// //             Some(field_obj) => {
-// //                 let field_name: String = field_obj["name"].as_str().unwrap().to_string();
-// //                 let data_type: Option<&Value> = field_obj.get("type");
-// //                 let direction: Option<&Value> = field_obj.get("direction");
-// //                 let field: Field = Field::new(field_name, data_type, direction);
-// //                 let fields: &[Field] = &vec![field];
-// //
-// //                 // let mut array = value.as_array().unwrap().to_owned();
-// //                 // array.sort_by(|a, b| sort_eval(a, b, fields));
-// //                 println!("{:?}", value);
-// //             }
-// //         }
-// //     }
-// //
-// //     result.to_owned()
-// // }
-//
-// fn sort_eval(a: &Value, b:&Value, fields: &[Field]) -> Ordering {
-//     let result: Placement = place_objects(fields, b, a);
-//
-//     match result {
-//         Placement::Before => Ordering::Greater,
-//         Placement::After => Ordering::Less
-//     }
-// }
-//
-// fn set_fields_map(row: &Value, fields: &[&str], fields_map: &mut HashMap<String, HashMap<String, i32>>) {
-//     for field in fields {
-//         let record_value: &String = &row[&field].clone().to_string();
-//         let field_name: String = String::from(*field);
-//         let fields_map_item = fields_map.get_mut(&field_name);
-//
-//         match fields_map_item {
-//             // the field is not in the map yet
-//             None => {
-//                 let mut value_count_map: HashMap<String, i32> = HashMap::new();
-//                 value_count_map.insert(record_value.clone(), 1);
-//                 fields_map.insert(field_name, value_count_map);
-//             }
-//
-//             // the field is in the map, check the values
-//             Some(value_count_map) => {
-//                 value_count_map.entry(record_value.clone())
-//                     .and_modify(|count| *count += 1)
-//                     .or_insert(1);
-//             }
-//         }
-//     }
-//
-//     for (field, value) in fields_map.into_iter() {
-//         println!("{:?}", value);
-//         value.into_iter().is_sorted_by(|a, b| a.partial_cmp(b));
-//         println!("{:?}", value);
-//     }
-// }
-//
-// #[cfg(test)]
-// mod test {
-//     use serde_json::{json, Value};
-//     use crate::processors::get_unique;
-//
-//     fn get_data() -> [Value; 5] {
-//         let result = [
-//             json!({"id": 0, "code": "A", "value": 10, "isActive": true}),
-//             json!({"id": 1, "code": "B", "value": 10, "isActive": false}),
-//             json!({"id": 2, "code": "C", "value": 20, "isActive": true}),
-//             json!({"id": 3, "code": "D", "value": 20, "isActive": true}),
-//             json!({"id": 4, "code": "E", "value": 5, "isActive": false})
-//         ];
-//
-//         result
-//     }
-//
-//     #[test]
-//     fn get_unique_test() {
-//         let data: [Value; 5] = get_data();
-//         let fields: [&str; 3] = ["code", "value", "isActive"];
-//
-//         let sort = json!([
-//             { "name": "code" }
-//         ]);
-//
-//         let sort_str = sort.to_string();
-//
-//         let _result = get_unique(&fields, &data, None, Some(sort_str));
-//
-//         // println!("{:?}", &result.pointer("/code/0/value"));
-//         // println!("{:?}", &result.pointer("/code/0/count"));
-//
-//         // assert_eq!(result.pointer("/code/0/value").unwrap(), &Value::from("A"));
-//         // assert_eq!(result.pointer("/code/0/count").unwrap(), &Value::from(1));
-//
-//         //assert_eq!(result.pointer("/code/[0]/value").unwrap(), &Value::from("A"));
-//
-//         // assert_eq!(result["code"]["\"A\""].as_i64().unwrap(), 1);
-//         // assert_eq!(result["value"]["10"].as_i64().unwrap(), 2);
-//         // assert_eq!(result["isActive"]["true"].as_i64().unwrap(), 3);
-//     }
-//
-//     #[test]
-//     fn get_unique_rows_test() {
-//         let data: [Value; 5] = get_data();
-//         let fields: [&str; 3] = ["code", "value", "isActive"];
-//         let rows: Vec<usize> = vec![0, 1, 2];
-//         let _result = get_unique(&fields, &data, Some(rows), None);
-//
-//         // assert_eq!(result["code"]["\"A\""].as_i64().unwrap(), 1);
-//         // assert_eq!(result["value"]["10"].as_i64().unwrap(), 2);
-//         // assert_eq!(result["isActive"]["true"].as_i64().unwrap(), 2);
-//     }
-// }

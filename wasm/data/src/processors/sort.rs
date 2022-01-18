@@ -65,7 +65,7 @@ pub fn sort(intent: &[Value], data: &[Value], rows: Option<Vec<usize>>) -> Vec<u
         None => flood_indexes(&data)
     };
 
-    let mut fields = sort_intent_to_vec(intent);
+    let fields = sort_intent_to_vec(intent);
 
     rows.sort_by(|a, b| sort_eval(a, b, &fields, &data));
 
