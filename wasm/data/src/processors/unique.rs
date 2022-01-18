@@ -1,5 +1,8 @@
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use serde_json::{json, Value};
+use crate::evaluators::LessThan;
+use crate::traits::Eval;
 
 pub fn get_unique(fields: Vec<Value>, data: Vec<Value>) -> Value {
     let mut unique_sorted: UniqueSorted = UniqueSorted::new(fields, data);
@@ -67,7 +70,24 @@ impl FieldData {
             result.push(value_obj);
         }
 
+        result.sort_by(|a, b| sort_eval(&self.data_type, a, b));
+
         return result;
+    }
+}
+
+fn sort_eval(data_type: &String, obj1: &Value, obj2: &Value) -> Ordering {
+    let value1 = &obj1["value"];
+    let value2 = &obj2["value"];
+
+    if data_type.as_str() == "duration" {
+        return Ordering::Greater;
+    }
+    else {
+        match LessThan::evaluate(&value1, &value2) {
+            true => Ordering::Less,
+            false => Ordering::Greater
+        }
     }
 }
 
@@ -142,16 +162,25 @@ mod test {
     }
 
     #[test]
-    fn structure_test() {
+    fn structure_test_code() {
         let data = get_data();
         let mut fields: Vec<Value> = Vec::new();
-        fields.push(json!({"name": "value", "type": "int"}));
-        fields.push(json!({"name": "isActive", "type": "boolean"}));
+        // fields.push(json!({"name": "value", "type": "int"}));
+        // fields.push(json!({"name": "isActive", "type": "boolean"}));
         fields.push(json!({"name": "code", "type": "string"}));
 
         let result = get_unique(fields, data);
 
-        println!("{:?}", result);
+        assert_eq!(result.pointer("/code/0/value").unwrap(), &Value::from("A"));
+        assert_eq!(result.pointer("/code/0/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/code/1/value").unwrap(), &Value::from("B"));
+        assert_eq!(result.pointer("/code/1/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/code/2/value").unwrap(), &Value::from("C"));
+        assert_eq!(result.pointer("/code/2/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/code/3/value").unwrap(), &Value::from("D"));
+        assert_eq!(result.pointer("/code/3/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/code/4/value").unwrap(), &Value::from("E"));
+        assert_eq!(result.pointer("/code/4/count").unwrap(), &Value::from(1));
 
         assert!(result != Value::Null);
     }
