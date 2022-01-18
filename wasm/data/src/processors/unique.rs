@@ -165,8 +165,6 @@ mod test {
     fn structure_test_code() {
         let data = get_data();
         let mut fields: Vec<Value> = Vec::new();
-        // fields.push(json!({"name": "value", "type": "int"}));
-        // fields.push(json!({"name": "isActive", "type": "boolean"}));
         fields.push(json!({"name": "code", "type": "string"}));
 
         let result = get_unique(fields, data);
@@ -181,7 +179,35 @@ mod test {
         assert_eq!(result.pointer("/code/3/count").unwrap(), &Value::from(1));
         assert_eq!(result.pointer("/code/4/value").unwrap(), &Value::from("E"));
         assert_eq!(result.pointer("/code/4/count").unwrap(), &Value::from(1));
+    }
 
-        assert!(result != Value::Null);
+    #[test]
+    fn structure_test_value() {
+        let data = get_data();
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value", "type": "int"}));
+
+        let result = get_unique(fields, data);
+
+        assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from(5));
+        assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/value/1/value").unwrap(), &Value::from(10));
+        assert_eq!(result.pointer("/value/1/count").unwrap(), &Value::from(2));
+        assert_eq!(result.pointer("/value/2/value").unwrap(), &Value::from(20));
+        assert_eq!(result.pointer("/value/2/count").unwrap(), &Value::from(2));
+    }
+
+    #[test]
+    fn structure_test_boolean() {
+        let data = get_data();
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "isActive", "type": "boolean"}));
+
+        let result = get_unique(fields, data);
+
+        assert_eq!(result.pointer("/isActive/0/value").unwrap(), &Value::from(false));
+        assert_eq!(result.pointer("/isActive/0/count").unwrap(), &Value::from(2));
+        assert_eq!(result.pointer("/isActive/1/value").unwrap(), &Value::from(true));
+        assert_eq!(result.pointer("/isActive/1/count").unwrap(), &Value::from(3));
     }
 }
