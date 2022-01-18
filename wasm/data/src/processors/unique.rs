@@ -1,6 +1,8 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
 use serde_json::{json, Value};
+use crate::duration::iso8601_placement;
+use crate::enums::Placement;
 use crate::evaluators::LessThan;
 use crate::traits::Eval;
 
@@ -81,7 +83,10 @@ fn sort_eval(data_type: &String, obj1: &Value, obj2: &Value) -> Ordering {
     let value2 = &obj2["value"];
 
     if data_type.as_str() == "duration" {
-        return Ordering::Greater;
+        match iso8601_placement(&value1, &value2) {
+            Placement::Before => Ordering::Less,
+            Placement::After => Ordering::Greater
+        }
     }
     else {
         match LessThan::evaluate(&value1, &value2) {
@@ -209,5 +214,26 @@ mod test {
         assert_eq!(result.pointer("/isActive/0/count").unwrap(), &Value::from(2));
         assert_eq!(result.pointer("/isActive/1/value").unwrap(), &Value::from(true));
         assert_eq!(result.pointer("/isActive/1/count").unwrap(), &Value::from(3));
+    }
+
+    #[test]
+    fn structure_test_duration() {
+        let mut data: Vec<Value> = Vec::new();
+        data.push(json!({"id": 0, "duration": "P10DT1H2M3S"}));
+        data.push(json!({"id": 1, "duration": "P1DT1H2M10S"}));
+        data.push(json!({"id": 2, "duration": "P0DT1H2M30S"}));
+        data.push(json!({"id": 3, "duration": "P1DT1H2M10S"}));
+
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "duration", "type": "duration"}));
+
+        let result = get_unique(fields, data);
+
+        assert_eq!(result.pointer("/duration/0/value").unwrap(), &Value::from("P0DT1H2M30S"));
+        assert_eq!(result.pointer("/duration/0/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/duration/1/value").unwrap(), &Value::from("P1DT1H2M10S"));
+        assert_eq!(result.pointer("/duration/1/count").unwrap(), &Value::from(2));
+        assert_eq!(result.pointer("/duration/2/value").unwrap(), &Value::from("P10DT1H2M3S"));
+        assert_eq!(result.pointer("/duration/2/count").unwrap(), &Value::from(1));
     }
 }
