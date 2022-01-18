@@ -1,44 +1,35 @@
+use chrono::{DateTime, Local, MIN_DATETIME, TimeZone};
 use serde_json::Value;
 use crate::traits::Aggregate;
 
 pub struct Max {
-    pub value: f64
+    pub value: DateTime<Local>
 }
 
 impl Max {
     pub fn new() -> Max {
         Max {
-            value: f64::MIN
+            value: Local.timestamp(0, 0)
         }
     }
 }
 
-impl Aggregate<f64> for Max {
+impl Aggregate<DateTime<Local>> for Max {
     fn add_value(&mut self, obj: &Value) {
-        let value = obj.as_f64().unwrap();
-        if value > self.value {
-            self.value = value;
-        }
     }
 
-    fn value(&self) -> f64 {
+    fn value(&self) -> DateTime<Local> {
         self.value
     }
 }
 
-// #[cfg(test)]
-// mod test {
-//     use serde_json::Value;
-//     use crate::aggregates::max::Max;
-//     use crate::traits::Aggregate;
-//
-//     #[test]
-//     fn sum_test() {
-//         let mut max = Max::new();
-//         max.add_value(&Value::from(10));
-//         max.add_value(&Value::from(20));
-//         max.add_value(&Value::from(5));
-//
-//         assert_eq!(max.value, 20.);
-//     }
-// }
+#[cfg(test)]
+mod test {
+    use chrono::{DateTime, Local};
+    use serde_json::Value;
+
+    #[test]
+    fn sum_test() {
+        //const date: DateTime<Local> = DateTime::parse_from_str("2022/01/17 10:01:40.712", "");
+    }
+}

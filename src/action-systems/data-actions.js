@@ -115,9 +115,10 @@ export class DataActions {
     static async unique_values(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const intent = await crs.process.getValue(step.args.fields, context, process, item);
-        const rows = await crs.process.getValue(step.args.rows, context, process, item) || [];
+        const rows = await crs.process.getValue(step.args.rows, context, process, item) || null;
+        let sort = await crs.process.getValue(step.args.sort, context, process, item) || null;
 
-        let result = unique_values(JSON.stringify(intent), JSON.stringify(source), rows);
+        let result = unique_values(JSON.stringify(intent), JSON.stringify(source), rows, sort);
         result = JSON.parse(result);
 
         if (step.args.target != null) {

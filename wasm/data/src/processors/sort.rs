@@ -10,7 +10,7 @@ use crate::enums::SortDirection::Descending;
 pub const ASCENDING: &str = "asc";
 pub const DESCENDING: &str = "dec";
 
-struct Field {
+pub struct Field {
     name: String,
     data_type: Option<String>,
     direction: SortDirection
@@ -75,7 +75,7 @@ pub fn sort(intent: &[Value], data: &[Value], rows: Option<Vec<usize>>) -> Vec<u
 }
 
 /// Is the evaluator before or after the reference
-fn place_objects(intent: &[Field], evaluate: &Value, reference: &Value) -> Placement {
+pub fn place_objects(intent: &[Field], evaluate: &Value, reference: &Value) -> Placement {
     for field in intent {
         let value1: &Value = &evaluate[&field.name];
         let value2: &Value = &reference[&field.name];

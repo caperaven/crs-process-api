@@ -6,7 +6,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async buildData() {
-        this.data = await createData(10);
+        this.data = await createData(100);
         console.log("data loaded done");
     }
 
@@ -132,8 +132,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async unique() {
         let result = await crs.intent.data.unique_values({args: {
             source: "$context.data",
-            fields: ["code", "value", "site"],
-            rows: []
+            fields: ["code", "value", "site"]
         }}, this);
 
         console.log(result);
