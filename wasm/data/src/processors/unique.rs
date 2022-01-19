@@ -37,7 +37,14 @@ impl FieldData {
     pub fn process_value(&mut self, value: &Value) {
         let value_str: String = match value {
             Value::Null => "null".to_string(),
-            Value::String(_) => value.as_str().unwrap().to_string(),
+            Value::String(str_value) => {
+                if str_value.len() == 0 {
+                    "null".to_string()
+                }
+                else {
+                    value.as_str().unwrap().to_string()
+                }
+            },
             _ => value.to_string()
         };
 
@@ -296,4 +303,25 @@ mod test {
         assert_eq!(result.pointer("/value/2/value").unwrap(), &Value::Null);
         assert_eq!(result.pointer("/value/2/count").unwrap(), &Value::from(1));
     }
+
+    #[test]
+    fn null_and_empty_test() {
+        let mut data: Vec<Value> = Vec::new();
+        data.push(json!({"value": "test"}));
+        data.push(json!({"value": ""}));
+        data.push(json!({"value": Null}));
+
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value", "type": "string"}));
+
+        let result = get_unique(fields, data);
+
+        println!("{:?}", result);
+
+        assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from("test"));
+        assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/value/1/value").unwrap(), &Value::Null);
+        assert_eq!(result.pointer("/value/1/count").unwrap(), &Value::from(2));
+    }
+
 }
