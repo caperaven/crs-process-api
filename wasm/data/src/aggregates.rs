@@ -1,6 +1,6 @@
 mod count;
 mod numbers;
-mod dates;
+mod date_time;
 // mod durations;
 
 pub use count::Count;
@@ -10,8 +10,8 @@ pub use numbers::Min;
 pub use numbers::Max;
 pub use numbers::Ave;
 
-pub use dates::Max as DateMax;
-pub use dates::Min as DateMin;
+pub use date_time::Max as DateMax;
+pub use date_time::Min as DateMin;
 //
 // pub use durations::Max as DurationMax;
 // pub use durations::Min as DurationMin;

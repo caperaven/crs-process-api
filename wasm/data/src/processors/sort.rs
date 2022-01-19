@@ -7,9 +7,6 @@ use crate::enums::{Placement, SortDirection};
 use crate::enums::Placement::Before;
 use crate::enums::SortDirection::Descending;
 
-pub const ASCENDING: &str = "asc";
-pub const DESCENDING: &str = "dec";
-
 #[derive(Debug)]
 pub struct Field {
     pub name: String,
@@ -28,7 +25,7 @@ impl Field {
             Some(value) => {
                 let value_str = value.as_str().unwrap();
 
-                if value_str == ASCENDING {
+                if value_str == "asc" {
                     SortDirection::Ascending
                 }
                 else {
@@ -124,7 +121,6 @@ pub fn place_objects(intent: &[Field], evaluate: &Value, reference: &Value) -> P
 mod test {
     use serde_json::{json, Value};
     use crate::processors::sort::{Placement, place_objects, Field, sort};
-    use crate::processors::{ASCENDING, DESCENDING};
 
     fn get_data() -> Vec<Value> {
         let mut data: Vec<Value> = Vec::new();
@@ -158,7 +154,7 @@ mod test {
         assert_eq!(result[4], 3);
 
         let mut fields: Vec<Value> = Vec::new();
-        fields.push(json!({"name": "code", "direction": ASCENDING}));
+        fields.push(json!({"name": "code", "direction": "asc"}));
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 0);
@@ -178,7 +174,7 @@ mod test {
         assert_eq!(result[4], 3);
 
         let mut fields: Vec<Value> = Vec::new();
-        fields.push(json!({"name": "code", "direction": DESCENDING}));
+        fields.push(json!({"name": "code", "direction": "dec"}));
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
         assert_eq!(result[0], 4);
@@ -211,8 +207,8 @@ mod test {
         let data = get_data();
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "value"}));
-        fields.push(json!({"name": "isActive", "direction": DESCENDING}));
-        fields.push(json!({"name": "code", "direction": DESCENDING}));
+        fields.push(json!({"name": "isActive", "direction": "dec"}));
+        fields.push(json!({"name": "code", "direction": "dec"}));
 
         let result = sort(&fields, &data, None);
         assert_eq!(result.len(), 5);
@@ -435,8 +431,8 @@ mod test {
         let object2 = json!({"value": "PT1.2S", "number": 1});
 
         let fields = [
-            Field::new("value".to_string(), Some(&Value::from("duration")), Some(&Value::from(ASCENDING))),
-            Field::new("number".to_string(), None, Some(&Value::from(ASCENDING)))
+            Field::new("value".to_string(), Some(&Value::from("duration")), Some(&Value::from("asc"))),
+            Field::new("number".to_string(), None, Some(&Value::from("asc")))
         ];
 
         let result = place_objects(&fields, &object1, &object2);
