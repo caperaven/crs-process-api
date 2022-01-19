@@ -181,7 +181,23 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async convertDurationBatch() {
-        const result = await crs.intent.data.iso8601_batch({args: {value: ["P0DT0H9M30.200954S", "P10DT0H9M"]}});
+        let result = await crs.intent.data.iso8601_batch({args: {value: ["P0DT0H9M30.200954S", "P10DT0H9M"]}});
+        console.log(result);
+
+        result = await crs.intent.data.iso8601_batch({args: {
+            value: [
+                {
+                    value: "P0DT0H9M30.200954S",
+                    count: 2
+                },
+                {
+                    value: "P10DT0H9M",
+                    count: 3
+                }
+            ],
+            field: "value"
+        }});
+
         console.log(result);
     }
 

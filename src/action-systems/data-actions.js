@@ -103,7 +103,10 @@ export class DataActions {
 
     static async iso8601_batch(step, context, process, item) {
         const value = await crs.process.getValue(step.args.value, context, process, item);
-        let result = iso8601_batch(JSON.stringify(value));
+        const field = await crs.process.getValue(step.args.field, context, process, item);
+
+
+        let result = iso8601_batch(JSON.stringify(value), field);
         result = JSON.parse(result);
 
         if (step.args.target != null) {

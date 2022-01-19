@@ -116,9 +116,9 @@ pub fn iso8601_to_string(duration: String) -> String {
 }
 
 #[wasm_bindgen]
-pub fn iso8601_batch(dates: String) -> String {
+pub fn iso8601_batch(dates: String, field_name: Option<String>) -> String {
     let dates_array: Vec<Value> = serde_json::from_str(dates.as_str()).unwrap();
-    let result = iso8601_to_duration_str_batch(dates_array);
+    let result = iso8601_to_duration_str_batch(dates_array, field_name);
     let obj = Value::from(result);
     return obj.to_string();
 }
