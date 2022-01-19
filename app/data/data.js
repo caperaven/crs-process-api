@@ -176,7 +176,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async convertDuration() {
-        const result = await crs.intent.data.iso8601_to_string({args: {value: "PT100H30M10S"}});
+        const result = await crs.intent.data.iso8601_to_string({args: {value: "P0DT0H9M30.200954S"}});
         console.log(result);
     }
 
