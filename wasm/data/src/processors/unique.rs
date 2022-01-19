@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use serde_json::{json, Value};
+use serde_json::{Value};
 use crate::duration::iso8601_placement;
 use crate::enums::Placement;
 use crate::evaluators::LessThan;
@@ -20,9 +20,16 @@ struct FieldData {
 
 impl FieldData {
     pub fn new(field_obj: Value) -> FieldData {
+        let field = field_obj["name"].as_str().unwrap().to_string();
+
+        let data_type = match field_obj["type"].as_str() {
+            None => "string".to_string(),
+            Some(dt) => dt.to_string()
+        };
+
         FieldData {
-            field: field_obj["name"].as_str().unwrap().to_string(),
-            data_type: field_obj["type"].as_str().unwrap().to_string(),
+            field,
+            data_type,
             value_count: Default::default()
         }
     }
@@ -42,37 +49,52 @@ impl FieldData {
     pub fn get_values(&mut self) -> Vec<Value> {
         let mut result: Vec<Value> = Vec::new();
 
+        let mut null_obj: Option<Value> = None;
+
         for (value, count) in &self.value_count {
             let mut value_obj = Value::Object(Default::default());
             value_obj["count"] = Value::from(count.clone());
 
-            let value_str = value.clone();
-            match self.data_type.as_ref() {
-                "string" => {
-                    value_obj["value"] = Value::from(value_str);
-                },
-                "duration" => {
-                    value_obj["value"] = Value::from(value_str);
-                },
-                "int" => {
-                    let i_value = value_str.parse::<i64>().unwrap();
-                    value_obj["value"] = Value::from(i_value);
-                }
-                "float" => {
-                    let f_value = value_str.parse::<f64>().unwrap();
-                    value_obj["value"] = Value::from(f_value);
-                }
-                "boolean" => {
-                    let b_value = value_str.parse::<bool>().unwrap();
-                    value_obj["value"] = Value::from(b_value);
-                }
-                _ => {}
+            if value == "null" {
+                value_obj["value"] = Value::Null;
+                null_obj = Some(value_obj);
             }
+            else {
+                let value_str = value.clone();
+                match self.data_type.as_ref() {
+                    "duration" => {
+                        value_obj["value"] = Value::from(value_str);
+                    },
+                    "long" => {
+                        let i_value = value_str.parse::<i64>().unwrap();
+                        value_obj["value"] = Value::from(i_value);
+                    }
+                    "number" => {
+                        let f_value = value_str.parse::<f64>().unwrap();
+                        value_obj["value"] = Value::from(f_value);
+                    }
+                    "boolean" => {
+                        let b_value = value_str.parse::<bool>().unwrap();
+                        value_obj["value"] = Value::from(b_value);
+                    }
+                    _ => {
+                        // defaults as string
+                        value_obj["value"] = Value::from(value_str);
+                    }
+                }
 
-            result.push(value_obj);
+                result.push(value_obj);
+            }
         }
 
         result.sort_by(|a, b| sort_eval(&self.data_type, a, b));
+
+        match null_obj {
+            None => {}
+            Some(the_obj) => {
+                result.push(the_obj);
+            }
+        }
 
         return result;
     }
@@ -119,8 +141,6 @@ impl UniqueSorted {
             fields.insert(field.field.clone(), field);
         }
 
-        fields.insert("null".to_string(), FieldData::new(json!({"name": "null", "type": "string"})));
-
         fields
     }
 
@@ -130,7 +150,9 @@ impl UniqueSorted {
                 let value = record.get(field);
 
                 match value {
-                    None => {}
+                    None => {
+                        field_data.process_value(&Value::Null);
+                    }
                     Some(value_obj) => {
                         field_data.process_value(value_obj);
                     }
@@ -154,15 +176,17 @@ impl UniqueSorted {
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
+    use serde_json::Value::Null;
     use crate::get_unique;
 
     fn get_data() -> Vec<Value> {
         let mut result: Vec<Value> = Vec::new();
-        result.push(json!({"id": 0, "code": "A", "value": 10, "isActive": true}));
-        result.push(json!({"id": 1, "code": "B", "value": 10, "isActive": false}));
-        result.push(json!({"id": 2, "code": "C", "value": 20, "isActive": true}));
-        result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
-        result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
+        result.push(json!({"id": 0, "code": "A", "value": 10, "value_f": 10.1, "isActive": true}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "value_f": 10.2, "isActive": false}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "value_f": 10.1, "isActive": true}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "value_f": 10.2, "isActive": true}));
+        result.push(json!({"id": 4, "code": "E", "value": 5,  "value_f": 10.1, "isActive": false}));
+
         result
     }
 
@@ -190,7 +214,7 @@ mod test {
     fn structure_test_value() {
         let data = get_data();
         let mut fields: Vec<Value> = Vec::new();
-        fields.push(json!({"name": "value", "type": "int"}));
+        fields.push(json!({"name": "value", "type": "long"}));
 
         let result = get_unique(fields, data);
 
@@ -235,5 +259,41 @@ mod test {
         assert_eq!(result.pointer("/duration/1/count").unwrap(), &Value::from(2));
         assert_eq!(result.pointer("/duration/2/value").unwrap(), &Value::from("P10DT1H2M3S"));
         assert_eq!(result.pointer("/duration/2/count").unwrap(), &Value::from(1));
+    }
+
+    #[test]
+    fn structure_test_null_duration() {
+        let mut data: Vec<Value> = Vec::new();
+        data.push(json!({"id": 3, "duration": Value::Null}));
+
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "duration", "type": "duration"}));
+
+        let result = get_unique(fields, data);
+
+        assert_eq!(result.pointer("/duration/0/value").unwrap(), &Value::Null);
+        assert_eq!(result.pointer("/duration/0/count").unwrap(), &Value::from(1));
+    }
+
+    #[test]
+    fn null_float_test() {
+        let mut data: Vec<Value> = Vec::new();
+        data.push(json!({"value": Null}));
+        data.push(json!({"value": 10}));
+        data.push(json!({"value": 20}));
+
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value", "type": "number"}));
+
+        let result = get_unique(fields, data);
+
+        println!("{:?}", result);
+
+        assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from(10.));
+        assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/value/1/value").unwrap(), &Value::from(20.));
+        assert_eq!(result.pointer("/value/1/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/value/2/value").unwrap(), &Value::Null);
+        assert_eq!(result.pointer("/value/2/count").unwrap(), &Value::from(1));
     }
 }
