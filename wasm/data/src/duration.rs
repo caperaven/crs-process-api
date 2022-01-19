@@ -8,12 +8,23 @@ pub fn iso8601_to_duration_str(date: &Value) -> String {
 
     return match result {
         Ok(duration) => {
-            format!("{}:{}:{}:{}:{}", duration.month, duration.day, duration.hour, duration.minute, duration.second)
+            format!("{}:{}:{}:{}", duration.day, duration.hour, duration.minute, duration.second)
         }
         Err(err) => {
             err.to_string()
         }
     }
+}
+
+pub fn iso8601_to_duration_str_batch(durations: Vec<Value>) -> Vec<String> {
+    let mut result: Vec<String> = Vec::new();
+
+    for duration in durations {
+        let duration_str = iso8601_to_duration_str(&duration);
+        result.push(duration_str);
+    }
+
+    return result;
 }
 
 /// check the evaluate value against the reference value
@@ -84,14 +95,15 @@ mod test {
     use serde_json::Value;
     use crate::duration::{iso8601_placement, iso8601_to_duration_str};
     use crate::enums::Placement;
+    use crate::iso8601_to_duration_str_batch;
 
     #[test]
     fn value_to_date_string_test() {
         let result = iso8601_to_duration_str(&Value::from("PT100H30M"));
-        assert_eq!(result, "0:0:100:30:0".to_string());
+        assert_eq!(result, "0:100:30:0".to_string());
 
         let result = iso8601_to_duration_str(&Value::from("PT4.927647S"));
-        assert_eq!(result, "0:0:0:0:4.927647".to_string());
+        assert_eq!(result, "0:0:0:4.927647".to_string());
     }
 
     #[test]
@@ -119,5 +131,17 @@ mod test {
             Placement::After => true
         };
         assert_eq!(is_after, true);
+    }
+
+    #[test]
+    fn iso8601_to_duration_str_batch_test() {
+        let mut durations: Vec<Value> = Vec::new();
+        durations.push(Value::from("P13DT21H23M45S"));
+        durations.push(Value::from("P0DT21H22M45.97096S"));
+
+        let result = iso8601_to_duration_str_batch(durations);
+        assert_eq!(result.len(), 2);
+        assert_eq!(result[0], "13:21:23:45");
+        assert_eq!(result[1], "0:21:22:45.97096");
     }
 }

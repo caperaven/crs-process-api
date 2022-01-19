@@ -180,6 +180,11 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
     }
 
+    async convertDurationBatch() {
+        const result = await crs.intent.data.iso8601_batch({args: {value: ["P0DT0H9M30.200954S", "P10DT0H9M"]}});
+        console.log(result);
+    }
+
     async assertObj() {
         let result = await crs.intent.data.assert_equal({ args: {
                 source: {person: {name: "John"}},

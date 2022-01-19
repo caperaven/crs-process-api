@@ -13,7 +13,7 @@ mod enums;
 mod aggregates;
 mod traits;
 
-use crate::duration::iso8601_to_duration_str;
+use crate::duration::{iso8601_to_duration_str, iso8601_to_duration_str_batch};
 use crate::processors::get_unique;
 
 #[wasm_bindgen]
@@ -113,6 +113,14 @@ pub fn unique_values(intent: String, data: String) -> String {
 #[wasm_bindgen]
 pub fn iso8601_to_string(duration: String) -> String {
     iso8601_to_duration_str(&Value::from(duration))
+}
+
+#[wasm_bindgen]
+pub fn iso8601_batch(dates: String) -> String {
+    let dates_array: Vec<Value> = serde_json::from_str(dates.as_str()).unwrap();
+    let result = iso8601_to_duration_str_batch(dates_array);
+    let obj = Value::from(result);
+    return obj.to_string();
 }
 
 #[wasm_bindgen]

@@ -5,6 +5,7 @@ import init, {
     aggregate_rows,
     calculate_group_aggregate,
     iso8601_to_string,
+    iso8601_batch,
     in_filter,
     unique_values,
     init_panic_hook,
@@ -92,6 +93,18 @@ export class DataActions {
     static async iso8601_to_string(step, context, process, item) {
         const value = await crs.process.getValue(step.args.value, context, process, item);
         const result = iso8601_to_string(value);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async iso8601_batch(step, context, process, item) {
+        const value = await crs.process.getValue(step.args.value, context, process, item);
+        let result = iso8601_batch(JSON.stringify(value));
+        result = JSON.parse(result);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
