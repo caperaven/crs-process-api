@@ -18,6 +18,7 @@ import {RandomActions} from "./action-systems/random.js";
 import {StringActions} from "./action-systems/string-actions.js";
 import {DatabaseActions} from "./action-systems/database-actions.js";
 import {StorageAction} from "./action-systems/storage.js";
+import {SessionStorageAction} from "./action-systems/session-storage.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -26,24 +27,25 @@ globalThis.crs = globalThis.crs || {};
  * This can be used programmatically.
  */
 globalThis.crs.intent = {
-    array       : ArrayActions,
-    condition   : ConditionActions,
-    console     : ConsoleActions,
-    loop        : LoopActions,
-    object      : ObjectActions,
-    action      : ActionActions,
-    math        : MathActions,
-    process     : ProcessActions,
-    module      : ModuleActions,
-    dom         : DomActions,
-    binding     : BindingActions,
-    system      : SystemActions,
-    events      : EventsActions,
-    rest        : RestServicesAction,
-    random      : RandomActions,
-    string      : StringActions,
-    db          : DatabaseActions,
-    storage     : StorageAction
+    array      : ArrayActions,
+    condition  : ConditionActions,
+    console    : ConsoleActions,
+    loop       : LoopActions,
+    object     : ObjectActions,
+    action     : ActionActions,
+    math       : MathActions,
+    process    : ProcessActions,
+    module     : ModuleActions,
+    dom        : DomActions,
+    binding    : BindingActions,
+    system     : SystemActions,
+    events     : EventsActions,
+    rest       : RestServicesAction,
+    random     : RandomActions,
+    string     : StringActions,
+    db         : DatabaseActions,
+    storage    : StorageAction,
+    session    : SessionStorageAction
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();

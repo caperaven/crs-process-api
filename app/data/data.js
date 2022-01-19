@@ -327,6 +327,36 @@ export default class Data extends crsbinding.classes.ViewBase {
         const result = await crs.intent.storage.get_object({args: {key: "person"}});
         console.log(result);
     }
+
+    async session_save_value() {
+        await crs.intent.session.set_value({
+            args: {
+                key: "name",
+                value: "John Doe"
+            }
+        })
+    }
+
+    async session_get_value() {
+        const result = await crs.intent.session.get_value({args: {key: "name"}});
+        alert(result);
+    }
+
+    async session_save_object() {
+        await crs.intent.session.set_object({args: {
+                key: "person",
+                value: {
+                    firstName: "John",
+                    lastName: "Doe"
+                }
+            }})
+    }
+
+    async session_get_object() {
+        const result = await crs.intent.session.get_object({args: {key: "person"}});
+        console.log(result);
+    }
+
 }
 
 async function createData(count) {
