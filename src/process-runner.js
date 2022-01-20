@@ -23,6 +23,8 @@ export class ProcessRunner {
                 await crs.intent.binding.create_context(null, context, process, null);
             }
 
+            await crsbinding.events.emitter.emit("process-starting", process);
+
             crsbinding.idleTaskManager.add(async () => {
                 let result;
 
@@ -193,6 +195,8 @@ export class ProcessRunner {
         delete process.text;
         delete process.prefixes;
         delete process.expCache;
+
+        await crsbinding.events.emitter.emit("process-ended", process);
     }
 
     static async cleanObject(obj) {
