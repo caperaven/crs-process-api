@@ -130,19 +130,12 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async unique() {
+        await crs.intent.data.debug();
+
         let result = await crs.intent.data.unique_values({args: {
             source: "$context.data",
-            fields: ["code", "value", "site"],
-            rows: []
+                fields: [{"name": "site"}, {"name": "value2", "type": "number"}]
         }}, this);
-
-        console.log(result);
-
-        result = await crs.intent.data.unique_values({args: {
-                source: "$context.data",
-                fields: ["code", "value", "site"],
-                rows: [0, 1]
-            }}, this);
 
         console.log(result);
     }
@@ -183,7 +176,28 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async convertDuration() {
-        const result = await crs.intent.data.iso8601_to_string({args: {value: "PT100H30M10S"}});
+        const result = await crs.intent.data.iso8601_to_string({args: {value: "P0DT0H9M30.200954S"}});
+        console.log(result);
+    }
+
+    async convertDurationBatch() {
+        let result = await crs.intent.data.iso8601_batch({args: {value: ["P0DT0H9M30.200954S", "P10DT0H9M"]}});
+        console.log(result);
+
+        result = await crs.intent.data.iso8601_batch({args: {
+            value: [
+                {
+                    value: "P0DT0H9M30.200954S",
+                    count: 2
+                },
+                {
+                    value: "P10DT0H9M",
+                    count: 3
+                }
+            ],
+            field: "value"
+        }});
+
         console.log(result);
     }
 
@@ -334,6 +348,36 @@ export default class Data extends crsbinding.classes.ViewBase {
         const result = await crs.intent.storage.get_object({args: {key: "person"}});
         console.log(result);
     }
+
+    async session_save_value() {
+        await crs.intent.session.set_value({
+            args: {
+                key: "name",
+                value: "John Doe"
+            }
+        })
+    }
+
+    async session_get_value() {
+        const result = await crs.intent.session.get_value({args: {key: "name"}});
+        alert(result);
+    }
+
+    async session_save_object() {
+        await crs.intent.session.set_object({args: {
+                key: "person",
+                value: {
+                    firstName: "John",
+                    lastName: "Doe"
+                }
+            }})
+    }
+
+    async session_get_object() {
+        const result = await crs.intent.session.get_object({args: {key: "person"}});
+        console.log(result);
+    }
+
 }
 
 async function createData(count) {
@@ -358,7 +402,7 @@ async function createData(count) {
             id      : i,
             code    : `Code ${i}`,
             value   : value,
-            value2  : value2,
+            value2  : i % 3 ? null : value2,
             person  : {
                 age: age
             },

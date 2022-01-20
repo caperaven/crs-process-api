@@ -52,8 +52,8 @@ pub fn aggregate_rows(intent: &Value, data: &[Value], rows: Option<Vec<usize>>) 
     return Value::from(result);
 }
 
-fn create_aggregator_from_intent(intent: &Value) -> Vec<Box<dyn Aggregate>> {
-    let mut aggregates: Vec<Box<dyn Aggregate>> = Vec::new();
+fn create_aggregator_from_intent(intent: &Value) -> Vec<Box<dyn Aggregate<f64>>> {
+    let mut aggregates: Vec<Box<dyn Aggregate<f64>>> = Vec::new();
 
     for (name, _value) in intent.as_object().unwrap().iter() {
         match name.as_str() {

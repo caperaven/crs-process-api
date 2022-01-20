@@ -17,7 +17,7 @@ impl Ave {
     }
 }
 
-impl Aggregate for Ave {
+impl Aggregate<f64> for Ave {
     fn add_value(&mut self, obj: &Value) {
         let value: f64 = match obj {
             Value::Null => 0.,

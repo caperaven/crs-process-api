@@ -1,9 +1,6 @@
-use std::collections::HashMap;
-use serde_json::{Number, Value};
-use crate::aggregates;
-use crate::traits::Aggregate;
+use serde_json::{Value};
 
-pub fn summarize(data: &[Value], fields: Vec<Value>) -> Value {
+pub fn summarize(_data: &[Value], _fields: Vec<Value>) -> Value {
     Value::Null
 }
 

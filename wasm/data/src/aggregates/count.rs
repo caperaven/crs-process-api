@@ -13,7 +13,7 @@ impl Count {
     }
 }
 
-impl Aggregate for Count {
+impl Aggregate<f64> for Count {
     fn add_value(&mut self, _obj: &Value) {
         self.value += 1.
     }

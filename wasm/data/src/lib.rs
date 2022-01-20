@@ -1,4 +1,3 @@
-#![feature(option_result_contains)]
 // https://docs.serde.rs/serde_json/value/enum.Value.html
 
 use wasm_bindgen::prelude::*;
@@ -14,7 +13,8 @@ mod enums;
 mod aggregates;
 mod traits;
 
-use crate::duration::iso8601_to_duration_str;
+use crate::duration::{iso8601_to_duration_str, iso8601_to_duration_str_batch};
+use crate::processors::get_unique;
 
 #[wasm_bindgen]
 pub fn init_panic_hook() {
@@ -101,20 +101,11 @@ pub fn calculate_group_aggregate(group: String, aggregate_intent: String, data: 
 }
 
 #[wasm_bindgen]
-pub fn unique_values(intent: String, data: String, rows: Vec<usize>) -> String {
-    let intent_array: Vec<&str> = serde_json::from_str(intent.as_str()).unwrap();
+pub fn unique_values(intent: String, data: String) -> String {
+    let fields_array: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    let unq_rows;
-    if rows.len() == 0 {
-        unq_rows = None;
-    }
-    else {
-        unq_rows = Some(rows);
-    }
-
-    let result = processors::get_unique(&intent_array, &data_array, unq_rows);
-
+    let result = get_unique(fields_array, data_array);
     return result.to_string();
 }
 
@@ -122,6 +113,14 @@ pub fn unique_values(intent: String, data: String, rows: Vec<usize>) -> String {
 #[wasm_bindgen]
 pub fn iso8601_to_string(duration: String) -> String {
     iso8601_to_duration_str(&Value::from(duration))
+}
+
+#[wasm_bindgen]
+pub fn iso8601_batch(dates: String, field_name: Option<String>) -> String {
+    let dates_array: Vec<Value> = serde_json::from_str(dates.as_str()).unwrap();
+    let result = iso8601_to_duration_str_batch(dates_array, field_name);
+    let obj = Value::from(result);
+    return obj.to_string();
 }
 
 #[wasm_bindgen]

@@ -5,7 +5,6 @@ use crate::processors::aggregate::aggregate_rows;
 
 #[derive(Debug)]
 pub struct Field {
-    name        : String,
     value       : String,
     children    : HashMap<String, Field>,
     rows        : Option<Vec<i64>>,
@@ -13,9 +12,8 @@ pub struct Field {
 }
 
 impl Field {
-    pub fn new(name: String, value: String) -> Field {
+    pub fn new(value: String) -> Field {
         Field {
-            name,
             value,
             children    : HashMap::new(),
             rows        : None,
@@ -47,7 +45,7 @@ impl Field {
             child.process_row(&row, &fields, field_index + 1, row_index);
         }
         else {
-            let mut child = Field::new(String::from(field), String::from(value.clone()));
+            let mut child = Field::new(String::from(value.clone()));
             let key = String::from(value.clone());
 
             let _ = &child.process_row(&row, &fields, field_index + 1, row_index);
@@ -170,7 +168,7 @@ fn get_value(row: &Value, field: &str) -> String {
 
 fn build_field_structure(data: &[Value], fields: &[&str]) -> Field {
     let mut row_index = 0;
-    let mut root = Field::new("grouping".into(), "root".into());
+    let mut root = Field::new("root".into());
 
     for row in data {
         root.process_row(&row, &fields, 0, row_index);
@@ -260,14 +258,12 @@ mod test {
         let result = build_field_structure(&data, &fields);
 
         let child_10 = result.children.get("10").unwrap();
-        assert_eq!(child_10.name, "field1");
         assert_eq!(child_10.value, "10");
         assert_eq!(child_10.children.len(), 2);
         assert_eq!(child_10.child_count, 2);
 
         let child_10_a = child_10.children.get("a").unwrap();
         let child_10_a_rows = child_10_a.rows.as_ref().unwrap();
-        assert_eq!(child_10_a.name, "field2");
         assert_eq!(child_10_a.value, "a");
         assert_eq!(child_10_a.children.len(), 0);
         assert_eq!(child_10_a.child_count, 2);
@@ -277,7 +273,6 @@ mod test {
 
         let child_10_b = child_10.children.get("b").unwrap();
         let child_10_b_rows = child_10_b.rows.as_ref().unwrap();
-        assert_eq!(child_10_b.name, "field2");
         assert_eq!(child_10_b.value, "b");
         assert_eq!(child_10_b.children.len(), 0);
         assert_eq!(child_10_b.child_count, 1);
@@ -285,14 +280,12 @@ mod test {
         assert_eq!(child_10_b_rows[0], 1);
 
         let child_11 = result.children.get("11").unwrap();
-        assert_eq!(child_11.name, "field1");
         assert_eq!(child_11.value, "11");
         assert_eq!(child_11.children.len(), 1);
         assert_eq!(child_11.child_count, 1);
 
         let child_11_c = child_11.children.get("c").unwrap();
         let child_11_c_rows = child_11_c.rows.as_ref().unwrap();
-        assert_eq!(child_11_c.name, "field2");
         assert_eq!(child_11_c.value, "c");
         assert_eq!(child_11_c.children.len(), 0);
         assert_eq!(child_11_c.child_count, 1);

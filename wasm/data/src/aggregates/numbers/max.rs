@@ -13,7 +13,7 @@ impl Max {
     }
 }
 
-impl Aggregate for Max {
+impl Aggregate<f64> for Max {
     fn add_value(&mut self, obj: &Value) {
         let value: f64 = match obj {
             Value::Null => 0.,

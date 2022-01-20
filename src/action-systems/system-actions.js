@@ -37,6 +37,9 @@ export class SystemActions {
             let bc;
 
             const resume = (nextStep) => {
+                // 1. does this process have a post process.
+                // 2. run the post process and only resolve if the post process runs successfully.
+
                 delete process.status;
                 delete process.resume;
                 delete bc?.resume;
@@ -63,5 +66,10 @@ export class SystemActions {
      */
     static async resume(step, context, process, item) {
         process.resume?.();
+    }
+
+    static async abort(step, context, process, item) {
+        const error = await crs.process.getValue(step.args.error, context, process, item);
+        throw new Error(error);
     }
 }

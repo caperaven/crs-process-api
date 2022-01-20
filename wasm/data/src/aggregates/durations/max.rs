@@ -1,44 +1,31 @@
 use serde_json::Value;
+use crate::duration::iso8601_placement;
+use crate::enums::Placement;
 use crate::traits::Aggregate;
 
 pub struct Max {
-    pub value: f64
+    pub value: Value
 }
 
 impl Max {
     pub fn new() -> Max {
         Max {
-            value: f64::MIN
+            value: Value::from("PT0S")
         }
     }
 }
 
-impl Aggregate for Max {
+impl Aggregate<Value> for Max {
     fn add_value(&mut self, obj: &Value) {
-        let value = obj.as_f64().unwrap();
-        if value > self.value {
-            self.value = value;
+        match iso8601_placement(obj, &self.value) {
+            Placement::Before => {}
+            Placement::After => {
+                self.value = obj.clone()
+            }
         }
     }
 
-    fn value(&self) -> f64 {
-        self.value
+    fn value(&self) -> Value {
+        self.value.clone()
     }
 }
-
-// #[cfg(test)]
-// mod test {
-//     use serde_json::Value;
-//     use crate::aggregates::max::Max;
-//     use crate::traits::Aggregate;
-//
-//     #[test]
-//     fn sum_test() {
-//         let mut max = Max::new();
-//         max.add_value(&Value::from(10));
-//         max.add_value(&Value::from(20));
-//         max.add_value(&Value::from(5));
-//
-//         assert_eq!(max.value, 20.);
-//     }
-// }
