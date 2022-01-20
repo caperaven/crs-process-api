@@ -4,6 +4,19 @@ export class DomActions {
     }
 
     /**
+     * Get a element's property value
+     * @returns {Promise<*>}
+     */
+    static async get_property(step, context, process, item) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const value = element?.[step.args.property];
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, value, context, process, item);
+        }
+    }
+
+        /**
      * Set a element's attribute value
      * @returns {Promise<void>}
      */

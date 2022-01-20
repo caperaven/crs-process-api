@@ -33,7 +33,7 @@ export class ConditionActions {
             const nextStep = await this.getNextStep(process, step.pass_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
-        else if (step.fail_step != null) {
+        if (!success && step.fail_step != null) {
             const nextStep = await this.getNextStep(process, step.fail_step);
             await crs.process.runStep(nextStep, context, process, item);
         }

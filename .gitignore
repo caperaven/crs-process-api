@@ -5,3 +5,5 @@ yarn-error.log
 /coverage/
 /dist/
 /publish/
+/wasm/data/target/
+wasm/data/Cargo.lock
