@@ -12,6 +12,11 @@ import init, {
     evaluate_obj
 } from "./../bin/data.js";
 
+/**
+ * todo: free up the data objects after transactions are done. IDB
+ */
+
+
 await init();
 
 export class DataActions {
