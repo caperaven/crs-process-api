@@ -3,6 +3,10 @@ use iso8601_duration::Duration;
 use crate::enums::Placement;
 
 pub fn iso8601_to_duration_str(date: &Value) -> String {
+    if date == &Value::Null {
+        return "null".to_string();
+    }
+
     let value = date.as_str().unwrap();
     let result = Duration::parse(value);
 
@@ -26,12 +30,20 @@ pub fn iso8601_to_duration_str_batch(durations: Vec<Value>, path: Option<String>
                 result.push(Value::from(duration_str));
             }
             Some(ref path_str) => {
-                let value = &duration[&path_str];
-                let duration_str = iso8601_to_duration_str(&value);
+                let value = &duration.get(&path_str);
 
-                let mut clone = duration.clone();
-                clone[&path_str] = Value::from(duration_str);
-                result.push(clone);
+                match value {
+                    None => {
+                        result.push(duration.clone());
+                    }
+                    Some(value) => {
+                        let duration_str = iso8601_to_duration_str(&value);
+
+                        let mut clone = duration.clone();
+                        clone[&path_str] = Value::from(duration_str);
+                        result.push(clone);
+                    }
+                }
             }
         }
     }
@@ -150,11 +162,13 @@ mod test {
         let mut durations: Vec<Value> = Vec::new();
         durations.push(Value::from("P13DT21H23M45S"));
         durations.push(Value::from("P0DT21H22M45.97096S"));
+        durations.push(Value::Null);
 
         let result = iso8601_to_duration_str_batch(durations, None);
-        assert_eq!(result.len(), 2);
+        assert_eq!(result.len(), 3);
         assert_eq!(result[0], Value::from("13:21:23:45"));
         assert_eq!(result[1], Value::from("0:21:22:45.97096"));
+        assert_eq!(result[2], Value::from("null"));
     }
 
     #[test]
@@ -162,16 +176,17 @@ mod test {
         let mut durations: Vec<Value> = Vec::new();
         durations.push(json!({"value": "P13DT21H23M45S", "count": 2}));
         durations.push(json!({"value": "P0DT21H22M45.97096S", "count": 3}));
+        durations.push(json!({"value": Value::Null, "count": 3}));
 
         let result = iso8601_to_duration_str_batch(durations, Some("value".to_string()));
-        assert_eq!(result.len(), 2);
-
-        println!("{:?}",result);
+        assert_eq!(result.len(), 3);
 
         assert_eq!(result[0]["count"], Value::from(2));
         assert_eq!(result[0]["value"], Value::from("13:21:23:45"));
         assert_eq!(result[1]["count"], Value::from(3));
         assert_eq!(result[1]["value"], Value::from("0:21:22:45.97096"));
+        assert_eq!(result[2]["count"], Value::from(3));
+        assert_eq!(result[2]["value"], Value::from("null"));
     }
 
 }

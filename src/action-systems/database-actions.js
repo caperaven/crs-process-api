@@ -3,7 +3,8 @@
  */
 
 const DBAccess = Object.freeze({
-    READ_WRITE: "readwrite"
+    READ_WRITE: "readwrite",
+    READ_ONLY: "readonly"
 })
 
 export class DatabaseActions {
@@ -30,9 +31,27 @@ export class DatabaseActions {
     static async add_records(step, context, process, item) {
         const store = await get_store(step, context, process, item);
         const records = await crs.process.getValue(step.args.records, context, process, item);
+
         for (let record of records) {
             store.add(record);
         }
+    }
+
+    static async create_data_dump(step, context, process, item) {
+        const dbName  = await crs.process.getValue(step.args.db, context, process, item);
+        const version = await crs.process.getValue(step.args.version, context, process, item);
+        const table   = await crs.process.getValue(step.args.table, context, process, item);
+        const records = await crs.process.getValue(step.args.records, context, process, item);
+
+        const db = await create_dumpsite(dbName, version, table);
+        const tx = db.transaction(table, DBAccess.READ_WRITE);
+        const store = tx.objectStore(table);
+
+        for (let i = 0; i < records.length; i++) {
+            store.add(records[i], i)
+        }
+
+        tx.commit();
     }
 
     static async delete_record(step, context, process, item) {
@@ -106,6 +125,31 @@ function open_db(dbName, version, tables) {
                 }
 
                 resolve(db);
+            }
+        }
+
+        dbr.onsuccess = event => {
+            dbr.onsuccess = null;
+            resolve(event.target.result);
+        }
+    })
+}
+
+function create_dumpsite(dbName, version, table) {
+    return new Promise(resolve => {
+        let dbr = window.indexedDB.open(dbName, version || 1);
+
+        dbr.onupgradeneeded = event => {
+            dbr.onupgradeneeded = null;
+
+            if (event.target.result.objectStoreNames.contains(table) == false) {
+                const store = event.target.result.createObjectStore(table);
+                store.createIndex("by_id", "id", { unique: true });
+            }
+
+            event.target.transaction.oncomplete = () => {
+                event.target.transaction.oncomplete = null;
+                resolve(event.target.result);
             }
         }
 
