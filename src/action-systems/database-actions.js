@@ -14,7 +14,19 @@ export class DatabaseActions {
 
     static async open(step, context, process, item) {
         const dbName = await crs.process.getValue(step.args.db, context, process, item);
-        return open_db(dbName, step.args.version, step.args.tables);
+        const db = open_db(dbName, step.args.version, step.args.tables);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, db, context, process, item);
+        }
+
+        return db;
+    }
+
+    static async close(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        db.close();
+        await crs.process.setValue(step.args.db, null, context, process, item);
     }
 
     static async delete(step, context, process, item) {
@@ -43,9 +55,9 @@ export class DatabaseActions {
         const table   = await crs.process.getValue(step.args.table, context, process, item);
         const records = await crs.process.getValue(step.args.records, context, process, item);
 
-        const db = await create_dumpsite(dbName, version, table);
-        const tx = db.transaction(table, DBAccess.READ_WRITE);
-        const store = tx.objectStore(table);
+        let db = await create_dumpsite(dbName, version, table);
+        let tx = db.transaction(table, DBAccess.READ_WRITE);
+        let store = tx.objectStore(table);
 
         for (let i = 0; i < records.length; i++) {
             store.add(records[i], i)
@@ -53,7 +65,18 @@ export class DatabaseActions {
 
         tx.commit();
 
-        await crs.process.setValue(step.args.records, null, context, process, item);
+        db.close();
+
+        tx = null;
+        store = null;
+        db = null;
+
+        if (Array.isArray(step.args.records)) {
+            step.args.records = null;
+        }
+        else {
+            await crs.process.setValue(step.args.records, null, context, process, item);
+        }
     }
 
     static async delete_record(step, context, process, item) {
