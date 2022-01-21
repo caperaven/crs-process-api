@@ -52,6 +52,8 @@ export class DatabaseActions {
         }
 
         tx.commit();
+
+        await crs.process.setValue(step.args.records, null, context, process, item);
     }
 
     static async delete_record(step, context, process, item) {
