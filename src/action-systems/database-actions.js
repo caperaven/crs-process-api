@@ -149,7 +149,10 @@ function open_db(dbName, version, tables) {
                     }
                 }
 
-                resolve(db);
+                event.target.transaction.oncomplete = () => {
+                    event.target.transaction.oncomplete = null;
+                    resolve(event.target.result);
+                }
             }
         }
 

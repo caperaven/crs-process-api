@@ -43,6 +43,11 @@
       "title": "Data Operations",
       "hash": "#data",
       "view": "data"
+    },
+    {
+      "title": "index DB",
+      "hash": "#indexdb",
+      "view": "indexdb"
     }
   ]
 }
