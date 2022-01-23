@@ -17,7 +17,10 @@ export default class Input extends crsbinding.classes.ViewBase {
                 firstName: "Jane",
                 lastName: "Doe"
             }
-        ])
+        ]);
+
+        const result = await db.get_from_keys("people", [0, 1]);
+        console.log(result);
 
         db = db.close();
     }
@@ -81,16 +84,39 @@ class Database {
                 store_obj.add(records[i], i);
             }
 
-            transaction.onsuccess = event => {
-                transaction.onsuccess = null;
-                transaction.close();
-                store.close();
+            transaction.oncomplete = event => {
+                transaction.oncomplete = null;
                 store = null;
                 transaction = null;
                 resolve();
             }
 
             transaction.commit();
+        })
+    }
+
+    get_from_keys(store, keys) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.openCursor();
+            let result = [];
+
+            request.onsuccess = event => {
+                let cursor = event.target.result;
+
+                if (cursor == null) {
+                    request.onsuccess = null;
+                    return resolve(result);
+                }
+
+                if (keys.indexOf(cursor.primaryKey) != -1) {
+                    result.push(cursor.value);
+                }
+
+                cursor.continue();
+            }
         })
     }
 }
