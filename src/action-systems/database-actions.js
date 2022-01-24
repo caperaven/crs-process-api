@@ -2,11 +2,6 @@
  * https://www.w3.org/TR/IndexedDB/
  */
 
-const DBAccess = Object.freeze({
-    READ_WRITE: "readwrite",
-    READ_ONLY: "readonly"
-})
-
 export class DatabaseActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
@@ -29,10 +24,6 @@ export class DatabaseActions {
     static async close(step, context, process, item) {
         const db = await crs.process.getValue(step.args.db, context, process, item);
 
-        if (db == null) {
-            return;
-        }
-
         db.close();
         await crs.process.setValue(step.args.db, null, context, process, item);
     }
@@ -47,11 +38,66 @@ export class DatabaseActions {
         const store = await crs.process.getValue(step.args.store, context, process, item);
         const records = await crs.process.getValue(step.args.records, context, process, item);
 
-        if (db == null) {
-            return;
+        await db.dump(store, records);
+    }
+
+    static async get_from_index(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const keys = await crs.process.getValue(step.args.keys, context, process, item);
+
+        let result = await db.get_from_index(store, keys);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
         }
 
+        return result;
+    }
 
+    static async get_all(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        let result = await db.get_all(store);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async clear(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        await db.clear(store);
+    }
+
+    static async delete_record(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const key = await crs.process.getValue(step.args.key, context, process, item);
+
+        await db.delete_record(store, key);
+    }
+
+    static async update_record(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const key = await crs.process.getValue(step.args.key, context, process, item);
+        const model = await crs.process.getValue(step.args.model, context, process, item);
+
+        await db.update_record(store, key, model);
+    }
+
+    static async add_record(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const model = await crs.process.getValue(step.args.model, context, process, item);
+
+        await db.add_record(store, model);
     }
 }
 
@@ -80,7 +126,15 @@ class Database {
                 if (tables != null) {
                     const keys = Object.keys(tables);
                     for (const key of keys) {
-                        db.createObjectStore(key, tables[key]);
+                        const store = db.createObjectStore(key, tables[key].parameters);
+
+                        const indexes = tables[key].indexes;
+                        if (indexes != null) {
+                            const indexKeys = Object.keys(indexes);
+                            for (let index of indexKeys) {
+                                store.createIndex(`ind_${index}`, index, indexes[index]);
+                            }
+                        }
                     }
                 }
 

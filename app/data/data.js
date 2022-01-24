@@ -217,9 +217,11 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
     }
 
+    // -------- INDEX DB ------- //
+
     async create_db() {
         await crs.intent.db.open({args: {
-            db: "test_db",
+            name: "test_db",
             version: 1,
             tables: {
                 people: {
@@ -236,115 +238,11 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async delete_db() {
-        await crs.intent.db.delete({args: {db: "test_db"}});
+        await crs.intent.db.delete({args: {name: "test_db"}});
     }
 
-    async save_record() {
-        await crs.intent.db.set_record({
-            args: {
-                db: "test_db",
-                table: "people",
-                record: {
-                    firstName : "John",
-                    lastName : "Smith"
-                }
-            }
-        });
-    }
 
-    async add_multiple() {
-        await crs.intent.db.add_records({
-            args: {
-                db: "test_db",
-                table: "people",
-                records: [
-                    {
-                        firstName : "Person 1",
-                        lastName : "Smith",
-                        age: 20
-                    },
-                    {
-                        firstName : "Person 2",
-                        lastName : "Johnson",
-                        age: 30
-                    },
-                    {
-                        firstName : "Person 3",
-                        lastName : "Rover",
-                        age: 40
-                    }
-                ]
-            }
-        });
-    }
-
-    async create_and_add_records() {
-        await crs.intent.db.create_data_dump({
-            args: {
-                db: "test_db",
-                table: "people",
-                records: [
-                    {
-                        firstName : "Person 1",
-                        lastName : "Smith",
-                        age: 20
-                    },
-                    {
-                        firstName : "Person 2",
-                        lastName : "Johnson",
-                        age: 30
-                    },
-                    {
-                        firstName : "Person 3",
-                        lastName : "Rover",
-                        age: 40
-                    }
-                ]
-            }
-        });
-    }
-
-    async delete_record() {
-        await crs.intent.db.delete_record({
-            args: {
-                db: "test_db",
-                table: "people",
-                key: 1
-            }
-        });
-    }
-
-    async clear_table() {
-        await crs.intent.db.clear_table({
-            args: {
-                db: "test_db",
-                table: "people"
-            }
-        });
-    }
-
-    async get_record() {
-        let result = await crs.intent.db.get_record({
-            args: {
-                db: "test_db",
-                table: "people",
-                key: 1
-            }
-        });
-
-        console.log(result);
-    }
-
-    async get_all() {
-        let result = await crs.intent.db.get_all({
-            args: {
-                db: "test_db",
-                table: "people"
-            }
-        });
-
-        console.log(result);
-    }
+    // -------- STORE ------- //
 
     async save_value() {
         await crs.intent.storage.set_value({
