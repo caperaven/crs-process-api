@@ -5,8 +5,9 @@ export default class Input extends crsbinding.classes.ViewBase {
         Database.delete("test_database");
 
         let db = await Database.open("test_database", 1, {
-            people: null
-        });
+                people: null
+            }
+        );
 
         await db.dump("people", [
             {
@@ -19,8 +20,21 @@ export default class Input extends crsbinding.classes.ViewBase {
             }
         ]);
 
-        const result = await db.get_from_keys("people", [0, 1]);
+        let result = await db.get_from_index("people", [0, 1]);
         console.log(result);
+
+        result = await db.get_all("people");
+        console.log(result);
+
+        await db.clear("people");
+        console.log("clear done");
+
+        // await db.delete_record(store, index);
+        // await db.update_record(store, index, model);
+        // await db.add_record(store, model);
+        //
+        // await db.delete_by_key(store, keyName, keyValue);
+        // await db.update_by_key(store, keyName, model);
 
         db = db.close();
     }
@@ -76,7 +90,9 @@ class Database {
     }
 
     dump(store, records) {
-        return new Promise(resolve => {
+        return new Promise(async resolve => {
+            await this.clear();
+
             let transaction = this.db.transaction([store], "readwrite");
             let store_obj = transaction.objectStore(store);
 
@@ -95,7 +111,7 @@ class Database {
         })
     }
 
-    get_from_keys(store, keys) {
+    get_from_index(store, keys) {
         return new Promise(resolve => {
             let transaction = this.db.transaction([store], "readonly");
             let objectStore = transaction.objectStore(store);
@@ -116,6 +132,32 @@ class Database {
                 }
 
                 cursor.continue();
+            }
+        })
+    }
+
+    get_all(store) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.getAll();
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                resolve(event.target.result);
+            }
+        })
+    }
+
+    clear(store) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readwrite");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.clear();
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                resolve();
             }
         })
     }
