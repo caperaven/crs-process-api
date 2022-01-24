@@ -28,30 +28,30 @@ export class DatabaseActions {
 
     static async close(step, context, process, item) {
         const db = await crs.process.getValue(step.args.db, context, process, item);
+
+        if (db == null) {
+            return;
+        }
+
+        db.close();
+        await crs.process.setValue(step.args.db, null, context, process, item);
     }
 
     static async delete(step, context, process, item) {
+        const dbName = await crs.process.getValue(step.args.name, context, process, item);
+        Database.delete(dbName)
     }
 
-    static async set_record(step, context, process, item) {
-    }
+    static async dump(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const records = await crs.process.getValue(step.args.records, context, process, item);
 
-    static async add_records(step, context, process, item) {
-    }
+        if (db == null) {
+            return;
+        }
 
-    static async create_data_dump(step, context, process, item) {
-    }
 
-    static async delete_record(step, context, process, item) {
-    }
-
-    static async clear_table(step, context, process, item) {
-    }
-
-    static async get_record(step, context, process, item) {
-    }
-
-    static async get_all(step, context, process, item) {
     }
 }
 
