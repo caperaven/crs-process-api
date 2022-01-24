@@ -225,10 +225,6 @@ export default class Data extends crsbinding.classes.ViewBase {
             version: 1,
             tables: {
                 people: {
-                    parameters: {
-                        keyPath: "id",
-                        autoIncrement: true
-                    },
                     indexes: {
                         id: { unique: true }
                     }
@@ -246,6 +242,21 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(this.db);
     }
 
+    async dump_db() {
+        await crs.intent.db.dump({args: {db: this.db, store: "people", records: [
+                    {
+                        name: "John"
+                    },
+                    {
+                        name: "Jane"
+                    }
+                ]}})
+    }
+
+    async get_from_index_db() {
+        let result = await crs.intent.db.get_from_index({args: {db: this.db, store: "people", keys: [0, 1]}});
+        console.table(result);
+    }
 
     // -------- STORE ------- //
 
