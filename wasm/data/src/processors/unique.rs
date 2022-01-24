@@ -21,7 +21,8 @@ struct FieldData {
 
 impl FieldData {
     pub fn new(field_obj: Value) -> FieldData {
-        let field = field_obj["name"].as_str().unwrap().to_string();
+        let mut field = field_obj["name"].as_str().unwrap().to_string();
+        field = format!("/{}", field.replace(".", "/"));
 
         let data_type = match field_obj["type"].as_str() {
             None => "string".to_string(),
@@ -159,7 +160,7 @@ impl UniqueSorted {
     pub fn process_data(&mut self, data: Vec<Value>) {
         for record in data {
             for (field, field_data) in &mut self.fields {
-                let value = record.get(field);
+                let value = record.pointer(field);
 
                 match value {
                     None => {
@@ -177,8 +178,11 @@ impl UniqueSorted {
         let mut result: Value = Value::Object(Default::default());
 
         for (field, field_data) in &mut self.fields {
+            let mut field_name = field.replace("/", ".");
+            field_name.remove(0);
+
             let values: Vec<Value> = field_data.get_values();
-            result[field] = Value::from(values);
+            result[field_name] = Value::from(values);
         }
 
         return result;
@@ -193,13 +197,30 @@ mod test {
 
     fn get_data() -> Vec<Value> {
         let mut result: Vec<Value> = Vec::new();
-        result.push(json!({"id": 0, "code": "A", "value": 10, "value_f": 10.1, "isActive": true}));
-        result.push(json!({"id": 1, "code": "B", "value": 10, "value_f": 10.2, "isActive": false}));
-        result.push(json!({"id": 2, "code": "C", "value": 20, "value_f": 10.1, "isActive": true}));
-        result.push(json!({"id": 3, "code": "D", "value": 20, "value_f": 10.2, "isActive": true}));
-        result.push(json!({"id": 4, "code": "E", "value": 5,  "value_f": 10.1, "isActive": false}));
+        result.push(json!({"id": 0, "code": "A", "value": 10, "value_f": 10.1, "isActive": true, "person": null}));
+        result.push(json!({"id": 1, "code": "B", "value": 10, "value_f": 10.2, "isActive": false, "person": null}));
+        result.push(json!({"id": 2, "code": "C", "value": 20, "value_f": 10.1, "isActive": true, "person": {"name": "John"}}));
+        result.push(json!({"id": 3, "code": "D", "value": 20, "value_f": 10.2, "isActive": true, "person": {"name": "John"}}));
+        result.push(json!({"id": 4, "code": "E", "value": 5,  "value_f": 10.1, "isActive": false, "person": {"name": "Jane"}}));
 
         result
+    }
+
+    #[test]
+    fn on_path_test() {
+        let data = get_data();
+
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "person.name", "type": "string"}));
+
+        let result = get_unique(fields, data);
+
+        assert_eq!(result.pointer("/person.name/0/value").unwrap(), &Value::from("Jane"));
+        assert_eq!(result.pointer("/person.name/0/count").unwrap(), &Value::from(1));
+        assert_eq!(result.pointer("/person.name/1/value").unwrap(), &Value::from("John"));
+        assert_eq!(result.pointer("/person.name/1/count").unwrap(), &Value::from(2));
+        assert_eq!(result.pointer("/person.name/2/value").unwrap(), &Value::Null);
+        assert_eq!(result.pointer("/person.name/2/count").unwrap(), &Value::from(2));
     }
 
     #[test]
