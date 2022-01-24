@@ -15,11 +15,11 @@ chrono = "0.4.19"
 
 console_error_panic_hook = "0.1.7"
 #
-#[dependencies.web-sys]
-#version = "0.3.55"
-#features = [
-#    "console"
-#]
+[dependencies.web-sys]
+version = "0.3.55"
+features = [
+    "console"
+]
 
 [lib]
 crate-type = ["cdylib"]
