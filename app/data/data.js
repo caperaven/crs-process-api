@@ -270,6 +270,10 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
     }
 
+    async clear_db() {
+        await crs.intent.db.clear({ args: {db: this.db, store: "people"}});
+    }
+
     // -------- STORE ------- //
 
     async save_value() {
