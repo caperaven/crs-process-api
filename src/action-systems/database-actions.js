@@ -13,190 +13,237 @@ export class DatabaseActions {
     }
 
     static async open(step, context, process, item) {
-        const dbName = await crs.process.getValue(step.args.db, context, process, item);
-        const db = open_db(dbName, step.args.version, step.args.tables);
+        const dbName = await crs.process.getValue(step.args.name, context, process, item);
+        const version = await crs.process.getValue(step.args.version, context, process, item);
+        const tables = await crs.process.getValue(step.args.tables, context, process, item);
+
+        const instance = Database.open(dbName, version, tables);
 
         if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, db, context, process, item);
+            await crs.process.setValue(step.args.table, instance, context, process, item);
         }
 
-        return db;
+        return instance;
     }
 
     static async close(step, context, process, item) {
         const db = await crs.process.getValue(step.args.db, context, process, item);
-        db.close();
-        await crs.process.setValue(step.args.db, null, context, process, item);
     }
 
     static async delete(step, context, process, item) {
-        const dbName = await crs.process.getValue(step.args.db, context, process, item);
-        window.indexedDB.deleteDatabase(dbName);
     }
 
     static async set_record(step, context, process, item) {
-        const store = await get_store(step, context, process, item);
-        const record = await crs.process.getValue(step.args.record, context, process, item);
-        store.put(record);
     }
 
     static async add_records(step, context, process, item) {
-        const store = await get_store(step, context, process, item);
-        const records = await crs.process.getValue(step.args.records, context, process, item);
-
-        for (let record of records) {
-            store.add(record);
-        }
     }
 
     static async create_data_dump(step, context, process, item) {
-        const dbName  = await crs.process.getValue(step.args.db, context, process, item);
-        const version = await crs.process.getValue(step.args.version, context, process, item);
-        const table   = await crs.process.getValue(step.args.table, context, process, item);
-        const records = await crs.process.getValue(step.args.records, context, process, item);
-
-        let db = await create_dumpsite(dbName, version, table);
-        let tx = db.transaction(table, DBAccess.READ_WRITE);
-        let store = tx.objectStore(table);
-
-        for (let i = 0; i < records.length; i++) {
-            store.add(records[i], i)
-        }
-
-        tx.commit();
-
-        db.close();
-
-        tx = null;
-        store = null;
-        db = null;
-
-        if (Array.isArray(step.args.records)) {
-            step.args.records = null;
-        }
-        else {
-            await crs.process.setValue(step.args.records, null, context, process, item);
-        }
     }
 
     static async delete_record(step, context, process, item) {
-        const store = await get_store(step, context, process, item);
-        const key = await crs.process.getValue(step.args.key, context, process, item);
-        store.delete(key);
     }
 
     static async clear_table(step, context, process, item) {
-        const store = await get_store(step, context, process, item);
-        store.clear();
     }
 
     static async get_record(step, context, process, item) {
-        return new Promise(async (resolve, reject) => {
-            const store = await get_store(step, context, process, item);
-            const res = store.get(step.args.key);
-
-            res.onsuccess = async event => {
-                res.onsuccess = null;
-                const value = event.target.result;
-
-                if (step.args.target != null) {
-                    await crs.process.setValue(step.args.target, value, context, process, item);
-                }
-
-                resolve(value);
-            };
-        })
     }
 
     static async get_all(step, context, process, item) {
-        return new Promise(async resolve => {
-            const store = await get_store(step, context, process, item);
-            const request = store.getAll(step.args.keys);
-
-            request.onsuccess = async event => {
-                request.onsuccess = null;
-
-                const value = event.target.result;
-
-                if (step.args.target != null) {
-                    await crs.process.setValue(step.args.target, value, context, process, item);
-                }
-
-                resolve(value);
-            }
-        })
     }
 }
 
-function open_db(dbName, version, tables) {
-    return new Promise(resolve => {
-        let dbr = window.indexedDB.open(dbName, version || 1);
+class Database {
+    constructor() {
+        this.next_key = {}
+    }
 
-        if (tables != null) {
-            dbr.onupgradeneeded = event => {
-                dbr.onupgradeneeded = null;
-                const db = event.target.result;
+    static open(name, version, tables) {
+        return new Promise(resolve => {
+            let request = window.indexedDB.open(name, version || 1, tables);
+            let db;
 
-                for (let storeName of Object.keys(tables)) {
-                    const table = tables[storeName];
-                    const store = db.createObjectStore(storeName, table.parameters);
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                db = request.result;
+                let result = new Database();
+                result.db = db;
+                resolve(result);
+            }
 
-                    if (table.indexes != null) {
-                        for (let indexName of Object.keys(table.indexes)) {
-                            let option = table.indexes[indexName];
-                            store.createIndex(`by_${indexName}`, indexName, option);
-                        }
+            request.onupgradeneeded = event => {
+                request.onupgradeneeded = null;
+                db = event.target.result;
+
+                if (tables != null) {
+                    const keys = Object.keys(tables);
+                    for (const key of keys) {
+                        db.createObjectStore(key, tables[key]);
                     }
                 }
 
-                event.target.transaction.oncomplete = () => {
-                    event.target.transaction.oncomplete = null;
-                    resolve(event.target.result);
+                let transaction = event.target.transaction;
+                transaction.oncomplete = event => {
+                    transaction.oncomplete = null;
+
+                    let result = new Database();
+                    result.db = db;
+                    resolve(result);
+
+                    transaction = null;
                 }
             }
-        }
+        })
+    }
 
-        dbr.onsuccess = event => {
-            dbr.onsuccess = null;
-            resolve(event.target.result);
-        }
-    })
-}
+    static delete(name) {
+        window.indexedDB.deleteDatabase(name);
+    }
 
-function create_dumpsite(dbName, version, table) {
-    return new Promise(resolve => {
-        let dbr = window.indexedDB.open(dbName, version || 1);
+    get_next_key(store) {
+        let result = this.next_key[store];
+        result = result + 1;
+        this.next_key[store] = result;
+        return result;
+    }
 
-        dbr.onupgradeneeded = event => {
-            dbr.onupgradeneeded = null;
+    close() {
+        this.db.close();
+        this.db = null;
+        this.next_key = null;
+        return null;
+    }
 
-            if (event.target.result.objectStoreNames.contains(table) == false) {
-                const store = event.target.result.createObjectStore(table);
-                store.createIndex("by_id", "id", { unique: true });
+    dump(store, records) {
+        return new Promise(async resolve => {
+            await this.clear();
+
+            let transaction = this.db.transaction([store], "readwrite");
+            let store_obj = transaction.objectStore(store);
+
+            for (let i = 0; i < records.length; i++) {
+                store_obj.add(records[i], i);
             }
 
-            event.target.transaction.oncomplete = () => {
-                event.target.transaction.oncomplete = null;
-                resolve(event.target.result);
+            this.next_key[store] = records.length;
+
+            transaction.oncomplete = event => {
+                transaction.oncomplete = null;
+                store = null;
+                transaction = null;
+                resolve();
             }
-        }
 
-        dbr.onsuccess = event => {
-            dbr.onsuccess = null;
-            resolve(event.target.result);
-        }
-    })
-}
+            transaction.commit();
+        })
+    }
 
-function get_store(step, context, process, item) {
-    return new Promise(async resolve => {
-        const dbName = await crs.process.getValue(step.args.db, context, process, item);
-        const table = await crs.process.getValue(step.args.table, context, process, item);
+    get_from_index(store, keys) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
 
-        const db = await open_db(dbName, step.args.version);
-        const tx = db.transaction(table, DBAccess.READ_WRITE);
-        const store = tx.objectStore(table);
+            let request = objectStore.openCursor();
+            let result = [];
 
-        resolve(store);
-    })
+            request.onsuccess = event => {
+                let cursor = event.target.result;
+
+                if (cursor == null) {
+                    request.onsuccess = null;
+                    transaction = null;
+                    objectStore = null;
+                    request = null;
+                    return resolve(result);
+                }
+
+                if (keys.indexOf(cursor.primaryKey) != -1) {
+                    result.push(cursor.value);
+                }
+
+                cursor.continue();
+            }
+        })
+    }
+
+    get_all(store) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.getAll();
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                transaction = null;
+                objectStore = null;
+                return resolve(event.target.result);
+            }
+        });
+    }
+
+    clear(store) {
+        return new Promise(resolve => {
+            if (this.db.objectStoreNames.contains(store) == false) {
+                return resolve();
+            }
+
+            let transaction = this.db.transaction([store], "readwrite");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.clear();
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                transaction = null;
+                objectStore = null;
+                return resolve();
+            }
+        });
+    }
+
+    delete_record(store, key) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readwrite");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.delete(key);
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                transaction = null;
+                objectStore = null;
+                return resolve();
+            }
+        });
+    }
+
+    update_record(store, key, model) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readwrite");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.put(model, key);
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                transaction = null;
+                objectStore = null;
+                return resolve();
+            }
+        });
+    }
+
+    add_record(store, model) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readwrite");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.add(model, this.get_next_key(store));
+            request.onsuccess = event => {
+                request.onsuccess = null;
+                transaction = null;
+                objectStore = null;
+                return resolve();
+            }
+        });
+    }
 }

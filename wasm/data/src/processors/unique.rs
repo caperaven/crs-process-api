@@ -4,6 +4,7 @@ use serde_json::{Value};
 use crate::duration::iso8601_placement;
 use crate::enums::Placement;
 use crate::evaluators::LessThan;
+use crate::iso8601_to_duration_str;
 use crate::traits::Eval;
 
 pub fn get_unique(fields: Vec<Value>, data: Vec<Value>) -> Value {
@@ -70,7 +71,11 @@ impl FieldData {
                 let value_str = value.clone();
                 match self.data_type.as_ref() {
                     "duration" => {
-                        value_obj["value"] = Value::from(value_str);
+                        let mut result_obj = Value::Object(Default::default());
+                        let value = Value::from(value_str);
+                        result_obj["duration"] = Value::from(iso8601_to_duration_str(&value));
+                        result_obj["iso"] = value;
+                        value_obj["value"] = result_obj;
                     },
                     "long" => {
                         let i_value = value_str.parse::<i64>().unwrap();
@@ -112,7 +117,7 @@ fn sort_eval(data_type: &String, obj1: &Value, obj2: &Value) -> Ordering {
     let value2 = &obj2["value"];
 
     if data_type.as_str() == "duration" {
-        match iso8601_placement(&value1, &value2) {
+        match iso8601_placement(&value1["iso"], &value2["iso"]) {
             Placement::Before => Ordering::Less,
             Placement::After => Ordering::Greater
         }
@@ -260,11 +265,11 @@ mod test {
 
         let result = get_unique(fields, data);
 
-        assert_eq!(result.pointer("/duration/0/value").unwrap(), &Value::from("P0DT1H2M30S"));
+        assert_eq!(result.pointer("/duration/0/value/iso").unwrap(), &Value::from("P0DT1H2M30S"));
         assert_eq!(result.pointer("/duration/0/count").unwrap(), &Value::from(1));
-        assert_eq!(result.pointer("/duration/1/value").unwrap(), &Value::from("P1DT1H2M10S"));
+        assert_eq!(result.pointer("/duration/1/value/iso").unwrap(), &Value::from("P1DT1H2M10S"));
         assert_eq!(result.pointer("/duration/1/count").unwrap(), &Value::from(2));
-        assert_eq!(result.pointer("/duration/2/value").unwrap(), &Value::from("P10DT1H2M3S"));
+        assert_eq!(result.pointer("/duration/2/value/iso").unwrap(), &Value::from("P10DT1H2M3S"));
         assert_eq!(result.pointer("/duration/2/count").unwrap(), &Value::from(1));
     }
 
