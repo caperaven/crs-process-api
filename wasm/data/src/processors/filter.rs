@@ -1,9 +1,9 @@
-use std::ops::Index;
 use serde_json::Value;
 use crate::evaluate_object;
 
-pub fn filter(intent: &[Value], data: &[Value], case_sensitive: bool) -> Vec<String> {
-    let mut filter_result: Vec<String> = Vec::new();
+pub fn filter(intent: &[Value], data: &[Value], case_sensitive: bool) -> Vec<usize> {
+    let mut index = 0;
+    let mut filter_result = Vec::new();
 
     let filters = intent;
     let mut pass: bool;
@@ -20,9 +20,10 @@ pub fn filter(intent: &[Value], data: &[Value], case_sensitive: bool) -> Vec<Str
         }
 
         if pass == true {
-            let id = row["id"].to_string();
-            filter_result.push(id);
+            filter_result.push(index);
         }
+
+        index += 1;
     }
 
     filter_result
@@ -53,9 +54,9 @@ mod test {
         let result = filter(&intent, &data, true);
 
         assert_eq!(result.len(), 3);
-        assert_eq!(result[0], 0.to_string());
-        assert_eq!(result[1], 1.to_string());
-        assert_eq!(result[2], 4.to_string());
+        assert_eq!(result[0], 0);
+        assert_eq!(result[1], 1);
+        assert_eq!(result[2], 4);
     }
 
     #[test]
@@ -68,8 +69,8 @@ mod test {
         let result = filter(&intent, &data, true);
 
         assert_eq!(result.len(), 2);
-        assert_eq!(result[0], 1.to_string());
-        assert_eq!(result[1], 4.to_string());
+        assert_eq!(result[0], 1);
+        assert_eq!(result[1], 4);
     }
 
     #[test]
@@ -84,8 +85,8 @@ mod test {
         let result = filter(&intent, &data, true);
 
         assert_eq!(result.len(), 2);
-        assert_eq!(result[0], 0.to_string());
-        assert_eq!(result[1], 1.to_string());
+        assert_eq!(result[0], 0);
+        assert_eq!(result[1], 1);
     }
 
     #[test]

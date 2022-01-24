@@ -38,13 +38,11 @@ pub fn in_filter(intent: String, object: String, case_sensitive: bool) -> bool {
 
 /// Filter a set of records and give back the indexes of the records visible in the filter.
 #[wasm_bindgen]
-pub fn filter_data(intent: String, data: String, case_sensitive: bool) -> String {
+pub fn filter_data(intent: String, data: String, case_sensitive: bool) -> Vec<usize> {
     let intent_val: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    let result = processors::filter(&intent_val, &data_array, case_sensitive);
-    let value = Value::from(result);
-    return value.to_string();
+    return processors::filter(&intent_val, &data_array, case_sensitive);
 }
 
 #[wasm_bindgen]

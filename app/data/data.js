@@ -20,25 +20,20 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async filterData() {
-        let result = await crs.intent.data.filter({ args: {
+        const result = await crs.intent.data.filter({ args: {
             source: "$context.data",
             filter: [
-                { "field": "site", "operator": "==", "value": "site 1" }
-                //{ "field": "value", "operator": "gt", "value": 10    }
+                { "field": "site", "operator": "==", "value": "site 1" },
+                { "field": "value", "operator": "gt", "value": 10    }
             ],
             case_sensitive: false
         }}, this);
 
-        result = JSON.parse(result);
-
-        let results = [];
+        console.table(this.data);
 
         for (let record of result) {
-            results.push(this.data.find(item => item.id == record));
+            console.log(this.data[record]);
         }
-
-        console.table(this.data);
-        console.table(results);
     }
 
     async filterPath() {
