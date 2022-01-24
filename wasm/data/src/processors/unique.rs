@@ -287,10 +287,13 @@ mod test {
         let result = get_unique(fields, data);
 
         assert_eq!(result.pointer("/duration/0/value/iso").unwrap(), &Value::from("P0DT1H2M30S"));
+        assert_eq!(result.pointer("/duration/0/value/duration").unwrap(), &Value::from("0:1:2:30"));
         assert_eq!(result.pointer("/duration/0/count").unwrap(), &Value::from(1));
         assert_eq!(result.pointer("/duration/1/value/iso").unwrap(), &Value::from("P1DT1H2M10S"));
+        assert_eq!(result.pointer("/duration/1/value/duration").unwrap(), &Value::from("1:1:2:10"));
         assert_eq!(result.pointer("/duration/1/count").unwrap(), &Value::from(2));
         assert_eq!(result.pointer("/duration/2/value/iso").unwrap(), &Value::from("P10DT1H2M3S"));
+        assert_eq!(result.pointer("/duration/2/value/duration").unwrap(), &Value::from("10:1:2:3"));
         assert_eq!(result.pointer("/duration/2/count").unwrap(), &Value::from(1));
     }
 
@@ -320,8 +323,6 @@ mod test {
 
         let result = get_unique(fields, data);
 
-        println!("{:?}", result);
-
         assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from(10.));
         assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
         assert_eq!(result.pointer("/value/1/value").unwrap(), &Value::from(20.));
@@ -341,8 +342,6 @@ mod test {
         fields.push(json!({"name": "value", "type": "string"}));
 
         let result = get_unique(fields, data);
-
-        println!("{:?}", result);
 
         assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from("test"));
         assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
