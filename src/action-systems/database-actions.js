@@ -25,7 +25,11 @@ export class DatabaseActions {
         const db = await crs.process.getValue(step.args.db, context, process, item);
 
         db.close();
-        await crs.process.setValue(step.args.db, null, context, process, item);
+        if (typeof step.args.db == "string") {
+            await crs.process.setValue(step.args.db, null, context, process, item);
+        }
+
+        return null;
     }
 
     static async delete(step, context, process, item) {

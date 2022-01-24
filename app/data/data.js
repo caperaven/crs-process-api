@@ -220,7 +220,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     // -------- INDEX DB ------- //
 
     async create_db() {
-        await crs.intent.db.open({args: {
+        this.db = await crs.intent.db.open({args: {
             name: "test_db",
             version: 1,
             tables: {
@@ -239,6 +239,11 @@ export default class Data extends crsbinding.classes.ViewBase {
 
     async delete_db() {
         await crs.intent.db.delete({args: {name: "test_db"}});
+    }
+
+    async close_db() {
+        this.db = await crs.intent.db.close({args: {db: this.db}});
+        console.log(this.db);
     }
 
 
