@@ -233,6 +233,13 @@ export default class Data extends crsbinding.classes.ViewBase {
         }});
     }
 
+    async open_db() {
+        this.db = await crs.intent.db.open({args: {
+                name: "test_db",
+                version: 1,
+            }});
+    }
+
     async delete_db() {
         await crs.intent.db.delete({args: {name: "test_db"}});
     }
@@ -256,6 +263,11 @@ export default class Data extends crsbinding.classes.ViewBase {
     async get_from_index_db() {
         let result = await crs.intent.db.get_from_index({args: {db: this.db, store: "people", keys: [0, 1]}});
         console.table(result);
+    }
+
+    async get_all_db() {
+        let result = await crs.intent.db.get_all({ args: {db: this.db, store: "people"}});
+        console.log(result);
     }
 
     // -------- STORE ------- //
