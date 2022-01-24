@@ -274,6 +274,18 @@ export default class Data extends crsbinding.classes.ViewBase {
         await crs.intent.db.clear({ args: {db: this.db, store: "people"}});
     }
 
+    async delete_record_db() {
+        await crs.intent.db.delete_record({args: {db: this.db, store: "people", key: 0}});
+    }
+
+    async update_record_db() {
+        await crs.intent.db.update_record({args: {db: this.db, store: "people", key: 1, model: {name: "Updated"}}});
+    }
+
+    async add_record_db() {
+        await crs.intent.db.add_record({args: {db: this.db, store: "people", model: {name: "Added"}}});
+    }
+
     // -------- STORE ------- //
 
     async save_value() {
