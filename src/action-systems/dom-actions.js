@@ -361,6 +361,82 @@ export class DomActions {
 
         return result;
     }
+
+    /**
+     * Given an array of objects.
+     * 1. Create a fragment containing elements based on a template.
+     * 2. Add the fragment to a parent element if defined
+     * 3. Return fragment to caller
+     * @returns {Promise<void>}
+     */
+    static async elements_from_template(step, context, process, item) {
+        const id        = await crs.process.getValue(step.args.template_id, context, process, item);
+        const template  = await crs.process.getValue(step.args.template, context, process, item);
+        const data      = await crs.process.getValue(step.args.data, context, process, item);
+        let parent      = await crs.process.getValue(step.args.parent, context, process, item);
+        const autoClear = await crs.process.getValue(step.args.auto_clear, context, process, item);
+
+        parent = await getElement(parent);
+
+        if (template != null) {
+            await load_template(template, id);
+        }
+
+        const fragment = crsbinding.inflationManager.get(id, data);
+
+        parent.innerHTML = "";
+        parent.appendChild(fragment);
+
+        if (autoClear == true) {
+            crsbinding.inflationManager.unregister(id);
+        }
+    }
+
+    /**
+     * Use an object literal as the source to generate a template for inflation.
+     * For complex templates use the element from template.
+     * Function is better for scenarios like cell generation.
+     * It automatically registers the template on the inflation engine
+     * @returns {Promise<void>}
+     */
+    static async create_inflation_template(step, context, process, item) {
+        const id = await crs.process.getValue(step.args.template_id, context, process, item);
+        const obj = await crs.process.getValue(step.args.source, context, process, item);
+        const tagName = await crs.process.getValue(step.args.tag, context, process, item);
+
+        const keys = Object.keys(obj);
+        const template = document.createElement("template");
+
+        for (let key of keys) {
+            let args = obj[key];
+            args.tagName = tagName;
+            let child = await this.create_element({ args: args}, context, process, item);
+            child.textContent = ["${", key, "}"].join("");
+            template.content.appendChild(child);
+        }
+
+        crsbinding.inflationManager.register(id, template);
+    }
+}
+
+async function getElement(element) {
+    if (element instanceof HTMLElement) {
+        return element;
+    }
+
+    return document.querySelector(element);
+}
+
+async function load_template(template, id, context) {
+    let templateElement;
+    if (template instanceof HTMLTemplateElement) {
+        templateElement = template;
+    }
+    else {
+        templateElement = document.querySelector(template);
+    }
+
+    crsbinding.inflationManager.register(id, templateElement);
 }
 
 async function move_element(element, target, position) {

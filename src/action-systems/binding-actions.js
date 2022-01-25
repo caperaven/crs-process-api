@@ -81,4 +81,21 @@ export class BindingActions {
 
         await crsbinding.data.setProperty(process.parameters.bId, store, errors);
     }
+
+    /**
+     * Save the binding template to local storage
+     * @returns {Promise<void>}
+     */
+    static async cache_template(step, context, process, item) {
+        //
+    }
+
+    /**
+     * If the template is in local storage then get that template and set it on binding engine templates
+     * @returns {Promise<void>}
+     */
+    static async load_cached_template(step, context, process, item) {
+
+    }
+
 }

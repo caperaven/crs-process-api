@@ -316,4 +316,47 @@ export default class Dom extends crsbinding.classes.ViewBase {
             }
         })
     }
+
+    async createFromTemplate() {
+        const data = [
+            { description: "item 1" },
+            { description: "item 2" },
+            { description: "item 3" },
+            { description: "item 4" },
+            { description: "item 5" }
+        ]
+
+        await crs.intent.dom.elements_from_template({ args: {
+            id          : "tpl_simple",
+            template    : "#tpl_simple",
+            data        : data,
+            parent      : "#tpl_simple-parent",
+            auto_clear  : true
+        }}, this)
+    }
+
+    async createFromObject() {
+        const data = [
+            { description: "item 1 from object" },
+            { description: "item 2 from object" },
+            { description: "item 3 from object" },
+            { description: "item 4 from object" },
+            { description: "item 5 from object" }
+        ]
+
+        await crs.intent.dom.create_inflation_template({args: {
+            template_id: "tpl_generated",
+            tag: "li",
+            source: {
+                description: {}
+            }
+        }})
+
+        await crs.intent.dom.elements_from_template({ args: {
+            template_id : "tpl_generated",
+            data        : data,
+            parent      : "#tpl_simple-parent",
+            auto_clear  : true
+        }}, this)
+    }
 }

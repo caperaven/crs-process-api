@@ -360,16 +360,3 @@ class Database {
         })
     }
 }
-
-// objectStore.openCursor(keyRangeValue).onsuccess = function(event) {
-//     var cursor = event.target.result;
-//     if(cursor) {
-//         var listItem = document.createElement('li');
-//         listItem.innerHTML = '<strong>' + cursor.value.fThing + '</strong>, ' + cursor.value.fRating;
-//         list.appendChild(listItem);
-//
-//         cursor.continue();
-//     } else {
-//         console.log('Entries all displayed.');
-//     }
-// };

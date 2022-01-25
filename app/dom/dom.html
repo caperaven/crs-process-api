@@ -35,6 +35,12 @@
     .fg_white {
         color: white;
     }
+
+    .card {
+        padding: 1rem;
+        background: #e6e6e6;
+        border: silver 1px solid;
+    }
 </style>
 <h2>Dom Example</h2>
 
@@ -161,3 +167,33 @@
 <selection id="cloneTarget" style="position: relative">
     <button id="clickClone" click.call="clone">Clone</button>
 </selection>
+
+<section>
+    <template id="tpl_simple">
+        <li>${description}</li>
+    </template>
+
+    <div class="toolbar">
+        <button click.call="createFromTemplate">Create from template</button>
+        <button click.call="createFromObject">Create from object</button>
+    </div>
+
+    <ul id="tpl_simple-parent" class="card"></ul>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
