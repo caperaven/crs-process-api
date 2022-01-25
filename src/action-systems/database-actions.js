@@ -120,6 +120,21 @@ export class DatabaseActions {
 
         await db.add_record(store, model);
     }
+
+    static async get_batch(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const start = await crs.process.getValue(step.args.start, context, process, item);
+        const end = await crs.process.getValue(step.args.end, context, process, item);
+
+        let result = await db.get_batch(store, start, end);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 class Database {
@@ -321,4 +336,40 @@ class Database {
             }
         });
     }
+
+    get_batch(store, start, end) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readwrite");
+            let objectStore = transaction.objectStore(store);
+
+            let result = [];
+            const keyRangeValue = IDBKeyRange.bound(start, end);
+            const request = objectStore.openCursor(keyRangeValue);
+            request.onsuccess = event => {
+                const cursor = event.target.result;
+
+                if (cursor) {
+                    result.push(cursor.value);
+                    cursor.continue();
+                }
+                else {
+                    request.onsuccess = null;
+                    return resolve(result);
+                }
+            }
+        })
+    }
 }
+
+// objectStore.openCursor(keyRangeValue).onsuccess = function(event) {
+//     var cursor = event.target.result;
+//     if(cursor) {
+//         var listItem = document.createElement('li');
+//         listItem.innerHTML = '<strong>' + cursor.value.fThing + '</strong>, ' + cursor.value.fRating;
+//         list.appendChild(listItem);
+//
+//         cursor.continue();
+//     } else {
+//         console.log('Entries all displayed.');
+//     }
+// };
