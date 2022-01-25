@@ -286,6 +286,32 @@ export default class Data extends crsbinding.classes.ViewBase {
         await crs.intent.db.add_record({args: {db: this.db, store: "people", model: {name: "Added"}}});
     }
 
+    async create_dump_db() {
+        let db = await crs.intent.db.create_data_dump({args: {
+                name: "test_db_dump",
+                version: 1,
+                tables: {
+                    people: {
+                        indexes: {
+                            id: { unique: true }
+                        }
+                    }
+                },
+                store: "people",
+                records: [
+                    {
+                        id: 0,
+                        name: "John"
+                    },
+                    {
+                        id: 1,
+                        name: "Jane"
+                    }
+                ]
+            }});
+        db = db.close();
+    }
+
     // -------- STORE ------- //
 
     async save_value() {
