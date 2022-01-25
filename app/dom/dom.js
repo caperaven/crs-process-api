@@ -327,11 +327,12 @@ export default class Dom extends crsbinding.classes.ViewBase {
         ]
 
         await crs.intent.dom.elements_from_template({ args: {
-            id          : "tpl_simple",
-            template    : "#tpl_simple",
-            data        : data,
-            parent      : "#tpl_simple-parent",
-            auto_clear  : true
+            template_id     : "tpl_simple",
+            template        : "#tpl_simple",
+            data            : data,
+            parent          : "#tpl_simple-parent",
+            remove_template : true,
+            recycle         : false
         }}, this)
     }
 
@@ -341,7 +342,10 @@ export default class Dom extends crsbinding.classes.ViewBase {
             { description: "item 2 from object" },
             { description: "item 3 from object" },
             { description: "item 4 from object" },
-            { description: "item 5 from object" }
+            { description: "item 5 from object" },
+            { description: "item 6 from object" },
+            { description: "item 7 from object" },
+            { description: "item 8 from object" }
         ]
 
         await crs.intent.dom.create_inflation_template({args: {
@@ -353,10 +357,10 @@ export default class Dom extends crsbinding.classes.ViewBase {
         }})
 
         await crs.intent.dom.elements_from_template({ args: {
-            template_id : "tpl_generated",
-            data        : data,
-            parent      : "#tpl_simple-parent",
-            auto_clear  : true
+            template_id     : "tpl_generated",
+            data            : data,
+            parent          : "#tpl_simple-parent",
+            remove_template : true
         }}, this)
     }
 }

@@ -370,11 +370,12 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async elements_from_template(step, context, process, item) {
-        const id        = await crs.process.getValue(step.args.template_id, context, process, item);
-        const template  = await crs.process.getValue(step.args.template, context, process, item);
-        const data      = await crs.process.getValue(step.args.data, context, process, item);
-        let parent      = await crs.process.getValue(step.args.parent, context, process, item);
-        const autoClear = await crs.process.getValue(step.args.auto_clear, context, process, item);
+        const id                = await crs.process.getValue(step.args.template_id, context, process, item);
+        const template          = await crs.process.getValue(step.args.template, context, process, item);
+        const data              = await crs.process.getValue(step.args.data, context, process, item);
+        const remove_template   = await crs.process.getValue(step.args.remove_template, context, process, item);
+        const recycle           = await crs.process.getValue(step.args.recycle, context, process, item);
+        let parent              = await crs.process.getValue(step.args.parent, context, process, item);
 
         parent = await getElement(parent);
 
@@ -382,12 +383,19 @@ export class DomActions {
             await load_template(template, id);
         }
 
-        const fragment = crsbinding.inflationManager.get(id, data);
+        let elements = null;
+        if (recycle != false && parent.childElementCount > 0) {
+            elements = parent.children;
+        }
+        else {
+            parent.innerHTML = "";
+        }
 
-        parent.innerHTML = "";
+        const fragment = crsbinding.inflationManager.get(id, data, elements, 5, 3);
+
         parent.appendChild(fragment);
 
-        if (autoClear == true) {
+        if (remove_template == true) {
             crsbinding.inflationManager.unregister(id);
         }
     }
