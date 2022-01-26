@@ -375,6 +375,7 @@ export class DomActions {
         const data              = await crs.process.getValue(step.args.data, context, process, item);
         const remove_template   = await crs.process.getValue(step.args.remove_template, context, process, item);
         const recycle           = await crs.process.getValue(step.args.recycle, context, process, item);
+        const row_index         = await crs.process.getValue(step.args.row_index, context, process, item);
         let parent              = await crs.process.getValue(step.args.parent, context, process, item);
 
         parent = await getElement(parent);
@@ -391,13 +392,30 @@ export class DomActions {
             parent.innerHTML = "";
         }
 
-        const fragment = crsbinding.inflationManager.get(id, data, elements, 5, 3);
+        const fragment = crsbinding.inflationManager.get(id, data, elements, row_index || 0);
 
-        parent.appendChild(fragment);
+        if (fragment != null) {
+            parent.appendChild(fragment);
+        }
 
         if (remove_template == true) {
             crsbinding.inflationManager.unregister(id);
         }
+    }
+
+    /**
+     * Update cells with the data sent starting at the provided record
+     * @returns {Promise<void>}
+     */
+    static async update_cells(step, context, process, item) {
+        /**
+            await crs.intent.dom.update_cells({ args: {
+                template_id     : "tpl_generated",
+                data            : batch,
+                row_index       : 5
+            }}, this)
+         */
+        return this.elements_from_template(step, context, process, item);
     }
 
     /**
