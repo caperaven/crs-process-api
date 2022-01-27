@@ -16,6 +16,20 @@ export class DomActions {
         }
     }
 
+    /**
+     * Set a element's property value
+     * @returns {Promise<void>}
+     */
+    static async set_properties(step, context, process, item) {
+        const element = step.args.element || document.querySelector(step.args.query);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+
+        const keys = Object.keys(properties);
+        for (let key of keys) {
+            element[key] = await crs.process.getValue(properties[key], context, process, item);
+        }
+    }
+
         /**
      * Set a element's attribute value
      * @returns {Promise<void>}
