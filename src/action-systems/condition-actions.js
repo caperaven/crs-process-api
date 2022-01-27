@@ -6,17 +6,18 @@ export class ConditionActions {
 
         if (step.args.condition.indexOf("$context") != -1) {
             ctx = context;
-            exp = step.args.condition.replace("$context", "$context");
+            exp = step.args.condition.split("$context").join("$context");
         }
         else if (step.args.condition.indexOf("$process") != -1) {
             ctx = process;
-            exp = step.args.condition.replace("$process", "$context");
+            exp = step.args.condition.split("$process").join("$context");
         }
         else if (step.args.condition.indexOf("$item") != -1) {
             ctx = item;
-            exp = step.args.condition.replace("$item", "$context");
+            exp = step.args.condition.split("$item").join("$context");
         }
         else if (step.args.condition.indexOf("$binding") != -1) {
+            // todo: Gerhard, give binding expression.
             const bId = process.parameters.bId;
             const parts = step.args.condition.replace("$binding.", "").split(" ");
             const property = parts[0];
