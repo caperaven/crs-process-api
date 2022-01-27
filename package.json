@@ -1,6 +1,6 @@
 {
     "name": "crs-process-api",
-    "version": "0.0.79",
+    "version": "0.0.80",
     "description": "process api for executing loging using json structure",
     "main": "crs-process-api.js",
     "directories": {
@@ -34,6 +34,6 @@
         "rollup-plugin-terser": "^7.0.2"
     },
     "dependencies": {
-        "crs-binding": "^0.0.245"
+        "crs-binding": "^0.0.249"
     }
 }
