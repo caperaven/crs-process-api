@@ -399,22 +399,26 @@ export class DomActions {
         }
 
         let elements = null;
-        if (recycle != false && parent.childElementCount > 0) {
-            elements = parent.children;
-        }
-        else {
-            parent.innerHTML = "";
+        if (parent != null) {
+            if (recycle != false && parent.childElementCount > 0) {
+                elements = parent.children;
+            }
+            else {
+                parent.innerHTML = "";
+            }
         }
 
         const fragment = crsbinding.inflationManager.get(id, data, elements, row_index || 0);
 
         if (fragment != null) {
-            parent.appendChild(fragment);
+            parent?.appendChild(fragment);
         }
 
         if (remove_template == true) {
             crsbinding.inflationManager.unregister(id);
         }
+
+        return fragment;
     }
 
     /**
