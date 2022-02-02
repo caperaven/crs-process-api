@@ -5,6 +5,7 @@ use crate::processors::aggregate::aggregate_rows;
 
 #[derive(Debug)]
 pub struct Field {
+    name        : String,
     value       : String,
     children    : HashMap<String, Field>,
     rows        : Option<Vec<i64>>,
@@ -12,8 +13,9 @@ pub struct Field {
 }
 
 impl Field {
-    pub fn new(value: String) -> Field {
+    pub fn new(name: String, value: String) -> Field {
         Field {
+            name,
             value,
             children    : HashMap::new(),
             rows        : None,
@@ -45,7 +47,7 @@ impl Field {
             child.process_row(&row, &fields, field_index + 1, row_index);
         }
         else {
-            let mut child = Field::new(String::from(value.clone()));
+            let mut child = Field::new(field.to_string(), String::from(value.clone()));
             let key = String::from(value.clone());
 
             let _ = &child.process_row(&row, &fields, field_index + 1, row_index);
@@ -71,6 +73,7 @@ impl Field {
     pub fn to_json(&self, parent: &mut Value) {
         let mut obj         = Value::Object(Default::default());
         obj["child_count"]  = Value::from(self.child_count.clone());
+        obj["field"]        = Value::from(self.name.clone());
 
         match &self.rows {
             None => {
@@ -168,7 +171,7 @@ fn get_value(row: &Value, field: &str) -> String {
 
 fn build_field_structure(data: &[Value], fields: &[&str]) -> Field {
     let mut row_index = 0;
-    let mut root = Field::new("root".into());
+    let mut root = Field::new("root".into(),"root".into());
 
     for row in data {
         root.process_row(&row, &fields, 0, row_index);
@@ -234,6 +237,8 @@ mod test {
             .and_then(|value| value.get("children"))
             .and_then(|value| value.get("20"))
             .unwrap();
+
+        println!("{:?}", group_5);
 
         assert_eq!(group_5["child_count"], Value::from(1));
         assert_eq!(group_10["child_count"], Value::from(2));
