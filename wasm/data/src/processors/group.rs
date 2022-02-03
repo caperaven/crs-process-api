@@ -9,7 +9,8 @@ pub struct Field {
     value       : String,
     children    : HashMap<String, Field>,
     rows        : Option<Vec<i64>>,
-    child_count : i64
+    child_count : i64,
+    row_count   : i64
 }
 
 impl Field {
@@ -19,7 +20,8 @@ impl Field {
             value,
             children    : HashMap::new(),
             rows        : None,
-            child_count : 0
+            child_count : 0,
+            row_count   : 0
         }
     }
 
@@ -60,9 +62,14 @@ impl Field {
             None => {
                 self.child_count = self.children.len() as i64;
 
+                let mut count = 0;
+
                 for (_k, v) in self.children.iter_mut() {
                     v.calculate_count();
+                    count += v.child_count;
                 }
+
+                self.row_count = count;
             }
             Some(rows) => {
                 self.child_count = rows.len() as i64;
@@ -73,6 +80,7 @@ impl Field {
     pub fn to_json(&self, parent: &mut Value) {
         let mut obj         = Value::Object(Default::default());
         obj["child_count"]  = Value::from(self.child_count.clone());
+        obj["row_count"]    = Value::from(self.row_count.clone());
         obj["field"]        = Value::from(self.name.clone());
 
         match &self.rows {
