@@ -31,11 +31,16 @@ export class DataActions {
     static async filter(step, context, process, item) {
         await crs.intent.data.debug();
 
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const intent = await crs.process.getValue(step.args.filter, context, process, item) || [];
         const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
 
-        let result = filter_data(JSON.stringify(intent), JSON.stringify(source), case_sensitive == true);
+        let result = filter_data(JSON.stringify(intent), source, case_sensitive == true);
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
@@ -43,11 +48,16 @@ export class DataActions {
     }
 
     static async sort(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const intent = await crs.process.getValue(step.args.sort, context, process, item) || [];
         const rows = await crs.process.getValue(step.args.rows, context, process, item) || [];
 
-        let result = sort_data(JSON.stringify(intent), JSON.stringify(source), rows);
+        let result = sort_data(JSON.stringify(intent), source, rows);
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
@@ -55,10 +65,14 @@ export class DataActions {
     }
 
     static async group(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
         const intent = await crs.process.getValue(step.args.fields, context, process, item) || [];
 
-        let result = group_data(JSON.stringify(intent), JSON.stringify(source));
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
+        let result = group_data(JSON.stringify(intent), source);
         result = JSON.parse(result);
 
         if (step.args.target != null) {
@@ -68,11 +82,16 @@ export class DataActions {
     }
 
     static async aggregate(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const intent = await crs.process.getValue(step.args.aggregate, context, process, item);
         const rows = await crs.process.getValue(step.args.rows, context, process, item) || [];
 
-        let result = aggregate_rows(JSON.stringify(intent), JSON.stringify(source), rows);
+        let result = aggregate_rows(JSON.stringify(intent), source, rows);
         result = JSON.parse(result);
 
         if (step.args.target != null) {
@@ -82,11 +101,16 @@ export class DataActions {
     }
 
     static async aggregateGroup(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const group = await crs.process.getValue(step.args.group, context, process, item);
         let intent = await crs.process.getValue(step.args.aggregate, context, process, item);
 
-        let result = calculate_group_aggregate(JSON.stringify(group), JSON.stringify(intent), JSON.stringify(source));
+        let result = calculate_group_aggregate(JSON.stringify(group), JSON.stringify(intent), source);
         result = JSON.parse(result);
 
         if (step.args.target != null) {
@@ -122,11 +146,16 @@ export class DataActions {
     }
 
     static async in_filter(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const intent = await crs.process.getValue(step.args.filter, context, process, item) || [];
         const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
 
-        const result = in_filter(JSON.stringify(intent), JSON.stringify(source), case_sensitive == true);
+        const result = in_filter(JSON.stringify(intent), source, case_sensitive == true);
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
@@ -134,10 +163,15 @@ export class DataActions {
     }
 
     static async unique_values(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const intent = await crs.process.getValue(step.args.fields, context, process, item);
 
-        let result = unique_values(JSON.stringify(intent), JSON.stringify(source));
+        let result = unique_values(JSON.stringify(intent), source);
         result = JSON.parse(result);
 
         if (step.args.target != null) {
@@ -148,11 +182,16 @@ export class DataActions {
     }
 
     static async assert_equal(step, context, process, item) {
-        const source = await crs.process.getValue(step.args.source, context, process, item);
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
         const intent = await crs.process.getValue(step.args.expr, context, process, item);
         const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
 
-        let result = evaluate_obj(JSON.stringify(intent), JSON.stringify(source), case_sensitive == true);
+        let result = evaluate_obj(JSON.stringify(intent), source, case_sensitive == true);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
