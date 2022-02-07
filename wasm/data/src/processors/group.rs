@@ -66,13 +66,14 @@ impl Field {
 
                 for (_k, v) in self.children.iter_mut() {
                     v.calculate_count();
-                    count += v.child_count;
+                    count += v.row_count;
                 }
 
                 self.row_count = count;
             }
             Some(rows) => {
                 self.child_count = rows.len() as i64;
+                self.row_count = self.child_count;
             }
         }
     }
