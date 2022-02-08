@@ -135,6 +135,21 @@ export class DatabaseActions {
 
         return result;
     }
+
+    static async get_values(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+        const keys = await crs.process.getValue(step.args.keys, context, process, item);
+
+        let result = await db.get_values(store, properties, keys);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 class Database {
@@ -256,6 +271,49 @@ class Database {
                 cursor.continue();
             }
         })
+    }
+
+    get_values(store, properties, keys) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.openCursor();
+            let result = [];
+
+            request.onsuccess = event => {
+                let cursor = event.target.result;
+
+                if (cursor == null) {
+                    request.onsuccess = null;
+                    transaction = null;
+                    objectStore = null;
+                    request = null;
+                    return resolve(result);
+                }
+
+                if (keys && keys.indexOf(cursor.primaryKey) != -1) {
+                    let obj = this.cloneProperties(cursor.value, properties);
+                    result.push(obj);
+                }
+                else {
+                    let obj = this.cloneProperties(cursor.value, properties);
+                    result.push(obj);
+                }
+
+                cursor.continue();
+            }
+        })
+    }
+
+    cloneProperties(source, properties) {
+        let result = {};
+
+        for (let property of properties) {
+            result[property] = source[property];
+        }
+
+        return result;
     }
 
     get_all(store) {
