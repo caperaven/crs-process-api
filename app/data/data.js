@@ -284,6 +284,31 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
     }
 
+    async calculate_paging() {
+        const data = await createDate(100, this._dataId);
+
+        let db = await crs.intent.db.create_data_dump({args: {
+                name: "batch_db",
+                version: 1,
+                tables: {
+                    data: {
+                        indexes: {
+                            id: { unique: true }
+                        }
+                    }
+                },
+                store: "data",
+                records: data
+            }});
+
+        const result = await crs.intent.db.calculate_paging({ args: {
+                db: db,
+                store: "data",
+                page_size: 10
+            }});
+        console.log(result);
+    }
+
     async create_db() {
         this.db = await crs.intent.db.open({args: {
             name: "test_db",

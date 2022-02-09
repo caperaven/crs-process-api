@@ -103,10 +103,14 @@ export class ProcessRunner {
         if (expr == "$process") return process;
         if (expr == "$item") return item;
 
-        if (expr.indexOf("$") == -1 && expr.indexOf("(") == -1) return expr;
+        if (expr.indexOf("$") == -1) return expr;
 
         if (expr.indexOf("$binding") != -1) {
             return crsbinding.data.getValue(process.parameters.bId, expr.replace("$binding.", ""));
+        }
+
+        if (expr.indexOf("$fn") != -1) {
+            expr = expr.split("$fn").join("");
         }
 
         expr = process?.expCache == null ? expr : getFromCache(expr, process);

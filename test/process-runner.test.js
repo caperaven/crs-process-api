@@ -51,8 +51,13 @@ test("ProcessRunner - getValue - with function", async () => {
 })
 
 test("ProcessRunner - getValue - with expression", async () => {
-    const result = await crs.process.getValue("(1 + 2)");
+    const result = await crs.process.getValue("$fn(1 + 2)");
     expect(result).toEqual(3);
+})
+
+test("ProcessRunn - getValue - with backets in text", async () => {
+    const result = await crs.process.getValue("My String(with value) is cool");
+    expect(result).toEqual("My String(with value) is cool");
 })
 
 test("ProcessRunner - getValue - calculate using context and process and item", async () => {

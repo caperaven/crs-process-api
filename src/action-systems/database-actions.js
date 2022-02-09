@@ -150,6 +150,20 @@ export class DatabaseActions {
 
         return result;
     }
+
+    static async calculate_paging(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const pageSize = await crs.process.getValue(step.args.page_size, context, process, item);
+
+        let result = await db.calculate_paging(store, pageSize);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 class Database {
@@ -416,5 +430,33 @@ class Database {
                 }
             }
         })
+    }
+
+    calculate_paging(store, pageSize) {
+        return new Promise(resolve => {
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
+            const countRequest = objectStore.count();
+
+            countRequest.onsuccess = () => {
+                const count = countRequest.result;
+                let pageCount = Math.abs(count / pageSize || 1);
+
+                if (count > 0 && pageCount == 0) {
+                    pageCount = 1;
+                }
+
+                countRequest.onsuccess = null;
+
+                return resolve({
+                    record_count: count,
+                    page_count : pageCount
+                })
+            }
+        })
+    }
+
+    get_page(store, pageSize, pageNumber) {
+
     }
 }
