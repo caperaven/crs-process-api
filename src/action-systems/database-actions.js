@@ -12,7 +12,7 @@ export class DatabaseActions {
         const version = await crs.process.getValue(step.args.version, context, process, item);
         const tables = await crs.process.getValue(step.args.tables, context, process, item);
 
-        const instance = Database.open(dbName, version, tables);
+        const instance = Database.open(dbName, version || 1, tables);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.table, instance, context, process, item);
@@ -164,6 +164,22 @@ export class DatabaseActions {
 
         return result;
     }
+
+    static async get_page(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const pageSize = await crs.process.getValue(step.args.page_size, context, process, item);
+        const pageNumber = await crs.process.getValue(step.args.page_number, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+
+        let result = await db.get_page(store, pageSize, pageNumber, properties);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 class Database {
@@ -306,9 +322,11 @@ class Database {
                     return resolve(result);
                 }
 
-                if (keys && keys.indexOf(cursor.primaryKey) != -1) {
-                    let obj = this.cloneProperties(cursor.value, properties);
-                    result.push(obj);
+                if (keys) {
+                    if (keys.indexOf(cursor.primaryKey) != -1) {
+                        let obj = this.cloneProperties(cursor.value, properties);
+                        result.push(obj);
+                    }
                 }
                 else {
                     let obj = this.cloneProperties(cursor.value, properties);
@@ -456,7 +474,20 @@ class Database {
         })
     }
 
-    get_page(store, pageSize, pageNumber) {
+    get_page(store, pageSize, pageNumber, properties) {
+        const start = pageNumber * pageSize;
+        const end = start + pageSize;
 
+        if (properties == null) {
+            return this.get_batch(store, start, end);
+        }
+        else {
+            let keys = [];
+            for (let i = start; i <= end; i++) {
+                keys.push(i);
+            }
+
+            return this.get_values(store, properties, keys);
+        }
     }
 }

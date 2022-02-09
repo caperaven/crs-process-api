@@ -284,7 +284,7 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
     }
 
-    async calculate_paging() {
+    async create_page_data() {
         const data = await createDate(100, this._dataId);
 
         let db = await crs.intent.db.create_data_dump({args: {
@@ -301,12 +301,32 @@ export default class Data extends crsbinding.classes.ViewBase {
                 records: data
             }});
 
+        db.close();
+    }
+
+    async calculate_paging() {
+        const db = await crs.intent.db.open({args: {
+            name: "batch_db"
+        }})
+
         const result = await crs.intent.db.calculate_paging({ args: {
                 db: db,
                 store: "data",
                 page_size: 10
             }});
+
         console.log(result);
+
+        for (let page of [0, 1, 2]) {
+            const page1 = await crs.intent.db.get_page({args: {
+                db: db,
+                store: "data",
+                page_size: 10,
+                page_number: page,
+                properties: ["id", "code", "number"]
+            }})
+            console.table(page1);
+        }
     }
 
     async create_db() {
