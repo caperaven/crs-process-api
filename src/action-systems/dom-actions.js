@@ -448,6 +448,7 @@ export class DomActions {
         const obj = await crs.process.getValue(step.args.source, context, process, item);
         const tagName = await crs.process.getValue(step.args.tag, context, process, item);
         const wrapper = await crs.process.getValue(step.args.wrapper, context, process, item);
+        const ctxName = await crs.process.getValue(step.args.ctx, context, process, item);
 
         const keys = Object.keys(obj);
         const template = document.createElement("template");
@@ -474,7 +475,7 @@ export class DomActions {
             }
         }
 
-        crsbinding.inflationManager.register(id, template);
+        crsbinding.inflationManager.register(id, template, ctxName || "context");
     }
 }
 

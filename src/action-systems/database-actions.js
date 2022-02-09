@@ -480,7 +480,7 @@ class Database {
 
     get_page(store, pageSize, pageNumber, fields) {
         const start = pageNumber * pageSize;
-        const end = start + pageSize;
+        const end = start + pageSize - 1; // zero index means we need to remove 1
 
         if (fields == null) {
             return this.get_batch(store, start, end);

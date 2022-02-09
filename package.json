@@ -1,6 +1,6 @@
 {
     "name": "crs-process-api",
-    "version": "0.0.91",
+    "version": "0.0.94",
     "description": "process api for executing loging using json structure",
     "main": "crs-process-api.js",
     "directories": {
