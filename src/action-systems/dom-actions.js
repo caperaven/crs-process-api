@@ -456,7 +456,7 @@ export class DomActions {
 
         if (wrapper != null) {
             const wrapperElement = document.createElement(wrapper);
-            template.appendChild(wrapperElement);
+            template.content.appendChild(wrapperElement);
             parent = wrapperElement;
         }
 
