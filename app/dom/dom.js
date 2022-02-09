@@ -351,6 +351,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
         await crs.intent.dom.create_inflation_template({args: {
             template_id: "tpl_generated",
             tag: "li",
+                wrapper: "li",
             source: {
                 description: {}
             }

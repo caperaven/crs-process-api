@@ -447,16 +447,31 @@ export class DomActions {
         const id = await crs.process.getValue(step.args.template_id, context, process, item);
         const obj = await crs.process.getValue(step.args.source, context, process, item);
         const tagName = await crs.process.getValue(step.args.tag, context, process, item);
+        const wrapper = await crs.process.getValue(step.args.wrapper, context, process, item);
 
         const keys = Object.keys(obj);
         const template = document.createElement("template");
+
+        let parent = template;
+
+        if (wrapper != null) {
+            const wrapperElement = document.createElement(wrapper);
+            template.appendChild(wrapperElement);
+            parent = wrapperElement;
+        }
 
         for (let key of keys) {
             let args = obj[key];
             args.tagName = tagName;
             let child = await this.create_element({ args: args}, context, process, item);
             child.textContent = ["${", key, "}"].join("");
-            template.content.appendChild(child);
+
+            if (parent.content != null) {
+                parent.content.appendChild(child);
+            }
+            else {
+                parent.appendChild(child);
+            }
         }
 
         crsbinding.inflationManager.register(id, template);

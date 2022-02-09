@@ -338,28 +338,18 @@ class Database {
 
                 if (keys) {
                     if (keys.indexOf(cursor.primaryKey) != -1) {
-                        let obj = this.cloneProperties(cursor.value, fields);
+                        let obj = cloneProperties(cursor.value, fields);
                         result.push(obj);
                     }
                 }
                 else {
-                    let obj = this.cloneProperties(cursor.value, fields);
+                    let obj = cloneProperties(cursor.value, fields);
                     result.push(obj);
                 }
 
                 cursor.continue();
             }
         })
-    }
-
-    cloneProperties(source, properties) {
-        let result = {};
-
-        for (let property of properties) {
-            result[property] = source[property];
-        }
-
-        return result;
     }
 
     get_all(store) {
@@ -539,4 +529,14 @@ class Database {
             }
         })
     }
+}
+
+function cloneProperties(source, properties) {
+    let result = {};
+
+    for (let property of properties) {
+        result[property] = source[property];
+    }
+
+    return result;
 }
