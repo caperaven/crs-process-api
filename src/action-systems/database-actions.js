@@ -139,10 +139,10 @@ export class DatabaseActions {
     static async get_values(step, context, process, item) {
         const db = await crs.process.getValue(step.args.db, context, process, item);
         const store = await crs.process.getValue(step.args.store, context, process, item);
-        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+        const fields = await crs.process.getValue(step.args.fields, context, process, item);
         const keys = await crs.process.getValue(step.args.keys, context, process, item);
 
-        let result = await db.get_values(store, properties, keys);
+        let result = await db.get_values(store, fields, keys);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -170,9 +170,23 @@ export class DatabaseActions {
         const store = await crs.process.getValue(step.args.store, context, process, item);
         const pageSize = await crs.process.getValue(step.args.page_size, context, process, item);
         const pageNumber = await crs.process.getValue(step.args.page_number, context, process, item);
-        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+        const fields = await crs.process.getValue(step.args.fields, context, process, item);
 
-        let result = await db.get_page(store, pageSize, pageNumber, properties);
+        let result = await db.get_page(store, pageSize, pageNumber, fields);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async get_range(step, context, process, item) {
+        const db = await crs.process.getValue(step.args.db, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const field = await crs.process.getValue(step.args.field, context, process, item);
+
+        let result = await db.get_range(store, field);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -303,7 +317,7 @@ class Database {
         })
     }
 
-    get_values(store, properties, keys) {
+    get_values(store, fields, keys) {
         return new Promise(resolve => {
             let transaction = this.db.transaction([store], "readonly");
             let objectStore = transaction.objectStore(store);
@@ -324,12 +338,12 @@ class Database {
 
                 if (keys) {
                     if (keys.indexOf(cursor.primaryKey) != -1) {
-                        let obj = this.cloneProperties(cursor.value, properties);
+                        let obj = this.cloneProperties(cursor.value, fields);
                         result.push(obj);
                     }
                 }
                 else {
-                    let obj = this.cloneProperties(cursor.value, properties);
+                    let obj = this.cloneProperties(cursor.value, fields);
                     result.push(obj);
                 }
 
@@ -474,11 +488,11 @@ class Database {
         })
     }
 
-    get_page(store, pageSize, pageNumber, properties) {
+    get_page(store, pageSize, pageNumber, fields) {
         const start = pageNumber * pageSize;
         const end = start + pageSize;
 
-        if (properties == null) {
+        if (fields == null) {
             return this.get_batch(store, start, end);
         }
         else {
@@ -487,7 +501,42 @@ class Database {
                 keys.push(i);
             }
 
-            return this.get_values(store, properties, keys);
+            return this.get_values(store, fields, keys);
         }
+    }
+
+    get_range(store, field) {
+        return new Promise(resolve => {
+            const range = {min: Number.MAX_VALUE, max: Number.MIN_VALUE};
+
+            let transaction = this.db.transaction([store], "readonly");
+            let objectStore = transaction.objectStore(store);
+
+            let request = objectStore.openCursor();
+
+            request.onsuccess = event => {
+                let cursor = event.target.result;
+
+                if (cursor == null) {
+                    request.onsuccess = null;
+                    transaction = null;
+                    objectStore = null;
+                    request = null;
+                    return resolve(range);
+                }
+
+                const value = cursor.value[field];
+
+                if (value < range.min) {
+                    range.min = value;
+                }
+
+                if (value > range.max) {
+                    range.max = value;
+                }
+
+                cursor.continue();
+            }
+        })
     }
 }

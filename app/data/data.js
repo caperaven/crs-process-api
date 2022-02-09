@@ -278,7 +278,7 @@ export default class Data extends crsbinding.classes.ViewBase {
         const result = await crs.intent.db.get_values({ args: {
             db: db,
             store: "data",
-            properties: ["code", "number"]
+            fields: ["code", "number"]
         }});
 
         console.log(result);
@@ -323,10 +323,18 @@ export default class Data extends crsbinding.classes.ViewBase {
                 store: "data",
                 page_size: 10,
                 page_number: page,
-                properties: ["id", "code", "number"]
+                fields: ["id", "code", "number"]
             }})
             console.table(page1);
         }
+
+        const range = await crs.intent.db.get_range({ args: {
+                db: db,
+                store: "data",
+                field: "number"
+            }})
+
+        console.log(range);
     }
 
     async create_db() {
