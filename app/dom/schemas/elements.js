@@ -162,5 +162,29 @@ export const schema = {
                 }
             }
         }
+    },
+
+    composite: {
+        steps: {
+            start: {
+                type: "dom",
+                action: "create_element",
+                args: {
+                    id: "composite",
+                    parentQuery: "#container",
+                    tagName: "div",
+                    children: [
+                        {
+                            id: "cbSelect",
+                            tagName: "input",
+                            attributes: {
+                                "type": "checkbox",
+                                "data-id": "1"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
     }
 }

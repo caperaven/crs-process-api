@@ -169,6 +169,15 @@ export class DomActions {
             element.id = step.args.id;
         }
 
+        if (step.args.children != null) {
+            for (let args of step.args.children) {
+                args.parent = element;
+                await this.create_element({
+                    args: args
+                }, context, process, item)
+            }
+        }
+
         parentElement?.appendChild(element);
         return element;
     }
@@ -456,7 +465,7 @@ export class DomActions {
         let parent = template;
 
         if (wrapper != null) {
-            const wrapperElement = document.createElement(wrapper);
+            const wrapperElement = await this.create_element({ args: wrapper }, context, process, item);
             template.content.appendChild(wrapperElement);
             parent = wrapperElement;
         }

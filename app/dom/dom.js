@@ -39,6 +39,16 @@ export default class Dom extends crsbinding.classes.ViewBase {
         });
     }
 
+    async createComposite() {
+        await crsbinding.events.emitter.emit("run-process", {
+            context: this,
+            step: {
+                action: "composite",
+                args: { schema: "dom-example" }
+            }
+        });
+    }
+
     async getAttribute() {
         await crsbinding.events.emitter.emit("run-process", {
             context: this,
@@ -350,8 +360,19 @@ export default class Dom extends crsbinding.classes.ViewBase {
 
         await crs.intent.dom.create_inflation_template({args: {
             template_id: "tpl_generated",
+            wrapper: {
+                tagName: "ul",
+                attributes: {
+                    "data-id": "wrapper-ul"
+                },
+                children: [
+                    {
+                        tagName: "li",
+                        textContent: "first item"
+                    }
+                ]
+            },
             tag: "li",
-                wrapper: "li",
             source: {
                 description: {}
             }
