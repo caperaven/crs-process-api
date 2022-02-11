@@ -493,7 +493,7 @@ export class DomActions {
     }
 }
 
-async function getElement(element) {
+export async function getElement(element) {
     if (element instanceof HTMLElement) {
         return element;
     }

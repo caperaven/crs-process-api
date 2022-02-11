@@ -98,6 +98,7 @@ export class ProcessRunner {
      */
     static async getValue(expr, context = null, process=  null, item = null) {
         if (typeof expr != "string") return expr;
+        if (expr.indexOf("${") == 0) return expr;
 
         if (expr == "$context") return context;
         if (expr == "$process") return process;

@@ -1,0 +1,31 @@
+<style>
+    #grid {
+        width: 800px;
+        height: 800px;
+        border: solid 1px silver;
+    }
+
+    .toolbar {
+        margin-bottom: 1rem;
+    }
+</style>
+
+<h2>CSS Grid</h2>
+
+<div class="toolbar">
+    <div>Columns</div>
+    <button click.call="addColumn">Add</button>
+    <button click.call="removeColumn">Remove</button>
+    <button click.call="setWidth">Set Width</button>
+</div>
+
+<div class="toolbar">
+    <div>Rows</div>
+    <button click.call="addRow">Add</button>
+    <button click.call="removeRow">Remove</button>
+    <button click.call="setHeight">Set Height</button>
+</div>
+
+<div id="grid"></div>
+
+

@@ -19,6 +19,7 @@ import {StringActions} from "./action-systems/string-actions.js";
 import {DatabaseActions} from "./action-systems/database-actions.js";
 import {StorageAction} from "./action-systems/storage.js";
 import {SessionStorageAction} from "./action-systems/session-storage.js";
+import {TranslationActions} from "./action-systems/translation-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -27,30 +28,35 @@ globalThis.crs = globalThis.crs || {};
  * This can be used programmatically.
  */
 globalThis.crs.intent = {
-    array      : ArrayActions,
-    condition  : ConditionActions,
-    console    : ConsoleActions,
-    loop       : LoopActions,
-    object     : ObjectActions,
-    action     : ActionActions,
-    math       : MathActions,
-    process    : ProcessActions,
-    module     : ModuleActions,
-    dom        : DomActions,
-    binding    : BindingActions,
-    system     : SystemActions,
-    events     : EventsActions,
-    rest       : RestServicesAction,
-    random     : RandomActions,
-    string     : StringActions,
-    db         : DatabaseActions,
-    storage    : StorageAction,
-    session    : SessionStorageAction
+    array       : ArrayActions,
+    condition   : ConditionActions,
+    console     : ConsoleActions,
+    loop        : LoopActions,
+    object      : ObjectActions,
+    action      : ActionActions,
+    math        : MathActions,
+    process     : ProcessActions,
+    module      : ModuleActions,
+    dom         : DomActions,
+    binding     : BindingActions,
+    system      : SystemActions,
+    events      : EventsActions,
+    rest        : RestServicesAction,
+    random      : RandomActions,
+    string      : StringActions,
+    db          : DatabaseActions,
+    storage     : StorageAction,
+    session     : SessionStorageAction,
+    translations: TranslationActions,
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+
+globalThis.crs.call = (system, fn, args, context, process, item) => {
+    return crs.intent[system][fn]({args: args}, context, process, item);
+}
 
 crsbinding.events.emitter.on("crs-process-error", (message) => {
     console.error(message.error);

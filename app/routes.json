@@ -45,6 +45,11 @@
       "view": "data"
     },
     {
+      "title": "CSS Grid",
+      "hash": "#css-grid",
+      "view": "css-grid"
+    },
+    {
       "title": "index DB",
       "hash": "#indexdb",
       "view": "indexdb"
