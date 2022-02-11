@@ -99,6 +99,34 @@ export class ArrayActions {
 
         return result;
     }
+
+    /**
+     * For an array of objects map a field to an array of values
+     * If more than one field is provided then an array of objects is returned
+     * @returns {Promise<*[]>}
+     */
+    static async map_objects(step, context, process, item) {
+        const collection = await crs.process.getValue(step.args.source, context, process, item) ?? [];
+        const fields = step.args.fields ?? [];
+        let result = [];
+
+        for (const item of collection) {
+            let res;
+            if (fields.length > 1) {
+                res = await Promise.all(fields.map(f => [f, crsbinding.utils.getValueOnPath(item, f)]));
+                result.push(Object.fromEntries(res));
+            } else {
+                res = await Promise.all(fields.map(f => crsbinding.utils.getValueOnPath(item, f)));
+                result.push(...res);
+            }
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function field_to_csv(array, field, delimiter) {

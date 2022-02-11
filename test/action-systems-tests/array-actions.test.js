@@ -144,3 +144,54 @@ test("ArrayActions - get value", async () => {
     await globalThis.crs.intent.array.perform(step, context, null, null);
     expect(context.result).toEqual(1.1)
 })
+
+test("ArrayActions - map objects array field to array", async () => {
+    const context = {
+        values: [{v1: 1, v2: 2}, {v1: 3, v2: 4}, {v1: 5, v2: 6}]
+    }
+
+    const step = {
+        action: "map_objects",
+        args: {
+            source: "$context.values",
+            fields: ["v2"],
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+    expect(context.result).toEqual([2, 4, 6]);
+});
+
+test("ArrayActions - map objects array fields to arrays", async () => {
+    const context = {
+        values: [{v1: 1, v2: 2, v3: 3}, {v1: 4, v2: 5, v3: 6}, {v1: 7, v2: 8, v3: 9}]
+    }
+
+    const step = {
+        action: "map_objects",
+        args: {
+            source: "$context.values",
+            fields: ["v1", "v3"],
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+    expect(context.result).toEqual([{"v1":1,"v3":3}, {"v1":4,"v3":6}, {"v1":7,"v3":9}]);
+});
+
+test("ArrayActions - map objects array null values", async () => {
+    const context = {};
+
+    const step = {
+        action: "map_objects",
+        args: {
+            source: "$context.values",
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+    expect(context.result).toEqual([]);
+});
