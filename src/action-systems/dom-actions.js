@@ -148,6 +148,7 @@ export class DomActions {
         const attributes = Object.keys(step.args.attributes || {});
         const styles = Object.keys(step.args.styles || {});
         const classes = step.args.classes || [];
+        const dataset = Object.keys(step.args.dataset || {});
 
         for (let attr of attributes) {
             element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
@@ -159,6 +160,10 @@ export class DomActions {
 
         for (let cls of classes) {
             element.classList.add(cls);
+        }
+
+        for (let key of dataset) {
+            element.dataset[key] = await crs.process.getValue(step.args.dataset[key], context, process, item);
         }
 
         if (step.args.textContent != null) {
@@ -455,7 +460,7 @@ export class DomActions {
     static async create_inflation_template(step, context, process, item) {
         const id = await crs.process.getValue(step.args.template_id, context, process, item);
         const obj = await crs.process.getValue(step.args.source, context, process, item);
-        const tagName = await crs.process.getValue(step.args.tag, context, process, item);
+        const tagName = await crs.process.getValue(step.args.tagName, context, process, item);
         const wrapper = await crs.process.getValue(step.args.wrapper, context, process, item);
         const ctxName = await crs.process.getValue(step.args.ctx, context, process, item);
 

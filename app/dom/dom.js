@@ -372,7 +372,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
                     }
                 ]
             },
-            tag: "li",
+            tagName: "li",
             source: {
                 description: {}
             }
