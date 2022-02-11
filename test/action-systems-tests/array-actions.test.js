@@ -178,7 +178,7 @@ test("ArrayActions - map objects array fields to arrays", async () => {
     }
 
     await globalThis.crs.intent.array.perform(step, context, null, null);
-    expect(context.result).toEqual([{"v1":1,"v3":3}, {"v1":4,"v3":6}, {"v1":7,"v3":9}]);
+    expect(context.result).toEqual([1, 3, 4, 6, 7, 9]);
 });
 
 test("ArrayActions - map objects array null values", async () => {
@@ -194,4 +194,25 @@ test("ArrayActions - map objects array null values", async () => {
 
     await globalThis.crs.intent.array.perform(step, context, null, null);
     expect(context.result).toEqual([]);
+});
+
+test("ArrayActions - map objects array nested path fields to arrays", async () => {
+    const context = {
+        values: [
+            {v1: 1, v2: 2, v3: {1: {2: 3}}},
+            {v1: 4, v2: 5, v3: {1: {2: 6}}},
+            {v1: 7, v2: 8, v3: {1: {2: 9}}}]
+    }
+
+    const step = {
+        action: "map_objects",
+        args: {
+            source: "$context.values",
+            fields: ["v1", "v3.1.2"],
+            target: "$context.result"
+        }
+    }
+
+    await globalThis.crs.intent.array.perform(step, context, null, null);
+    expect(context.result).toEqual([1, 3, 4, 6, 7, 9]);
 });
