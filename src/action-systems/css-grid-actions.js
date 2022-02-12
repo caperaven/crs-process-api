@@ -76,8 +76,22 @@ export class CssGridActions {
     /**
      * Set css region
      */
-    static async set_region(step, context, process, item) {
+    static async set_regions(step, context, process, item) {
+        const element   = await getElement(step.args.element);
+        const areas     = await crs.process.getValue(step.args.areas, context, process, item);
 
+        const gridAreas = await areasToArray(element);
+
+        for (let area of areas) {
+            populateAreaIntent(gridAreas, area);
+        }
+
+        let result = [];
+        for (let row of gridAreas) {
+            result.push(`"${row.join(" ")}"`);
+        }
+
+        element.style.gridTemplateAreas = result.join(" ");
     }
 
     /**
@@ -86,6 +100,39 @@ export class CssGridActions {
     static async clear_region(step, context, process, item) {
 
     }
+}
+
+function populateAreaIntent(collection, area) {
+    for (let row = area.start.row; row <= area.end.row; row++) {
+        for (let col = area.start.col; col <= area.end.col; col++) {
+            collection[row][col] = area.name;
+        }
+    }
+}
+
+function getColumnCount(element) {
+    return element.style.gridTemplateColumns.split(" ").length;
+}
+
+function getRowCount(element) {
+    return element.style.gridTemplateRows.split(" ").length;
+}
+
+
+async function areasToArray(element) {
+    const areas = element.style.gridTemplateAreas.trim();
+    const colCount = getColumnCount(element);
+    const rowCount = getRowCount(element);
+
+    let result = [];
+    for (let i = 0; i < rowCount; i++) {
+        result[i] = [];
+        for (let j = 0; j < colCount; j++) {
+            result[i][j] = ".";
+        }
+    }
+
+    return result;
 }
 
 async function resize(step, context, process, item, property, valueProperty) {

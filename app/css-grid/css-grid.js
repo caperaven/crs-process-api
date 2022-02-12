@@ -51,4 +51,13 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
         await crs.call("cssgrid", "set_row_height", {element: this.element, position: 1, height: "10px"});
     }
 
+    async setRegion() {
+        const areas = [
+            { start: {col: 0, row: 0}, end: {col: 1, row: 1}, name: "area1" },
+            { start: {col: 2, row: 0}, end: {col: 2, row: 1}, name: "area2" },
+            { start: {col: 0, row: 2}, end: {col: 2, row: 2}, name: "area3" }
+        ]
+
+        await crs.call("cssgrid", "set_regions", {element: this.element, areas: areas});
+    }
 }
