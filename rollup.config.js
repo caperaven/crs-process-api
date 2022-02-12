@@ -22,5 +22,14 @@ export default [
         plugins: [
             terser()
         ]
+    },
+    {
+        input: "src/action-systems/data-actions.js",
+        output: [
+            {file: 'dist/action-systems/css-grid-actions.js', format: 'es'}
+        ],
+        plugins: [
+            terser()
+        ]
     }
 ];
