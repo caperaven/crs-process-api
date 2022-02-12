@@ -24,7 +24,7 @@ export default [
         ]
     },
     {
-        input: "src/action-systems/data-actions.js",
+        input: "src/action-systems/css-grid-actions.js",
         output: [
             {file: 'dist/action-systems/css-grid-actions.js', format: 'es'}
         ],

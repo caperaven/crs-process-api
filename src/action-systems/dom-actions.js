@@ -498,6 +498,10 @@ export async function getElement(element) {
         return element;
     }
 
+    if (element instanceof DocumentFragment) {
+        return element;
+    }
+
     return document.querySelector(element);
 }
 
