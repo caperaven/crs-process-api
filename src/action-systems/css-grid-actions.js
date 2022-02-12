@@ -34,58 +34,35 @@ export class CssGridActions {
     /**
      * Add a css column
      */
-    static async add_column(step, context, process, item) {
-        const element = await getElement(step.args.element);
-        let columns = element.style.gridTemplateColumns.split(" ");
-        if (columns.length == 0) return;
-
-        let width = await crs.process.getValue(step.args.width, context, process, item);
-        const position = await crs.process.getValue(step.args.position, context, process, item);
-
-        if (Array.isArray(width) == false) {
-            width = [width];
-        }
-
-        addToCollection(columns, position, width);
-
-        element.style.gridTemplateColumns = columns.join(" ");
+    static async add_columns(step, context, process, item) {
+        await add(step, context, process, item, "gridTemplateColumns", "width");
     }
 
     /**
      * Remove a css column
      */
-    static async remove_column(step, context, process, item) {
-        const element = await getElement(step.args.element);
-        let columns = element.style.gridTemplateColumns.split(" ");
-        if (columns.length == 0) return;
-
-        const position = await crs.process.getValue(step.args.position, context, process, item);
-        const count = await crs.process.getValue(step.args.count, context, process, item);
-
-        removeFromCollection(columns, position, count || 1);
-
-        element.style.gridTemplateColumns = columns.join(" ");
+    static async remove_columns(step, context, process, item) {
+        await remove(step, context, process, item, "gridTemplateColumns");
     }
 
     /**
      * set the width of a css column
      */
     static async set_column_width(step, context, process, item) {
-
     }
 
     /**
      * Add a css row
      */
-    static async add_row(step, context, process, item) {
-
+    static async add_rows(step, context, process, item) {
+        await add(step, context, process, item, "gridTemplateRows", "height");
     }
 
     /**
      * Remove a css row
      */
-    static async remove_row(step, context, process, item) {
-
+    static async remove_rows(step, context, process, item) {
+        await remove(step, context, process, item, "gridTemplateRows");
     }
 
     /**
@@ -110,28 +87,50 @@ export class CssGridActions {
     }
 }
 
-function addToCollection(collection, position, width) {
+async function add(step, context, process, item, property, valueProperty) {
+    const element = await getElement(step.args.element);
+    let items = element.style[property].split(" ");
+    if (items.length == 0) return;
+
+    let value = await crs.process.getValue(step.args[valueProperty], context, process, item);
+    const position = await crs.process.getValue(step.args.position, context, process, item);
+
+    if (Array.isArray(value) == false) {
+        value = [value];
+    }
+
     if (position == "front") {
-        collection = [...width, ...collection];
+        items = [...value, ...items];
     }
     else if (position == "end") {
-        collection.push(...width)
+        items.push(...value)
     }
     else {
-        collection.splice(position, 0, ...width);
+        items.splice(position, 0, ...value);
     }
+
+    element.style[property] = items.join(" ");
 }
 
-function removeFromCollection(collection, position, count) {
+async function remove(step, context, process, item, property) {
+    const element = await getElement(step.args.element);
+    let items = element.style[property].split(" ");
+    if (items.length == 0) return;
+
+    const position = await crs.process.getValue(step.args.position, context, process, item);
+    const count = (await crs.process.getValue(step.args.count, context, process, item)) || 1;
+
     if (position == "front") {
-        collection.splice(0, count);
+        items.splice(0, count);
     }
     else if (position == "end") {
-        collection.splice(collection.length - count, count);
+        items.splice(items.length - count, count);
     }
     else {
-        collection.splice(position, count);
+        items.splice(position, count);
     }
+
+    element.style[property] = items.join(" ");
 }
 
 crs.intent.cssgrid = CssGridActions;
