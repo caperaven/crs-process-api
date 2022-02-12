@@ -49,6 +49,7 @@ export class CssGridActions {
      * set the width of a css column
      */
     static async set_column_width(step, context, process, item) {
+        await resize(step, context, process, item, "gridTemplateColumns", "width");
     }
 
     /**
@@ -69,7 +70,7 @@ export class CssGridActions {
      * Set the height of a css row
      */
     static async set_row_height(step, context, process, item) {
-
+        await resize(step, context, process, item, "gridTemplateRows", "height");
     }
 
     /**
@@ -85,6 +86,19 @@ export class CssGridActions {
     static async clear_region(step, context, process, item) {
 
     }
+}
+
+async function resize(step, context, process, item, property, valueProperty) {
+    const element = await getElement(step.args.element);
+    let items = element.style[property].split(" ");
+    if (items.length == 0) return;
+
+    let value = await crs.process.getValue(step.args[valueProperty], context, process, item);
+    const position = await crs.process.getValue(step.args.position, context, process, item);
+
+    items[position] = value;
+
+    element.style[property] = items.join(" ");
 }
 
 async function add(step, context, process, item, property, valueProperty) {

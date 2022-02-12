@@ -32,7 +32,7 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
     }
 
     async setWidth() {
-        await crs.call("cssgrid", "set_column_width", {element: this.element, position: 1, width: "1fr"});
+        await crs.call("cssgrid", "set_column_width", {element: this.element, position: 1, width: "10px"});
     }
 
     async addRow() {
@@ -48,7 +48,7 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
     }
 
     async setHeight() {
-        await crs.call("cssgrid", "set_row_height", {element: this.element, position: 1, width: "1fr"});
+        await crs.call("cssgrid", "set_row_height", {element: this.element, position: 1, height: "10px"});
     }
 
 }
