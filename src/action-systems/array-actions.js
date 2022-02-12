@@ -13,8 +13,7 @@ export class ArrayActions {
 
         if (target != null && value != null) {
             target.push(value);
-        }
-        else {
+        } else {
             console.error(`can't add to array - array is null:${target == null}, value is null:${value == null}`);
         }
     }
@@ -34,8 +33,7 @@ export class ArrayActions {
 
         if (step.args.field != null) {
             result = field_to_csv(source, step.args.field, step.args.delimiter);
-        }
-        else if (step.args.fields != null) {
+        } else if (step.args.fields != null) {
             result = fields_to_csv(source, step.args.fields, step.args.delimiter);
         }
 
@@ -92,6 +90,27 @@ export class ArrayActions {
     static async get_value(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item);
         let result = collection[step.args.index][step.args.field];
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * For an array of objects map an object field/s to a flat array of values
+     * @returns {Promise<*[]>}
+     */
+    static async map_objects(step, context, process, item) {
+        const collection = await crs.process.getValue(step.args.source, context, process, item) ?? [];
+        const fields = step.args.fields ?? [];
+        let result = [];
+
+        for (const item of collection) {
+            const res = await Promise.all(fields.map(f => crsbinding.utils.getValueOnPath(item, f)));
+            result.push(...res);
+        }
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
