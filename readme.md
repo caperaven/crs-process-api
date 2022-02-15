@@ -942,7 +942,7 @@ step: {
     action: "create_element",
     args: {
         id: "element1",
-        parentQuery: "#container",
+        parent: "#container",
         tagName: "div",
         textContent: "Element 1",
         styles: {
@@ -961,7 +961,7 @@ step: {
     action: "create_element",
     args: {
         id: "composite",
-        parentQuery: "#container",
+        parent: "#container",
         tagName: "div",
         children: [
             {
@@ -996,8 +996,8 @@ step: {
     type: "dom",
     action: "clone_for_movement",
     args: {
-        query: "#clickClone",
-        parentQuery: "#cloneTarget",
+        query: "#clickClone", 
+        parent: "#cloneTarget",
         position: {x: 300, y: 0}
     }
 }

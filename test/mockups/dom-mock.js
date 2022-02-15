@@ -8,4 +8,7 @@ export class DocumentMock {
     createDocumentFragment() {
         return new ElementMock();
     }
+
+    querySelector(query) {
+    }
 }

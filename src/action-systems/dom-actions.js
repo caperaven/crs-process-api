@@ -142,7 +142,7 @@ export class DomActions {
      * @returns {Promise<HTMLElement>}
      */
     static async create_element(step, context, process, item) {
-        const parentElement = step.args.parent || document.querySelector(step.args.parentQuery);
+        const parentElement = getElement(step.args.parent);
         const element = document.createElement(step.args.tagName);
 
         const attributes = Object.keys(step.args.attributes || {});
@@ -360,7 +360,8 @@ export class DomActions {
 
     static async clone_for_movement(step, context, process, item) {
         const element = step.args.element || document.querySelector(step.args.query);
-        const parent = step.args.parent || document.querySelector(step.args.parentQuery);
+        const parent = getElement(step.args.parent);
+
         const position = await crs.process.getValue(step.args.position || {x: 0, y: 0}, context, process, item);
 
         const result = element.cloneNode(true);
@@ -490,6 +491,21 @@ export class DomActions {
         }
 
         crsbinding.inflationManager.register(id, template, ctxName || "context");
+    }
+
+    /**
+     * Get me a instance of a element.
+     * if it is a element return that element.
+     * if it is a css query, go fetch me that element.
+     */
+    static async get_element(step, context, process, item) {
+        const result = getElement(step.args.element);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 }
 

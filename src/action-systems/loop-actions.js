@@ -2,7 +2,7 @@ const BATCH_SIZE = 500;
 
 export class LoopActions {
     static async perform(step, context, process) {
-        const source    = await crs.process.getValue(step.args.source, context, process);
+        const source = await crs.process.getValue(step.args.source, context, process);
 
         if (source == null) {
             throw new Error(`object on path ${step.args.source} was not set`);

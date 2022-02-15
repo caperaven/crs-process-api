@@ -13,7 +13,10 @@ export class ElementMock {
 
         this.nodeName = (tagName || "div").toUpperCase();
         this.name = name;
-        this.style = {};
+        this.style = {
+            gridTemplateColumns: "",
+            gridTemplateRows: ""
+        };
     }
 
     getAttribute(attr) {

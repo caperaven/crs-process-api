@@ -93,7 +93,7 @@ export const schema = {
                 action: "create_element",
                 args: {
                     id: "element1",
-                    parentQuery: "#container",
+                    parent: "#container",
                     tagName: "div",
                     textContent: "Element 1",
                     classes: ["class1", "class2"]
@@ -106,7 +106,7 @@ export const schema = {
                 action: "create_element",
                 args: {
                     id: "element2",
-                    parentQuery: "#container",
+                    parent: "#container",
                     tagName: "div",
                     textContent: "Element 2"
                 },
@@ -118,7 +118,7 @@ export const schema = {
                 action: "create_element",
                 args: {
                     id: "element3",
-                    parentQuery: "#container",
+                    parent: "#container",
                     tagName: "div",
                     textContent: "Element 3"
                 },
@@ -130,7 +130,7 @@ export const schema = {
                 action: "create_element",
                 args: {
                     id: "element4",
-                    parentQuery: "#container",
+                    parent: "#container",
                     tagName: "div",
                     textContent: "Element 4"
                 }
@@ -157,7 +157,7 @@ export const schema = {
                 action: "clone_for_movement",
                 args: {
                     query: "#clickClone",
-                    parentQuery: "#cloneTarget",
+                    parent: "#cloneTarget",
                     position: {x: 300, y: 0}
                 }
             }
@@ -171,7 +171,7 @@ export const schema = {
                 action: "create_element",
                 args: {
                     id: "composite",
-                    parentQuery: "#container",
+                    parent: "#container",
                     tagName: "div",
                     children: [
                         {

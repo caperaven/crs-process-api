@@ -95,10 +95,21 @@ export class CssGridActions {
     }
 
     /**
-     * clear a css region
+     * for a css grid get the column count
      */
-    static async clear_region(step, context, process, item) {
+    static async column_count(step) {
+        const element = await getElement(step.args.element);
+        const result = getColumnCount(element);
+        return result;
+    }
 
+    /**
+     * for a css grid element get the row count
+     */
+    static async row_count(step) {
+        const element = await getElement(step.args.element);
+        const result = getRowCount(element);
+        return result;
     }
 }
 
@@ -120,7 +131,6 @@ function getRowCount(element) {
 
 
 async function areasToArray(element) {
-    const areas = element.style.gridTemplateAreas.trim();
     const colCount = getColumnCount(element);
     const rowCount = getRowCount(element);
 
