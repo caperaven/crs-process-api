@@ -130,3 +130,12 @@ pub fn evaluate_obj(expr: String, object: String, case_sensitive: bool) -> bool 
 
     evaluate_object(&intent_obj, &object_obj, case_sensitive)
 }
+
+#[wasm_bindgen]
+pub fn build_perspective(intent: String, data: String) -> String {
+    let intent_obj = serde_json::from_str(intent.as_str()).unwrap();
+    let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
+
+    let result = processors::build_perspective(&intent_obj, &data_array);
+    return result;
+}
