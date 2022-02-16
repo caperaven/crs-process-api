@@ -50,7 +50,7 @@ pub fn group_data(intent: String, data: String) -> String {
     let intent_array: Vec<&str> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    let result = processors::group(&intent_array, &data_array);
+    let result = processors::group(&intent_array, &data_array, None);
 
     return result.to_string();
 }

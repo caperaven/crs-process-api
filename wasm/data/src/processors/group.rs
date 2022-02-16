@@ -104,7 +104,7 @@ impl Field {
 }
 
 /// Given a group intent, group the data based on their values
-pub fn group(intent: &Vec<&str>, data: &[Value]) -> Value {
+pub fn group(intent: &Vec<&str>, data: &[Value], rows: Option<Vec<usize>>) -> Value {
     let root = build_field_structure(&data, &intent);
     let mut result = Value::Object(Default::default());
 
@@ -230,7 +230,7 @@ mod test {
     fn group_test() {
         let data = get_data();
         let intent = Vec::from(["value", "isActive"]);
-        let result = group(&intent, &data);
+        let result = group(&intent, &data, None);
 
         let group_5 = result.get("root")
             .and_then(|value| value.get("children"))
@@ -311,7 +311,7 @@ mod test {
     fn get_group_rows_test() {
         let data = get_data();
         let intent = Vec::from(["value", "isActive"]);
-        let group = group(&intent, &data);
+        let group = group(&intent, &data, None);
         let result = get_group_rows(&group);
         assert_eq!(result.len(), 5);
 
@@ -324,7 +324,7 @@ mod test {
     fn aggregate_group_test() {
         let data = get_data();
         let group_intent = Vec::from(["value", "isActive"]);
-        let mut group = group(&group_intent, &data);
+        let mut group = group(&group_intent, &data, None);
         let ag_intent = json!({
             "min": "value",
             "max": "value",
@@ -348,7 +348,7 @@ mod test {
     fn aggregate_children_test() {
         let data = get_data();
         let group_intent = Vec::from(["value", "isActive"]);
-        let mut group = group(&group_intent, &data);
+        let mut group = group(&group_intent, &data, None);
         let ag_intent = json!({
             "min": "value",
             "max": "value",

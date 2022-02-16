@@ -33,8 +33,15 @@ pub fn build_perspective(perspective: &Value, data: &[Value]) -> String {
         None => {}
         Some(def) => {
             let group_def = def.as_array().unwrap().iter().map(|value| value.as_str().unwrap()).collect();
-            let grouping = processors::group(&group_def, data);
+            let grouping = processors::group(&group_def, data, Some(rows));
             return grouping.to_string();
+        }
+    }
+
+    match aggregates {
+        None => {}
+        Some(def) => {
+
         }
     }
 
