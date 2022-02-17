@@ -105,7 +105,7 @@ impl Field {
 
 /// Given a group intent, group the data based on their values
 pub fn group(intent: &Vec<&str>, data: &[Value], rows: Option<Vec<usize>>) -> Value {
-    let root = build_field_structure(&data, &intent);
+    let root = build_field_structure(&data, &intent, rows);
     let mut result = Value::Object(Default::default());
 
     root.to_json(&mut result);
@@ -178,14 +178,25 @@ fn get_value(row: &Value, field: &str) -> String {
     return value.to_string();
 }
 
-fn build_field_structure(data: &[Value], fields: &[&str]) -> Field {
-    let mut row_index = 0;
+fn build_field_structure(data: &[Value], fields: &[&str], rows: Option<Vec<usize>>) -> Field {
     let mut root = Field::new("root".into(),"root".into());
 
-    for row in data {
-        root.process_row(&row, &fields, 0, row_index);
-        row_index += 1;
+    match rows {
+        None => {
+            let mut row_index = 0;
+            for record in data {
+                root.process_row(&record, &fields, 0, row_index);
+                row_index += 1;
+            }
+        }
+        Some(rows) => {
+            for row in rows {
+                let record = &data[row];
+                root.process_row(&record, &fields, 0, row);
+            }
+        }
     }
+
 
     root.calculate_count();
     return root;
@@ -247,8 +258,6 @@ mod test {
             .and_then(|value| value.get("20"))
             .unwrap();
 
-        println!("{:?}", group_5);
-
         assert_eq!(group_5["child_count"], Value::from(1));
         assert_eq!(group_10["child_count"], Value::from(2));
         assert_eq!(group_20["child_count"], Value::from(1));
@@ -269,7 +278,7 @@ mod test {
         data.push(json!({"field1": 11, "field2": "c", "value": 3}));
         data.push(json!({"field1": 10, "field2": "a", "value": 4}));
 
-        let result = build_field_structure(&data, &fields);
+        let result = build_field_structure(&data, &fields, None);
 
         let child_10 = result.children.get("10").unwrap();
         assert_eq!(child_10.value, "10");
@@ -388,5 +397,16 @@ mod test {
         assert_eq!(group["root"]["children"]["5"]["aggregates"][2]["value"], 5.);
         assert_eq!(group["root"]["children"]["5"]["aggregates"][2]["agg"], "min");
         assert_eq!(group["root"]["children"]["5"]["aggregates"][2]["field"], "value");
+    }
+
+    #[test]
+    fn aggregate_subset_test() {
+        let data = get_data();
+        let group_intent = Vec::from(["value"]);
+        let mut group = group(&group_intent, &data, Some(vec![0, 1, 2]));
+
+        assert_eq!(group["root"]["child_count"], 2);
+        assert_eq!(group["root"]["children"]["10"]["child_count"], 2);
+        assert_eq!(group["root"]["children"]["20"]["child_count"], 1);
     }
 }

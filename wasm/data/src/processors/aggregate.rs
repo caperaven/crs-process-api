@@ -137,7 +137,5 @@ mod test {
         assert_eq!(result[0]["value"], 13.);
         assert_eq!(result[1]["value"], 20.);
         assert_eq!(result[2]["value"], 5.);
-
-        println!("{:?}", result.to_string());
     }
 }

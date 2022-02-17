@@ -93,7 +93,7 @@ mod test {
     }
 
     #[test]
-    fn just_filter_test() {
+    fn just_nothing_test() {
         let data = get_data();
 
         let intent = json!({});
@@ -133,7 +133,7 @@ mod test {
     }
 
     #[test]
-    fn build_perspective_filter_test() {
+    fn just_filter_test() {
         let data = get_data();
 
         let intent = json!({
