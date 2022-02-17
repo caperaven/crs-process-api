@@ -72,4 +72,40 @@ export class SystemActions {
         const error = await crs.process.getValue(step.args.error, context, process, item);
         throw new Error(error);
     }
+
+    static async is_mobile(step, context, process, item) {
+        let result = navigator.userAgent.indexOf("iPhone") > 0 ||
+            navigator.userAgent.indexOf("iPad") > 0 ||
+            navigator.userAgent.indexOf("Android") > 0 ||
+            navigator.userAgent.indexOf("webOS") > 0 ||
+            navigator.userAgent.indexOf("iPod") > 0 ||
+            navigator.userAgent.indexOf("BlackBerry") > 0 ||
+            navigator.userAgent.indexOf("Windows Phone") > 0;
+
+        if (step?.args?.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async is_portrait(step, context, process, item) {
+        let result = window.matchMedia("(orientation: portrait)").matches;
+
+        if (step?.args?.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async is_landscape(step, context, process, item) {
+        let result = window.matchMedia("(orientation: landscape)").matches
+
+        if (step?.args?.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
