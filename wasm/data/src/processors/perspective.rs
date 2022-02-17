@@ -41,11 +41,12 @@ pub fn build_perspective(perspective: &Value, data: &[Value]) -> String {
     match aggregates {
         None => {}
         Some(def) => {
-
+            let result = processors::aggregate_rows(&def, data, Some(rows));
+            return result.to_string();
         }
     }
 
-    return String::new()
+    return String::new();
 }
 
 fn get_case_sensitive(perspective: &Value) -> bool {
@@ -146,7 +147,7 @@ mod test {
     }
 
     #[test]
-    fn build_perspective_filter_and_sort_test() {
+    fn filter_and_sort_test() {
         let data = get_data();
 
         let intent = json!({
@@ -159,4 +160,22 @@ mod test {
         assert_eq!(result, "[0,1,4]");
     }
 
+    #[test]
+    fn filter_and_sort_and_group_test() {
+        let data = get_data();
+
+        let intent = json!({
+            "filter": [{ "field": "value", "operator": "<", "value": 20 }],
+            "case_sensitive": false,
+            "sort": [{"name": "code", "direction": "asc"}],
+            "group": ["value"]
+        });
+
+        let result = build_perspective(&intent, &data);
+        let group: Value = serde_json::from_str(result.as_str()).unwrap();
+
+        assert_eq!(group["root"]["child_count"], 2);
+        assert_eq!(group["root"]["children"]["10"]["child_count"], 2);
+        assert_eq!(group["root"]["children"]["5"]["child_count"], 1);
+    }
 }
