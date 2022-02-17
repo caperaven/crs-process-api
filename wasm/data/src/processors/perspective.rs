@@ -80,7 +80,7 @@ fn get_rows(perspective: &Value, data: &[Value]) -> Vec<usize> {
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Value};
+    use serde_json::{json, Number, Value};
     use crate::processors::build_perspective;
 
     fn get_data() -> Vec<Value> {
@@ -177,5 +177,34 @@ mod test {
         assert_eq!(group["root"]["child_count"], 2);
         assert_eq!(group["root"]["children"]["10"]["child_count"], 2);
         assert_eq!(group["root"]["children"]["5"]["child_count"], 1);
+    }
+
+    #[test]
+    fn filter_and_sort_and_aggregate() {
+        let data = get_data();
+
+        let intent = json!({
+            "filter": [{ "field": "value", "operator": "<", "value": 20 }],
+            "case_sensitive": false,
+            "sort": [{"name": "code", "direction": "asc"}],
+            "aggregates": {
+                "min": "value",
+                "max": "value",
+                "ave": "value"
+            }
+        });
+
+        let result = build_perspective(&intent, &data);
+        let agg: Value = serde_json::from_str(result.as_str()).unwrap();
+        let collection = agg.as_array().unwrap();
+
+        assert_eq!(collection[0]["agg"], String::from("ave"));
+        assert_eq!(collection[0]["value"].to_string(), String::from("8.333333333333334"));
+
+        assert_eq!(collection[1]["agg"], String::from("max"));
+        assert_eq!(collection[1]["value"].to_string(), String::from("10.0"));
+
+        assert_eq!(collection[2]["agg"], String::from("min"));
+        assert_eq!(collection[2]["value"].to_string(), String::from("5.0"));
     }
 }
