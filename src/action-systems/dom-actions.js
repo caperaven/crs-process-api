@@ -142,7 +142,7 @@ export class DomActions {
      * @returns {Promise<HTMLElement>}
      */
     static async create_element(step, context, process, item) {
-        const parentElement = getElement(step.args.parent);
+        const parentElement = await getElement(step.args.parent);
         const element = document.createElement(step.args.tagName);
 
         const attributes = Object.keys(step.args.attributes || {});
@@ -360,7 +360,7 @@ export class DomActions {
 
     static async clone_for_movement(step, context, process, item) {
         const element = step.args.element || document.querySelector(step.args.query);
-        const parent = getElement(step.args.parent);
+        const parent = await getElement(step.args.parent);
 
         const position = await crs.process.getValue(step.args.position || {x: 0, y: 0}, context, process, item);
 
@@ -499,7 +499,7 @@ export class DomActions {
      * if it is a css query, go fetch me that element.
      */
     static async get_element(step, context, process, item) {
-        const result = getElement(step.args.element);
+        const result = await getElement(step.args.element);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
