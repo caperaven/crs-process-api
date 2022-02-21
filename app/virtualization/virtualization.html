@@ -1,0 +1,20 @@
+<style>
+    #list {
+        border: 1px solid black;
+        width: 50%;
+        height: 500px;
+        overflow: auto;
+    }
+    li {
+        height: 2rem;
+    }
+</style>
+
+<h2>Virtualization</h2>
+
+<ul id="list">
+</ul>
+
+<template id="list-item">
+    <li id="${id}" data-row=${id} data-field="item">${item}</li>
+</template>

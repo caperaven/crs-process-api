@@ -53,6 +53,11 @@
       "title": "index DB",
       "hash": "#indexdb",
       "view": "indexdb"
+    },
+    {
+      "title": "Virtualization",
+      "hash": "#virtualization",
+      "view": "virtualization"
     }
   ]
 }

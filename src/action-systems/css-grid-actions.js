@@ -111,6 +111,35 @@ export class CssGridActions {
         const result = getRowCount(element);
         return result;
     }
+
+    static async clear(step) {
+        const element = await getElement(step.args.element);
+        clear(element);
+    }
+
+    static async render_initial_rows(step) {
+        const element = await getElement(step.args.element);
+        const requiresVirtualization = await renderInitialRows(element, step.args.template, step.args.limit, step.args.rowHeight);
+        if (requiresVirtualization == true) enableScroll(element)
+    }
+
+    static async enable_scroll(step) {
+
+    }
+
+    static async disable_scroll(step) {
+
+    }
+
+    static async move_to_bottom(step) {
+        const element = await getElement(step.args.element);
+        moveToBottom(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
+    }
+
+    static async move_to_top(step) {
+        const element = await getElement(step.args.element);
+        moveToTop(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
+    }
 }
 
 function populateAreaIntent(collection, area) {
@@ -129,6 +158,116 @@ function getRowCount(element) {
     return element.style.gridTemplateRows.split(" ").length;
 }
 
+function clear(element) {
+    const children = element.children;
+    for (const child of children) {
+        element.removeChild(child);
+    }
+}
+
+async function renderInitialRows(target, template, limit, rowHeight) {
+    const bounds = target.getBoundingClientRect();
+
+    target.renderCount = target.data.length > limit ? Math.round(bounds.height / rowHeight) * 2 : this.data.length;
+
+    target.topRowIndex = 2;
+    target.bottomRowIndex = target.renderCount + 2;
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < target.renderCount; i++) {
+        const inflatedTemplate = crsbinding.inflationManager.get(template, target.data[i]);
+        fragment.appendChild(inflatedTemplate);
+    }
+
+    target.appendChild(fragment);
+
+    return target.data.length > limit;
+}
+
+function moveToBottom(element, data, topRowIndex, bottomRowIndex, count) {
+    moveRows(element, data, topRowIndex, bottomRowIndex, count);
+    topRowIndex += count;
+    bottomRowIndex += count;
+}
+
+function moveToTop(element, data, topRowIndex, bottomRowIndex, count) {
+    const from = bottomRowIndex - count;
+    const to = topRowIndex - count;
+    moveRows(element, data, from, to, count);
+
+    topRowIndex -= count;
+    bottomRowIndex -= count;
+}
+
+function moveRows(element, data, from, to, count) {
+    for (let i = 0; i < count; i++) {
+        const row = data[to + i];
+
+        if (row != null) {
+            const cells = element.querySelectorAll(`[data-row="${from + i}"]`);
+
+            for (let cell of cells) {
+                cell.style.gridRow = to + i;
+                cell.dataset.row = to + i;
+                cell.textContent = row[cell.dataset.field];
+            }
+        }
+    }
+}
+
+async function performScroll(event) {
+    const element = event.target;
+    const top = element.scrollTop;
+
+    const scrollIndex = Math.round(element.scrollTop / 32);
+
+    if ((top - element.lastScroll) / 32 > element.batchSize) {
+        return renderPage(element, scrollIndex);
+    }
+
+    if (top > element.lastScroll) {
+        if (scrollIndex >= element.nextDownIndex) {
+            virtualizeDown(element, event);
+        }
+    }
+    else {
+        if (scrollIndex <= element.nextUpIndex) {
+            virtualizeUp(element, event);
+        }
+    }
+
+    element.lastScroll = top;
+}
+
+function enableScroll(element) {
+    element.lastScroll = 0;
+    element.nextDownIndex = Math.round(element.renderCount / 3);
+    element.batchSize = Math.round(element.nextDownIndex /2);
+    element.scrollHandler = performScroll.bind(element);
+    element.addEventListener("scroll", element.scrollHandler);
+}
+
+function disableScroll(element) {
+    element.removeEventListener("scroll", element.scrollHandler);
+    element.scrollHandler = null;
+}
+
+function virtualizeDown(element, event) {
+    moveToBottom(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
+    element.nextDownIndex += element.batchSize;
+    element.nextUpIndex = element.nextDownIndex - element.batchSize;
+}
+
+function virtualizeUp(element, event) {
+    moveToTop(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
+    element.nextUpIndex -= element.batchSize;
+    element.nextDownIndex = element.nextUpIndex + element.batchSize;
+}
+
+function renderPage(element, scrollIndex) {
+    console.log("render page", element, scrollIndex);
+}
 
 async function areasToArray(element) {
     const colCount = getColumnCount(element);
