@@ -183,11 +183,12 @@ export class DomActions {
             }
         }
 
+        parentElement?.appendChild(element);
+
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, element, context, process, item);
         }
 
-        parentElement?.appendChild(element);
         return element;
     }
 
