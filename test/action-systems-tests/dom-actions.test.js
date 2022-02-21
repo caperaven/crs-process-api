@@ -13,10 +13,19 @@ test("DomActions - create element target supplied", async () => {
         action: "create_element",
         args: {
             target: "$context.myElement",
-            tagName: "div"
+            tagName: "div",
+            children: [
+                {
+                    tagName: "div",
+                    attributes: {
+                        "id": "childDiv"
+                    }
+                }
+            ]
         }
     }, context);
 
     expect(context.myElement).not.toBeNull();
     expect(context.myElement).toBeInstanceOf<ElementMock>(ElementMock);
+    expect(context.myElement.children).toHaveLength(1);
 })
