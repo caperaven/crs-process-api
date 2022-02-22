@@ -12,6 +12,16 @@ export class ActionActions {
             }
         }
 
+        let parameters = await crs.process.getValue(step.args.parameters, context, process, item);
+
+        if (parameters != null) {
+            for (let i = 0; i < parameters.length; i++) {
+                const path = parameters[i];
+                const value = await crs.process.getValue(path, context, process, item);
+                parameters[i] = value;
+            }
+        }
+
         const result = await fn(context, process, item, step.args.parameters);
 
         if (step.args.target != null) {

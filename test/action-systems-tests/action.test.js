@@ -63,3 +63,22 @@ test("execute action - item", async () => {
 
     expect(data.value).toEqual("Hello World");
 })
+
+test("execute action - parameter paths", async () => {
+    const context = {
+        value: "My Cool Value",
+        log: (value) => {
+            data.value = value
+        }
+    }
+
+    await crs.process.runStep({
+        type: "action",
+        action: "$context.log",
+        args: {
+            parameters: ["$context.value"]
+        }
+    }, context)
+
+    expect(data.value).toEqual("My Cool Value");
+})
