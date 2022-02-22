@@ -1,5 +1,5 @@
 import "./../../src/action-systems/data-actions.js";
-import {createDate} from "./data-factory.js";
+import {createData} from "./../data-factory.js";
 
 export default class Data extends crsbinding.classes.ViewBase {
     async connectedCallback() {
@@ -221,7 +221,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     // -------- INDEX DB ------- //
 
     async batches_db() {
-        const data = await createDate(100, this._dataId);
+        const data = await createData(100, this._dataId);
 
         let db = await crs.intent.db.create_data_dump({args: {
                 name: "batch_db",
@@ -259,7 +259,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async get_values() {
-        const data = await createDate(100, this._dataId);
+        const data = await createData(100, this._dataId);
 
         let db = await crs.intent.db.create_data_dump({args: {
                 name: "batch_db",
@@ -285,7 +285,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async create_page_data() {
-        const data = await createDate(100, this._dataId);
+        const data = await createData(100, this._dataId);
 
         let db = await crs.intent.db.create_data_dump({args: {
                 name: "batch_db",

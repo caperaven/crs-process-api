@@ -9,7 +9,8 @@ import init, {
     in_filter,
     unique_values,
     init_panic_hook,
-    evaluate_obj
+    evaluate_obj,
+    build_perspective
 } from "./../bin/data.js";
 
 /**
@@ -192,6 +193,24 @@ export class DataActions {
         const case_sensitive = await crs.process.getValue(step.args.case_sensitive, context, process, item);
 
         let result = evaluate_obj(JSON.stringify(intent), source, case_sensitive == true);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async perspective(step, context, process, item) {
+        let source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (typeof source != "string") {
+            source = JSON.stringify(source);
+        }
+
+        const perspective = await crs.process.getValue(step.args.perspective, context, process, item);
+
+        let result = build_perspective(JSON.stringify(perspective), source);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
