@@ -1,5 +1,4 @@
 import "./../../src/action-systems/data-actions.js";
-import {createData} from "./../data-factory.js";
 
 export default class Data extends crsbinding.classes.ViewBase {
     async connectedCallback() {

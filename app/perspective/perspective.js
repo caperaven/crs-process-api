@@ -11,7 +11,7 @@ export default class Perspective extends crsbinding.classes.ViewBase {
         this.setProperty("doSort", true);
         this.setProperty("doGroup", true);
         this.setProperty("doAggregates", false);
-        this.data = createData(10);
+        createData(10).then(result => this.data = result);
     }
 
     async build_perspective(event) {
@@ -46,7 +46,9 @@ export default class Perspective extends crsbinding.classes.ViewBase {
             }
         }
 
-        let result = await crs.call("data", "perspective", {source: this.data, perspective: perspective});
+        const data = JSON.stringify(this.data);
+
+        let result = await crs.call("data", "perspective", {source: data, perspective: perspective});
 
         let json = JSON.parse(result);
         this.setProperty("jsonstr", JSON.stringify(json, null, 4));
