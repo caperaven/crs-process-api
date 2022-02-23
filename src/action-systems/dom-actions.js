@@ -183,7 +183,12 @@ export class DomActions {
             }
         }
 
-        parentElement?.appendChild(element);
+        if (parentElement?.content != null) {
+            parentElement.content.appendChild(element)
+        }
+        else {
+            parentElement?.appendChild(element);
+        }
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, element, context, process, item);
