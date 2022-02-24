@@ -119,26 +119,32 @@ export class CssGridActions {
 
     static async render_initial_rows(step) {
         const element = await getElement(step.args.element);
-        const requiresVirtualization = await renderInitialRows(element, step.args.template, step.args.limit, step.args.rowHeight);
-        if (requiresVirtualization == true) enableScroll(element)
+        const requiresVirtualization = await renderInitialRows(element, step.args.data, step.args.template, step.args.limit, step.args.rowHeight, step.args.topRowIndex);
+        if (requiresVirtualization == true) enableScroll(element);
     }
 
     static async enable_scroll(step) {
-
+        const element = await getElement(step.args.element);
+        enableScroll(element);
     }
 
     static async disable_scroll(step) {
-
+        const element = await getElement(step.args.element);
+        disableScroll(element);
     }
 
     static async move_to_bottom(step) {
         const element = await getElement(step.args.element);
-        moveToBottom(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
+        const result = moveToBottom(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
+        step.args.topRowIndex = result.topRowIndex;
+        step.args.bottomRowIndex = result.bottomRowIndex;
     }
 
     static async move_to_top(step) {
         const element = await getElement(step.args.element);
-        moveToTop(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
+        const result = moveToTop(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
+        step.args.topRowIndex = result.topRowIndex;
+        step.args.bottomRowIndex = result.bottomRowIndex;
     }
 }
 
@@ -165,30 +171,41 @@ function clear(element) {
     }
 }
 
-async function renderInitialRows(target, template, limit, rowHeight) {
+async function renderInitialRows(target, data, template, limit, rowHeight, topRowIndex) {
     const bounds = target.getBoundingClientRect();
 
-    target.renderCount = target.data.length > limit ? Math.round(bounds.height / rowHeight) * 2 : this.data.length;
+    target.rowHeight = rowHeight;
+    target.renderCount = data.length > limit ? Math.round(bounds.height / target.rowHeight) * 2 : data.length;
 
-    target.topRowIndex = 2;
-    target.bottomRowIndex = target.renderCount + 2;
+    target.topRowIndex = topRowIndex;
+    target.bottomRowIndex = target.renderCount + topRowIndex;
 
     const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < target.renderCount; i++) {
-        const inflatedTemplate = crsbinding.inflationManager.get(template, target.data[i]);
-        fragment.appendChild(inflatedTemplate);
+        const rowInstance = crsbinding.inflationManager.get(template, data[i]);
+
+        let column = 1;
+        let row = topRowIndex + i;
+        for (let child of rowInstance.children) {
+            child.style.gridRow = row;
+            child.style.gridColumn = column;
+            child.dataset.row = row;
+            child.dataset.col = column;
+            column += 1;
+        }
+
+        fragment.appendChild(rowInstance);
     }
 
     target.appendChild(fragment);
 
-    return target.data.length > limit;
+    return data.length > limit;
 }
 
 function moveToBottom(element, data, topRowIndex, bottomRowIndex, count) {
     moveRows(element, data, topRowIndex, bottomRowIndex, count);
-    topRowIndex += count;
-    bottomRowIndex += count;
+    return {topRowIndex: topRowIndex += count, bottomRowIndex: bottomRowIndex += count}
 }
 
 function moveToTop(element, data, topRowIndex, bottomRowIndex, count) {
@@ -196,8 +213,7 @@ function moveToTop(element, data, topRowIndex, bottomRowIndex, count) {
     const to = topRowIndex - count;
     moveRows(element, data, from, to, count);
 
-    topRowIndex -= count;
-    bottomRowIndex -= count;
+    return {topRowIndex: topRowIndex -= count, bottomRowIndex: bottomRowIndex -= count}
 }
 
 function moveRows(element, data, from, to, count) {
@@ -207,22 +223,50 @@ function moveRows(element, data, from, to, count) {
         if (row != null) {
             const cells = element.querySelectorAll(`[data-row="${from + i}"]`);
 
+            //Couple of options to render cells
+            //1. On cell level with data-property defined on cell
+            //2. inflation manager (expensive)
+            //3. inflation callback function with data-inflationFunction defined on cell
             for (let cell of cells) {
                 cell.style.gridRow = to + i;
                 cell.dataset.row = to + i;
-                cell.textContent = row[cell.dataset.field];
+                if (cell.dataset.inflationFunction != null) {
+                    element[cell.dataset.inflationFunction](cell, row);
+                } else {
+                    cell.textContent = row[cell.dataset.field] == null ? '' : row[cell.dataset.field];
+                }
             }
         }
     }
+}
+
+function enableScroll(element) {
+    element.lastScroll = 0;
+    element.nextDownIndex = Math.round(element.renderCount / 3);
+    element.batchSize = Math.round(element.nextDownIndex / 2);
+    element.scrollHandler = performScroll.bind(element);
+    element.addEventListener("scroll", element.scrollHandler);
+}
+
+function disableScroll(element) {
+    element.removeEventListener("scroll", element.scrollHandler);
+    delete element.scrollHandler;
+    delete element.lastScroll;
+    delete element.nextDownIndex;
+    delete element.nextUpIndex;
+    delete element.batchSize;
+    delete element.renderCount;
+    delete element.topRowIndex;
+    delete element.bottomRowIndex;
 }
 
 async function performScroll(event) {
     const element = event.target;
     const top = element.scrollTop;
 
-    const scrollIndex = Math.round(element.scrollTop / 32);
+    const scrollIndex = Math.round(element.scrollTop / element.rowHeight);
 
-    if ((top - element.lastScroll) / 32 > element.batchSize) {
+    if ((top - element.lastScroll) / element.rowHeight > element.batchSize) {
         return renderPage(element, scrollIndex);
     }
 
@@ -240,31 +284,23 @@ async function performScroll(event) {
     element.lastScroll = top;
 }
 
-function enableScroll(element) {
-    element.lastScroll = 0;
-    element.nextDownIndex = Math.round(element.renderCount / 3);
-    element.batchSize = Math.round(element.nextDownIndex /2);
-    element.scrollHandler = performScroll.bind(element);
-    element.addEventListener("scroll", element.scrollHandler);
-}
-
-function disableScroll(element) {
-    element.removeEventListener("scroll", element.scrollHandler);
-    element.scrollHandler = null;
-}
-
 function virtualizeDown(element, event) {
-    moveToBottom(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
+    const result = moveToBottom(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
+    element.topRowIndex = result.topRowIndex;
+    element.bottomRowIndex = result.bottomRowIndex;
     element.nextDownIndex += element.batchSize;
     element.nextUpIndex = element.nextDownIndex - element.batchSize;
 }
 
 function virtualizeUp(element, event) {
-    moveToTop(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
+    const result = moveToTop(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
+    element.topRowIndex = result.topRowIndex;
+    element.bottomRowIndex = result.bottomRowIndex;
     element.nextUpIndex -= element.batchSize;
     element.nextDownIndex = element.nextUpIndex + element.batchSize;
 }
 
+//TODO KR: complete render page logic
 function renderPage(element, scrollIndex) {
     console.log("render page", element, scrollIndex);
 }

@@ -1,20 +1,77 @@
 <style>
-    #list {
-        border: 1px solid black;
-        width: 50%;
-        height: 500px;
-        overflow: auto;
+    .view {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
     }
-    li {
+    #list, #dynamic-list {
+        display: grid;
+        overflow: auto;
+        content-visibility: auto;
+        border: 1px solid black;
+        width: 40%;
+        height: 500px;
+    }
+    #dynamic-list {
+        padding-left: 0;
+    }
+    .dynamic-item {
+        width: 25rem;
+        border: 1px solid grey;
+    }
+    .dynamic-item header * {
+        margin-left: 0.5rem;
+    }
+    .dynamic-item header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         height: 2rem;
+        border-bottom: 1px solid grey;
+    }
+    .dynamic-item p{
+        padding: 0;
+        margin: 0 0 0 0.5rem;
+    }
+    .dynamic-item[data-expanded='false'] header {
+        border-bottom: 0px;
+    }
+    .dynamic-item[data-expanded='false'] .body{
+        display: none;
     }
 </style>
 
 <h2>Virtualization</h2>
 
-<ul id="list">
-</ul>
+<div class="view">
+    <ul id="list">
+    </ul>
+    <ul id="dynamic-list">
+    </ul>
+</div>
 
 <template id="list-item">
     <li id="${id}" data-row=${id} data-field="item">${item}</li>
 </template>
+
+<template id="dynamic-list-item">
+    <div  class="dynamic-item" id="${id}" data-row="${id}"data-expanded="${expanded}" data-inflation-function="inflateRow">
+        <header>
+            <button data-action="toggle">Toggle</button>
+            <span>${id}</span>
+        </header>
+        <div class="body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, asperiores at beatae cupiditate dolore excepturi explicabo fugiat modi nam numquam odit, quae quaerat quam recusandae saepe sint soluta totam voluptates.</p>
+        </div>
+    </div>
+</template>
+
+<div  class="dynamic-item" id="-1" data-expanded="true">
+    <header>
+        <button data-action="toggle">Toggle</button>
+        <span>Title</span>
+    </header>
+    <div class="body">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, asperiores at beatae cupiditate dolore excepturi explicabo fugiat modi nam numquam odit, quae quaerat quam recusandae saepe sint soluta totam voluptates.</p>
+    </div>
+</div>
