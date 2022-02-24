@@ -216,3 +216,56 @@ test("ArrayActions - map objects array nested path fields to arrays", async () =
     await globalThis.crs.intent.array.perform(step, context, null, null);
     expect(context.result).toEqual([1, 3, 4, 6, 7, 9]);
 });
+
+test("ArrayActins - get_records", async () => {
+    const context = {
+        values: [
+            {v1: 1, v2: 2, v3: {1: {2: 3}}},
+            {v1: 4, v2: 5, v3: {1: {2: 6}}},
+            {v1: 7, v2: 8, v3: {1: {2: 9}}}]
+    }
+
+    const result = await crs.call("array", "get_records", {
+            source: "$context.values",
+            page_number: 1,
+            page_size: 2
+        }, context);
+
+    expect(result.length).toEqual(2);
+    expect(result[0].v1).toEqual(4);
+    expect(result[1].v1).toEqual(7);
+})
+
+test("ArrayActins - get_range", async () => {
+    const context = {
+        values: [
+            {v1: 1, v2: 2, v3: {1: {2: 3}}},
+            {v1: 4, v2: 5, v3: {1: {2: 6}}},
+            {v1: 7, v2: 8, v3: {1: {2: 9}}}]
+    }
+
+    const result = await crs.call("array", "get_range", {
+        source: "$context.values",
+        field: "v1"
+    }, context);
+
+    expect(result.min).toEqual(1);
+    expect(result.max).toEqual(7);
+})
+
+test("ArrayActins - calculate_paging", async () => {
+    const context = {
+        values: [
+            {v1: 1, v2: 2, v3: {1: {2: 3}}},
+            {v1: 4, v2: 5, v3: {1: {2: 6}}},
+            {v1: 7, v2: 8, v3: {1: {2: 9}}}]
+    }
+
+    const result = await crs.call("array", "calculate_paging", {
+        source: "$context.values",
+        page_size: 1
+    }, context);
+
+    expect(result.row_count).toEqual(3);
+    expect(result.page_count).toEqual(3);
+})
