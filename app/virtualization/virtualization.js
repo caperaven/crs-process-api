@@ -20,6 +20,7 @@ export default class Virtualization extends crsbinding.classes.ViewBase {
     }
 
     async disconnectedCallback() {
+        crs.call("cssgrid", "disable_scroll", {element: this.table});
         this.table = null;
         super.disconnectedCallback();
     }
