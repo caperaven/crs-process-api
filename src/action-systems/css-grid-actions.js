@@ -117,22 +117,34 @@ export class CssGridActions {
         clear(element);
     }
 
+    /**
+     * for a css grid element, renders the initial number of rows and will enable virtualization if applicable
+     */
     static async render_initial_rows(step) {
         const element = await getElement(step.args.element);
         const requiresVirtualization = await renderInitialRows(element, step.args.data, step.args.template, step.args.limit, step.args.rowHeight, step.args.topRowIndex);
         if (requiresVirtualization == true) enableScroll(element);
     }
 
+    /**
+     * for a css grid element, enables a virtualized scroll on the element
+     */
     static async enable_scroll(step) {
         const element = await getElement(step.args.element);
         enableScroll(element);
     }
 
+    /**
+     * for a css grid element, disables the virtualized scroll on the element
+     */
     static async disable_scroll(step) {
         const element = await getElement(step.args.element);
         disableScroll(element);
     }
 
+    /**
+     * for a css grid element, move a specified number of items from a higher location to lower location within the grid
+     */
     static async move_to_bottom(step) {
         const element = await getElement(step.args.element);
         const result = moveToBottom(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
@@ -140,6 +152,9 @@ export class CssGridActions {
         step.args.bottomRowIndex = result.bottomRowIndex;
     }
 
+    /**
+     * for a css grid element, move a specified number of items from a lower location to a higher location
+     */
     static async move_to_top(step) {
         const element = await getElement(step.args.element);
         const result = moveToTop(element, step.args.data, step.args.topRowIndex, step.args.bottomRowIndex, step.args.count);
@@ -171,6 +186,17 @@ function clear(element) {
     }
 }
 
+/**
+ * Renders the initial set of items within a css grid element.
+ * NOTE: row template item must be registered on the inflation manager.
+ * @param target {HTMLElement} - The css grid element
+ * @param data {[]} - Data required to render within the grid
+ * @param template {String} - Template key registered within the inflation manager
+ * @param limit {Number} - Limit of items to render before virtualization must be enabled
+ * @param rowHeight {Number} - Height of row items in px's
+ * @param topRowIndex {Number} - Index of the top row within the css grid
+ * @returns result {Boolean} - Whether virtualization is required or not
+ */
 async function renderInitialRows(target, data, template, limit, rowHeight, topRowIndex) {
     const bounds = target.getBoundingClientRect();
 
@@ -178,6 +204,7 @@ async function renderInitialRows(target, data, template, limit, rowHeight, topRo
     target.renderCount = data.length > limit ? Math.round(bounds.height / target.rowHeight) * 2 : data.length;
 
     target.topRowIndex = topRowIndex;
+    target.dataOffset = topRowIndex;
     target.bottomRowIndex = target.renderCount + topRowIndex;
 
     const fragment = document.createDocumentFragment();
@@ -203,43 +230,64 @@ async function renderInitialRows(target, data, template, limit, rowHeight, topRo
     return data.length > limit;
 }
 
+/**
+ * Moves a set number of css grid items to a lower point within the grid
+ * @param element {HTMLElement} - The css grid element
+ * @param data {[]} - Data used to render the grid items
+ * @param topRowIndex {Number} - Index of the top row item
+ * @param bottomRowIndex {Number} - Index of the bottom row item
+ * @param count {Number} - Batch size to move
+ * @returns result {{topRowIndex, bottomRowIndex}} - Updated top and bottom row indices
+ */
 function moveToBottom(element, data, topRowIndex, bottomRowIndex, count) {
     moveRows(element, data, topRowIndex, bottomRowIndex, count);
     return {topRowIndex: topRowIndex += count, bottomRowIndex: bottomRowIndex += count}
 }
 
+/**
+ * Moves a set number of css grid items to a higher point within the grid
+ * @param element {HTMLElement} - The css grid element
+ * @param data {[]} - Data used to render the grid items
+ * @param topRowIndex {Number} - Index of the top row item
+ * @param bottomRowIndex {Number} - Index of the bottom row item
+ * @param count {Number} - Batch size to move
+ * @returns {{topRowIndex, bottomRowIndex}} - Updated top and bottom row indices
+ */
 function moveToTop(element, data, topRowIndex, bottomRowIndex, count) {
     const from = bottomRowIndex - count;
     const to = topRowIndex - count;
     moveRows(element, data, from, to, count);
-
     return {topRowIndex: topRowIndex -= count, bottomRowIndex: bottomRowIndex -= count}
 }
 
+/**
+ * Moves a number of css grid row items from a specified position to a specified position
+ * @param element {HTMLElement} - The css grid element
+ * @param data {[]} - Data used to render the grid items
+ * @param from {Number} - Index of the row item to begin moving
+ * @param to {Number} - Index of the row item where items should be placed
+ * @param count {Number} - Batch size to move
+ */
 function moveRows(element, data, from, to, count) {
     for (let i = 0; i < count; i++) {
-        const row = data[to + i];
+        const row = data[to - element.dataOffset + i];
 
         if (row != null) {
             const cells = element.querySelectorAll(`[data-row="${from + i}"]`);
 
-            //Couple of options to render cells
-            //1. On cell level with data-property defined on cell
-            //2. inflation manager (expensive)
-            //3. inflation callback function with data-inflationFunction defined on cell
             for (let cell of cells) {
                 cell.style.gridRow = to + i;
                 cell.dataset.row = to + i;
-                if (cell.dataset.inflationFunction != null) {
-                    element[cell.dataset.inflationFunction](cell, row);
-                } else {
-                    cell.textContent = row[cell.dataset.field] == null ? '' : row[cell.dataset.field];
-                }
+                cell.textContent = row[cell.dataset.field] == null ? '' : row[cell.dataset.field];
             }
         }
     }
 }
 
+/**
+ * Enabled virtualized scrolling on the css grid element
+ * @param element {HTMLElement} - The css grid element to have virtualized scrolling
+ */
 function enableScroll(element) {
     element.lastScroll = 0;
     element.nextDownIndex = Math.round(element.renderCount / 3);
@@ -248,9 +296,14 @@ function enableScroll(element) {
     element.addEventListener("scroll", element.scrollHandler);
 }
 
+/**
+ * Disables virtualized scrolling on the css grid element
+ * @param element {HTMLElement} - The css grid element to have virtualized scrolling
+ */
 function disableScroll(element) {
     element.removeEventListener("scroll", element.scrollHandler);
     delete element.scrollHandler;
+    delete element.scrollTop;
     delete element.lastScroll;
     delete element.nextDownIndex;
     delete element.nextUpIndex;
@@ -260,6 +313,10 @@ function disableScroll(element) {
     delete element.bottomRowIndex;
 }
 
+/**
+ * Performs a virtualized scroll, paging and moving items where necessary
+ * @param event {Object} - Scroll event
+ */
 async function performScroll(event) {
     const element = event.target;
     const top = element.scrollTop;
@@ -284,6 +341,11 @@ async function performScroll(event) {
     element.lastScroll = top;
 }
 
+/**
+ * On virtualized scroll down, moves items down the css grid element
+ * @param element {HTMLElement} - css grid element
+ * @param event {Object} - scroll event
+ */
 function virtualizeDown(element, event) {
     const result = moveToBottom(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
     element.topRowIndex = result.topRowIndex;
@@ -292,6 +354,11 @@ function virtualizeDown(element, event) {
     element.nextUpIndex = element.nextDownIndex - element.batchSize;
 }
 
+/**
+ * On virtualized scroll up, moves items up the css grid element
+ * @param element {HTMLElement} - css grid element
+ * @param event {Object} - scroll event
+ */
 function virtualizeUp(element, event) {
     const result = moveToTop(element, element.data, element.topRowIndex, element.bottomRowIndex, element.batchSize);
     element.topRowIndex = result.topRowIndex;
@@ -302,7 +369,7 @@ function virtualizeUp(element, event) {
 
 //TODO KR: complete render page logic
 function renderPage(element, scrollIndex) {
-    console.log("render page", element, scrollIndex);
+    console.log("render page", scrollIndex);
 }
 
 async function areasToArray(element) {
