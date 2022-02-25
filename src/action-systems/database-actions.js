@@ -462,7 +462,7 @@ class Database {
 
             countRequest.onsuccess = () => {
                 const count = countRequest.result;
-                let pageCount = Math.abs(count / pageSize || 1);
+                let pageCount = Math.ceil(count / pageSize || 1);
 
                 if (count > 0 && pageCount == 0) {
                     pageCount = 1;

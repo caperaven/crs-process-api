@@ -138,7 +138,7 @@ export class DomActions {
     }
 
     /**
-     * Create a dom element and append it to a defined parent
+     * Create a dom element and optionally append it to a defined parent or set it on a target
      * @returns {Promise<HTMLElement>}
      */
     static async create_element(step, context, process, item) {
@@ -183,7 +183,17 @@ export class DomActions {
             }
         }
 
-        parentElement?.appendChild(element);
+        if (parentElement?.content != null) {
+            parentElement.content.appendChild(element)
+        }
+        else {
+            parentElement?.appendChild(element);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, element, context, process, item);
+        }
+
         return element;
     }
 

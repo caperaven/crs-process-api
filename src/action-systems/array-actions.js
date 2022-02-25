@@ -118,6 +118,86 @@ export class ArrayActions {
 
         return result;
     }
+
+    /**
+     * Get records starting at a page number for a particular batch size
+     */
+    static async get_records(step, context, process, item) {
+        const result = [];
+
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const pageNumber = await crs.process.getValue(step.args.page_number, context, process, item);
+        const pageSize = await crs.process.getValue(step.args.page_size, context, process, item);
+        const fields = await crs.process.getValue(step.args.fields, context, process, item);
+
+        for (let i = pageNumber; i < pageNumber + pageSize; i++) {
+            if (data[i] == null) {
+                break;
+            }
+
+            if (fields == null) {
+                result.push(data[i]);
+            }
+            else {
+                let obj = {};
+                for (let field of fields) {
+                    obj[field] = data[i][field];
+                }
+                result.push(obj);
+            }
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * get the min and max values of the data for a given field.
+     */
+    static async get_range(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const field = await crs.process.getValue(step.args.field, context, process, item);
+
+        const result = {min: Number.MAX_VALUE, max: Number.MIN_VALUE};
+        for (let row of data) {
+            const value = row[field];
+            if (value < result.min) {
+                result.min = value;
+            }
+            if (value > result.max) {
+                result.max = value;
+            }
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * Calculate the number of pages of an array for a given batch size
+     */
+    static async calculate_paging(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const pageSize = await crs.process.getValue(step.args.page_size, context, process, item);
+
+        const pageCount = Math.ceil(data.length / pageSize);
+        let result = {
+            row_count: data.length,
+            page_count: pageCount
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function field_to_csv(array, field, delimiter) {

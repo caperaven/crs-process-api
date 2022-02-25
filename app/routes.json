@@ -58,6 +58,11 @@
       "title": "Virtualization",
       "hash": "#virtualization",
       "view": "virtualization"
+    },
+    {
+      "title": "perspective",
+      "hash": "#perspective",
+      "view": "perspective"
     }
   ]
 }

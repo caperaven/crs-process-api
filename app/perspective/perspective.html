@@ -1,0 +1,20 @@
+<style>
+    textarea {
+        display: block;
+        width: 800px;
+        height: 600px;
+        margin-top: 1rem;
+    }
+</style>
+<h2>${title}</h2>
+
+<ul>
+    <li><input type="checkbox" checked.bind="doFilter"><span>Filter</span></li>
+    <li><input type="checkbox" checked.bind="doSort"><span>Sort</span></li>
+    <li><input type="checkbox" checked.bind="doGroup"><span>Group</span></li>
+    <li><input type="checkbox" checked.bind="doAggregates"><span>Aggregate</span></li>
+</ul>
+
+<button click.call="build_perspective">Get Perspective</button>
+
+<textarea value.bind="jsonstr"></textarea>

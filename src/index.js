@@ -61,3 +61,5 @@ globalThis.crs.call = (system, fn, args, context, process, item) => {
 crsbinding.events.emitter.on("crs-process-error", (message) => {
     console.error(message.error);
 })
+
+

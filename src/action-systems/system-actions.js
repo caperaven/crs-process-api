@@ -74,7 +74,13 @@ export class SystemActions {
     }
 
     static async is_mobile(step, context, process, item) {
-        let result = navigator.userAgentData.mobile;
+        const result = navigator.userAgent.indexOf("iPhone") > 0 ||
+            navigator.userAgent.indexOf("iPad") > 0 ||
+            navigator.userAgent.indexOf("Android") > 0 ||
+            navigator.userAgent.indexOf("webOS") > 0 ||
+            navigator.userAgent.indexOf("iPod") > 0 ||
+            navigator.userAgent.indexOf("BlackBerry") > 0 ||
+            navigator.userAgent.indexOf("Windows Phone") > 0;
 
         if (step?.args?.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

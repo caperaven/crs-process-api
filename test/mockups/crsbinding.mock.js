@@ -1,7 +1,10 @@
 import {DocumentMock} from "./dom-mock.js";
 
 export async function loadBinding() {
-    globalThis.HTMLElement = (await import("./element.mock.js")).ElementMock;
+    const elementMock = (await import("./element.mock.js")).ElementMock;
+    globalThis.HTMLElement = elementMock;
+    globalThis.DocumentFragment = elementMock;
+
     globalThis.customElements = {
         define: () => {return null}
     }
