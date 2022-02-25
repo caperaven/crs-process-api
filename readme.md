@@ -58,6 +58,17 @@ await crs.process.runStep(step, context, process);
 
 See the step section for more detail on steps.
 
+You can use a nice shorthand, that is the recommended way of calling a step.
+
+```js
+const pageSizeTranslation = await crs.call("translations", "get", { key: "visualization.pageSize" });
+```
+
+<strong>pramaters</strong>
+1. system
+2. function on that system
+3. args
+
 ## Target keywords
 
 1. $context - context object passed to the process
