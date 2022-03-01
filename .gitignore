@@ -7,3 +7,4 @@ yarn-error.log
 /publish/
 /wasm/data/target/
 wasm/data/Cargo.lock
+/documents/features/themes/hugo-book/exampleSite/

@@ -1,5 +1,5 @@
 /**
- * ConsoleActions provides access to the console with common features
+ * ConsoleActions provides access to the console.md with common features
  */
 
 export class ConsoleActions {
