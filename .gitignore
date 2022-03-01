@@ -8,3 +8,4 @@ yarn-error.log
 /wasm/data/target/
 wasm/data/Cargo.lock
 /documents/features/themes/hugo-book/exampleSite/
+/documents/features/public/
