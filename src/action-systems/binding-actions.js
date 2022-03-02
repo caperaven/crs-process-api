@@ -9,10 +9,17 @@ export class BindingActions {
      * @returns {Promise<void>}
      */
     static async create_context(step, context, process, item) {
-        const name = process.id || step?.args?.contextId || "process_context";
-        process.parameters = process.parameters || {};
-        process.parameters.bId = crsbinding.data.addObject(name);
-        crsbinding.data.addContext(process.parameters.bId, {});
+        const name = process.id || step?.args?.context_id || "process_context";
+        const bId = crsbinding.data.addObject(name);
+
+        if (process != null) {
+            process.parameters = process.parameters || {};
+            process.parameters.bId = bId;
+        }
+
+        crsbinding.data.addContext(bId, {});
+
+        return bId;
     }
 
     /**
@@ -70,7 +77,7 @@ export class BindingActions {
      */
     static async set_errors(step, context, process, item) {
         const store = step.args.error_store || "errors";
-        const source = step.args.errors;
+        const source = crs.process.getValue(step.args.errors, context, process, item);
         const errors = [];
 
         for (let error of source) {
@@ -81,21 +88,4 @@ export class BindingActions {
 
         await crsbinding.data.setProperty(process.parameters.bId, store, errors);
     }
-
-    /**
-     * Save the binding template to local storage
-     * @returns {Promise<void>}
-     */
-    static async cache_template(step, context, process, item) {
-        //
-    }
-
-    /**
-     * If the template is in local storage then get that template and set it on binding engine templates
-     * @returns {Promise<void>}
-     */
-    static async load_cached_template(step, context, process, item) {
-
-    }
-
 }
