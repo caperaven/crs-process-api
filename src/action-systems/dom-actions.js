@@ -1,4 +1,4 @@
-import {getParameters} from "./action-actions.js";
+import {callFunctionOnPath} from "./action-actions.js";
 
 export class DomActions {
     static async perform(step, context, process, item) {
@@ -7,11 +7,8 @@ export class DomActions {
 
     static async call_on_element(step, context, process, item) {
         const element = await getElement(step.args.element);
-        const action = await crs.process.getValue(step.args.action, context, process, item);
-        const args = await getParameters(step, context, process, item);
 
-        const fn = await crsbinding.utils.getValueOnPath(element, action);
-        const result = fn(...args);
+        const result = await callFunctionOnPath(element, step, context, process, item);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

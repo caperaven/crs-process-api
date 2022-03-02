@@ -3,6 +3,16 @@ import {ElementMock} from "../mockups/element.mock";
 
 globalThis.DocumentFragment = {};
 
+class TempClass {
+    get myValue() {
+        return 50;
+    }
+
+    doSomething(stringValue) {
+        return Number(stringValue) + this.myValue
+    }
+}
+
 beforeAll(async () => {
     globalThis.HTMLElement = ElementMock;
     await loadBinding();
@@ -35,11 +45,7 @@ test("DomActions - create element target supplied", async () => {
 
 test ("DomActions - call_on_element", async () => {
     const element = new ElementMock("div", "div");
-    element._custom = {
-        doSomething: stringValue => {
-            return Number(stringValue)
-        }
-    }
+    element._custom = new TempClass();
 
     const result = await crs.call("dom", "call_on_element", {
         element: element,
@@ -47,5 +53,5 @@ test ("DomActions - call_on_element", async () => {
         parameters: ["$context.value"]
     }, { value: "100" });
 
-    expect(result).toEqual(100);
+    expect(result).toEqual(150);
 })
