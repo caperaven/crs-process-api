@@ -1,6 +1,23 @@
+import {getParameters} from "./action-actions.js";
+
 export class DomActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
+    }
+
+    static async call_on_element(step, context, process, item) {
+        const element = await getElement(step.args.element);
+        const action = await crs.process.getValue(step.args.action, context, process, item);
+        const args = await getParameters(step, context, process, item);
+
+        const fn = await crsbinding.utils.getValueOnPath(element, action);
+        const result = fn(...args);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 
     /**
@@ -8,8 +25,8 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_property(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
-        const value = element?.[step.args.property];
+        const element = await getElement(step.args.element);
+        const value = await crsbinding.utils.getValueOnPath(element, step.args.property);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, value, context, process, item);
@@ -21,7 +38,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_properties(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
         const keys = Object.keys(properties);
@@ -35,7 +52,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_attribute(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
 
@@ -44,7 +61,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_attribute(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const value = element?.getAttribute(step.args.attr);
 
         if (step.args.target != null) {
@@ -59,7 +76,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async add_class(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const cls = await crs.process.getValue(step.args.value, context, process, item);
 
         let collection = Array.isArray(cls) == true ? cls : [cls];
@@ -71,7 +88,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_class(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const cls = await crs.process.getValue(step.args.value, context, process, item);
 
         let collection = Array.isArray(cls) == true ? cls : [cls];
@@ -83,7 +100,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_style(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         element.style[step.args.style] = await crs.process.getValue(step.args.value, context, process, item);
     }
 
@@ -92,7 +109,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_styles(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         for (let style of Object.keys(step.args.styles)) {
             element.style[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
         }
@@ -103,7 +120,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_style(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const value = element?.style[step.args.style];
 
         if (step.args.target != null) {
@@ -118,7 +135,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_text(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         element.textContent = await crs.process.getValue(step.args.value, context, process, item);
     }
 
@@ -127,7 +144,7 @@ export class DomActions {
      * @returns {Promise<*|string|*|string|*|*>}
      */
     static async get_text(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const value = element.textContent;
 
         if (step.args.target != null) {
@@ -143,7 +160,7 @@ export class DomActions {
      */
     static async create_element(step, context, process, item) {
         const parentElement = await getElement(step.args.parent);
-        const element = document.createElement(step.args.tagName);
+        const element = document.createElement(step.args.tag_name);
 
         const attributes = Object.keys(step.args.attributes || {});
         const styles = Object.keys(step.args.styles || {});
@@ -166,8 +183,8 @@ export class DomActions {
             element.dataset[key] = await crs.process.getValue(step.args.dataset[key], context, process, item);
         }
 
-        if (step.args.textContent != null) {
-            element.textContent = await crs.process.getValue(step.args.textContent, context, process, item);
+        if (step.args.text_content != null) {
+            element.textContent = await crs.process.getValue(step.args.text_content, context, process, item);
         }
 
         if (step.args.id != null) {
@@ -202,7 +219,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_element(step) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         element?.parentElement?.removeChild(element);
 
         await crsbinding.providerManager.releaseElement(element);
@@ -213,7 +230,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async clear_element(step) {
-        const element = document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         if (element != null) {
             await crsbinding.observation.releaseChildBinding(element);
             while (element.firstChild != null) {
@@ -324,14 +341,14 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async move_element(step) {
-        const element = step.args.element || document.querySelector(step.args.query);
-        const parent = step.args.parent || document.querySelector(step.args.target);
+        const element = await getElement(step.args.element);
+        const parent = await getElement(step.args.target);
 
         await move_element(element, parent, step.args.position);
     }
 
     static async move_element_down(step) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const target = element.nextElementSibling;
 
         if (target != null) {
@@ -340,7 +357,7 @@ export class DomActions {
     }
 
     static async move_element_up(step) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const target = element.previousElementSibling;
 
         if (target != null) {
@@ -354,7 +371,7 @@ export class DomActions {
      */
     static async filter_children(step, context, process, item) {
         const filterString = await crs.process.getValue(step.args.filter, context, process, item);
-        await filter(step.args.query, filterString);
+        await filter(step.args.element, filterString);
     }
 
     static async open_tab(step, context, process, item) {
@@ -369,7 +386,7 @@ export class DomActions {
     }
 
     static async clone_for_movement(step, context, process, item) {
-        const element = step.args.element || document.querySelector(step.args.query);
+        const element = await getElement(step.args.element);
         const parent = await getElement(step.args.parent);
 
         const position = await crs.process.getValue(step.args.position || {x: 0, y: 0}, context, process, item);
@@ -471,7 +488,7 @@ export class DomActions {
     static async create_inflation_template(step, context, process, item) {
         const id = await crs.process.getValue(step.args.template_id, context, process, item);
         const obj = await crs.process.getValue(step.args.source, context, process, item);
-        const tagName = await crs.process.getValue(step.args.tagName, context, process, item);
+        const tag_name = await crs.process.getValue(step.args.tag_name, context, process, item);
         const wrapper = await crs.process.getValue(step.args.wrapper, context, process, item);
         const ctxName = await crs.process.getValue(step.args.ctx, context, process, item);
 
@@ -488,9 +505,9 @@ export class DomActions {
 
         for (let key of keys) {
             let args = obj[key];
-            args.tagName = tagName;
+            args.tag_name = tag_name;
             let child = await this.create_element({ args: args}, context, process, item);
-            child.textContent = ["${", key, "}"].join("");
+            child.text_content = ["${", key, "}"].join("");
 
             if (parent.content != null) {
                 parent.content.appendChild(child);
@@ -566,7 +583,7 @@ async function move_element(element, target, position) {
 }
 
 async function filter(query, filter) {
-    const element = document.querySelector(query);
+    const element = await getElement(query);
     const hasFilter = filter.length > 0;
 
     for (let child of element.children) {
@@ -587,7 +604,7 @@ async function validate_form(query) {
         const message = input.validationMessage;
 
         if (message.length > 0) {
-            errors.push(`${label.children[0].textContent}: ${message}`);
+            errors.push(`${label.children[0].text_content}: ${message}`);
         }
     }
     return errors;

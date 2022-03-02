@@ -18,7 +18,6 @@ export const schema = {
                 }
             }
         },
-
     },
 
     clear_widget: {

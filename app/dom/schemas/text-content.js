@@ -14,7 +14,7 @@ export const schema = {
                 action: "get_text",
 
                 args: {
-                    query: "#divText",
+                    element: "#divText",
                     target: "$binding.textValue"
                 }
             }
@@ -31,7 +31,7 @@ export const schema = {
                 type: "dom",
                 action: "set_text",
                 args: {
-                    query: "#divText",
+                    element: "#divText",
                     value: "$binding.textValue"
                 }
             }

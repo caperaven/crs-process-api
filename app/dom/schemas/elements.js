@@ -11,7 +11,7 @@ export const schema = {
                 type: "dom",
                 action: "clear_element",
                 args: {
-                    query: "#container"
+                    element: "#container"
                 },
                 next_step: "create"
             },
@@ -28,7 +28,7 @@ export const schema = {
                 type: "dom",
                 action: "set_attribute",
                 args: {
-                    query: "#element1",
+                    element: "#element1",
                     attr: "data-value",
                     value: 10
                 },
@@ -38,7 +38,7 @@ export const schema = {
                 type: "dom",
                 action: "get_attribute",
                 args: {
-                    query: "#element1",
+                    element: "#element1",
                     attr: "data-value",
                     target: "$process.data.value"
                 },
@@ -48,7 +48,7 @@ export const schema = {
                 type: "dom",
                 action: "set_text",
                 args: {
-                    query: "#element3",
+                    element: "#element3",
                     value: "$process.data.value"
                 },
                 next_step: "set_style"
@@ -57,7 +57,7 @@ export const schema = {
                 type: "dom",
                 action: "set_style",
                 args: {
-                    query: "#element3",
+                    element: "#element3",
                     style: "background",
                     value: "#ff0090"
                 },
@@ -67,7 +67,7 @@ export const schema = {
                 type: "dom",
                 action: "get_style",
                 args: {
-                    query: "#element3",
+                    element: "#element3",
                     style: "background",
                     target: "$process.data.color"
                 },
@@ -77,7 +77,7 @@ export const schema = {
                 type: "dom",
                 action: "set_text",
                 args: {
-                    query: "#element4",
+                    element: "#element4",
                     value: "$process.data.color"
                 }
             },
@@ -94,8 +94,8 @@ export const schema = {
                 args: {
                     id: "element1",
                     parent: "#container",
-                    tagName: "div",
-                    textContent: "Element 1",
+                    tag_name: "div",
+                    text_content: "Element 1",
                     classes: ["class1", "class2"]
                 },
                 next_step: "create2"
@@ -107,8 +107,8 @@ export const schema = {
                 args: {
                     id: "element2",
                     parent: "#container",
-                    tagName: "div",
-                    textContent: "Element 2"
+                    tag_name: "div",
+                    text_content: "Element 2"
                 },
                 next_step: "create3"
             },
@@ -119,8 +119,8 @@ export const schema = {
                 args: {
                     id: "element3",
                     parent: "#container",
-                    tagName: "div",
-                    textContent: "Element 3"
+                    tag_name: "div",
+                    text_content: "Element 3"
                 },
                 next_step: "create4"
             },
@@ -131,8 +131,8 @@ export const schema = {
                 args: {
                     id: "element4",
                     parent: "#container",
-                    tagName: "div",
-                    textContent: "Element 4"
+                    tag_name: "div",
+                    text_content: "Element 4"
                 }
             }
         }
@@ -144,7 +144,7 @@ export const schema = {
                 type: "dom",
                 action: "clear_element",
                 args: {
-                    query: "#container"
+                    element: "#container"
                 }
             }
         }
@@ -156,7 +156,7 @@ export const schema = {
                 type: "dom",
                 action: "clone_for_movement",
                 args: {
-                    query: "#clickClone",
+                    element: "#clickClone",
                     parent: "#cloneTarget",
                     position: {x: 300, y: 0}
                 }
@@ -172,15 +172,19 @@ export const schema = {
                 args: {
                     id: "composite",
                     parent: "#container",
-                    tagName: "div",
+                    tag_name: "div",
                     children: [
                         {
                             id: "cbSelect",
-                            tagName: "input",
+                            tag_name: "input",
                             attributes: {
                                 "type": "checkbox",
                                 "data-id": "1"
                             }
+                        },
+                        {
+                            tag_name: "span",
+                            text_content: "Hello World"
                         }
                     ]
                 }

@@ -12,17 +12,9 @@ export class ActionActions {
             }
         }
 
-        let parameters = await crs.process.getValue(step.args.parameters, context, process, item);
+        let parameters = await getParameters(step, context, process, item);
 
-        if (parameters != null) {
-            for (let i = 0; i < parameters.length; i++) {
-                const path = parameters[i];
-                const value = await crs.process.getValue(path, context, process, item);
-                parameters[i] = value;
-            }
-        }
-
-        const result = await fn(context, process, item, step.args.parameters);
+        const result = await fn(context, process, item, parameters);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -30,4 +22,19 @@ export class ActionActions {
 
         return result;
     }
+}
+
+export async function getParameters(step, context, process, item) {
+    const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
+
+    let result = [];
+
+    if (parameters == null) return result;
+
+    for (const parameter of parameters) {
+        const value = await crs.process.getValue(parameter, context, process, item);
+        result.push(value);
+    }
+
+    return result;
 }

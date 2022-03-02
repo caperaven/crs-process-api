@@ -11,7 +11,7 @@ export const schema = {
                 type: "dom",
                 action: "filter_children",
                 args: {
-                    query: "#lstFilter",
+                    element: "#lstFilter",
                     filter: "$binding.filter"
                 }
             }
@@ -24,7 +24,7 @@ export const schema = {
                 type: "dom",
                 action: "filter_children",
                 args: {
-                    query: "#lstFilter",
+                    element: "#lstFilter",
                     filter: ""
                 }
             }

@@ -6,13 +6,14 @@ export class ConsoleActions {
     static async perform(step, context, process, item) {
         if (step.args.messages != null) {
             for (let message of step.args.messages) {
-                let value = crs.process.getValue(message, context, process, item);
+                let value = await crs.process.getValue(message, context, process, item);
                 await this[step.action]?.(value, context, process);
             }
             return;
         }
 
-        await this[step.action]?.(step.args.message, context, process);
+        const message = await crs.process.getValue(step.args.message, context, process, item);
+        await this[step.action]?.(message, context, process);
     }
 
     static async log(message) {

@@ -14,7 +14,7 @@ export const schema = {
                 action: "get_attribute",
 
                 args: {
-                    query: "#edtAttr",
+                    element: "#edtAttr",
                     attr: "data-value",
                     target: "$binding.attributeValue"
                 }
@@ -32,7 +32,7 @@ export const schema = {
                 type: "dom",
                 action: "set_attribute",
                 args: {
-                    query: "#edtAttr",
+                    element: "#edtAttr",
                     attr: "data-value",
                     value: "$binding.attributeValue",
                     log: "setting attribute"

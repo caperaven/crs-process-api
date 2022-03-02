@@ -55,8 +55,7 @@ test("ConsoleActions - log - text", async () => {
    logs.log = null;
    const process = {
        steps: {
-           start: {next_step: "log"},
-           log: {
+           start: {
                type: "console",
                action: "log",
                args: {

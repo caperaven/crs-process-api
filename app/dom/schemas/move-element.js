@@ -7,7 +7,7 @@ export const schema = {
                 type: "dom",
                 action: "move_element",
                 args: {
-                    query: "#item2",
+                    element: "#item2",
                     target: "#list2"
                 }
             }
@@ -20,7 +20,7 @@ export const schema = {
                 type: "dom",
                 action: "move_element",
                 args: {
-                    query: "#item2",
+                    element: "#item2",
                     target: "#item1",
                     position: "after"
                 }
@@ -34,7 +34,7 @@ export const schema = {
                 type: "dom",
                 action: "move_element",
                 args: {
-                    query: "#item2",
+                    element: "#item2",
                     target: "#item1",
                     position: "before"
                 }
@@ -48,7 +48,7 @@ export const schema = {
                 type: "dom",
                 action: "move_element",
                 args: {
-                    query: "#item2",
+                    element: "#item2",
                     target: "#item5",
                     position: "after"
                 }
@@ -62,7 +62,7 @@ export const schema = {
                 type: "dom",
                 action: "move_element_down",
                 args: {
-                    query: "#item2"
+                    element: "#item2"
                 }
             }
         }
@@ -74,7 +74,7 @@ export const schema = {
                 type: "dom",
                 action: "move_element_up",
                 args: {
-                    query: "#item2"
+                    element: "#item2"
                 }
             }
         }

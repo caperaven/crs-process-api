@@ -14,7 +14,7 @@ export const schema = {
                 action: "get_style",
 
                 args: {
-                    query: "#edtStyle",
+                    element: "#edtStyle",
                     style: "background",
                     target: "$binding.styleValue"
                 }
@@ -32,7 +32,7 @@ export const schema = {
                 type: "dom",
                 action: "set_style",
                 args: {
-                    query: "#edtStyle",
+                    element: "#edtStyle",
                     style: "background",
                     value: "$binding.styleValue"
                 }
@@ -46,7 +46,7 @@ export const schema = {
                 type: "dom",
                 action: "add_class",
                 args: {
-                    query: "#class-target",
+                    element: "#class-target",
                     value: "bg_red"
                 }
             }
@@ -59,7 +59,7 @@ export const schema = {
                 type: "dom",
                 action: "add_class",
                 args: {
-                    query: "#class-target",
+                    element: "#class-target",
                     value: ["bg_red", "fg_white"]
                 }
             }
@@ -72,7 +72,7 @@ export const schema = {
                 type: "dom",
                 action: "remove_class",
                 args: {
-                    query: "#class-target",
+                    element: "#class-target",
                     value: ["bg_red", "fg_white"]
                 }
             }

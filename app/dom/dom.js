@@ -115,8 +115,6 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async setText() {
-        debugger;
-
         await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
@@ -361,18 +359,18 @@ export default class Dom extends crsbinding.classes.ViewBase {
         await crs.intent.dom.create_inflation_template({args: {
             template_id: "tpl_generated",
             wrapper: {
-                tagName: "ul",
+                tag_name: "ul",
                 attributes: {
                     "data-id": "wrapper-ul"
                 },
                 children: [
                     {
-                        tagName: "li",
-                        textContent: "first item"
+                        tag_name: "li",
+                        text_content: "first item"
                     }
                 ]
             },
-            tagName: "li",
+            tag_name: "li",
             source: {
                 description: {}
             }
