@@ -164,7 +164,11 @@ async function add(step, context, process, item, property, valueProperty) {
     if (items.length == 0) return;
 
     let value = await crs.process.getValue(step.args[valueProperty], context, process, item);
-    const position = await crs.process.getValue(step.args.position, context, process, item);
+    let position = await crs.process.getValue(step.args.position, context, process, item);
+
+    if (position == null) {
+        position = "end";
+    }
 
     if (Array.isArray(value) == false) {
         value = [value];
@@ -188,7 +192,7 @@ async function remove(step, context, process, item, property) {
     let items = element.style[property].split(" ");
     if (items.length == 0) return;
 
-    const position = await crs.process.getValue(step.args.position, context, process, item);
+    const position = (await crs.process.getValue(step.args.position, context, process, item)) || "end";
     const count = (await crs.process.getValue(step.args.count, context, process, item)) || 1;
 
     if (position == "front") {
