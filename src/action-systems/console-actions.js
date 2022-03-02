@@ -3,10 +3,11 @@
  */
 
 export class ConsoleActions {
-    static async perform(step, context, process) {
+    static async perform(step, context, process, item) {
         if (step.args.messages != null) {
             for (let message of step.args.messages) {
-                await this[step.action]?.(message, context, process);
+                let value = crs.process.getValue(message, context, process, item);
+                await this[step.action]?.(value, context, process);
             }
             return;
         }
@@ -14,19 +15,19 @@ export class ConsoleActions {
         await this[step.action]?.(step.args.message, context, process);
     }
 
-    static async log(message, context, process) {
-        console.log(await crs.process.getValue(message, context, process));
+    static async log(message) {
+        console.log(message);
     }
 
-    static async error(message, context, process) {
-        console.error(await crs.process.getValue(message, context, process));
+    static async error(message) {
+        console.error(message);
     }
 
-    static async warn(message, context, process) {
-        console.warn(await crs.process.getValue(message, context, process));
+    static async warn(message) {
+        console.warn(message);
     }
 
-    static async table(message, context, process) {
-        console.table(await crs.process.getValue(message, context, process));
+    static async table(message) {
+        console.table(message);
     }
 }
