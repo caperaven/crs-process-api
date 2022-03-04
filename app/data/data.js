@@ -146,7 +146,7 @@ export default class Data extends crsbinding.classes.ViewBase {
             fields: ["site", "value"]
         }}, this);
 
-        let result = await crs.intent.data.aggregateGroup({ args: {
+        let result = await crs.intent.data.aggregate_group({ args: {
             source: "$context.data",
             group: group,
             aggregate: {
@@ -160,7 +160,7 @@ export default class Data extends crsbinding.classes.ViewBase {
         console.log(result);
         group = result.root.children["Site 1"];
 
-        const site1 = await crs.intent.data.aggregateGroup({ args: {
+        const site1 = await crs.intent.data.aggregate_group({ args: {
                 source: "$context.data",
                 group: group,
                 aggregate: {
