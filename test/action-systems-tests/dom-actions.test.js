@@ -46,6 +46,9 @@ test("DomActions - create element target supplied", async () => {
 test ("DomActions - call_on_element", async () => {
     const element = new ElementMock("div", "div");
     element._custom = new TempClass();
+    element._sameLevelFn = (myValue)=> {
+        return 10 + Number(myValue);
+    }
 
     const result = await crs.call("dom", "call_on_element", {
         element: element,
@@ -53,5 +56,12 @@ test ("DomActions - call_on_element", async () => {
         parameters: ["$context.value"]
     }, { value: "100" });
 
+    const result2 = await crs.call("dom", "call_on_element", {
+        element: element,
+        action: "_sameLevelFn",
+        parameters: ["$context.value"]
+    }, { value: "100" });
+
     expect(result).toEqual(150);
+    expect(result2).toEqual(110);
 })
