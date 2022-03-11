@@ -59,6 +59,23 @@ export class ObjectActions {
         return result;
     }
 
+    static async get_on_path(step, context, process, item) {
+        let result;
+        if (step.args.paths != null) {
+        }
+        else {
+            const path = await crs.process.getValue(step.args.path);
+            const source = await crs.process.getValue(step.args.source);
+            result = await getValueOnPath(source, path);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
     /**
      * Delete the defined properties from a object
      * @returns {Promise<void>}
@@ -158,3 +175,25 @@ async function setValueOnPath(obj, path, value) {
     target[property] = value;
 }
 
+async function getValueOnPath(obj, path) {
+    const parts = path.split(".").join("/").split("/");
+    const property = parts[parts.length - 1];
+
+    let target = obj;
+
+    for (let i = 0; i < parts.length - 1; i++) {
+        if (target == null) {
+            return null;
+        }
+
+        if (Array.isArray(target)) {
+            target = target[Number(parts[i])];
+        }
+        else {
+            target = target[parts[i]];
+        }
+    }
+
+    if (target == null) return null;
+    return target[property];
+}

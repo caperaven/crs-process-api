@@ -212,6 +212,28 @@ test("ObjectActions - setPath - multiple", async () => {
     expect(obj["subObj2"]["value"]).toEqual("Test2");
 })
 
+test("ObjectActions - getPath - single", async () => {
+    const obj = {
+        subobj: {
+            value1: "test",
+            collection: [{name: "test name"}]
+        }
+    }
+
+    let result;
+    result = await crs.call("object", "get_on_path", { path: "subobj/value1", source: obj });
+    expect(result).toEqual("test");
+
+    result = await crs.call("object", "get_on_path", { path: "subobj/collection/0/name", source: obj });
+    expect(result).toEqual("test name");
+
+    result = await crs.call("object", "get_on_path", { path: "subobj2/name", source: obj });
+    expect(result).toEqual(null);
+
+    result = await crs.call("object", "get_on_path", { path: "subobj2/names/0/value", source: obj });
+    expect(result).toEqual(null);
+})
+
 class SetDescriptor {
     static async new(target, value) {
         return {
