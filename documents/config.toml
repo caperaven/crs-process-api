@@ -1,0 +1,9 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'Process API Features'
+theme = 'hugo-book'
+
+[params]
+BookTheme = 'light'
+BookMenuBundle = '/menu'
+BookSection = 'docs'
