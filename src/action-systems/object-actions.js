@@ -62,10 +62,17 @@ export class ObjectActions {
     static async get_on_path(step, context, process, item) {
         let result;
         if (step.args.paths != null) {
+            const paths = await crs.process.getValue(step.args.paths, context, process, item);
+            for (const pathItem of paths) {
+                const path = await crs.process.getValue(pathItem.path, context, process, item);
+                const source = await crs.process.getValue(pathItem.source, context, process, item);
+                result = await getValueOnPath(source, path);
+                await crs.process.setValue(pathItem.target, result, context, process, item);
+            }
         }
         else {
-            const path = await crs.process.getValue(step.args.path);
-            const source = await crs.process.getValue(step.args.source);
+            const path = await crs.process.getValue(step.args.path, context, process, item);
+            const source = await crs.process.getValue(step.args.source, context, process, item);
             result = await getValueOnPath(source, path);
         }
 

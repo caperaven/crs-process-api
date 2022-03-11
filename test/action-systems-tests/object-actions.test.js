@@ -234,6 +234,33 @@ test("ObjectActions - getPath - single", async () => {
     expect(result).toEqual(null);
 })
 
+test("ObjectActions - getPath - multiple", async () => {
+    const obj = {
+        subobj: {
+            value1: "test",
+            collection: [{name: "test name"}]
+        }
+    }
+
+    const ctx = {};
+
+    await crs.call("object", "get_on_path", { paths: [
+        {
+            path: "subobj/value1",
+            source: obj,
+            target: "$context.value1"
+        },
+        {
+            path: "subobj/collection/0/name",
+            source: obj,
+            target: "$context.name"
+        }
+    ] }, ctx);
+
+    expect(ctx.value1).toEqual("test");
+    expect(ctx.name).toEqual("test name");
+})
+
 class SetDescriptor {
     static async new(target, value) {
         return {
