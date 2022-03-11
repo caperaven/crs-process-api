@@ -174,6 +174,44 @@ test("ObjectActions - create", async () => {
     expect(context.result).not.toBeUndefined();
 })
 
+test("ObjectActions - setPath - single", async () => {
+    let obj = {};
+    await crs.call("object", "set_on_path", {
+        path: "value1",
+        target: obj,
+        value: "Test"
+    })
+    expect(obj["value1"]).toEqual("Test");
+
+    obj = {};
+    await crs.call("object", "set_on_path", {
+        path: "subobject/value",
+        target: obj,
+        value: "Test"
+    })
+    expect(obj["subobject"]["value"]).toEqual("Test");
+
+    obj = {};
+    await crs.call("object", "set_on_path", {
+        path: "subobject/values/0/name",
+        target: obj,
+        value: "Test"
+    })
+    expect(obj["subobject"]["values"][0]["name"]).toEqual("Test");
+})
+
+test("ObjectActions - setPath - multiple", async () => {
+    let obj = {};
+
+    await crs.call("object", "set_on_path", { paths: [
+        { path: "subObj/value", target: obj, value: "Test" },
+        { path: "subObj2/value", target: obj, value: "Test2" }
+    ]})
+
+    expect(obj["subObj"]["value"]).toEqual("Test");
+    expect(obj["subObj2"]["value"]).toEqual("Test2");
+})
+
 class SetDescriptor {
     static async new(target, value) {
         return {

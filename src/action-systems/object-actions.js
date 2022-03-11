@@ -23,6 +23,24 @@ export class ObjectActions {
         return await globalThis.crs.process.setValue(step.args.target, step.args.value, context, process, item);
     }
 
+    static async set_on_path(step, context, process, item) {
+        if (step.args.paths != null) {
+            const paths = await crs.process.getValue(step.args.paths, context, process, item);
+            for (const pathItem of paths) {
+                const path = (await crs.process.getValue(pathItem.path, context, process, item)).split(".").join("/");
+                const obj = await crs.process.getValue(pathItem.target, context, process, item);
+                const value = await crs.process.getValue(pathItem.value, context, process, item);
+                await setValueOnPath(obj, path, value);
+            }
+        }
+        else {
+            const path = (await crs.process.getValue(step.args.path, context, process, item)).split(".").join("/");
+            const obj = await crs.process.getValue(step.args.target, context, process, item);
+            const value = await crs.process.getValue(step.args.value, context, process, item);
+            await setValueOnPath(obj, path, value);
+        }
+    }
+
     /**
      * Get a property value as defined in the step
      * @param step
@@ -115,3 +133,28 @@ export class ObjectActions {
         return result;
     }
 }
+
+async function setValueOnPath(obj, path, value) {
+    const parts = path.split(".").join("/").split("/");
+    const property = parts[parts.length - 1];
+
+    let target = obj;
+    for (let i = 0; i < parts.length - 1; i++) {
+        const part = parts[i];
+        const nextPart = parts[i + 1];
+        const isArray = isNaN(nextPart) == false;
+
+        if (isArray == true) {
+            parts[i + 1] = Number(nextPart);
+        }
+
+        if (target[part] == null) {
+            target[part] = isArray ? [] : {};
+        }
+
+        target = target[part];
+    }
+
+    target[property] = value;
+}
+
