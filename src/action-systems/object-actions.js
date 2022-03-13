@@ -113,6 +113,18 @@ export class ObjectActions {
         }
     }
 
+    static async copy_on_path(step, context, process, item) {
+        if (step.args.paths) {
+
+        }
+        else {
+            const path = await crs.process.getValue(step.args.path, context, process, item);
+            const source = await crs.process.getValue(step.args.source, context, process, item);
+            const target = await crs.process.getValue(step.args.target, context, process, item);
+            await copyPath(source, target, path);
+        }
+    }
+
     /**
      * Create object literal on target defined.
      * @param step
@@ -245,5 +257,12 @@ async function deleteOnPath(obj, path) {
     }
     else {
         delete target[property];
+    }
+}
+
+async function copyPath(source, target, path) {
+    const value = await getValueOnPath(source, path);
+    if (value != null) {
+        await setValueOnPath(target, path, value);
     }
 }

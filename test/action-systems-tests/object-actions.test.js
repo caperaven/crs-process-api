@@ -311,6 +311,25 @@ test("ObjectActions - delete_on_path - multiple", async () => {
     expect(obj2["subobj"]["value"]).toBeUndefined()
 })
 
+test("ObjectActions - copy_on_path - multiple", async () => {
+    const obj = {
+        subobj: {
+            value1: "test",
+            collection: [{name: "test name"}]
+        }
+    }
+
+    const obj2 = {};
+
+    await crs.call("object", "copy_on_path", {
+        source: obj,
+        target: obj2,
+        path: "subobj/value1"
+    })
+
+    expect(obj2["subobj"]["value"]).toEqual(obj["subobj"]["value"]);
+})
+
 class SetDescriptor {
     static async new(target, value) {
         return {
