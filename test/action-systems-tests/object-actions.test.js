@@ -261,6 +261,56 @@ test("ObjectActions - getPath - multiple", async () => {
     expect(ctx.name).toEqual("test name");
 })
 
+test("ObjectActions - delete_on_path - single", async () => {
+    const obj = {
+        subobj: {
+            value1: "test",
+            collection: [{name: "test name"}]
+        }
+    }
+
+    await crs.call("object", "delete_on_path", {
+        path: "subobj/value1",
+        target: obj
+    })
+
+    expect(obj["subobj"]["value1"]).toBeUndefined();
+
+    await crs.call("object", "delete_on_path", {
+        path: "subobj/collection/0/name",
+        target: obj
+    })
+
+    expect(obj["subobj"]["collection"][0]["name"]).toBeUndefined();
+
+    await crs.call("object", "delete_on_path", {
+        path: "subobj/collection/0",
+        target: obj
+    })
+
+    expect(obj["subobj"]["collection"].length).toEqual(0);
+
+    await crs.call("object", "delete_on_path", {
+        path: "subobj2/collection/0",
+        target: obj
+    })
+})
+
+test("ObjectActions - delete_on_path - multiple", async () => {
+    const obj1 = {subobj: {value: "test"}};
+    const obj2 = {subobj: {value: "test"}};
+
+    await crs.call("object", "delete_on_path", {
+        paths: [
+            { path: "subobj/value", target: obj1 },
+            { path: "subobj/value", target: obj2 }
+        ]
+    })
+
+    expect(obj1["subobj"]["value"]).toBeUndefined()
+    expect(obj2["subobj"]["value"]).toBeUndefined()
+})
+
 class SetDescriptor {
     static async new(target, value) {
         return {

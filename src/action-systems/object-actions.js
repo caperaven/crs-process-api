@@ -97,6 +97,22 @@ export class ObjectActions {
         }
     }
 
+    static async delete_on_path(step, context, process, item) {
+        if (step.args.paths) {
+            const paths = await crs.process.getValue(step.args.paths, context, process, item);
+            for (const pathItem of paths) {
+                const path = await crs.process.getValue(pathItem.path, context, process, item);
+                const target = await crs.process.getValue(pathItem.target, context, process, item);
+                await deleteOnPath(target, path);
+            }
+        }
+        else {
+            const path = await crs.process.getValue(step.args.path, context, process, item);
+            const target = await crs.process.getValue(step.args.target, context, process, item);
+            await deleteOnPath(target, path);
+        }
+    }
+
     /**
      * Create object literal on target defined.
      * @param step
@@ -203,4 +219,31 @@ async function getValueOnPath(obj, path) {
 
     if (target == null) return null;
     return target[property];
+}
+
+async function deleteOnPath(obj, path) {
+    if (obj == null) return;
+    const parts = path.split(".").join("/").split("/");
+    let target = obj;
+
+    const collection = [obj];
+    for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+
+        if (target[part] == null) return;
+
+        target = target[part];
+        collection.push(target);
+    }
+
+    const index = parts.length -1;
+    const property = parts[index];
+    target = collection[index];
+
+    if (Array.isArray(target)) {
+        target.splice(Number(property), 1);
+    }
+    else {
+        delete target[property];
+    }
 }
