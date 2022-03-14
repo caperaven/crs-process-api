@@ -24,18 +24,18 @@ export class ObjectActions {
     }
 
     static async set_on_path(step, context, process, item) {
+        const obj = await crs.process.getValue(step.args.target, context, process, item);
+
         if (step.args.paths != null) {
             const paths = await crs.process.getValue(step.args.paths, context, process, item);
             for (const pathItem of paths) {
                 const path = (await crs.process.getValue(pathItem.path, context, process, item)).split(".").join("/");
-                const obj = await crs.process.getValue(pathItem.target, context, process, item);
                 const value = await crs.process.getValue(pathItem.value, context, process, item);
                 await setValueOnPath(obj, path, value);
             }
         }
         else {
             const path = (await crs.process.getValue(step.args.path, context, process, item)).split(".").join("/");
-            const obj = await crs.process.getValue(step.args.target, context, process, item);
             const value = await crs.process.getValue(step.args.value, context, process, item);
             await setValueOnPath(obj, path, value);
         }
@@ -185,6 +185,18 @@ export class ObjectActions {
         return result;
     }
 
+    static async json_clone(step, context, process, item) {
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const json = JSON.stringify(source);
+        const newValue = JSON.parse(json);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, newValue, context, process, item);
+        }
+
+        return newValue;
+    }
+
     static async assert(step, context, process, item) {
         let isValid = true;
 
@@ -284,7 +296,12 @@ async function deleteOnPath(obj, path) {
 
 async function copyPath(source, target, path) {
     const value = await getValueOnPath(source, path);
-    if (value != null) {
-        await setValueOnPath(target, path, value);
-    }
+
+    if (value == null) return;
+
+    const newValue = await crs.call("object", "json_clone", {
+        source: value
+    })
+
+    await setValueOnPath(target, path, newValue);
 }

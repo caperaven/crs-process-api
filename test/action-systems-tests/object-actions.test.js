@@ -174,7 +174,7 @@ test("ObjectActions - create", async () => {
     expect(context.result).not.toBeUndefined();
 })
 
-test("ObjectActions - setPath - single", async () => {
+test("ObjectActions - set_on_path - single", async () => {
     let obj = {};
     await crs.call("object", "set_on_path", {
         path: "value1",
@@ -200,19 +200,22 @@ test("ObjectActions - setPath - single", async () => {
     expect(obj["subobject"]["values"][0]["name"]).toEqual("Test");
 })
 
-test("ObjectActions - setPath - multiple", async () => {
+test("ObjectActions - set_on_path - multiple", async () => {
     let obj = {};
 
-    await crs.call("object", "set_on_path", { paths: [
-        { path: "subObj/value", target: obj, value: "Test" },
-        { path: "subObj2/value", target: obj, value: "Test2" }
-    ]})
+    await crs.call("object", "set_on_path", {
+        paths: [
+            { path: "subObj/value", value: "Test" },
+            { path: "subObj2/value", value: "Test2" }
+        ],
+        target: obj
+    })
 
     expect(obj["subObj"]["value"]).toEqual("Test");
     expect(obj["subObj2"]["value"]).toEqual("Test2");
 })
 
-test("ObjectActions - getPath - single", async () => {
+test("ObjectActions - get_on_path - single", async () => {
     const obj = {
         subobj: {
             value1: "test",
@@ -227,6 +230,7 @@ test("ObjectActions - getPath - single", async () => {
     result = await crs.call("object", "get_on_path", { path: "subobj/collection/0/name", source: obj });
     expect(result).toEqual("test name");
 
+    // don't fall over on a path that does not exist, just give null back
     result = await crs.call("object", "get_on_path", { path: "subobj2/name", source: obj });
     expect(result).toEqual(null);
 
@@ -343,7 +347,6 @@ test("ObjectActions - assert - multiple", async () => {
         source: obj,
         paths: ["subobj/value1", "subobj/value2"]
     })
-
 })
 
 class SetDescriptor {
