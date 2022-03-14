@@ -268,6 +268,7 @@ async function getValueOnPath(obj, path) {
 }
 
 async function deleteOnPath(obj, path) {
+    // todo: JHR: add flag to flatten object where if it has not properties, delete that also.
     if (obj == null) return;
     const parts = path.split(".").join("/").split("/");
     let target = obj;
