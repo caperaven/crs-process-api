@@ -184,6 +184,28 @@ export class ObjectActions {
 
         return result;
     }
+
+    static async assert(step, context, process, item) {
+        let isValid = true;
+
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const paths = await crs.process.getValue(step.args.paths, context, process, item);
+
+        for (const path of paths) {
+            const value = getValueOnPath(source, path);
+
+            if (value == null) {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, isValid, context, process, item);
+        }
+
+        return isValid;
+    }
 }
 
 async function setValueOnPath(obj, path, value) {
