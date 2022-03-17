@@ -201,10 +201,13 @@ export class ObjectActions {
         let isValid = true;
 
         const source = await crs.process.getValue(step.args.source, context, process, item);
+
+        if (source == null) return false;
+
         const paths = await crs.process.getValue(step.args.paths, context, process, item);
 
         for (const path of paths) {
-            const value = getValueOnPath(source, path);
+            const value = await getValueOnPath(source, path);
 
             if (value == null) {
                 isValid = false;
