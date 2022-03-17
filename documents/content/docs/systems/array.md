@@ -135,7 +135,7 @@ You can define N properties this way.
 {{< highlight js >}}
 "step": {
     "type": "array",
-    "action": "concat",
+    "action": "change_values",
     "args": {
         "sources": "$context.collection",
         "changes": {

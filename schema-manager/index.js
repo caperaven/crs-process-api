@@ -23,6 +23,6 @@ export async function init() {
         "get_range"         : (await import("./providers/array-providers/get-range-rule.js")).default,
         "get_records"       : (await import("./providers/array-providers/get-records-rule.js")).default,
         "get_value"         : (await import("./providers/array-providers/get-value-rule.js")).default,
-        "map_object"        : (await import("./providers/array-providers/map-object-rule.js")).default,
+        "map_objects"       : (await import("./providers/array-providers/map-object-rule.js")).default,
     }
 }
