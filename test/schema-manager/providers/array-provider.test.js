@@ -1,10 +1,11 @@
 import {init} from "./../../mockups/validations-mock-loader.js";
+import {validateStepTest} from "./../providers/provider-utils.js";
 
 beforeAll(async () => {
     await init();
 })
 
-test("ArrayProvider - validate - add - true", async () => {
+test("ArrayProvider - validate - add", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -20,31 +21,13 @@ test("ArrayProvider - validate - add - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"value" must have a value',
+        '"target" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - add - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "add",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"target" must have a value');
-    expect(result.messages[1]).toEqual('"value" must have a value');
-})
-
-test("ArrayProvider - validate - calculate_paging  - true", async () => {
+test("ArrayProvider - validate - calculate_paging", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -61,32 +44,14 @@ test("ArrayProvider - validate - calculate_paging  - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"page_size" must have a value',
+        '"target" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - calculate_paging - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "calculate_paging",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"page_size" must have a value');
-    expect(result.messages[2]).toEqual('"target" must have a value');
-})
-
-test("ArrayProvider - validate - change_values - true", async () => {
+test("ArrayProvider - validate - change_values", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -94,39 +59,21 @@ test("ArrayProvider - validate - change_values - true", async () => {
                     type: "array",
                     action: "change_values",
                     args: {
-                        source      : "$context.collection",
-                        changes     : {},
+                        source     : "$context.collection",
+                        changes    : {}
                     }
                 }
             }
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"changes" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - change_values - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "change_values",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"changes" must have a value');
-})
-
-test("ArrayProvider - validate - concat - true", async () => {
+test("ArrayProvider - validate - concat", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -142,31 +89,13 @@ test("ArrayProvider - validate - concat - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"sources" must have a value',
+        '"target" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - concat - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "concat",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"sources" must have a value');
-    expect(result.messages[1]).toEqual('"target" must have a value');
-})
-
-test("ArrayProvider - validate - field_to_csv - true", async () => {
+test("ArrayProvider - validate - field_to_csv", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -184,33 +113,15 @@ test("ArrayProvider - validate - field_to_csv - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"target" must have a value',
+        '"delimiter" must have a value',
+        '"field" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - field_to_csv - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "field_to_csv",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"target" must have a value');
-    expect(result.messages[2]).toEqual('"delimiter" must have a value');
-    expect(result.messages[3]).toEqual('"field" must have a value');
-})
-
-test("ArrayProvider - validate - get_range - true", async () => {
+test("ArrayProvider - validate - get_range", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -227,32 +138,14 @@ test("ArrayProvider - validate - get_range - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"target" must have a value',
+        '"field" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - get_range - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "get_range",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"target" must have a value');
-    expect(result.messages[2]).toEqual('"field" must have a value');
-})
-
-test("ArrayProvider - validate - get_records - true", async () => {
+test("ArrayProvider - validate - get_records", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -270,33 +163,15 @@ test("ArrayProvider - validate - get_records - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"target" must have a value',
+        '"page_number" must have a value',
+        '"page_size" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - get_records - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "get_records",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"target" must have a value');
-    expect(result.messages[2]).toEqual('"page_number" must have a value');
-    expect(result.messages[3]).toEqual('"page_size" must have a value');
-})
-
-test("ArrayProvider - validate - get_value - true", async () => {
+test("ArrayProvider - validate - get_value", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -314,33 +189,15 @@ test("ArrayProvider - validate - get_value - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"target" must have a value',
+        '"field" must have a value',
+        '"index" must have a value'
+    ])
 })
 
-test("ArrayProvider - validate - get_value - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "get_value",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"target" must have a value');
-    expect(result.messages[2]).toEqual('"index" must have a value');
-    expect(result.messages[3]).toEqual('"field" must have a value');
-})
-
-test("ArrayProvider - validate - map_objects - true", async () => {
+test("ArrayProvider - validate - map_objects", async () => {
     const schema = {
         array_test: {
             steps: {
@@ -357,27 +214,9 @@ test("ArrayProvider - validate - map_objects - true", async () => {
         }
     }
 
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeTruthy();
-})
-
-test("ArrayProvider - validate - map_objects - false", async () => {
-    const schema = {
-        array_test: {
-            steps: {
-                start: {
-                    type: "array",
-                    action: "map_objects",
-                    args: {
-                    }
-                }
-            }
-        }
-    }
-
-    const result = await globalThis.crs.api_providers["array"].validate(schema, "array_test", "start");
-    expect(result.passed).toBeFalsy();
-    expect(result.messages[0]).toEqual('"source" must have a value');
-    expect(result.messages[1]).toEqual('"target" must have a value');
-    expect(result.messages[2]).toEqual('"field" must have a value');
+    await validateStepTest(schema, "array", "array_test", "start", [
+        '"source" must have a value',
+        '"target" must have a value',
+        '"field" must have a value'
+    ])
 })

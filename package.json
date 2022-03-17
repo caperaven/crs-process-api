@@ -1,6 +1,6 @@
 {
     "name": "crs-process-api",
-    "version": "0.0.122",
+    "version": "0.0.124",
     "description": "process api for executing loging using json structure",
     "main": "crs-process-api.js",
     "directories": {
@@ -22,7 +22,8 @@
         "@babel/preset-env": "^7.6.0",
         "@types/jest": "^24.0.18",
         "babel-jest": "^24.9.0",
-        "crs-modules": "^1.0.11",
+        "crs-binding": "^0.0.249",
+        "crs-modules": "^1.0.17",
         "crs-router": "^0.0.78",
         "glob": "^7.1.4",
         "jest": "^27.3.1",
@@ -31,7 +32,6 @@
         "puppeteer": "^2.1.1",
         "puppeteer-to-istanbul": "^1.4.0",
         "rollup": "^2.53.3",
-        "rollup-plugin-terser": "^7.0.2",
-        "crs-binding": "^0.0.249"
+        "rollup-plugin-terser": "^7.0.2"
     }
 }

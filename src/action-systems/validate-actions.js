@@ -3,7 +3,7 @@ export class ValidateActions {
         await this[step.action](step, context, process, item);
     }
 
-    static async assert(step, context, process, item) {
+    static async assert_step(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const process_name = await crs.process.getValue(step.args.process, context, process, item);
         const step_name = await crs.process.getValue(step.args.step, context, process, item);
@@ -33,5 +33,21 @@ export class ValidateActions {
         }
 
         return result;
+    }
+
+    static async required(step, context, process, item) {
+        const success = await crs.call("object", "assert", step.args, context, process, item);
+
+        if (success && step.pass_step != null) {
+            const nextStep = await crs.intent.condition.getNextStep(process, step.pass_step);
+            await crs.process.runStep(nextStep, context, process, item);
+        }
+
+        if (!success && step.fail_step != null) {
+            const nextStep = await crs.intent.condition.getNextStep(process, step.fail_step);
+            await crs.process.runStep(nextStep, context, process, item);
+        }
+
+        return success;
     }
 }

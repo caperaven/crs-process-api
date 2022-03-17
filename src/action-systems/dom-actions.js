@@ -607,7 +607,6 @@ async function validate_form(query) {
     return errors;
 }
 
-
 async function getHTML(step, context) {
     if (step.args.url.indexOf("$fn") != -1) {
         const fn = step.args.url.replace("$fn.", "");
