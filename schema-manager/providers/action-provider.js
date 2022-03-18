@@ -1,11 +1,8 @@
-export default class ArrayProvider {
+export default class ActionProvider {
     static async validate(schema, process, step) {
-        return await crs.call("validate", "assert_step", {
-            source: schema,
-            process: process,
-            step: step,
-            required: ["action"]
-        })
+        const processObj = schema[process];
+        const stepObj = processObj.steps[step];
+        return await crs.call("object", "assert", {source: stepObj, paths: ["action"]});
     }
 
     static async clean(schema, process, step) {

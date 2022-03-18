@@ -7,7 +7,8 @@ export async function init() {
      * Load the different providers for validate and process.
      */
     globalThis.crs.api_providers = {
-        "array"             : (await import("./providers/array-provider")).default,
+        "action"            : (await import("./providers/action-provider")).default,
+        "array"             : (await import("./providers/array-provider")).default
     }
 
 
