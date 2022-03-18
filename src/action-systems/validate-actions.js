@@ -17,14 +17,13 @@ export class ValidateActions {
 
         const processObj = source[process_name];
         const stepObj = processObj.steps[step_name];
-        const keys = Object.keys(required);
-        for (const property of keys) {
+        for (const property of required) {
             const passed = await crs.call("object", "assert", {source: stepObj.args, paths: [property]});
 
             if (passed == false) {
                 result.passed = false;
                 result.messages = result.messages || [];
-                result.messages.push(required[property]);
+                result.messages.push(`"${property}" must have a value`);
             }
         }
 

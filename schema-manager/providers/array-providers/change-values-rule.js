@@ -3,9 +3,6 @@ export default async function changeValuesRule(schema, process, step) {
         source: schema,
         process: process,
         step: step,
-        required: {
-            source: '"source" must have a value',
-            changes: '"changes" must have a value',
-        }
+        required: ["source", "changes"]
     })
 }

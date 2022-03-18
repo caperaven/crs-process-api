@@ -3,9 +3,6 @@ export default async function concatRule(schema, process, step) {
         source: schema,
         process: process,
         step: step,
-        required: {
-            sources: '"sources" must have a value',
-            target: '"target" must have a value',
-        }
+        required: ["sources", "target"]
     })
 }

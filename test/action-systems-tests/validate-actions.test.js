@@ -34,10 +34,7 @@ test("ValidateActions - validate - true", async () => {
         source  : schema,
         process : "process1",
         step    : "start",
-        required: {
-            target : '"target" must have a value',
-            value  : '"value" must have a value'
-        }
+        required: ["target", "value"]
     })
 
     expect(result.passed).toBeTruthy();
@@ -62,10 +59,7 @@ test("ValidateActions - validate - false", async () => {
         source  : schema,
         process : "process1",
         step    : "start",
-        required: {
-            target : '"target" must have a value',
-            value  : '"value" must have a value'
-        }
+        required: ["target", "value"]
     })
 
     expect(result.passed).toBeFalsy();
