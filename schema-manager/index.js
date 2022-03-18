@@ -8,9 +8,9 @@ export async function init() {
      */
     globalThis.crs.api_providers = {
         "action"            : (await import("./providers/action-provider")).default,
-        "array"             : (await import("./providers/array-provider")).default
+        "array"             : (await import("./providers/array-provider")).default,
+        "binding"           : (await import("./providers/binding-provider")).default
     }
-
 
     /**
      * Load the different validate requirements.
@@ -25,5 +25,14 @@ export async function init() {
         "get_records"       : (await import("./providers/array-providers/get-records-rule.js")).default,
         "get_value"         : (await import("./providers/array-providers/get-value-rule.js")).default,
         "map_objects"       : (await import("./providers/array-providers/map-object-rule.js")).default,
+    }
+
+    globalThis.crs.validate.binding = {
+        "create_context"    : (await import("./providers/binding-provider/create-context-rule.js")).default,
+        "free_context"      : (await import("./providers/binding-provider/free-context-rule.js")).default,
+        "get_property"      : (await import("./providers/binding-provider/get-property-rule.js")).default,
+        "set_property"      : (await import("./providers/binding-provider/set-property-rule.js")).default,
+        "get_data"          : (await import("./providers/binding-provider/get-data-rule.js")).default,
+        "set_errors"        : (await import("./providers/binding-provider/set-errors-rule.js")).default,
     }
 }

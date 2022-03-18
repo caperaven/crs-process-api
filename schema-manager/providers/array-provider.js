@@ -1,13 +1,7 @@
-export default class ArrayProvider {
+import {validate} from "./provider-utils.js";
+
+export default class ArrayProvider  {
     static async validate(schema, process, step) {
-        const processObj = schema[process];
-        const stepObj = processObj.steps[step];
-
-        const rule = globalThis.crs.validate.arrayMap[stepObj.action];
-        return rule(schema, process, step);
-    }
-
-    static async clean(schema, process, step) {
-
+        return await validate(schema, process, step, globalThis.crs.validate.arrayMap);
     }
 }

@@ -1,8 +1,5 @@
+import {assertStep} from "../provider-utils";
+
 export default async function calculatePagingRule(schema, process, step) {
-    return await crs.call("validate", "assert_step", {
-        source: schema,
-        process: process,
-        step: step,
-        required: ["source", "page_size", "target"]
-    })
+    return await assertStep(schema, process, step, ["source", "page_size", "target"]);
 }

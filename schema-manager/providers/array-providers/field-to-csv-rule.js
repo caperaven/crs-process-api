@@ -1,8 +1,5 @@
+import {assertStep} from "../provider-utils";
+
 export default async function fieldToCsvRule(schema, process, step) {
-    return await crs.call("validate", "assert_step", {
-        source: schema,
-        process: process,
-        step: step,
-        required: ["source", "target", "delimiter", "field"]
-    })
+    return await assertStep(schema, process, step, ["source", "target", "delimiter", "field"]);
 }
