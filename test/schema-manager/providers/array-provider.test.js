@@ -7,7 +7,7 @@ beforeAll(async () => {
 
 test("ArrayProvider - validate - add", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -21,7 +21,7 @@ test("ArrayProvider - validate - add", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"value" must have a value',
         '"target" must have a value'
     ])
@@ -29,7 +29,7 @@ test("ArrayProvider - validate - add", async () => {
 
 test("ArrayProvider - validate - calculate_paging", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -44,7 +44,7 @@ test("ArrayProvider - validate - calculate_paging", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"page_size" must have a value',
         '"target" must have a value'
@@ -53,7 +53,7 @@ test("ArrayProvider - validate - calculate_paging", async () => {
 
 test("ArrayProvider - validate - change_values", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -67,7 +67,7 @@ test("ArrayProvider - validate - change_values", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"changes" must have a value'
     ])
@@ -75,7 +75,7 @@ test("ArrayProvider - validate - change_values", async () => {
 
 test("ArrayProvider - validate - concat", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -89,7 +89,7 @@ test("ArrayProvider - validate - concat", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"sources" must have a value',
         '"target" must have a value'
     ])
@@ -97,7 +97,7 @@ test("ArrayProvider - validate - concat", async () => {
 
 test("ArrayProvider - validate - field_to_csv", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -113,7 +113,7 @@ test("ArrayProvider - validate - field_to_csv", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"target" must have a value',
         '"delimiter" must have a value',
@@ -123,7 +123,7 @@ test("ArrayProvider - validate - field_to_csv", async () => {
 
 test("ArrayProvider - validate - get_range", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -138,7 +138,7 @@ test("ArrayProvider - validate - get_range", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"target" must have a value',
         '"field" must have a value'
@@ -147,7 +147,7 @@ test("ArrayProvider - validate - get_range", async () => {
 
 test("ArrayProvider - validate - get_records", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -163,7 +163,7 @@ test("ArrayProvider - validate - get_records", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"target" must have a value',
         '"page_number" must have a value',
@@ -173,7 +173,7 @@ test("ArrayProvider - validate - get_records", async () => {
 
 test("ArrayProvider - validate - get_value", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -189,7 +189,7 @@ test("ArrayProvider - validate - get_value", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"target" must have a value',
         '"field" must have a value',
@@ -199,7 +199,7 @@ test("ArrayProvider - validate - get_value", async () => {
 
 test("ArrayProvider - validate - map_objects", async () => {
     const schema = {
-        array_test: {
+        test: {
             steps: {
                 start: {
                     type: "array",
@@ -214,7 +214,7 @@ test("ArrayProvider - validate - map_objects", async () => {
         }
     }
 
-    await validateStepTest(schema, "array", "array_test", "start", [
+    await validateStepTest(schema, "array", "test", "start", [
         '"source" must have a value',
         '"target" must have a value',
         '"field" must have a value'

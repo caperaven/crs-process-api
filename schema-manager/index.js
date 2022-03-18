@@ -7,9 +7,9 @@ export async function init() {
      * Load the different providers for validate and process.
      */
     globalThis.crs.api_providers = {
-        "action"            : (await import("./providers/action-provider")).default,
-        "array"             : (await import("./providers/array-provider")).default,
-        "binding"           : (await import("./providers/binding-provider")).default
+        "action"            : (await import("./providers/action-provider.js")).default,
+        "array"             : (await import("./providers/array-provider.js")).default,
+        "binding"           : (await import("./providers/binding-provider.js")).default
     }
 
     /**
@@ -27,7 +27,7 @@ export async function init() {
         "map_objects"       : (await import("./providers/array-providers/map-object-rule.js")).default,
     }
 
-    globalThis.crs.validate.binding = {
+    globalThis.crs.validate.bindingMap = {
         "create_context"    : (await import("./providers/binding-provider/create-context-rule.js")).default,
         "free_context"      : (await import("./providers/binding-provider/free-context-rule.js")).default,
         "get_property"      : (await import("./providers/binding-provider/get-property-rule.js")).default,
