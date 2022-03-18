@@ -9,7 +9,8 @@ export async function init() {
     globalThis.crs.api_providers = {
         "action"            : (await import("./providers/action-provider.js")).default,
         "array"             : (await import("./providers/array-provider.js")).default,
-        "binding"           : (await import("./providers/binding-provider.js")).default
+        "binding"           : (await import("./providers/binding-provider.js")).default,
+        "condition"         : (await import("./providers/condition-provider.js")).default
     }
 
     /**

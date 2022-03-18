@@ -4,8 +4,4 @@ export default class ActionProvider {
         const stepObj = processObj.steps[step];
         return await crs.call("object", "assert", {source: stepObj, paths: ["action"]});
     }
-
-    static async clean(schema, process, step) {
-
-    }
 }
