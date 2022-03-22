@@ -101,7 +101,7 @@ export class DataActions {
         return result;
     }
 
-    static async aggregateGroup(step, context, process, item) {
+    static async aggregate_group(step, context, process, item) {
         let source = await crs.process.getValue(step.args.source, context, process, item);
 
         if (typeof source != "string") {

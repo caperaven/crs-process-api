@@ -15,7 +15,7 @@ This will auto register the intent as `crs.intent.data`
 2. [sort](#sort)
 3. [group](#group)
 4. [aggregate](#aggregate)
-5. [aggregateGroup](#aggregateGroup)
+5. [aggregate_group](#aggregate_group)
 6. [in_filter](#in_filter)
 7. [unique_values](#unique_values)
 8. [debug](#debug)
@@ -317,7 +317,7 @@ crs.call("data", "aggregate", {
 });
 {{< / highlight >}}
 
-## aggregateGroup
+## aggregate_group
 
 If you have a grouping result object, you may want to calculate aggregates for records for a given group of sub-group.
 The call looks exactly like the above (aggregate rows)(#aggregate_rows) with two differences.

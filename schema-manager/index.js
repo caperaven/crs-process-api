@@ -12,6 +12,7 @@ export async function init() {
         "binding"           : (await import("./providers/binding-provider.js")).default,
         "condition"         : (await import("./providers/condition-provider.js")).default,
         "cssgrid"           : (await import("./providers/css-grid-provider.js")).default,
+        "data"              : (await import("./providers/data-actions-provider.js")).default,
     }
 
     /**
@@ -51,5 +52,19 @@ export async function init() {
         "set_regions"       : (await import("./providers/css-grid-provider/set-regions-rule.js")).default,
         "column_count"      : (await import("./providers/css-grid-provider/column-count-rule.js")).default,
         "row_count"         : (await import("./providers/css-grid-provider/row-count-rule.js")).default
+    }
+
+    globalThis.crs.validate.dataMap = {
+        "filter"            : (await import("./providers/data-actions-provider/filter-rule.js")).default,
+        "sort"              : (await import("./providers/data-actions-provider/sort-rule.js")).default,
+        "group"             : (await import("./providers/data-actions-provider/group-rule.js")).default,
+        "aggregate"         : (await import("./providers/data-actions-provider/aggregate-rule.js")).default,
+        "aggregate_group"   : (await import("./providers/data-actions-provider/aggregate-group-rule.js")).default,
+        "iso8601_to_string" : (await import("./providers/data-actions-provider/iso8601-to-string-rule.js")).default,
+        "iso8601_batch"     : (await import("./providers/data-actions-provider/iso8601-batch-rule.js")).default,
+        "in_filter"         : (await import("./providers/data-actions-provider/in-filter-rule.js")).default,
+        "unique_values"     : (await import("./providers/data-actions-provider/unique-values-rule.js")).default,
+        "assert_equal"      : (await import("./providers/data-actions-provider/assert-equal-rule.js")).default,
+        "perspective"       : (await import("./providers/data-actions-provider/perspective-rule.js")).default,
     }
 }
