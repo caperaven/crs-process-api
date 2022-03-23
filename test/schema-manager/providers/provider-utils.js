@@ -2,6 +2,11 @@ export async function validateStepTest(schema, provider, process, step, messages
     // 1. test pass
     const providerObj = globalThis.crs.api_providers[provider];
     const passResult = await providerObj.validate(schema, "test", "start");
+
+    if (passResult.passed != true) {
+        console.error(passResult.messages);
+    }
+
     expect(passResult.passed).toBeTruthy();
 
     // 2. remove the args and check that the right messages come back

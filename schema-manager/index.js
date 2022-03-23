@@ -13,6 +13,7 @@ export async function init() {
         "condition"         : (await import("./providers/condition-provider.js")).default,
         "cssgrid"           : (await import("./providers/css-grid-provider.js")).default,
         "data"              : (await import("./providers/data-actions-provider.js")).default,
+        "db"                : (await import("./providers/database-actions-provider.js")).default
     }
 
     /**
@@ -66,5 +67,24 @@ export async function init() {
         "unique_values"     : (await import("./providers/data-actions-provider/unique-values-rule.js")).default,
         "assert_equal"      : (await import("./providers/data-actions-provider/assert-equal-rule.js")).default,
         "perspective"       : (await import("./providers/data-actions-provider/perspective-rule.js")).default,
+    }
+
+    globalThis.crs.validate.dbMap = {
+        "open"              : (await import("./providers/database-actions-provider/open-rule.js")).default,
+        "close"             : (await import("./providers/database-actions-provider/close-rule.js")).default,
+        "delete"            : (await import("./providers/database-actions-provider/delete-rule.js")).default,
+        "dump"              : (await import("./providers/database-actions-provider/dump-rule.js")).default,
+        "create_data_dump"  : (await import("./providers/database-actions-provider/create-data-dump-rule.js")).default,
+        "get_from_index"    : (await import("./providers/database-actions-provider/get-from-index-rule.js")).default,
+        "get_all"           : (await import("./providers/database-actions-provider/get-all-rule.js")).default,
+        "clear"             : (await import("./providers/database-actions-provider/clear-rule.js")).default,
+        "delete_record"     : (await import("./providers/database-actions-provider/delete-record-rule.js")).default,
+        "update_record"     : (await import("./providers/database-actions-provider/update-record-rule.js")).default,
+        "add_record"        : (await import("./providers/database-actions-provider/add-record-rule.js")).default,
+        "get_batch"         : (await import("./providers/database-actions-provider/get-batch-rule.js")).default,
+        "get_values"        : (await import("./providers/database-actions-provider/get-values-rule.js")).default,
+        "calculate_paging"  : (await import("./providers/database-actions-provider/calculate-paging-rule.js")).default,
+        "get_page"          : (await import("./providers/database-actions-provider/get-page-rule.js")).default,
+        "get_range"         : (await import("./providers/database-actions-provider/get-range-rule.js")).default,
     }
 }
