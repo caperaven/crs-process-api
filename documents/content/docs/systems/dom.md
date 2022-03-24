@@ -631,7 +631,10 @@ Set html and context on an existing widget component.
 
 | property | description | required |
 | :------- | :---------- | :--------: |
-| element  | element or query selector | true |
+| query  | element or query selector | true |
+| context  | the context object to set on the widget | true |
+| html     | template id to use | true |
+| url      | where to fetch the HTML data if the template does not exists yet. | true |
 
 **json**
 
@@ -640,7 +643,10 @@ Set html and context on an existing widget component.
     "type": "dom",
     "action": "set_widget",
     "args": {
-        "element": "#element",
+        "query"   : "#element",
+        "context" : "$context.model",
+        "html"    : "$template.process-dialog",
+        "url"     : "$fn.getTemplate"
     }
 }
 {{< / highlight >}}
@@ -649,7 +655,10 @@ Set html and context on an existing widget component.
 
 {{< highlight js >}}
 crs.call("dom", "set_widget", {
-    "element": "#element"
+    "query"   : "#element",
+    "context" : "$context.model",
+    "html"    : "$template.process-dialog",
+    "url"     : "$fn.getTemplate"
 });
 {{< / highlight >}}
 
@@ -875,6 +884,7 @@ Position css property is set to "absolute" by default with a transform property 
     "action": "clone_for_movement",
     "args": {
         "element": "#element",
+        "parent" : "#parent"
     }
 }
 {{< / highlight >}}
@@ -884,6 +894,7 @@ Position css property is set to "absolute" by default with a transform property 
 {{< highlight js >}}
 crs.call("dom", "clone_for_movement", {
     "element": "#element"
+    "parent" : "#parent"
 });
 {{< / highlight >}}
 
@@ -902,7 +913,7 @@ Given an array of objects
 | remove_template | remove template when done | false | false |
 | recycle | recycle existing children in a element | false | false |
 | row_index | what row to start with during recycle | false | 0 |
-| parent | parent element that elements will be on | false |
+| parent | parent element that elements will be on | schema |
 
 There are a lot of properties there for specialized usage but the simple use case looks like this.
 
@@ -943,9 +954,13 @@ For complex templates use the element from template.
 Function is better for scenarios like cell generation.
 It automatically registers the template on the inflation engine
 
-| property | description | required |
-| :------- | :---------- | :--------: |
+| property | description | required | default |
+| :------- | :---------- | :--------: | :---------- |
 | element  | element or query selector | true |
+| source  | object to use for generation | true |
+| tag_name  | element tag name to use for each property | true |
+| ctx  | the context name to use in the inflation manager | false | "context" |
+| wrapper  | wrap these elements in a parent element of this tag type | false |
 
 **json**
 
@@ -955,6 +970,11 @@ It automatically registers the template on the inflation engine
     "action": "create_inflation_template",
     "args": {
         "element": "#element",
+        "source" : {
+            "property": "value"
+        },
+        "tag_name": "li",
+        "wrapper" : "ul"
     }
 }
 {{< / highlight >}}
@@ -963,7 +983,12 @@ It automatically registers the template on the inflation engine
 
 {{< highlight js >}}
 crs.call("dom", "create_inflation_template", {
-    "element": "#element"
+    "element": "#element",
+    "source" : {
+        "property": "value"
+    },
+    "tag_name": "li",
+    "wrapper" : "ul"
 });
 {{< / highlight >}}
 

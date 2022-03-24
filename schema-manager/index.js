@@ -13,7 +13,8 @@ export async function init() {
         "condition"         : (await import("./providers/condition-provider.js")).default,
         "cssgrid"           : (await import("./providers/css-grid-provider.js")).default,
         "data"              : (await import("./providers/data-actions-provider.js")).default,
-        "db"                : (await import("./providers/database-actions-provider.js")).default
+        "db"                : (await import("./providers/database-actions-provider.js")).default,
+        "dom"               : (await import("./providers/dom-provider.js")).default,
     }
 
     /**
@@ -86,5 +87,37 @@ export async function init() {
         "calculate_paging"  : (await import("./providers/database-actions-provider/calculate-paging-rule.js")).default,
         "get_page"          : (await import("./providers/database-actions-provider/get-page-rule.js")).default,
         "get_range"         : (await import("./providers/database-actions-provider/get-range-rule.js")).default,
+    }
+
+    globalThis.crs.validate.domMap = {
+        "call_on_element"   : (await import("./providers/dom-provider/call-on-element-rule.js")).default,
+        "get_property"      : (await import("./providers/dom-provider/get-property-rule.js")).default,
+        "set_properties"    : (await import("./providers/dom-provider/set-properties-rule.js")).default,
+        "set_attribute"     : (await import("./providers/dom-provider/set-attribute-rule.js")).default,
+        "get_attribute"     : (await import("./providers/dom-provider/get-attribute-rule.js")).default,
+        "add_class"         : (await import("./providers/dom-provider/add-class-rule.js")).default,
+        "remove_class"      : (await import("./providers/dom-provider/remove-class-rule.js")).default,
+        "set_style"         : (await import("./providers/dom-provider/set-style-rule.js")).default,
+        "set_styles"        : (await import("./providers/dom-provider/set-styles-rule.js")).default,
+        "get_style"         : (await import("./providers/dom-provider/get-style-rule.js")).default,
+        "set_text"          : (await import("./providers/dom-provider/set-text-rule.js")).default,
+        "get_text"          : (await import("./providers/dom-provider/get-text-rule.js")).default,
+        "create_element"    : (await import("./providers/dom-provider/create-element-rule.js")).default,
+        "remove_element"    : (await import("./providers/dom-provider/remove-element-rule.js")).default,
+        "clear_element"     : (await import("./providers/dom-provider/clear-element-rule.js")).default,
+        "show_widget_dialog": (await import("./providers/dom-provider/show-widget-dialog-rule.js")).default,
+        "show_form_dialog"  : (await import("./providers/dom-provider/show-form-dialog-rule.js")).default,
+        "set_widget"        : (await import("./providers/dom-provider/set-widget-rule.js")).default,
+        "clear_widget"      : (await import("./providers/dom-provider/clear-widget-rule.js")).default,
+        "move_element"      : (await import("./providers/dom-provider/move-element-rule.js")).default,
+        "move_element_down" : (await import("./providers/dom-provider/move-element-down-rule.js")).default,
+        "move_element_up"   : (await import("./providers/dom-provider/move-element-up-rule.js")).default,
+        "filter_children"   : (await import("./providers/dom-provider/filter-children-rule.js")).default,
+        "open_tab"          : (await import("./providers/dom-provider/open-tab-rule.js")).default,
+        "clone_for_movement": (await import("./providers/dom-provider/clone-for-movement-rule.js")).default,
+        "elements_from_template"    : (await import("./providers/dom-provider/elements-from-template-rule.js")).default,
+        "update_cells"              : (await import("./providers/dom-provider/update-cells-rule.js")).default,
+        "create_inflation_template" : (await import("./providers/dom-provider/create-inflation-template-rule.js")).default,
+        "get_element"               : (await import("./providers/dom-provider/get-element-rule.js")).default,
     }
 }
