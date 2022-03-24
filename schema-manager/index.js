@@ -15,6 +15,7 @@ export async function init() {
         "data"              : (await import("./providers/data-actions-provider.js")).default,
         "db"                : (await import("./providers/database-actions-provider.js")).default,
         "dom"               : (await import("./providers/dom-provider.js")).default,
+        "events"            : (await import("./providers/events-provider.js")).default
     }
 
     /**
@@ -119,5 +120,10 @@ export async function init() {
         "update_cells"              : (await import("./providers/dom-provider/update-cells-rule.js")).default,
         "create_inflation_template" : (await import("./providers/dom-provider/create-inflation-template-rule.js")).default,
         "get_element"               : (await import("./providers/dom-provider/get-element-rule.js")).default,
+    }
+
+    globalThis.crs.validate.eventsMap = {
+        "post_message"     : (await import("./providers/event-provider/post-message-rule.js")).default,
+        "emit"             : (await import("./providers/event-provider/emit-rule.js")).default,
     }
 }

@@ -34,6 +34,7 @@ export class EventsActions {
             parameters[key] = await crs.process.getValue(parameters[key], context, process, item);
         }
 
-        await crsbinding.events.emitter.emit(step.args.event, parameters);
+        const event = crs.process.getValue(step.args.event, context, process, item);
+        await crsbinding.events.emitter.emit(event, parameters);
     }
 }
