@@ -1,5 +1,5 @@
 use std::cmp::Ordering;
-use std::collections::HashMap;
+use hashbrown::HashMap;
 use serde_json::{Value};
 use crate::duration::iso8601_placement;
 use crate::enums::Placement;

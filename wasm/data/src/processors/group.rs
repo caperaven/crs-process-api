@@ -1,5 +1,5 @@
 use std::borrow::BorrowMut;
-use std::collections::HashMap;
+use hashbrown::HashMap;
 use serde_json::{Value};
 use crate::processors::aggregate::aggregate_rows;
 
