@@ -15,7 +15,7 @@ impl Min {
     }
 }
 
-impl Aggregate<Value> for Min {
+impl Aggregate for Min {
     fn add_value(&mut self, obj: &Value) {
         match iso8601_placement(obj, &self.value) {
             Placement::Before => {

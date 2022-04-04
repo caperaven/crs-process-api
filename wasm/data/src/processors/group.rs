@@ -403,7 +403,7 @@ mod test {
     fn aggregate_subset_test() {
         let data = get_data();
         let group_intent = Vec::from(["value"]);
-        let mut group = group(&group_intent, &data, Some(vec![0, 1, 2]));
+        let group = group(&group_intent, &data, Some(vec![0, 1, 2]));
 
         assert_eq!(group["root"]["child_count"], 2);
         assert_eq!(group["root"]["children"]["10"]["child_count"], 2);

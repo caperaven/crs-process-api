@@ -13,7 +13,7 @@ impl Sum {
     }
 }
 
-impl Aggregate<f64> for Sum {
+impl Aggregate for Sum {
     fn add_value(&mut self, obj: &Value) {
         let value: f64 = match obj {
             Value::Null => 0.,
@@ -23,8 +23,8 @@ impl Aggregate<f64> for Sum {
         self.value += value;
     }
 
-    fn value(&self) -> f64 {
-        self.value
+    fn value(&self) -> Value {
+        Value::from(self.value)
     }
 }
 

@@ -14,7 +14,7 @@ impl Max {
     }
 }
 
-impl Aggregate<NaiveDateTime> for Max {
+impl Aggregate for Max {
     fn add_value(&mut self, obj: &Value) {
         match obj {
             Value::Null => {}
@@ -26,8 +26,9 @@ impl Aggregate<NaiveDateTime> for Max {
         }
     }
 
-    fn value(&self) -> NaiveDateTime {
-        self.value
+    fn value(&self) -> Value {
+        let result = self.value.format("%Y/%m/%d %H:%M:%S").to_string();
+        Value::from(result)
     }
 }
 
@@ -45,7 +46,7 @@ mod test {
         max.add_value(&Value::from("1970/01/01 00:00:00"));
 
         let result = max.value();
-        let result_str = result.format("%Y/%m/%d %H:%M:%S").to_string();
+        let result_str = result.as_str().unwrap();
         assert_eq!(result_str, "2022/01/01 00:00:00");
     }
 }

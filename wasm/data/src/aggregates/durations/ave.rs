@@ -13,7 +13,7 @@ impl Ave {
     }
 }
 
-impl Aggregate<Value> for Ave {
+impl Aggregate for Ave {
     fn add_value(&mut self, obj: &Value) {
     }
 

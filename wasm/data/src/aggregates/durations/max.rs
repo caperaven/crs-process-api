@@ -15,7 +15,7 @@ impl Max {
     }
 }
 
-impl Aggregate<Value> for Max {
+impl Aggregate for Max {
     fn add_value(&mut self, obj: &Value) {
         match iso8601_placement(obj, &self.value) {
             Placement::Before => {}

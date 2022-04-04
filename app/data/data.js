@@ -121,7 +121,8 @@ export default class Data extends crsbinding.classes.ViewBase {
                 "min": "value",
                 "max": "value",
                 "ave": "value",
-                "sum": "value2"
+                "sum": "value2",
+                "count": "value2"
             }
         }}, this)
 

@@ -14,7 +14,7 @@ impl Min {
     }
 }
 
-impl Aggregate<NaiveDateTime> for Min {
+impl Aggregate for Min {
     fn add_value(&mut self, obj: &Value) {
          match obj {
              Value::Null => {}
@@ -26,7 +26,10 @@ impl Aggregate<NaiveDateTime> for Min {
          }
     }
 
-    fn value(&self) -> NaiveDateTime { self.value }
+    fn value(&self) -> Value {
+        let result = self.value.format("%Y/%m/%d %H:%M:%S").to_string();
+        Value::from(result)
+    }
 }
 
 #[cfg(test)]
@@ -43,7 +46,7 @@ mod test {
         min.add_value(&Value::from("1970/01/01 00:00:00"));
 
         let result = min.value();
-        let result_str = result.format("%Y/%m/%d %H:%M:%S").to_string();
+        let result_str = result.as_str().unwrap();
         assert_eq!(result_str, "1970/01/01 00:00:00");
     }
 }

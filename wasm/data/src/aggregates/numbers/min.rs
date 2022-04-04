@@ -13,7 +13,7 @@ impl Min {
     }
 }
 
-impl Aggregate<f64> for Min {
+impl Aggregate for Min {
     fn add_value(&mut self, obj: &Value) {
         if obj == &Value::Null {
             return;
@@ -26,8 +26,8 @@ impl Aggregate<f64> for Min {
         }
     }
 
-    fn value(&self) -> f64 {
-        self.value
+    fn value(&self) -> Value {
+        Value::from(self.value)
     }
 }
 
