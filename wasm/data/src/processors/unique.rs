@@ -6,9 +6,15 @@ use crate::enums::Placement;
 use crate::evaluators::LessThan;
 use crate::iso8601_to_duration_str;
 use crate::traits::Eval;
+use crate::utils::flood_indexes;
 
-pub fn get_unique(fields: Vec<Value>, data: Vec<Value>) -> Value {
-    let mut unique_sorted: UniqueSorted = UniqueSorted::new(fields, data);
+pub fn get_unique(fields: Vec<Value>, data: &Vec<Value>, rows: Option<Vec<usize>>) -> Value {
+    let rows = match rows {
+        Some(array) => array,
+        None => flood_indexes(&data)
+    };
+
+    let mut unique_sorted: UniqueSorted = UniqueSorted::new(fields, data, &rows);
     unique_sorted.get_value()
 }
 
@@ -137,12 +143,12 @@ struct UniqueSorted {
 }
 
 impl UniqueSorted {
-    pub fn new(fields: Vec<Value>, data: Vec<Value>) -> UniqueSorted {
+    pub fn new(fields: Vec<Value>, data: &Vec<Value>, rows: &Vec<usize>) -> UniqueSorted {
         let mut result = UniqueSorted {
             fields: UniqueSorted::process_fields(fields)
         };
 
-        result.process_data(data);
+        result.process_data(data, rows);
         return result;
     }
 
@@ -157,8 +163,10 @@ impl UniqueSorted {
         fields
     }
 
-    pub fn process_data(&mut self, data: Vec<Value>) {
-        for record in data {
+    pub fn process_data(&mut self, data: &Vec<Value>, rows: &Vec<usize>) {
+        for row in rows {
+            let record = &data[*row];
+
             for (field, field_data) in &mut self.fields {
                 let value = record.pointer(field);
 
@@ -206,6 +214,27 @@ mod test {
         result
     }
 
+
+    #[test]
+    fn records_test() {
+        let data = get_data();
+        let records = vec![0usize, 1, 2];
+
+        let mut fields: Vec<Value> = Vec::new();
+        fields.push(json!({"name": "value", "type": "long"}));
+
+        let result = get_unique(fields, &data, Some(records));
+
+        assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from(10));
+        assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(2));
+        assert_eq!(result.pointer("/value/1/value").unwrap(), &Value::from(20));
+        assert_eq!(result.pointer("/value/1/count").unwrap(), &Value::from(1));
+
+        let values = result.pointer("/value").unwrap().as_array().unwrap();
+        assert_eq!(values.len(), 2);
+    }
+
+
     #[test]
     fn on_path_test() {
         let data = get_data();
@@ -213,7 +242,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "person.name", "type": "string"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/person.name/0/value").unwrap(), &Value::from("Jane"));
         assert_eq!(result.pointer("/person.name/0/count").unwrap(), &Value::from(1));
@@ -229,7 +258,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "code", "type": "string"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/code/0/value").unwrap(), &Value::from("A"));
         assert_eq!(result.pointer("/code/0/count").unwrap(), &Value::from(1));
@@ -249,7 +278,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "value", "type": "long"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from(5));
         assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
@@ -265,7 +294,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "isActive", "type": "boolean"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/isActive/0/value").unwrap(), &Value::from(false));
         assert_eq!(result.pointer("/isActive/0/count").unwrap(), &Value::from(2));
@@ -284,7 +313,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "duration", "type": "duration"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/duration/0/value/iso").unwrap(), &Value::from("P0DT1H2M30S"));
         assert_eq!(result.pointer("/duration/0/value/duration").unwrap(), &Value::from("0:1:2:30"));
@@ -305,7 +334,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "duration", "type": "duration"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/duration/0/value").unwrap(), &Value::Null);
         assert_eq!(result.pointer("/duration/0/count").unwrap(), &Value::from(1));
@@ -321,7 +350,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "value", "type": "number"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from(10.));
         assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));
@@ -341,7 +370,7 @@ mod test {
         let mut fields: Vec<Value> = Vec::new();
         fields.push(json!({"name": "value", "type": "string"}));
 
-        let result = get_unique(fields, data);
+        let result = get_unique(fields, &data, None);
 
         assert_eq!(result.pointer("/value/0/value").unwrap(), &Value::from("test"));
         assert_eq!(result.pointer("/value/0/count").unwrap(), &Value::from(1));

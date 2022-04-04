@@ -80,7 +80,7 @@ fn get_rows(perspective: &Value, data: &[Value]) -> Vec<usize> {
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Number, Value};
+    use serde_json::{json, Value};
     use crate::processors::build_perspective;
 
     fn get_data() -> Vec<Value> {

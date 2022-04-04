@@ -42,7 +42,8 @@ export default class Perspective extends crsbinding.classes.ViewBase {
             perspective.aggregates = {
                 "min": "number",
                 "max": "number",
-                "ave": "number"
+                "ave": "number",
+                "count": "number"
             }
         }
 

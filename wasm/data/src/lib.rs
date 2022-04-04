@@ -101,11 +101,19 @@ pub fn calculate_group_aggregate(group: String, aggregate_intent: String, data: 
 }
 
 #[wasm_bindgen]
-pub fn unique_values(intent: String, data: String) -> String {
+pub fn unique_values(intent: String, data: String, rows: Vec<usize>) -> String {
     let fields_array: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    let result = get_unique(fields_array, data_array);
+    let unique_rows;
+    if rows.len() == 0 {
+        unique_rows = None;
+    }
+    else {
+        unique_rows = Some(rows);
+    }
+
+    let result = get_unique(fields_array, &data_array, unique_rows);
     return result.to_string();
 }
 

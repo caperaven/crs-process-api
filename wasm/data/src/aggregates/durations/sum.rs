@@ -16,7 +16,7 @@ impl Sum {
 }
 
 impl Aggregate<Value> for Sum {
-    fn add_value(&mut self, obj: &Value) {
+    fn add_value(&mut self, _obj: &Value) {
         // let v1 = Duration::parse(self.value.as_str().unwrap()).unwrap();
         // let v2 = Duration::parse(obj.as_str().unwrap()).unwrap();
         //
@@ -30,7 +30,7 @@ impl Aggregate<Value> for Sum {
         //
         // self.value = Value::from(result.to_std().)
 
-        let v: Duration;
+        let _v: Duration;
     }
 
     fn value(&self) -> Value {
