@@ -36,7 +36,8 @@ impl Aggregate for Count {
 
         for (key, val) in self.values.iter() {
             let mut item = Value::Object(Default::default());
-            item[key] = Value::from(val.clone());
+            item["value"] = Value::from(key.clone());
+            item["count"] = Value::from(val.clone());
             result.push(item);
         }
 
@@ -62,14 +63,17 @@ mod test {
         let result = count.value();
         let value = result.as_array().unwrap();
         for val in value {
-            if val["20"] != json!(null) {
-                assert_eq!(val["20"], Value::from(1))
+            let val_key = val["value"].clone();
+            let val_count = val["count"].clone();
+
+            if val_key == Value::from("20") {
+                assert_eq!(val_count, Value::from(1))
             }
-            if val["10"] != json!(null) {
-                assert_eq!(val["10"], Value::from(2))
+            if val_key == Value::from("10") {
+                assert_eq!(val_count, Value::from(2))
             }
-            if val["5"] != json!(null) {
-                assert_eq!(val["5"], Value::from(1))
+            if val_key == Value::from("5") {
+                assert_eq!(val_count, Value::from(1))
             }
         }
     }
