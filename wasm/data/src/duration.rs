@@ -114,10 +114,48 @@ pub fn iso8601_placement(reference: &Value, evaluate: &Value,) -> Placement {
     Placement::After
 }
 
+
+pub fn duration_to_seconds(duration: Duration) -> f32 {
+    duration.year * 60. * 60. * 24. * 30. * 12.
+        + duration.month * 60. * 60. * 24. * 30.
+        + duration.day * 60. * 60. * 24.
+        + duration.hour * 60. * 60.
+        + duration.minute * 60.
+        + duration.second
+}
+
+pub fn seconds_to_duration(sec: f32) -> Duration {
+    let years;
+    let mut months;
+    let mut days;
+    let mut hours;
+    let mut minutes;
+    let seconds;
+
+    minutes = (sec / 60.).trunc();
+    seconds = sec - (minutes * 60.);
+
+    hours = (minutes / 60.).trunc();
+    minutes = minutes - (hours * 60.);
+
+    days = (hours / 24.).trunc();
+    hours = hours - (days * 24.);
+
+    months = (days / 30.).trunc();
+    days = days - (months * 30.);
+
+    years = (months / 12.).trunc();
+    months = months - (years * 12.);
+
+    Duration::new(years, months, days, hours, minutes, seconds)
+}
+
+
 #[cfg(test)]
 mod test {
+    use iso8601_duration::Duration;
     use serde_json::{json, Value};
-    use crate::duration::{iso8601_placement, iso8601_to_duration_str};
+    use crate::duration::{duration_to_seconds, iso8601_placement, iso8601_to_duration_str, seconds_to_duration};
     use crate::enums::Placement;
     use crate::iso8601_to_duration_str_batch;
 
@@ -189,4 +227,61 @@ mod test {
         assert_eq!(result[2]["value"], Value::from("null"));
     }
 
+    fn convert_to_back(year: f32, month: f32, day: f32, hour: f32, min: f32, sec: f32) -> Duration {
+        let duration = Duration::new(year, month, day, hour, min, sec);
+        let seconds = duration_to_seconds(duration);
+        let result = seconds_to_duration(seconds);
+        result
+    }
+
+    #[test]
+    fn seconds_to_duration_40_seconds_test() {
+        let result = convert_to_back(0., 0., 0., 0., 0., 40.);
+        assert_eq!(result.year, 0.);
+        assert_eq!(result.month, 0.);
+        assert_eq!(result.day, 0.);
+        assert_eq!(result.hour, 0.);
+        assert_eq!(result.minute, 0.);
+        assert_eq!(result.second, 40.);
+
+        let result = convert_to_back(0., 0., 0., 0., 2., 40.);
+        assert_eq!(result.year, 0.);
+        assert_eq!(result.month, 0.);
+        assert_eq!(result.day, 0.);
+        assert_eq!(result.hour, 0.);
+        assert_eq!(result.minute, 2.);
+        assert_eq!(result.second, 40.);
+
+        let result = convert_to_back(0., 0., 0., 3., 2., 40.);
+        assert_eq!(result.year, 0.);
+        assert_eq!(result.month, 0.);
+        assert_eq!(result.day, 0.);
+        assert_eq!(result.hour, 3.);
+        assert_eq!(result.minute, 2.);
+        assert_eq!(result.second, 40.);
+
+        let result = convert_to_back(0., 0., 1., 3., 2., 40.);
+        assert_eq!(result.year, 0.);
+        assert_eq!(result.month, 0.);
+        assert_eq!(result.day, 1.);
+        assert_eq!(result.hour, 3.);
+        assert_eq!(result.minute, 2.);
+        assert_eq!(result.second, 40.);
+
+        let result = convert_to_back(0., 5., 1., 3., 2., 40.);
+        assert_eq!(result.year, 0.);
+        assert_eq!(result.month, 5.);
+        assert_eq!(result.day, 1.);
+        assert_eq!(result.hour, 3.);
+        assert_eq!(result.minute, 2.);
+        assert_eq!(result.second, 40.);
+
+        let result = convert_to_back(2., 5., 1., 3., 2., 40.);
+        assert_eq!(result.year, 2.);
+        assert_eq!(result.month, 5.);
+        assert_eq!(result.day, 1.);
+        assert_eq!(result.hour, 3.);
+        assert_eq!(result.minute, 2.);
+        assert_eq!(result.second, 40.);
+    }
 }

@@ -1,39 +1,50 @@
-use chrono::Duration;
-//use iso8601_duration::Duration;
+use iso8601_duration::Duration;
 use serde_json::Value;
+use crate::duration::{duration_to_seconds};
 use crate::traits::Aggregate;
 
 pub struct Sum {
-    pub value: Value
+    pub value: f32
 }
 
 impl Sum {
     pub fn new() -> Sum {
         Sum {
-            value: Value::from("PT0S")
+            value: 0.0
         }
     }
 }
 
 impl Aggregate for Sum {
-    fn add_value(&mut self, _obj: &Value) {
-        // let v1 = Duration::parse(self.value.as_str().unwrap()).unwrap();
-        // let v2 = Duration::parse(obj.as_str().unwrap()).unwrap();
-        //
-        // let mut result = Duration::new();
-        // result.year = v1.year + v2.year;
-        // result.month = v1.month + v2.month;
-        // result.day = v1.day + v2.day;
-        // result.hour = v1.hour + v2.hour;
-        // result.min = v1.min + v2.min;
-        // result.second = v1.second + v2.second;
-        //
-        // self.value = Value::from(result.to_std().)
+    fn add_value(&mut self, obj: &Value) {
+        let value = obj.as_str().unwrap();
+        let result = Duration::parse(value);
 
-        let _v: Duration;
+        if result.is_ok() {
+            let result = result.unwrap();
+            let seconds = duration_to_seconds(result);
+            self.value += seconds;
+        }
     }
 
     fn value(&self) -> Value {
-        self.value.clone()
+        Value::from(self.value)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use serde_json::{Value};
+    use crate::aggregates::durations::Sum;
+    use crate::traits::Aggregate;
+
+    #[test]
+    fn max_test() {
+        let mut instance = Sum::new();
+        instance.add_value(&Value::from("PT1H"));
+        instance.add_value(&Value::from("PT1M"));
+
+        let value = instance.value();
+        assert_eq!(value, Value::from(3660.0));
     }
 }

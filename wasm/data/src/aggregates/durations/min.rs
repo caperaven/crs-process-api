@@ -29,3 +29,21 @@ impl Aggregate for Min {
         self.value.clone()
     }
 }
+
+#[cfg(test)]
+mod test {
+    use serde_json::{Value};
+    use crate::aggregates::durations::Min;
+    use crate::traits::Aggregate;
+
+    #[test]
+    fn max_test() {
+        let mut instance = Min::new();
+        instance.add_value(&Value::from("PT2.2S"));
+        instance.add_value(&Value::from("PT3.2S"));
+        instance.add_value(&Value::from("PT1.2S"));
+
+        let value = instance.value();
+        assert_eq!(value, Value::from("PT1.2S"));
+    }
+}

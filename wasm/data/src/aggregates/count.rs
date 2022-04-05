@@ -47,7 +47,7 @@ impl Aggregate for Count {
 
 #[cfg(test)]
 mod test {
-    use serde_json::{json, Value};
+    use serde_json::{Value};
     use crate::aggregates::count::Count;
     use crate::traits::Aggregate;
 
