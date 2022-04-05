@@ -122,7 +122,10 @@ export default class Data extends crsbinding.classes.ViewBase {
                 "max": "value",
                 "ave": "value",
                 "sum": "value2",
-                "count": "value2"
+                "count": "value2",
+                "min:duration": "duration",
+                "max:duration": "duration",
+                "ave:duration": "duration"
             }
         }}, this)
 
@@ -500,25 +503,30 @@ async function createData(count) {
         let age = await crs.intent.random.integer({args: {min: 20, max: 60}});
 
         let site;
+        let duration;
         if (value < 20) {
             site = "Site 1";
+            duration = "PT1H"
         }
         else if (value < 60) {
             site = "Site 2"
+            duration = "PT3H20M"
         }
         else {
             site = "Site 3"
+            duration = "PT20S"
         }
 
         result.push({
-            id      : i,
-            code    : `Code ${i}`,
-            value   : value,
-            value2  : i % 3 ? null : value2,
-            person  : {
-                age: age
+            id       : i,
+            code     : `Code ${i}`,
+            value    : value,
+            value2   : i % 3 ? null : value2,
+            person   : {
+                age  : age
             },
-            site    : site
+            site     : site,
+            duration : duration
         })
     }
     return result;

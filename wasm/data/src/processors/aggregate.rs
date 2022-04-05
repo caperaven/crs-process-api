@@ -1,6 +1,6 @@
 use serde_json::Value;
 use crate::traits::Aggregate;
-use crate::aggregates::{Min, Max, Ave, Sum, Count};
+use crate::aggregates;
 use crate::utils::flood_indexes;
 
 /// Create aggregate objects based on the rows and data provided
@@ -54,11 +54,19 @@ fn create_aggregator_from_intent(intent: &Value) -> Vec<Box<dyn Aggregate>> {
 
     for (name, _value) in intent.as_object().unwrap().iter() {
         match name.as_str() {
-            "ave"   => aggregates.push(Box::new(Ave::new())),
-            "min"   => aggregates.push(Box::new(Min::new())),
-            "max"   => aggregates.push(Box::new(Max::new())),
-            "sum"   => aggregates.push(Box::new(Sum::new())),
-            "count" => aggregates.push(Box::new(Count::new())),
+            "ave"   => aggregates.push(Box::new(aggregates::Ave::new())),
+            "min"   => aggregates.push(Box::new(aggregates::Min::new())),
+            "max"   => aggregates.push(Box::new(aggregates::Max::new())),
+            "sum"   => aggregates.push(Box::new(aggregates::Sum::new())),
+            "count" => aggregates.push(Box::new(aggregates::Count::new())),
+
+            "ave:duration" => aggregates.push(Box::new(aggregates::DurationAve::new())),
+            "min:duration" => aggregates.push(Box::new(aggregates::DurationMin::new())),
+            "max:duration" => aggregates.push(Box::new(aggregates::DurationMax::new())),
+            "sum:duration" => aggregates.push(Box::new(aggregates::DurationSum::new())),
+
+            "max:date" => aggregates.push(Box::new(aggregates::DateMax::new())),
+            "min:date" => aggregates.push(Box::new(aggregates::DateMin::new())),
             _ => {}
         }
     }

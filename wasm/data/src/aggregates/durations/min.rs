@@ -1,32 +1,36 @@
+use iso8601_duration::Duration;
 use serde_json::Value;
-use crate::duration::iso8601_placement;
-use crate::enums::Placement;
+use crate::duration::{duration_to_seconds};
 use crate::traits::Aggregate;
 
 pub struct Min {
-    pub value: Value
+    pub value: f32
 }
 
 impl Min {
     pub fn new() -> Min {
         Min {
-            value: Value::from("P10000Y")
+            value: f32::MAX
         }
     }
 }
 
 impl Aggregate for Min {
     fn add_value(&mut self, obj: &Value) {
-        match iso8601_placement(obj, &self.value) {
-            Placement::Before => {
-                self.value = obj.clone()
+        let value = obj.as_str().unwrap();
+        let result = Duration::parse(value);
+
+        if result.is_ok() {
+            let result = result.unwrap();
+            let seconds = duration_to_seconds(result);
+            if seconds < self.value {
+                self.value = seconds;
             }
-            Placement::After => {}
         }
     }
 
     fn value(&self) -> Value {
-        self.value.clone()
+        Value::from(self.value)
     }
 }
 
@@ -44,6 +48,6 @@ mod test {
         instance.add_value(&Value::from("PT1.2S"));
 
         let value = instance.value();
-        assert_eq!(value, Value::from("PT1.2S"));
+        assert_eq!(value, Value::from(1.2000000476837158));
     }
 }
