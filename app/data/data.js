@@ -122,7 +122,7 @@ export default class Data extends crsbinding.classes.ViewBase {
                 "max": "value",
                 "ave": "value",
                 "sum": "value2",
-                "count": "value2",
+                "count": "duration",
                 "min:duration": "duration",
                 "max:duration": "duration",
                 "ave:duration": "duration"

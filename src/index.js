@@ -9,7 +9,7 @@ import {ActionActions} from './action-systems/action-actions.js';
 import {MathActions} from "./action-systems/math-actions.js";
 import {ProcessActions} from "./action-systems/process-actions.js";
 import {ModuleActions} from "./action-systems/module-actions.js";
-import {DomActions} from "./action-systems/dom-actions.js";
+import {DomActions, getElement} from "./action-systems/dom-actions.js";
 import {BindingActions} from "./action-systems/binding-actions.js";
 import {SystemActions} from "./action-systems/system-actions.js";
 import {EventsActions} from "./action-systems/events.js";
@@ -55,7 +55,9 @@ globalThis.crs.intent = {
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-
+globalThis.crs.dom = {
+    get_element: getElement
+}
 globalThis.crs.call = (system, fn, args, context, process, item) => {
     return crs.intent[system][fn]({args: args}, context, process, item);
 }

@@ -1,4 +1,4 @@
-import {loadBinding} from "./crsbinding.mock";
+import {loadBinding} from "./crsbinding.mock.js";
 
 export async function init() {
     await loadBinding();
