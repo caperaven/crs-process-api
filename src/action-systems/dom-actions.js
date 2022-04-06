@@ -504,7 +504,7 @@ export class DomActions {
             let args = obj[key];
             args.tag_name = tag_name;
             let child = await this.create_element({ args: args}, context, process, item);
-            child.text_content = ["${", key, "}"].join("");
+            child.textContent = ["${", key, "}"].join("");
 
             if (parent.content != null) {
                 parent.content.appendChild(child);
