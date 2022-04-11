@@ -356,9 +356,9 @@ export default class Data extends crsbinding.classes.ViewBase {
 
     async open_db() {
         this.db = await crs.intent.db.open({args: {
-                name: "test_db",
-                version: 1,
-            }});
+            name: "test_db",
+            version: 1,
+        }});
     }
 
     async delete_db() {
@@ -367,18 +367,17 @@ export default class Data extends crsbinding.classes.ViewBase {
 
     async close_db() {
         this.db = await crs.intent.db.close({args: {db: this.db}});
-        console.log(this.db);
     }
 
     async dump_db() {
         await crs.intent.db.dump({args: {db: this.db, store: "people", records: [
-                    {
-                        name: "John"
-                    },
-                    {
-                        name: "Jane"
-                    }
-                ]}})
+            {
+                name: "John"
+            },
+            {
+                name: "Jane"
+            }
+        ]}})
     }
 
     async get_from_index_db() {
@@ -405,32 +404,6 @@ export default class Data extends crsbinding.classes.ViewBase {
 
     async add_record_db() {
         await crs.intent.db.add_record({args: {db: this.db, store: "people", model: {name: "Added"}}});
-    }
-
-    async create_dump_db() {
-        let db = await crs.intent.db.create_data_dump({args: {
-                name: "test_db_dump",
-                version: 1,
-                tables: {
-                    people: {
-                        indexes: {
-                            id: { unique: true }
-                        }
-                    }
-                },
-                store: "people",
-                records: [
-                    {
-                        id: 0,
-                        name: "John"
-                    },
-                    {
-                        id: 1,
-                        name: "Jane"
-                    }
-                ]
-            }});
-        db = db.close();
     }
 
     // -------- STORE ------- //
@@ -491,6 +464,37 @@ export default class Data extends crsbinding.classes.ViewBase {
     async session_get_object() {
         const result = await crs.intent.session.get_object({args: {key: "person"}});
         console.log(result);
+    }
+
+    async create_tables() {
+        const db = await crs.intent.db.open({args: {
+            name: "test_db",
+            version: 1,
+            tables: {
+                test1: {
+                    indexes: {
+                        id: { unique: true }
+                    }
+                },
+                test2: {
+                    indexes: {
+                        id: { unique: true }
+                    }
+                }
+            }
+        }});
+
+        await db.dump("test1", [
+            { id: 0, code: "Code 0" },
+            { id: 1, code: "Code 1" },
+            { id: 2, code: "Code 2" }
+        ]);
+
+        await db.dump("test2", [
+            { id: 0, code: "Code 5" },
+            { id: 1, code: "Code 6" },
+            { id: 2, code: "Code 7" }
+        ])
     }
 
 }

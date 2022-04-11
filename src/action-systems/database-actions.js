@@ -45,23 +45,6 @@ export class DatabaseActions {
         await db.dump(store, records);
     }
 
-    static async create_data_dump(step, context, process, item) {
-        const version = 1;
-        const dbName = await crs.process.getValue(step.args.name, context, process, item);
-        const tables = await crs.process.getValue(step.args.tables, context, process, item);
-        const store = await crs.process.getValue(step.args.store, context, process, item);
-        const records = await crs.process.getValue(step.args.records, context, process, item);
-
-        this.db = await Database.open(dbName, version, tables);
-        this.db.dump(store, records);
-
-        if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, this.db, context, process, item);
-        }
-
-        return this.db;
-    }
-
     static async get_from_index(step, context, process, item) {
         const db = await crs.process.getValue(step.args.db, context, process, item);
         const store = await crs.process.getValue(step.args.store, context, process, item);
