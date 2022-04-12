@@ -25,15 +25,19 @@ pub fn init_panic_hook() {
 #[wasm_bindgen]
 pub fn in_filter(intent: String, object: String, case_sensitive: bool) -> bool {
     let filters: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
-    let obj = serde_json::from_str(object.as_str()).unwrap();
+    let obj: Value = serde_json::from_str(object.as_str()).unwrap();
+    return processors::in_filter(&filters, &obj, case_sensitive);
 
-    for filter in filters {
-        if evaluate_object(&filter, &obj, case_sensitive) == false {
-            return false;
-        }
-    }
-
-    return true;
+    // let filters: Vec<Value> = serde_json::from_str(intent.as_str()).unwrap();
+    // let obj = serde_json::from_str(object.as_str()).unwrap();
+    //
+    // for filter in filters {
+    //     if evaluate_object(&filter, &obj, case_sensitive) == false {
+    //         return false;
+    //     }
+    // }
+    //
+    // return true;
 }
 
 /// Filter a set of records and give back the indexes of the records visible in the filter.
@@ -140,10 +144,10 @@ pub fn evaluate_obj(expr: String, object: String, case_sensitive: bool) -> bool 
 }
 
 #[wasm_bindgen]
-pub fn build_perspective(intent: String, data: String) -> String {
+pub fn build_perspective(intent: String, data: String, rows: Vec<usize>) -> String {
     let intent_obj = serde_json::from_str(intent.as_str()).unwrap();
     let data_array: Vec<Value> = serde_json::from_str(data.as_str()).unwrap();
 
-    let result = processors::build_perspective(&intent_obj, &data_array);
+    let result = processors::build_perspective(&intent_obj, &data_array, &rows);
     return result;
 }

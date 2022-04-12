@@ -1,13 +1,13 @@
 use serde_json::Value;
 use crate::processors;
 
-pub fn build_perspective(perspective: &Value, data: &[Value]) -> String {
+pub fn build_perspective(perspective: &Value, data: &[Value], rows: &Vec<usize>) -> String {
     /*
         1. filter
         2. sort
         3. group or aggregate
     */
-    let mut rows = get_rows(perspective, data);
+    let mut rows = get_rows(perspective, data, rows);
 
     let sort = perspective.get("sort");
     let group = perspective.get("group");
@@ -58,24 +58,34 @@ fn get_case_sensitive(perspective: &Value) -> bool {
     }
 }
 
-fn get_rows(perspective: &Value, data: &[Value]) -> Vec<usize> {
+fn get_rows(perspective: &Value, data: &[Value], rows: &Vec<usize>) -> Vec<usize> {
     let case_sensitive = get_case_sensitive(perspective);
 
     let mut result: Vec<usize>;
-
     let filter = perspective.get("filter");
-    return match filter {
-        None => {
-            result = Vec::new();
-            for i in 0..data.len() {
-                result.push(i);
+
+    if rows.len() == 0 || filter.is_none() {
+        match filter {
+            None => {
+                result = Vec::new();
+                for i in 0..data.len() {
+                    result.push(i);
+                }
             }
-            result
-        }
-        Some(filter_intent) => {
-            processors::filter(&filter_intent.as_array().unwrap(), data, case_sensitive)
+            Some(filter_intent) => {
+                result = processors::filter(&filter_intent.as_array().unwrap(), data, case_sensitive);
+            }
         }
     }
+    else {
+        result = Vec::new();
+
+        // for row in rows {
+        //     let _item: Value = data[row];
+        // }
+    }
+
+    return result;
 }
 
 #[cfg(test)]
@@ -99,7 +109,7 @@ mod test {
 
         let intent = json!({});
 
-        let result = build_perspective(&intent, &data);
+        let result = build_perspective(&intent, &data, &vec![]);
         assert_eq!(result, "[0,1,2,3,4]");
     }
 
@@ -115,10 +125,10 @@ mod test {
             "sort": [{"name": "code", "direction": "dec"}]
         });
 
-        let result = build_perspective(&intent1, &data);
+        let result = build_perspective(&intent1, &data, &vec![]);
         assert_eq!(result, "[0,1,2,3,4]");
 
-        let result = build_perspective(&intent2, &data);
+        let result = build_perspective(&intent2, &data, &vec![]);
         assert_eq!(result, "[4,3,2,1,0]");
     }
 
@@ -129,7 +139,7 @@ mod test {
             "group": ["value"]
         });
 
-        let result = build_perspective(&intent, &data);
+        let result = build_perspective(&intent, &data, &vec![]);
         assert_eq!(result.contains("root"), true);
     }
 
@@ -142,7 +152,7 @@ mod test {
             "case_sensitive": false
         });
 
-        let result = build_perspective(&intent, &data);
+        let result = build_perspective(&intent, &data, &vec![]);
         assert_eq!(result, "[0,1,4]");
     }
 
@@ -156,7 +166,7 @@ mod test {
             "sort": [{"name": "code", "direction": "asc"}]
         });
 
-        let result = build_perspective(&intent, &data);
+        let result = build_perspective(&intent, &data, &vec![]);
         assert_eq!(result, "[0,1,4]");
     }
 
@@ -171,7 +181,7 @@ mod test {
             "group": ["value"]
         });
 
-        let result = build_perspective(&intent, &data);
+        let result = build_perspective(&intent, &data, &vec![]);
         let group: Value = serde_json::from_str(result.as_str()).unwrap();
 
         assert_eq!(group["root"]["child_count"], 2);
@@ -194,7 +204,7 @@ mod test {
             }
         });
 
-        let result = build_perspective(&intent, &data);
+        let result = build_perspective(&intent, &data, &vec![]);
         let agg: Value = serde_json::from_str(result.as_str()).unwrap();
         let collection = agg.as_array().unwrap();
 

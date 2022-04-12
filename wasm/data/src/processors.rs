@@ -7,7 +7,7 @@ mod perspective;
 //mod summary;
 //mod structures;
 
-pub use filter::filter;
+pub use filter::{filter, in_filter};
 pub use sort::{sort};
 pub use group::group;
 pub use group::get_group_rows;

@@ -203,6 +203,7 @@ export class DataActions {
     }
 
     static async perspective(step, context, process, item) {
+        const rows = await crs.process.getValue(step.args.rows, context, process, item) || [];
         let source = await crs.process.getValue(step.args.source, context, process, item);
 
         if (typeof source != "string") {
@@ -211,7 +212,7 @@ export class DataActions {
 
         const perspective = await crs.process.getValue(step.args.perspective, context, process, item);
 
-        let result = build_perspective(JSON.stringify(perspective), source);
+        let result = build_perspective(JSON.stringify(perspective), source, rows);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

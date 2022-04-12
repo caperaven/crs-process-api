@@ -29,10 +29,19 @@ pub fn filter(intent: &[Value], data: &[Value], case_sensitive: bool) -> Vec<usi
     filter_result
 }
 
+pub fn in_filter(filters: &[Value], obj: &Value, case_sensitive: bool) -> bool {
+    for filter in filters {
+        if evaluate_object(&filter, &obj, case_sensitive) == false {
+            return false;
+        }
+    }
+    return true;
+}
+
 #[cfg(test)]
 mod test {
     use serde_json::{json, Value};
-    use crate::processors::filter;
+    use crate::processors::{filter, in_filter};
     use serde_json::Value::Null;
 
     fn get_data() -> Vec<Value> {
@@ -109,5 +118,21 @@ mod test {
 
         let result = filter(&intent, &data, false);
         assert_eq!(result.len(), 2);
+    }
+
+    #[test]
+    fn in_filter_test() {
+        let value1 = json!({"id": 0, "code": "A", "value": 10, "isActive": true, "person": {"name": "John"}});
+        let value2 = json!({"id": 0, "code": "B", "value": 10, "isActive": true, "person": {"name": "John"}});
+
+        let mut intent: Vec<Value> = Vec::new();
+        intent.push(json!({ "field": "code", "operator": "==", "value": "A"}));
+        intent.push(json!({ "field": "value", "operator": "==", "value": 10 }));
+
+        let value1_result = in_filter(&intent, &value1, true);
+        let value2_result = in_filter(&intent, &value2, true);
+
+        assert_eq!(value1_result, true);
+        assert_eq!(value2_result, false);
     }
 }
