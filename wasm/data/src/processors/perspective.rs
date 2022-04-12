@@ -64,27 +64,39 @@ fn get_rows(perspective: &Value, data: &[Value], rows: &Vec<usize>) -> Vec<usize
     let mut result: Vec<usize>;
     let filter = perspective.get("filter");
 
-    if rows.len() == 0 || filter.is_none() {
-        match filter {
-            None => {
-                result = Vec::new();
-                for i in 0..data.len() {
-                    result.push(i);
-                }
+    match filter {
+        None => {
+            result = get_row_range(data.len())
+        }
+        Some(filter_intent) => {
+            let filters = filter_intent.as_array().unwrap();
+
+            if rows.len() == 0 {
+                result = processors::filter(filters, data, case_sensitive);
             }
-            Some(filter_intent) => {
-                result = processors::filter(&filter_intent.as_array().unwrap(), data, case_sensitive);
+            else {
+                result = Vec::new();
+
+                for row in rows {
+                    let index: usize = *row;
+                    let item: &Value = &data[index];
+
+                    if processors::in_filter(filters, item, case_sensitive) {
+                        result.push(index)
+                    }
+                }
             }
         }
     }
-    else {
-        result = Vec::new();
 
-        // for row in rows {
-        //     let _item: Value = data[row];
-        // }
+    return result;
+}
+
+fn get_row_range(length: usize) -> Vec<usize> {
+    let mut result: Vec<usize> = Vec::new();
+    for i in 0..length {
+        result.push(i);
     }
-
     return result;
 }
 
@@ -92,6 +104,7 @@ fn get_rows(perspective: &Value, data: &[Value], rows: &Vec<usize>) -> Vec<usize
 mod test {
     use serde_json::{json, Value};
     use crate::processors::build_perspective;
+    use crate::processors::perspective::get_rows;
 
     fn get_data() -> Vec<Value> {
         let mut result: Vec<Value> = Vec::new();
@@ -101,6 +114,46 @@ mod test {
         result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true, "person": {"name": "Jane"}}));
         result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false, "person": {"name": "Andrew"}}));
         return result;
+    }
+
+    #[test]
+    fn get_rows_no_filter_test() {
+        let data = get_data();
+        let intent = json!({});
+        let result = get_rows(&intent, &data, &vec![]);
+
+        assert_eq!(result.len(), 5);
+        assert_eq!(result[0], 0);
+        assert_eq!(result[1], 1);
+        assert_eq!(result[2], 2);
+        assert_eq!(result[3], 3);
+        assert_eq!(result[4], 4);
+    }
+
+    #[test]
+    fn get_rows_with_filter_test() {
+        let data = get_data();
+        let intent = json!({
+            "filter": [{ "field": "value", "operator": "<", "value": 20 }]
+        });
+        let result = get_rows(&intent, &data, &vec![]);
+
+        assert_eq!(result.len(), 3);
+        assert_eq!(result[0], 0);
+        assert_eq!(result[1], 1);
+        assert_eq!(result[2], 4);
+    }
+
+    #[test]
+    fn get_rows_with_filter_and_rows_test() {
+        let data = get_data();
+        let intent = json!({
+            "filter": [{ "field": "value", "operator": "<", "value": 20 }]
+        });
+        let result = get_rows(&intent, &data, &vec![1, 2, 3]);
+
+        assert_eq!(result.len(), 1);
+        assert_eq!(result[0], 1);
     }
 
     #[test]
