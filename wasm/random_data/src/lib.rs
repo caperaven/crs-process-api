@@ -55,7 +55,7 @@ fn get_random_duration() -> String {
     format!("PT{}H{}M{}S", hours, min, seconds)
 }
 
-fn generate_data(count: usize) -> Vec<Value> {
+pub fn generate_data(count: usize) -> Vec<Value> {
     let external_codes = [get_random_code(), get_random_code(), get_random_code(), get_random_code(), get_random_code()];
     let durations = ["PT4H30M11S".to_string(), get_random_duration(), get_random_duration(), get_random_duration(), get_random_duration()];
 

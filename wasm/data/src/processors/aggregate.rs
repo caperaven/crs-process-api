@@ -78,6 +78,7 @@ fn create_aggregator_from_intent(intent: &Value) -> Vec<Box<dyn Aggregate>> {
 mod test {
     use serde_json::{json, Value};
     use crate::processors::aggregate::{aggregate_rows};
+    use random_data::generate_data;
 
     fn get_data() -> Vec<Value> {
         let mut result: Vec<Value> = Vec::new();
@@ -87,6 +88,28 @@ mod test {
         result.push(json!({"id": 3, "code": "D", "value": 20, "isActive": true}));
         result.push(json!({"id": 4, "code": "E", "value": 5, "isActive": false}));
         return result;
+    }
+
+    #[test]
+    fn count_durations_test() {
+        let count: i64 = 10000;
+        let data = generate_data(count as usize);
+
+        let intent = json!({
+            "count": "duration"
+        });
+
+        let result = aggregate_rows(&intent, &data, None);
+
+        let array = result.as_array().unwrap();
+        let agg = (&array[0]["value"]).as_array().unwrap();
+
+        let mut sum = 0;
+        for i in 0..agg.len() {
+            let value: i64 = *&agg[i]["count"].as_i64().unwrap();
+            sum += value
+        }
+        assert_eq!(sum, count)
     }
 
     #[test]

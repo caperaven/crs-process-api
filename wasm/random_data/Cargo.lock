@@ -68,6 +68,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "random_data"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "serde_json",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -88,14 +96,6 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
-]
-
-[[package]]
-name = "tests"
-version = "0.1.0"
-dependencies = [
- "rand",
- "serde_json",
 ]
 
 [[package]]

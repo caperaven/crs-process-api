@@ -3,7 +3,7 @@ use crate::traits::Aggregate;
 use hashbrown::HashMap;
 
 pub struct Count {
-    pub values: HashMap<String, i8>
+    pub values: HashMap<String, i64>
 }
 
 impl Count {
@@ -21,7 +21,7 @@ impl Aggregate for Count {
             _ => obj.to_string()
         };
 
-        let mut count = 1;
+        let mut count: i64 = 1;
         let key_ptr = key.as_str();
 
         if self.values.contains_key(key_ptr) {
