@@ -291,6 +291,7 @@ name : "area_name"
 | element   | target element                      |   true   |          |
 | areas     | array of area objects               |   true   |          |
 | auto_fill | create and add divs to each reagion |  false   |  false   |
+| tag_name | element tag name to use to auto fill with | false | "div" |
 
 **json**
 

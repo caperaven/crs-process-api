@@ -58,7 +58,12 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
             { start: {col: 0, row: 2}, end: {col: 2, row: 2}, name: "area3" }
         ]
 
-        await crs.call("cssgrid", "set_regions", {element: this.element, areas: areas, auto_fill: true});
+        await crs.call("cssgrid", "set_regions", {
+            element: this.element,
+            areas: areas,
+            auto_fill: true,
+            tag_name: "my-component"
+        });
     }
 
     async clearRegion() {

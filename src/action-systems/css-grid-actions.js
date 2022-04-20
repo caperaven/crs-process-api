@@ -97,10 +97,12 @@ export class CssGridActions {
         element.style.gridTemplateAreas = result.join(" ");
 
         if (auto_fill == true) {
+            const tag_name = (await crs.process.getValue(step.args.tag_name, context, process, item)) || "div";
+
             for (const area of names) {
                 await crs.call("dom", "create_element", {
                     parent: element,
-                    tag_name: "div",
+                    tag_name: tag_name,
                     dataset: {
                         area: area
                     },
