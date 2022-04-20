@@ -112,6 +112,21 @@ export class CssGridActions {
         }
     }
 
+
+    /**
+     * Remove elements that occupy a defined region
+     * @returns {Promise<void>}
+     */
+    static async clear_region(step, context, process, item) {
+        const element   = await getElement(step.args.element);
+        const area      = await crs.process.getValue(step.args.area, context, process, item);
+
+        const elements = element.querySelectorAll(`[data-area="${area}"]`);
+        for (const element of elements) {
+            element.parentElement.removeChild(element);
+        }
+    }
+
     /**
      * for a css grid get the column count
      */

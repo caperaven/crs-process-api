@@ -60,4 +60,8 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
 
         await crs.call("cssgrid", "set_regions", {element: this.element, areas: areas, auto_fill: true});
     }
+
+    async clearRegion() {
+        await crs.call("cssgrid", "clear_region", { element: this.element, area: "area1" })
+    }
 }

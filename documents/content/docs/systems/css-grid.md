@@ -40,8 +40,9 @@ From the schema side it is most likely the query string.
 8. [remove_rows](#remove_rows)
 9. [set_row_height](#set_row_height)
 10. [set_regions](#set_regions)
-11. [column_count](#column_count)
-12. [row_count](#row_count)
+11. [clear_region](#clear_region)
+12. [column_count](#column_count)
+13. [row_count](#row_count)
 
 ## init
 Ensure that the given element has the css display of "grid"
@@ -321,6 +322,37 @@ const count = crs.call("cssgrid", "set_regions", {
 });
 {{< / highlight >}}
 
+
+## clear_region
+
+For a given area remove elements in that region based on the `data-area` attribute.
+
+| property | description                     | required |
+|:---------|:--------------------------------| :--------: |
+| element  | target element                  | true |
+| area     | area name                       | true |
+
+**json**
+
+{{< highlight js >}}
+"step": {
+    "type"   : "cssgrid",
+    "action" : "clear_region",
+    "args"   : {
+        "element" : "#grid",
+        "area": "area1" 
+    }
+}
+{{< / highlight >}}
+
+**javascript**
+
+{{< highlight js >}}
+const count = crs.call("cssgrid", "clear_region", {
+    "element" : "#grid",
+    "area1": "area1" 
+});
+{{< / highlight >}}
 
 ## column_count
 
