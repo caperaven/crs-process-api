@@ -79,11 +79,14 @@ export class CssGridActions {
     static async set_regions(step, context, process, item) {
         const element   = await getElement(step.args.element);
         const areas     = await crs.process.getValue(step.args.areas, context, process, item);
+        const auto_fill = (await crs.process.getValue(step.args.auto_fill, context, process, item)) || false;
 
         const gridAreas = await areasToArray(element);
 
+        let names = [];
         for (let area of areas) {
             populateAreaIntent(gridAreas, area);
+            names.push(area.name);
         }
 
         let result = [];
@@ -92,6 +95,21 @@ export class CssGridActions {
         }
 
         element.style.gridTemplateAreas = result.join(" ");
+
+        if (auto_fill == true) {
+            for (const area of names) {
+                await crs.call("dom", "create_element", {
+                    parent: element,
+                    tag_name: "div",
+                    dataset: {
+                        area: area
+                    },
+                    styles: {
+                        gridArea: area
+                    }
+                })
+            }
+        }
     }
 
     /**

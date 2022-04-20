@@ -285,10 +285,11 @@ name : "area_name"
 {{< / highlight >}}
 
 
-| property | description | required |
-| :------- | :---------- | :--------: |
-| element  | target element | true |
-| areas    | array of area objects | true |
+| property  | description                         | required | defaults |
+|:----------|:------------------------------------|:--------:| :------- |
+| element   | target element                      |   true   |          |
+| areas     | array of area objects               |   true   |          |
+| auto_fill | create and add divs to each reagion |  false   |  false   |
 
 **json**
 
