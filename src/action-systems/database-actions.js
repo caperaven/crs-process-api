@@ -286,7 +286,9 @@ class Database {
             let store_obj = transaction.objectStore(store);
 
             for (let i = 0; i < records.length; i++) {
-                store_obj.add(records[i], i);
+                const record = records[i];
+                record.__ind = i;
+                store_obj.add(record, i);
             }
 
             this.next_key[store] = records.length;
