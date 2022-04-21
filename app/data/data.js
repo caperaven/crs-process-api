@@ -481,7 +481,8 @@ export default class Data extends crsbinding.classes.ViewBase {
                         id: { unique: true }
                     }
                 }
-            }
+            },
+            add_timestamp: true
         }});
 
         await db.dump("test1", [
@@ -497,6 +498,9 @@ export default class Data extends crsbinding.classes.ViewBase {
         ])
     }
 
+    async delete_old() {
+        crs.call("db", "delete_old", {days: 0.00005})
+    }
 }
 
 async function createData(count) {

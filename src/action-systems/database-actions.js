@@ -8,9 +8,14 @@ export class DatabaseActions {
     }
 
     static async open(step, context, process, item) {
-        const dbName = await crs.process.getValue(step.args.name, context, process, item);
+        let dbName = await crs.process.getValue(step.args.name, context, process, item);
         const version = await crs.process.getValue(step.args.version, context, process, item);
         const tables = await crs.process.getValue(step.args.tables, context, process, item);
+        const addTimestamp = (await crs.process.getValue(step.args.add_timestamp, context, process, item)) || false;
+
+        if (addTimestamp == true) {
+            dbName = `${dbName}_TS${Date.now()}`;
+        }
 
         const instance = Database.open(dbName, version || 1, tables);
 
@@ -19,6 +24,27 @@ export class DatabaseActions {
         }
 
         return instance;
+    }
+
+    static async delete_old(step, context, process, item) {
+        const days = (await crs.process.getValue(step.args.days, context, process, item)) || 1;
+
+        // 1. get all databasses where the name has a time stamp and the time is older than the number of days.
+        const databases = await Database.get_databases();
+        const now = Date.now();
+        const daysOffset = 24*60*60*1000;
+        for (const db of databases) {
+            const name = db.name;
+            if (name.indexOf("_TS") == -1) continue;
+
+            const nameMs = Number(name.split("_TS")[1]);
+            const ms = now - nameMs;
+            const dbDays = ms / daysOffset;
+
+            if (dbDays > days) {
+                Database.delete(name);
+            }
+        }
     }
 
     static async close(step, context, process, item) {
@@ -232,6 +258,10 @@ class Database {
 
     static delete(name) {
         window.indexedDB.deleteDatabase(name);
+    }
+
+    static get_databases() {
+        return window.indexedDB.databases();
     }
 
     get_next_key(store) {
