@@ -306,6 +306,10 @@ class Database {
 
     get_from_index(store, keys) {
         return new Promise(resolve => {
+            for (let i = 0; i < keys.length; i++) {
+                keys[i] = Number(keys[i]);
+            }
+
             let transaction = this.db.transaction([store], "readonly");
             let objectStore = transaction.objectStore(store);
 
