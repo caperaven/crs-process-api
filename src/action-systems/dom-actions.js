@@ -307,9 +307,10 @@ export class DomActions {
     static async set_widget(step, context, process, item) {
         const query = step.args.query;
         const html = await getHTML(step, context, process, item);
+        const ctx = (await crs.process.getValue(step.args.context, context, process, item)) || process?.parameters?.bId;
 
         await crsbinding.events.emitter.postMessage(query, {
-            context: step.args.context || process?.parameters?.bId,
+            context: ctx,
             html: html
         })
     }
