@@ -1,5 +1,3 @@
-import {getElement} from "./dom-actions.js";
-
 export class TranslationActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
@@ -45,7 +43,7 @@ export class TranslationActions {
      */
     static async translate_elements(step, context, process, item) {
         let element = await crs.process.getValue(step.args.element, context, process, item);
-        element = await getElement(element);
+        element = await crs.dom.get_element(element);
         await crsbinding.translations.parseElement(element);
     }
 

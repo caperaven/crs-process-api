@@ -9,7 +9,7 @@ import {ActionActions} from './action-systems/action-actions.js';
 import {MathActions} from "./action-systems/math-actions.js";
 import {ProcessActions} from "./action-systems/process-actions.js";
 import {ModuleActions} from "./action-systems/module-actions.js";
-import {DomActions, getElement} from "./action-systems/dom-actions.js";
+import {DomActions} from "./action-systems/dom-actions.js";
 import {BindingActions} from "./action-systems/binding-actions.js";
 import {SystemActions} from "./action-systems/system-actions.js";
 import {EventsActions} from "./action-systems/events.js";
@@ -21,6 +21,19 @@ import {StorageAction} from "./action-systems/storage.js";
 import {SessionStorageAction} from "./action-systems/session-storage.js";
 import {TranslationActions} from "./action-systems/translation-actions.js";
 import {ValidateActions} from "./action-systems/validate-actions.js";
+import {FileActions} from "./action-systems/files-action.js";
+
+function getElement(element) {
+    if (element instanceof HTMLElement) {
+        return element;
+    }
+
+    if (element instanceof DocumentFragment) {
+        return element;
+    }
+
+    return document.querySelector(element);
+}
 
 globalThis.crs = globalThis.crs || {};
 
@@ -49,7 +62,8 @@ globalThis.crs.intent = {
     storage     : StorageAction,
     session     : SessionStorageAction,
     translations: TranslationActions,
-    validate    : ValidateActions
+    validate    : ValidateActions,
+    files       : FileActions
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
@@ -65,5 +79,3 @@ globalThis.crs.call = (system, fn, args, context, process, item) => {
 crsbinding.events.emitter.on("crs-process-error", (message) => {
     console.error(message.error);
 })
-
-

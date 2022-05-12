@@ -1,5 +1,3 @@
-import {getElement} from "./dom-actions.js"
-
 export class CssGridActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
@@ -9,7 +7,7 @@ export class CssGridActions {
      * Enable a element to be a CSS grid
      */
     static async init(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         element.style.display = "grid";
     }
 
@@ -17,7 +15,7 @@ export class CssGridActions {
      * Set the columns of a grid
      */
     static async set_columns(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const columns = await crs.process.getValue(step.args.columns, context, process, item);
         element.style.gridTemplateColumns = columns;
     }
@@ -26,7 +24,7 @@ export class CssGridActions {
      * Set the rows of a grid
      */
     static async set_rows(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const rows = await crs.process.getValue(step.args.rows, context, process, item);
         element.style.gridTemplateRows = rows;
     }
@@ -77,7 +75,7 @@ export class CssGridActions {
      * Set css region
      */
     static async set_regions(step, context, process, item) {
-        const element   = await getElement(step.args.element);
+        const element   = await crs.dom.get_element(step.args.element);
         const areas     = await crs.process.getValue(step.args.areas, context, process, item);
         const auto_fill = (await crs.process.getValue(step.args.auto_fill, context, process, item)) || false;
 
@@ -120,7 +118,7 @@ export class CssGridActions {
      * @returns {Promise<void>}
      */
     static async clear_region(step, context, process, item) {
-        const element   = await getElement(step.args.element);
+        const element   = await crs.dom.get_element(step.args.element);
         const area      = await crs.process.getValue(step.args.area, context, process, item);
 
         const elements = element.querySelectorAll(`[data-area="${area}"]`);
@@ -133,7 +131,7 @@ export class CssGridActions {
      * for a css grid get the column count
      */
     static async column_count(step) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const result = getColumnCount(element);
         return result;
     }
@@ -142,7 +140,7 @@ export class CssGridActions {
      * for a css grid element get the row count
      */
     static async row_count(step) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const result = getRowCount(element);
         return result;
     }
@@ -181,7 +179,7 @@ async function areasToArray(element) {
 }
 
 async function resize(step, context, process, item, property, valueProperty) {
-    const element = await getElement(step.args.element);
+    const element = await crs.dom.get_element(step.args.element);
     let items = element.style[property].split(" ");
     if (items.length == 0) return;
 
@@ -194,7 +192,7 @@ async function resize(step, context, process, item, property, valueProperty) {
 }
 
 async function add(step, context, process, item, property, valueProperty) {
-    const element = await getElement(step.args.element);
+    const element = await crs.dom.get_element(step.args.element);
     let items = element.style[property].split(" ");
     if (items.length == 0) return;
 
@@ -223,7 +221,7 @@ async function add(step, context, process, item, property, valueProperty) {
 }
 
 async function remove(step, context, process, item, property) {
-    const element = await getElement(step.args.element);
+    const element = await crs.dom.get_element(step.args.element);
     let items = element.style[property].split(" ");
     if (items.length == 0) return;
 

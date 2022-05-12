@@ -10,6 +10,11 @@
       "view": "welcome"
     },
     {
+      "title": "Files",
+      "hash": "#files",
+      "view": "files"
+    },
+    {
       "title": "Dialog",
       "hash": "#dialog",
       "view": "dialog"

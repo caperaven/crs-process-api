@@ -6,7 +6,7 @@ export class DomActions {
     }
 
     static async call_on_element(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
 
         const result = await callFunctionOnPath(element, step, context, process, item);
 
@@ -22,7 +22,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_property(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const value = await crsbinding.utils.getValueOnPath(element, step.args.property);
 
         if (step.args.target != null) {
@@ -35,7 +35,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_properties(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
         const keys = Object.keys(properties);
@@ -49,7 +49,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_attribute(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
 
@@ -58,7 +58,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_attribute(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const value = element?.getAttribute(step.args.attr);
 
         if (step.args.target != null) {
@@ -73,7 +73,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async add_class(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const cls = await crs.process.getValue(step.args.value, context, process, item);
 
         let collection = Array.isArray(cls) == true ? cls : [cls];
@@ -85,7 +85,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_class(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const cls = await crs.process.getValue(step.args.value, context, process, item);
 
         let collection = Array.isArray(cls) == true ? cls : [cls];
@@ -97,7 +97,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_style(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         element.style[step.args.style] = await crs.process.getValue(step.args.value, context, process, item);
     }
 
@@ -106,7 +106,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_styles(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         for (let style of Object.keys(step.args.styles)) {
             element.style[style] = await crs.process.getValue(step.args.styles[style], context, process, item);
         }
@@ -117,7 +117,7 @@ export class DomActions {
      * @returns {Promise<*>}
      */
     static async get_style(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const value = element?.style[step.args.style];
 
         if (step.args.target != null) {
@@ -132,7 +132,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_text(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         element.textContent = await crs.process.getValue(step.args.value, context, process, item);
     }
 
@@ -141,7 +141,7 @@ export class DomActions {
      * @returns {Promise<*|string|*|string|*|*>}
      */
     static async get_text(step, context, process, item) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const value = element.textContent;
 
         if (step.args.target != null) {
@@ -156,7 +156,7 @@ export class DomActions {
      * @returns {Promise<HTMLElement>}
      */
     static async create_element(step, context, process, item) {
-        const parentElement = await getElement(step.args.parent);
+        const parentElement = await crs.dom.get_element(step.args.parent);
         const element = document.createElement(step.args.tag_name);
 
         const attributes = Object.keys(step.args.attributes || {});
@@ -216,7 +216,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async remove_element(step) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         element?.parentElement?.removeChild(element);
 
         await crsbinding.providerManager.releaseElement(element);
@@ -227,7 +227,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async clear_element(step) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         if (element != null) {
             await crsbinding.observation.releaseChildBinding(element);
             while (element.firstChild != null) {
@@ -339,14 +339,14 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async move_element(step) {
-        const element = await getElement(step.args.element);
-        const parent = await getElement(step.args.target);
+        const element = await crs.dom.get_element(step.args.element);
+        const parent = await crs.dom.get_element(step.args.target);
 
         await move_element(element, parent, step.args.position);
     }
 
     static async move_element_down(step) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const target = element.nextElementSibling;
 
         if (target != null) {
@@ -355,7 +355,7 @@ export class DomActions {
     }
 
     static async move_element_up(step) {
-        const element = await getElement(step.args.element);
+        const element = await crs.dom.get_element(step.args.element);
         const target = element.previousElementSibling;
 
         if (target != null) {
@@ -384,8 +384,8 @@ export class DomActions {
     }
 
     static async clone_for_movement(step, context, process, item) {
-        const element = await getElement(step.args.element);
-        const parent = await getElement(step.args.parent);
+        const element = await crs.dom.get_element(step.args.element);
+        const parent = await crs.dom.get_element(step.args.parent);
 
         const position = await crs.process.getValue(step.args.position || {x: 0, y: 0}, context, process, item);
 
@@ -432,7 +432,7 @@ export class DomActions {
         const row_index         = await crs.process.getValue(step.args.row_index, context, process, item);
         let parent              = await crs.process.getValue(step.args.parent, context, process, item);
 
-        parent = await getElement(parent);
+        parent = await crs.dom.get_element(parent);
 
         if (template != null) {
             await load_template(template, id);
@@ -524,7 +524,7 @@ export class DomActions {
      * if it is a css query, go fetch me that element.
      */
     static async get_element(step, context, process, item) {
-        const result = await getElement(step.args.element);
+        const result = await crs.dom.get_element(step.args.element);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -532,18 +532,6 @@ export class DomActions {
 
         return result;
     }
-}
-
-export async function getElement(element) {
-    if (element instanceof HTMLElement) {
-        return element;
-    }
-
-    if (element instanceof DocumentFragment) {
-        return element;
-    }
-
-    return document.querySelector(element);
 }
 
 async function load_template(template, id, context) {
@@ -581,7 +569,7 @@ async function move_element(element, target, position) {
 }
 
 async function filter(query, filter) {
-    const element = await getElement(query);
+    const element = await crs.dom.get_element(query);
     const hasFilter = filter.length > 0;
 
     for (let child of element.children) {
