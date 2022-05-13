@@ -35,12 +35,13 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_properties(step, context, process, item) {
-        const element = await crs.dom.get_element(step.args.element);
+        const element = await crs.process.getValue(step.args.element, context, process, item);
+        const target = await crs.dom.get_element(element);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
         const keys = Object.keys(properties);
         for (let key of keys) {
-            element[key] = await crs.process.getValue(properties[key], context, process, item);
+            target[key] = await crs.process.getValue(properties[key], context, process, item);
         }
     }
 
