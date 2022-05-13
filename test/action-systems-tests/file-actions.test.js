@@ -15,19 +15,18 @@ test("get_file_name", async () => {
 test("get_files", async() => {
     global.fetch = () => new Promise(resolve => {
         resolve({
-            json: () => {
+            blob: () => {
                 return "done"
             }
         })
     })
 
     const result = await get_files({ args: {
-            file: "/folder/file1.png",
-            format: "json"
+            files: ["/folder/file1.png"]
         }
     })
 
-    expect(result.value).toEqual("done");
-    expect(result.name).toEqual("file1");
-    expect(result.ext).toEqual("png");
+    expect(result[0].value).toEqual("done");
+    expect(result[0].name).toEqual("file1");
+    expect(result[0].ext).toEqual("png");
 })

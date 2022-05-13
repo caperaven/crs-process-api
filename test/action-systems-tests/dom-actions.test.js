@@ -65,3 +65,31 @@ test ("DomActions - call_on_element", async () => {
     expect(result).toEqual(150);
     expect(result2).toEqual(110);
 })
+
+test("DomActions - set_properties_on_element", async () => {
+    const element = new ElementMock("my-custom", "myCustom");
+    const context = {};
+    const process = {data: {element}};
+    const args = {
+        element: "$process.data.element",
+        properties: {
+            test1: "1",
+            test2: "2"
+        }
+    }
+
+    await crs.call("dom", "set_properties", args, context, process);
+
+    expect(element.test1).toEqual("1");
+    expect(element.test2).toEqual("2");
+
+    args.element = element;
+    args.properties = {test3: "3"};
+    process.data = {};
+
+    await crs.call("dom", "set_properties", args, context, process);
+
+    expect(element.test1).toEqual("1");
+    expect(element.test2).toEqual("2");
+    expect(element.test3).toEqual("3");
+})

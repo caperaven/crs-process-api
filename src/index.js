@@ -23,7 +23,7 @@ import {TranslationActions} from "./action-systems/translation-actions.js";
 import {ValidateActions} from "./action-systems/validate-actions.js";
 import {FileActions} from "./action-systems/files-action.js";
 
-function getElement(element) {
+function getElement(element, context, process, item) {
     if (element instanceof HTMLElement) {
         return element;
     }
@@ -32,7 +32,13 @@ function getElement(element) {
         return element;
     }
 
-    return document.querySelector(element);
+    const result = crs.process.getValue(element, context, process, item);
+
+    if (typeof result == "string") {
+        return document.querySelector(element);
+    }
+
+    return result;
 }
 
 globalThis.crs = globalThis.crs || {};
