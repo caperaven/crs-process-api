@@ -152,6 +152,28 @@ export class DomActions {
     }
 
     /**
+     * Get element
+     * @returns {Promise<HTMLElement|DocumentFragment|*>}
+     */
+    static async get_element(element, context, process, item) {
+        if (element instanceof HTMLElement) {
+            return element;
+        }
+
+        if (element instanceof DocumentFragment) {
+            return element;
+        }
+
+        const result = await crs.process.getValue(element, context, process, item);
+
+        if (typeof result == "string") {
+            return document.querySelector(element);
+        }
+
+        return result;
+    }
+
+    /**
      * Create a dom element and optionally append it to a defined parent or set it on a target
      * @returns {Promise<HTMLElement>}
      */

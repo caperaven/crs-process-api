@@ -23,24 +23,6 @@ import {TranslationActions} from "./action-systems/translation-actions.js";
 import {ValidateActions} from "./action-systems/validate-actions.js";
 import {FileActions} from "./action-systems/files-action.js";
 
-async function getElement(element, context, process, item) {
-    if (element instanceof HTMLElement) {
-        return element;
-    }
-
-    if (element instanceof DocumentFragment) {
-        return element;
-    }
-
-    const result = await crs.process.getValue(element, context, process, item);
-
-    if (typeof result == "string") {
-        return document.querySelector(element);
-    }
-
-    return result;
-}
-
 globalThis.crs = globalThis.crs || {};
 
 /**
@@ -76,7 +58,7 @@ globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 globalThis.crs.dom = {
-    get_element: getElement
+    get_element: globalThis.crs.intent.dom.get_element
 }
 globalThis.crs.call = (system, fn, args, context, process, item) => {
     return crs.intent[system][fn]({args: args}, context, process, item);
