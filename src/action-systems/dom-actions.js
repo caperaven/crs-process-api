@@ -517,21 +517,6 @@ export class DomActions {
 
         crsbinding.inflationManager.register(id, template, ctxName || "context");
     }
-
-    /**
-     * Get me a instance of a element.
-     * if it is a element return that element.
-     * if it is a css query, go fetch me that element.
-     */
-    static async get_element(step, context, process, item) {
-        const result = await crs.dom.get_element(step.args.element, context, process, item);
-
-        if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, result, context, process, item);
-        }
-
-        return result;
-    }
 }
 
 async function load_template(template, id, context) {
