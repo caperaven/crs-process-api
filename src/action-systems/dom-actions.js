@@ -35,7 +35,7 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_properties(step, context, process, item) {
-        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const element = await crs.dom.get_element(step, context, process, item);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
         const keys = Object.keys(properties);
@@ -155,19 +155,27 @@ export class DomActions {
      * Get element
      * @returns {Promise<HTMLElement|DocumentFragment|*>}
      */
-    static async get_element(element, context, process, item) {
-        if (element instanceof HTMLElement) {
-            return element;
+    static async get_element(step, context, process, item) {
+        if (step instanceof HTMLElement) {
+            return step;
         }
 
-        if (element instanceof DocumentFragment) {
-            return element;
+        if (step instanceof DocumentFragment) {
+            return step;
         }
 
-        const result = await crs.process.getValue(element, context, process, item);
+        if (typeof step == "string") {
+            return document.querySelector(step);
+        }
+
+        const result = await crs.process.getValue(step.args.element, context, process, item);
 
         if (typeof result == "string") {
-            return document.querySelector(element);
+            return document.querySelector(result);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
         }
 
         return result;
