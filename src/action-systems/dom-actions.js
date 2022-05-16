@@ -156,6 +156,8 @@ export class DomActions {
      * @returns {Promise<HTMLElement|DocumentFragment|*>}
      */
     static async get_element(step, context, process, item) {
+        if (step == null) return null;
+
         if (step instanceof HTMLElement) {
             return step;
         }
