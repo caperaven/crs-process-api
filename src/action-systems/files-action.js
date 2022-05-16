@@ -4,7 +4,7 @@ export class FileActions {
     }
 
     static async load(step, context, process, item) {
-        const dialog = step.args.dialog;
+        const dialog = await crs.process.getValue(step.args.dialog, context, process, item);
 
         if (dialog == true) {
             const files = await get_files_dialog(step);
@@ -21,10 +21,21 @@ export class FileActions {
                     value: data
                 })
             }
+
+            if (step.args.target != null) {
+                await crs.process.setValue(step.args.target, results, context, process, item);
+            }
+
             return results;
         }
         else {
-            return await get_files(step, context, process, item);
+            const results = await get_files(step, context, process, item);
+
+            if (step.args.target != null) {
+                await crs.process.setValue(step.args.target, results, context, process, item);
+            }
+
+            return results;
         }
     }
 
@@ -48,6 +59,23 @@ export class FileActions {
 
         link.parentElement.removeChild(link);
         link = null;
+    }
+
+    static async save_canvas(step, context, process, item) {
+        const source = await crs.dom.get_element(step.args.source);
+        const name = (await crs.process.getValue(step.args.name, context, process, item)) || "image";
+        const url = source.toDataURL("image/png");
+
+        let link = document.createElement("a");
+        link.style.display = "none";
+        document.body.appendChild(link);
+
+        link.href = url.replace("image/png", "image/octet-stream");
+        link.download = `${name}.png`;
+        link.click();
+
+        link.parentElement.removeChild(link);
+        link  = null;
     }
 }
 

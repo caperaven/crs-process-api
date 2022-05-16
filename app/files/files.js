@@ -5,8 +5,7 @@ export default class Files extends crsbinding.classes.ViewBase {
 
     async loadAsBlob() {
         let data = await crs.call("files", "load", {
-            dialog: true,
-            format: "blob"
+            dialog: true
         })
 
         await crs.call("files", "save", {
@@ -16,8 +15,7 @@ export default class Files extends crsbinding.classes.ViewBase {
 
     async loadFromFile() {
         let data = await crs.call("files", "load", {
-            files: ["/app/files/barchart.png"],
-            format: "blob"
+            files: ["/app/files/barchart.png"]
         })
 
         await crs.call("files", "save", {
