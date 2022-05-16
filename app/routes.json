@@ -15,6 +15,11 @@
       "view": "files"
     },
     {
+      "title": "Media",
+      "hash": "#media",
+      "view": "media"
+    },
+    {
       "title": "Dialog",
       "hash": "#dialog",
       "view": "dialog"
