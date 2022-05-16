@@ -383,4 +383,27 @@ export default class Dom extends crsbinding.classes.ViewBase {
             remove_template : true
         }}, this)
     }
+
+    async getElementInstance() {
+        const target = document.querySelector("#get-element-target");
+        const element = await crs.dom.get_element(target);
+        element.textContent = "element instance";
+    }
+
+    async getElementQuery() {
+        const element = await crs.dom.get_element("#get-element-target");
+        element.textContent = "element query";
+    }
+
+    async getElementStep() {
+        const context = {
+            element: document.querySelector("#get-element-target")
+        }
+
+        const element = await crs.call("dom", "get_element", {
+            element: "$context.element"
+        }, context);
+
+        element.textContent = "element step";
+    }
 }
