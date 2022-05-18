@@ -93,3 +93,23 @@ test("DomActions - set_properties_on_element", async () => {
     expect(element.test2).toEqual("2");
     expect(element.test3).toEqual("3");
 })
+
+test("DomActions - get_property", async () => {
+    const element = new ElementMock("my-custom", "myCustom");
+    element.test1 = "1";
+    const context = {};
+    let process = {data: {element}};
+    const args = {
+        element: "$process.data.element",
+        property: "test1"
+    }
+
+    let value = await crs.call("dom", "get_property", args, context, process);
+    expect(value).toEqual("1");
+
+    value = null;
+    process = {};
+    args.element = element;
+    value = await crs.call("dom", "get_property", args, context, process);
+    expect(value).toEqual("1");
+});
