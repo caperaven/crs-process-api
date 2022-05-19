@@ -2,11 +2,6 @@ use serde_json::Value;
 use crate::processors;
 
 pub fn build_perspective(perspective: &Value, data: &[Value], rows: &Vec<usize>) -> String {
-    /*
-        1. filter
-        2. sort
-        3. group or aggregate
-    */
     let mut rows = get_rows(perspective, data, rows);
 
     let sort = perspective.get("sort");
@@ -66,7 +61,12 @@ fn get_rows(perspective: &Value, data: &[Value], rows: &Vec<usize>) -> Vec<usize
 
     match filter {
         None => {
-            result = get_row_range(data.len())
+            if rows.len() > 0 {
+                result = rows.clone();
+            }
+            else {
+                result = get_row_range(data.len())
+            }
         }
         Some(filter_intent) => {
             let filters = filter_intent.as_array().unwrap();
@@ -194,6 +194,21 @@ mod test {
 
         let result = build_perspective(&intent, &data, &vec![]);
         assert_eq!(result.contains("root"), true);
+    }
+
+    #[test]
+    fn just_grouping_rows_test() {
+        let data = get_data();
+        let intent = json!({
+            "group": ["value"]
+        });
+
+        let result = build_perspective(&intent, &data, &vec![0, 1, 2]);
+        let json: Value = serde_json::from_str(result.as_str()).unwrap();
+
+        assert_eq!(json.pointer("/root/children/10/row_count").unwrap(), &Value::from(2));
+        assert_eq!(json.pointer("/root/children/20/row_count").unwrap(), &Value::from(1));
+        assert_eq!(json.pointer("/root/children/5/row_count").unwrap_or(&Value::from(0)), &Value::from(0));
     }
 
     #[test]

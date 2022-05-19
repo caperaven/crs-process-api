@@ -127,22 +127,6 @@ mod test {
         assert_eq!(result[0]["value"], Value::from(20.));
     }
 
-    // #[test]
-    // fn count_simple_test() {
-    //     let intent = json!({
-    //         "count": "value"
-    //     });
-    //
-    //     let data = get_data();
-    //     let mut rows = Vec::new();
-    //     rows.push(0);
-    //     rows.push(1);
-    //
-    //     let result = aggregate_rows(&intent, &data, Some(rows));
-    //
-    //     assert_eq!(result[0]["value"], Value::from(2.));
-    // }
-
     #[test]
     fn aggregate_test() {
         let intent = json!({
