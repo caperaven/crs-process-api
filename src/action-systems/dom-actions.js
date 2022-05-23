@@ -5,6 +5,20 @@ export class DomActions {
         await this[step.action]?.(step, context, process, item);
     }
 
+    /**
+     * Used in custom elements to notify that the element is ready.
+     * @returns {Promise<void>}
+     */
+    static async notify_ready(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        element.dataset.ready = "true";
+        element.dispatchEvent(new CustomEvent("ready"));
+    }
+
+    /**
+     * Call a function on a element
+     * @returns {Promise<*>}
+     */
     static async call_on_element(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
 
