@@ -1,3 +1,5 @@
+import "./../../src/action-systems/fs-actions.js";
+
 export default class Files extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
@@ -23,23 +25,50 @@ export default class Files extends crsbinding.classes.ViewBase {
         })
     }
 
-    async loadView() {
-        const blob = "";
+    async select() {
+        this.handle = await crs.call("fs", "select_file");
+        console.log(this.handle);
+    }
 
-        const image_element = await crs.call("view", "image", {
-            data: blob
-        })
+    async selectText() {
+        const content = await crs.call("fs", "read_file");
+        console.log(content);
+    }
 
-        const pdf_element = await crs.call("view", "pdf", {
-            data: blob
-        })
+    async selectJson() {
+        const content = await crs.call("fs", "read_json");
+        console.log(content);
+    }
 
-        const word_element = await crs.call("view", "external", {
-            data: blob
-        })
+    async saveFile() {
+        if (this.handle == null) return;
 
-        const text_element = await crs.call("view", "text", {
-            data: blob
+        const content = this.getProperty("content");
+        await crs.call("fs", "save_file", {
+            file_handle: this.handle,
+            content: content
         })
+    }
+
+    async saveNewText() {
+        const content = this.getProperty("content");
+        await crs.call("fs", "write_new_file", {
+            content: content
+        })
+    }
+
+    async saveNewJson() {
+        const content = this.getProperty("content");
+        const json = JSON.parse(content);
+        await crs.call("fs", "write_new_json", {
+            content: json
+        })
+    }
+
+    async openFolder() {
+        const result = await crs.call('fs', "open_folder");
+        for(let item of result) {
+            console.log(item);
+        }
     }
 }

@@ -1,2 +1,18 @@
+<h2>Files</h2>
 <button click.call="loadAsBlob">Select</button>
 <button click.call="loadFromFile">File</button>
+
+<h2>File System</h2>
+<button click.call="select">Select</button>
+<button click.call="selectText">Text</button>
+<button click.call="selectJson">Json</button>
+
+<h2>Write Files</h2>
+<textarea value.bind="content"></textarea>
+
+<button click.call="saveFile">Save Open File</button>
+<button click.call="saveNewText">Save New Text</button>
+<button click.call="saveNewJson">Save New Json</button>
+
+<h2>Folders</h2>
+<button click.call="openFolder">Open Folder</button>
