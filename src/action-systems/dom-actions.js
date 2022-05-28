@@ -186,10 +186,10 @@ export class DomActions {
             return document.querySelector(step);
         }
 
-        const result = await crs.process.getValue(step.args.element, context, process, item);
+        let result = await crs.process.getValue(step.args.element, context, process, item);
 
         if (typeof result == "string") {
-            return document.querySelector(result);
+            result = document.querySelector(result);
         }
 
         if (step.args.target != null) {
