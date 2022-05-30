@@ -6,9 +6,7 @@ export default class Files extends crsbinding.classes.ViewBase {
     }
 
     async loadAsBlob() {
-        let data = await crs.call("files", "load", {
-            dialog: true
-        })
+        let data = await crs.call("files", "load", { dialog: true })
 
         await crs.call("files", "save", {
             details: data

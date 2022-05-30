@@ -1,8 +1,7 @@
-//import { terser } from "rollup-plugin-terser";
+import { terser } from "rollup-plugin-terser";
 
-function terser() {
-}
-
+// function terser() {
+// }
 
 export default [
     {
@@ -27,6 +26,15 @@ export default [
         input: "src/action-systems/css-grid-actions.js",
         output: [
             {file: 'dist/action-systems/css-grid-actions.js', format: 'es'}
+        ],
+        plugins: [
+            terser()
+        ]
+    },
+    {
+        input: "src/action-systems/fs-actions.js",
+        output: [
+            {file: 'dist/action-systems/fs-actions.js', format: 'es'}
         ],
         plugins: [
             terser()
