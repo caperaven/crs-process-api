@@ -36,7 +36,8 @@ export class FsActions {
      * @returns {Promise<void>}
      */
     static async read_file(step, context, process, item) {
-        const fileHandle = await this.select_file(step, context, process, item);
+        const handle = await crs.process.getValue(step.args?.handle, context, process, item);
+        const fileHandle = handle || await this.select_file(step, context, process, item);
         const file = await fileHandle.getFile();
         return await file.text();
     }
@@ -96,7 +97,8 @@ export class FsActions {
      * @returns {Promise<void>}
      */
     static async open_folder(step, context, process, item) {
-        const dirHandle = await window.showDirectoryPicker();
+        const handle = await crs.process.getValue(step.args?.handle, context, process, item);
+        const dirHandle = handle || await window.showDirectoryPicker();
         await verifyPermission(dirHandle, true);
 
         const results = [];
