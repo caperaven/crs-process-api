@@ -23,7 +23,12 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.call("dom", "create_animation_layer");
 
         this._clickHandler = (event) => {
-            console.log(event.target);
+            crs.call("dom", "clear_animation_layer");
+            crs.call("dom", "highlight", {
+                target: event.target,
+                classes: ["highlight"],
+                duration: 500 // leave it there
+            })
         }
 
         window.addEventListener("click", this._clickHandler);

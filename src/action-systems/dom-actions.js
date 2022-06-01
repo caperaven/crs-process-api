@@ -299,6 +299,34 @@ export class DomActions {
         element.parentElement.removeChild(element);
     }
 
+    static async highlight(step, context, process, item) {
+        const animationLayer = await this.create_animation_layer();
+        const target = await crs.process.getValue(step.args.target, context, process, item);
+        const bounds = target.getBoundingClientRect();
+        const classes = await crs.process.getValue(step.args.classes, context, process, item);
+        const duration = (await crs.process.getValue(step.args.duration, context, process, item)) || 0;
+
+        const highlight = await this.create_element({ args: {
+            parent: animationLayer,
+            tag_name: "div",
+            styles: {
+                position: "fixed",
+                left: `${bounds.left}px`,
+                top: `${bounds.top}px`,
+                width: `${bounds.width}px`,
+                height: `${bounds.height}px`
+            },
+            classes: classes
+        }}, context, process, item);
+
+        if (duration > 0) {
+            const timeout = setTimeout(() => {
+                clearTimeout(timeout);
+                highlight.parentElement?.removeChild(highlight);
+            }, duration)
+        }
+    }
+
     /**
      * Remove the element from the dom
      * @returns {Promise<void>}
