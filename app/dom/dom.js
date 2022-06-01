@@ -19,6 +19,23 @@ export default class Dom extends crsbinding.classes.ViewBase {
         // JHR: todo remove schemas from registry
     }
 
+    async createAnimationLayer() {
+        crs.call("dom", "create_animation_layer");
+
+        this._clickHandler = (event) => {
+            console.log(event.target);
+        }
+
+        window.addEventListener("click", this._clickHandler);
+    }
+
+    async clearAnimationLayer() {
+        window.removeEventListener("click", this._clickHandler);
+        this._clickHandler = null;
+
+        crs.call("dom", "remove_animation_layer");
+    }
+
     async performUIProcess() {
         await crsbinding.events.emitter.emit("run-process", {
             context: this,

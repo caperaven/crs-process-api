@@ -60,7 +60,7 @@ export class DomActions {
         }
     }
 
-        /**
+    /**
      * Set a element's attribute value
      * @returns {Promise<void>}
      */
@@ -257,6 +257,46 @@ export class DomActions {
         }
 
         return element;
+    }
+
+    static async create_animation_layer(step, context, process, item) {
+        const layer = document.querySelector("#animation-layer");
+        if (layer != null) {
+            return layer;
+        }
+
+        const element = await this.create_element({ args: {
+                parent: document.body,
+                tag_name: "div",
+                id: "animation-layer",
+                dataset: {
+                    layer: "animation"
+                },
+                styles: {
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 9999999999,
+                    background: "transparent",
+                    pointerEvents: "none"
+                }
+            }
+        }, context, process, item);
+
+        if (step?.args?.target != null) {
+            await crs.process.setValue(step.args.target, element, context, process, item);
+        }
+
+        return element;
+    }
+
+    static async clear_animation_layer(step, context, process, item) {
+        const element = document.querySelector("#animation-layer");
+        element.innerHTML = "";
+    }
+
+    static async remove_animation_layer(step, context, process, item) {
+        const element = document.querySelector("#animation-layer");
+        element.parentElement.removeChild(element);
     }
 
     /**
