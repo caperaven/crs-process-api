@@ -16,7 +16,6 @@ headless: true
   - [Data]({{< relref "/docs/systems/data.md" >}})
   - [Database]({{< relref "/docs/systems/database.md" >}})
   - [Dom]({{< relref "/docs/systems/dom.md" >}})
-  - [Events]({{< relref "/docs/systems/events.md" >}})
   - [Files]({{< relref "/docs/systems/files.md" >}})
   - [File System]({{< relref "/docs/systems/fs.md" >}})
   - [Loop]({{< relref "/docs/systems/loop.md" >}})
