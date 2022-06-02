@@ -300,7 +300,7 @@ export class DomActions {
 
     static async highlight(step, context, process, item) {
         const animationLayer = await this.get_animation_layer();
-        const target = await crs.process.getValue(step.args.target, context, process, item);
+        const target = await crs.dom.get_element(step.args.target, context, process, item);
         const bounds = target.getBoundingClientRect();
         const classes = await crs.process.getValue(step.args.classes, context, process, item);
         const duration = (await crs.process.getValue(step.args.duration, context, process, item)) || 0;

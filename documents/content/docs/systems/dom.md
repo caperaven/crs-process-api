@@ -30,8 +30,13 @@ This can be called from both the schema and javascript.
 24. [open_tab](#open_tab)
 25. [clone_for_movement](#clone_for_movement)
 26. [elements_from_template](#elements_from_template)
-28. [create_inflation_template](#create_inflation_template)
-29. [get_element](#get_element)
+27. [create_inflation_template](#create_inflation_template)
+28. [get_element](#get_element)
+29. [get_animation_layer](get_animation_layer)
+30. [clear_animation_layer](clear_animation_layer)
+31. [remove_animation_layer](remove_animation_layer)
+32. [highlight](highlight)
+
 
 ## call_on_element
 
@@ -1020,4 +1025,110 @@ Get a element from the dom based on a query or element.
 crs.call("dom", "get_element", {
     "element": "#element"
 });
+{{< / highlight >}}
+
+## get_animation_layer
+
+There can only be one animation layer.  
+This function either creates it for you if it does not exist or returns the existing one.  
+The animation layer is full screen and does not accept pointer events.
+
+The only parameter is the standard "target" parmaeter
+
+**json**
+{{< highlight js >}}
+"step": {
+    "type": "dom",
+    "action": "get_animation_layer",
+    "args": {
+        "target" : "$context.layer"
+    }
+}
+{{< / highlight >}}
+
+**javascript**
+
+{{< highlight js >}}
+const layer = crs.call("dom", "get_animation_layer");
+{{< / highlight >}}
+
+## clear_animation_layer
+
+If the animation layer exists clear it of all children.
+
+**json**
+{{< highlight js >}}
+"step": {
+    "type": "dom",
+    "action": "clear_animation_layer",
+}
+{{< / highlight >}}
+
+**javascript**
+
+{{< highlight js >}}
+const layer = crs.call("dom", "clear_animation_layer");
+{{< / highlight >}}
+
+
+## remove_animation_layer
+
+Remove the animation layer from the dom.
+
+**json**
+{{< highlight js >}}
+"step": {
+    "type": "dom",
+    "action": "remove_animation_layer",
+}
+{{< / highlight >}}
+
+**javascript**
+
+{{< highlight js >}}
+const layer = crs.call("dom", "remove_animation_layer");
+{{< / highlight >}}
+
+
+## highlight
+
+This feature creates a highlight region around a defined element.  
+This can be either a standard styled div or an instance of a template.  
+If you do use a template it is important that you only have one child as this child will be sized to the size of the highlighted element.
+A highlight can be permanent until you clear the animation layer or, you can define its timeout by setting the delay.
+
+I can use this with a existing animation layer but, you don't need to.
+Once you call this it will first create the animation layer if it does not already exist.
+It will however not automatically remove the animation layer once done.
+
+| property | description                                        | required | default |
+|:---------|:-------------------------------------------------- |:--------:|:--------|
+| target   | element or query selector                          |  true    |         | 
+| classes  | array of css classes to use on hightlight element  |  false   |         |
+| duration | how long must the highlight show for (0 = infinite)|  false   | 0       |
+| template | if you want a custom UI, pass this on via the      |  false   |         |
+
+**json**
+{{< highlight js >}}
+"step": {
+    "type": "dom",
+    "action": "highlight",
+    "args": {
+        target: event.target,
+        classes: ["highlight"],
+        duration: 500,
+        template: template
+    }
+}
+{{< / highlight >}}
+
+**js**
+
+{{< highlight js >}}
+await crs.call("dom", "highlight", {
+    target: event.target,
+    classes: ["highlight"],
+    duration: 500,
+    template: template
+})
 {{< / highlight >}}
