@@ -20,14 +20,17 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async createAnimationLayer() {
-        crs.call("dom", "create_animation_layer");
+        const template = document.querySelector("#highlight-template");
 
-        this._clickHandler = (event) => {
-            crs.call("dom", "clear_animation_layer");
-            crs.call("dom", "highlight", {
+        crs.call("dom", "get_animation_layer");
+
+        this._clickHandler = async (event) => {
+            await crs.call("dom", "clear_animation_layer");
+            await crs.call("dom", "highlight", {
                 target: event.target,
                 classes: ["highlight"],
-                duration: 500 // leave it there
+                duration: 500,
+                template: template
             })
         }
 

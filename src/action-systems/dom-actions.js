@@ -259,28 +259,27 @@ export class DomActions {
         return element;
     }
 
-    static async create_animation_layer(step, context, process, item) {
+    static async get_animation_layer(step, context, process, item) {
         const layer = document.querySelector("#animation-layer");
         if (layer != null) {
             return layer;
         }
 
-        const element = await this.create_element({ args: {
-                parent: document.body,
-                tag_name: "div",
-                id: "animation-layer",
-                dataset: {
-                    layer: "animation"
-                },
-                styles: {
-                    position: "fixed",
-                    inset: 0,
-                    zIndex: 9999999999,
-                    background: "transparent",
-                    pointerEvents: "none"
-                }
+        const element = await crs.call("dom", "create_element", {
+            parent: document.body,
+            tag_name: "div",
+            id: "animation-layer",
+            dataset: {
+                layer: "animation"
+            },
+            styles: {
+                position: "fixed",
+                inset: 0,
+                zIndex: 9999999999,
+                background: "transparent",
+                pointerEvents: "none"
             }
-        }, context, process, item);
+        }, context, process, item)
 
         if (step?.args?.target != null) {
             await crs.process.setValue(step.args.target, element, context, process, item);
@@ -296,33 +295,53 @@ export class DomActions {
 
     static async remove_animation_layer(step, context, process, item) {
         const element = document.querySelector("#animation-layer");
-        element.parentElement.removeChild(element);
+        element?.parentElement?.removeChild(element);
     }
 
     static async highlight(step, context, process, item) {
-        const animationLayer = await this.create_animation_layer();
+        const animationLayer = await this.get_animation_layer();
         const target = await crs.process.getValue(step.args.target, context, process, item);
         const bounds = target.getBoundingClientRect();
         const classes = await crs.process.getValue(step.args.classes, context, process, item);
         const duration = (await crs.process.getValue(step.args.duration, context, process, item)) || 0;
+        const template = await crs.process.getValue(step.args.template, context, process, item);
 
-        const highlight = await this.create_element({ args: {
-            parent: animationLayer,
-            tag_name: "div",
-            styles: {
-                position: "fixed",
-                left: `${bounds.left}px`,
-                top: `${bounds.top}px`,
-                width: `${bounds.width}px`,
-                height: `${bounds.height}px`
-            },
-            classes: classes
-        }}, context, process, item);
+        let highlight;
+
+        const styles = {
+            position: "fixed",
+            left: `${bounds.left}px`,
+            top: `${bounds.top}px`,
+            width: `${bounds.width}px`,
+            height: `${bounds.height}px`
+        }
+
+        if (template != null) {
+            highlight = template.content.cloneNode(true).children[0];
+            await crs.call("dom", "set_styles", {
+                element: highlight,
+                styles: styles
+            })
+
+            if (classes != null) {
+                highlight.classList.add(...classes);
+            }
+
+            animationLayer.appendChild(highlight);
+        }
+        else {
+            highlight = await crs.call("dom", "create_element", {
+                parent: animationLayer,
+                tag_name: "div",
+                styles: styles,
+                classes: classes
+            })
+        }
 
         if (duration > 0) {
             const timeout = setTimeout(() => {
                 clearTimeout(timeout);
-                highlight.parentElement?.removeChild(highlight);
+                highlight?.parentElement?.removeChild(highlight);
             }, duration)
         }
     }

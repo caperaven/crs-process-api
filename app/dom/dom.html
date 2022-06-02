@@ -44,12 +44,18 @@
 
     .highlight {
         background: #0055bb22;
+        color: #0055bb;
         border: solid 1px #0055bb;
+        display :flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 <h2>Dom Example</h2>
 
-
+<template id="highlight-template">
+    <div class="highlight">some text in the middle</div>
+</template>
 
 <section>
     <div class="toolbar">
