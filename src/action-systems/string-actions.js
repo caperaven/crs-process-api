@@ -51,7 +51,9 @@ export class StringActions {
 
     static async replace(step, context, process, item) {
         let str = await crs.process.getValue(step.args.source, context, process, item);
-        let result = str.split(step.args.pattern).join(step.args.value);
+        const pattern = await crs.process.getValue(step.args.pattern, context, process, item);
+        const value = await crs.process.getValue(step.args.value, context, process, item);
+        let result = str.split(pattern).join(value);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

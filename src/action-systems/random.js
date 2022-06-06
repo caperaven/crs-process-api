@@ -6,7 +6,7 @@ export class RandomActions {
     static async integer(step, context, process, item) {
         let result =  Math.floor(Math.random() * (step.args.max - step.args.min + 1)) + step.args.min;
 
-        if (step.args.target != null) {
+        if (step.args?.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
 
@@ -16,7 +16,7 @@ export class RandomActions {
     static async float(step, context, process, item) {
         let result =  (Math.random() * (step.args.max - step.args.min + 1)) + step.args.min;
 
-        if (step.args.target != null) {
+        if (step.args?.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
 
