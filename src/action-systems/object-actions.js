@@ -12,32 +12,13 @@ export class ObjectActions {
      * @returns {Promise<void>}
      */
     static async set(step, context, process, item) {
-        if (step.args.properties != null) {
-            const keys = Object.keys(step.args.properties);
-            for (let key of keys) {
-                await globalThis.crs.process.setValue(`${step.args.target}.${key}`, step.args.properties[key], context, process, item);
-            }
-            return;
-        }
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
-        return await globalThis.crs.process.setValue(step.args.target, step.args.value, context, process, item);
-    }
-
-    static async set_on_path(step, context, process, item) {
-        const obj = await crs.process.getValue(step.args.target, context, process, item);
-
-        if (step.args.paths != null) {
-            const paths = await crs.process.getValue(step.args.paths, context, process, item);
-            for (const pathItem of paths) {
-                const path = (await crs.process.getValue(pathItem.path, context, process, item)).split(".").join("/");
-                const value = await crs.process.getValue(pathItem.value, context, process, item);
-                await setValueOnPath(obj, path, value);
-            }
-        }
-        else {
-            const path = (await crs.process.getValue(step.args.path, context, process, item)).split(".").join("/");
-            const value = await crs.process.getValue(step.args.value, context, process, item);
-            await setValueOnPath(obj, path, value);
+        const keys = Object.keys(properties);
+        for (let property of keys) {
+            const value = await crs.process.getValue(properties[property], context, process, item);
+            property = property.split("/").join(".");
+            await crs.process.setValue(property, value, context, process, item);
         }
     }
 
@@ -50,30 +31,15 @@ export class ObjectActions {
      * @returns {Promise<string|*>}
      */
     static async get(step, context, process, item) {
-        const result = await globalThis.crs.process.getValue(step.args.source, context, process, item);
-
-        if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, result, context, process, item);
-        }
-
-        return result;
-    }
-
-    static async get_on_path(step, context, process, item) {
-        let result;
-        if (step.args.paths != null) {
-            const paths = await crs.process.getValue(step.args.paths, context, process, item);
-            for (const pathItem of paths) {
-                const path = await crs.process.getValue(pathItem.path, context, process, item);
-                const source = await crs.process.getValue(pathItem.source, context, process, item);
-                result = await getValueOnPath(source, path);
-                await crs.process.setValue(pathItem.target, result, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+        const result = [];
+        for (let property of properties) {
+            if (property.indexOf("$") == -1) {
+                property = `$context.${property}`
             }
-        }
-        else {
-            const path = await crs.process.getValue(step.args.path, context, process, item);
-            const source = await crs.process.getValue(step.args.source, context, process, item);
-            result = await getValueOnPath(source, path);
+            property = property.split("/").join(".");
+            const value = await crs.process.getValue(property, context, process, item);
+            result.push(value);
         }
 
         if (step.args.target != null) {
@@ -88,28 +54,20 @@ export class ObjectActions {
      * @returns {Promise<void>}
      */
     static async delete(step, context, process, item) {
-        const object = await crs.process.getValue(step.args.target, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
-        if (object != null) {
-            for (let property of step.args.properties || []) {
-                delete object[property];
-            }
-        }
-    }
+        for (let property of properties) {
+            let target = context;
 
-    static async delete_on_path(step, context, process, item) {
-        if (step.args.paths) {
-            const paths = await crs.process.getValue(step.args.paths, context, process, item);
-            for (const pathItem of paths) {
-                const path = await crs.process.getValue(pathItem.path, context, process, item);
-                const target = await crs.process.getValue(pathItem.target, context, process, item);
-                await deleteOnPath(target, path);
+            if (property.indexOf("$process") != -1) {
+                target = process;
             }
-        }
-        else {
-            const path = await crs.process.getValue(step.args.path, context, process, item);
-            const target = await crs.process.getValue(step.args.target, context, process, item);
-            await deleteOnPath(target, path);
+
+            if (property.indexOf("$item") != -1) {
+                target = process;
+            }
+
+            await deleteOnPath(target, property);
         }
     }
 

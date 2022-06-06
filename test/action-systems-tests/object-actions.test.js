@@ -5,93 +5,66 @@ beforeAll(async () => {
     await import("./../../src/index.js");
 })
 
-test("ObjectActions - set - context", async () => {
+test("ObjectActions - set values", async() => {
     const context = {};
-    const descriptor = await SetDescriptor.new("$context.value", 1);
-    await globalThis.crs.process.runStep(descriptor, context);
-    expect(context.value).toEqual(1);
-})
-
-test("ObjectActions - set - process", async () => {
-    const process = {data: {}};
-    const descriptor = await SetDescriptor.new("$process.data.value", 1);
-    await globalThis.crs.process.runStep(descriptor, null, process);
-    expect(process.data.value).toEqual(1);
-})
-
-test("ObjectActrions - delete", async() => {
-    const context = {
-        p1: "hello",
-        p2: "world",
-        p3: "value"
+    const item = {
+        value: "item world"
     }
 
-    const step = {
-        type: "object",
-        action: "delete",
-        args: {
-            target: "$context",
-            properties: ["p1", "p2"]
+    await crs.call("object", "set", {
+        properties: {
+            "$context/value": "Hello World",
+            "subobj/value": "Sub Hello",
+            "itemValue": "$item.value.toUpperCase()"
         }
-    }
+    }, context, null, item)
 
-    await globalThis.crs.process.runStep(step, context, null, null);
-
-    expect(context.p1).toBeUndefined();
-    expect(context.p2).toBeUndefined();
-    expect(context.p3).not.toBeUndefined();
+    expect(context.value).toEqual("Hello World")
+    expect(context.subobj.value).toEqual("Sub Hello");
+    expect(context.itemValue).toEqual("ITEM WORLD");
 })
 
-test("ObjectActions - set - multiple", async () => {
+
+test ("ObjectActions - get values", async() => {
     const context = {
-        origin: "origin value"
+        value: "Hello World",
+        subObj: {
+            value: "Sub Hello"
+        }
     };
 
-    const step = {
-        type: "object",
-        action: "set",
-        args: {
-            target: "$context",
-            properties: {
-                p1: "property 1",
-                p2: "$context.origin"
-            }
+    const results = await crs.call("object", "get", {
+        properties: [
+            "value",
+            "$context/value",
+            "subobj?/value",
+            "subObj/value"
+        ]
+    }, context)
+
+    expect(results[0]).toEqual("Hello World");
+    expect(results[1]).toEqual("Hello World");
+    expect(results[2]).toEqual(undefined);
+    expect(results[3]).toEqual("Sub Hello");
+})
+
+test ("ObjectActions - delete", async() => {
+    const context = {
+        value: "Hello World",
+        subObj: {
+            value: "Sub Hello"
         }
-    }
+    };
 
-    await globalThis.crs.process.runStep(step, context, null, null);
-    expect(context.p1).toEqual("property 1");
-    expect(context.p2).toEqual("origin value");
-})
+    const results = await crs.call("object", "delete", {
+        properties: [
+            "value",
+            "subObj/value"
+        ]
+    }, context)
 
-test("ObjectActions - set - item", async () => {
-    const item = {};
-    const descriptor = await SetDescriptor.new("$item.value", 1);
-    await globalThis.crs.process.runStep(descriptor, null, null, item);
-    expect(item.value).toEqual(1);
-})
-
-test("ObjectActions - set - with functions", async () => {
-    const context = {src: "hello world"};
-    const descriptor = await SetDescriptor.new("$context.value", "$context.src.toUpperCase()");
-    await globalThis.crs.process.runStep(descriptor, context);
-    expect(context.value).toEqual("HELLO WORLD");
-})
-
-test("ObjectActions - get", async () => {
-    const context = {source: "hello world"};
-
-    const step = {
-        type: "object",
-        action: "get",
-        args: {
-            source: "$context.source",
-            target: "$context.result"
-        }
-    }
-
-    await globalThis.crs.process.runStep(step, context);
-    expect(context.result).toEqual(context.source);
+    expect(context.value).toBeUndefined();
+    expect(context.subObj?.value).toBeUndefined();
 })
 
 test("ObjectActions - clone, no fields", async () => {
@@ -208,6 +181,7 @@ test("ObjectActions - set_on_path - multiple", async () => {
             { path: "subObj/value", value: "Test" },
             { path: "subObj2/value", value: "Test2" }
         ],
+
         target: obj
     })
 
