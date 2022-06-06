@@ -17,12 +17,13 @@ export class SystemActions {
      * Sleep function used for testing to emulate network traffic delay
      * @returns {Promise<void>}
      */
-    static async sleep(step) {
-        return new Promise(resolve => {
+    static async sleep(step, context, process, item) {
+        return new Promise(async resolve => {
+            const duration = await crs.process.getValue(step.args.duration, context, process, item);
             let interval = setInterval(() => {
                 clearInterval(interval);
                 resolve();
-            }, Number(step.args.duration || 0));
+            }, Number(duration || 0));
         })
     }
 
