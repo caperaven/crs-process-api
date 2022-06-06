@@ -17,7 +17,7 @@ export class ObjectActions {
         const keys = Object.keys(properties);
         for (let property of keys) {
             const value = await crs.process.getValue(properties[property], context, process, item);
-            property = property.split("/").join(".");
+            property = formatProperty(property);
             await crs.process.setValue(property, value, context, process, item);
         }
     }
@@ -34,10 +34,7 @@ export class ObjectActions {
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
         const result = [];
         for (let property of properties) {
-            if (property.indexOf("$") == -1) {
-                property = `$context.${property}`
-            }
-            property = property.split("/").join(".");
+            property = formatProperty(property);
             const value = await crs.process.getValue(property, context, process, item);
             result.push(value);
         }
@@ -57,6 +54,8 @@ export class ObjectActions {
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
         for (let property of properties) {
+            property = formatProperty(property);
+
             let target = context;
 
             if (property.indexOf("$process") != -1) {
@@ -72,14 +71,13 @@ export class ObjectActions {
     }
 
     static async copy_on_path(step, context, process, item) {
-        if (step.args.paths) {
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const target = await crs.process.getValue(step.args.target, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
-        }
-        else {
-            const path = await crs.process.getValue(step.args.path, context, process, item);
-            const source = await crs.process.getValue(step.args.source, context, process, item);
-            const target = await crs.process.getValue(step.args.target, context, process, item);
-            await copyPath(source, target, path);
+        for (let property of properties) {
+            property = property.split("/").join(".");
+            await copyPath(source, target, property);
         }
     }
 
@@ -121,8 +119,9 @@ export class ObjectActions {
      */
     static async clone(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
-        if (step.args.fields == null) {
+        if (properties == null) {
             const result = Object.assign({}, source);
             if (step.args.target != null) {
                 await crs.process.setValue(step.args.target, result, context, process, item);
@@ -132,8 +131,8 @@ export class ObjectActions {
 
         const result = {};
 
-        for (let field of step.args.fields) {
-            result[field] = source[field];
+        for (let property of properties) {
+            result[property] = source[property];
         }
 
         if (step.args.target != null) {
@@ -162,7 +161,7 @@ export class ObjectActions {
 
         if (source == null) return false;
 
-        const paths = await crs.process.getValue(step.args.paths, context, process, item);
+        const paths = await crs.process.getValue(step.args.properties, context, process, item);
 
         for (const path of paths) {
             const value = await getValueOnPath(source, path);
@@ -179,6 +178,13 @@ export class ObjectActions {
 
         return isValid;
     }
+}
+
+function formatProperty(property) {
+    if (property.indexOf("$") == -1) {
+        property = `$context.${property}`
+    }
+    return property.split("/").join(".");
 }
 
 async function setValueOnPath(obj, path, value) {
@@ -229,9 +235,8 @@ async function getValueOnPath(obj, path) {
 }
 
 async function deleteOnPath(obj, path) {
-    // todo: JHR: add flag to flatten object where if it has not properties, delete that also.
     if (obj == null) return;
-    const parts = path.split(".").join("/").split("/");
+    const parts = path.split("$context.").join("").split(".").join("/").split("/");
     let target = obj;
 
     const collection = [obj];
