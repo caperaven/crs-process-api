@@ -18,7 +18,8 @@ export class TranslationActions {
      * @returns {Promise<void>}
      */
     static async get(step, context, process, item) {
-        const key = await crs.process.getValue(step.args.key, context, process, item);
+        let key = await crs.process.getValue(step.args.key, context, process, item);
+        key = key.split("/").join(".");
         let result = await crsbinding.translations.get(key);
 
         if (step.args.target != null) {
