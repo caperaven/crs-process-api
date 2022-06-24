@@ -1,3 +1,18 @@
+<style>
+    #dropzone {
+        height: 10rem;
+        width: 30rem;
+        background-color: lightgrey;
+        text-align: center;
+        border: 0.2rem inset;
+    }
+
+    #dropzone span {
+        vertical-align: text-bottom;
+        line-height: 10rem;
+    }
+</style>
+
 <h2>Files</h2>
 <button click.call="loadAsBlob">Select</button>
 <button click.call="loadFromFile">File</button>
@@ -16,3 +31,8 @@
 
 <h2>Folders</h2>
 <button click.call="openFolder">Open Folder</button>
+
+<h2>Dropzone</h2>
+<div id="dropzone">
+    <span>Drop files here!</span>
+</div>

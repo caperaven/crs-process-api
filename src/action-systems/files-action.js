@@ -77,6 +77,32 @@ export class FileActions {
         link.parentElement.removeChild(link);
         link  = null;
     }
+
+    /**
+     * Sets the drag drop events necessary for handeling a file drop
+     * A handler should e passed in through the arguments to recieve the file results.
+     * @returns {Promise<void>}
+     */
+    static async enable_dropzone(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const handler = await crs.process.getValue(step.args.handler, context, process, item);
+        document.addEventListener("drop", filedrop_handler.bind(this, handler));
+        document.addEventListener("dragover", dragover_handler)
+        element.__dropHandler = filedrop_handler;
+        element.__dragoverHandler = dragover_handler;
+    }
+
+    /**
+     * Cleans up and removes file drop events and associated handlers, must be called after using enable_dropzone
+     * @returns {Promise<void>}
+     */
+    static async disable_dropzone(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        document.removeEventListener("drop", element.__dropHandler);
+        document.removeEventListener("dragover", element.__dragoverHandler);
+        delete element.__dropHandler;
+        delete element.__dragoverHandler;
+    }
 }
 
 export class FileFormatter {
@@ -134,4 +160,27 @@ export async function get_files(step, context, process, item) {
     }
 
     return results;
+}
+
+async function dragover_handler(event) {
+    event.preventDefault();
+}
+
+async function filedrop_handler(handler, event) {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    const results = [];
+
+    for (const file of files) {
+        const fileDetails = await get_file_name(file.name);
+        results.push({
+            type: file.type,
+            name: fileDetails.name,
+            ext: fileDetails.ext,
+            size: file.size,
+            value: await file.arrayBuffer()
+        });
+    }
+
+    handler.call(this, results);
 }
