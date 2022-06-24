@@ -3,6 +3,14 @@ import "./../../src/action-systems/fs-actions.js";
 export default class Files extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
+        await this._setupDropzone();
+    }
+
+    async disconnectedCallback() {
+        await crs.call("files", "disable_dropzone", {
+            element: "#dropzone"
+        });
+        await super.disconnectedCallback();
     }
 
     async loadAsBlob() {
@@ -68,5 +76,17 @@ export default class Files extends crsbinding.classes.ViewBase {
         for(let item of result) {
             console.log(item);
         }
+    }
+
+    async _setupDropzone() {
+        await crs.call("files", "enable_dropzone",
+            {
+                element: "#dropzone",
+                handler: this.dropHandler.bind(this)
+            })
+    }
+
+    async dropHandler(results) {
+        console.log(results);
     }
 }
