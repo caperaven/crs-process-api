@@ -182,6 +182,10 @@ export class DomActions {
             return step;
         }
 
+        if (step._dataId != null) {
+            return step;
+        }
+
         if (typeof step == "string") {
             return document.querySelector(step);
         }
