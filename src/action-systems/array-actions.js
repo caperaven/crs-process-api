@@ -31,10 +31,12 @@ export class ArrayActions {
 
         let result;
 
+        const delimiter = (await crs.process.getValue(step.args.delimiter, context, process, item)) || ",";
+
         if (step.args.field != null) {
-            result = field_to_csv(source, step.args.field, step.args.delimiter);
+            result = field_to_csv(source, step.args.field, delimiter);
         } else if (step.args.fields != null) {
-            result = fields_to_csv(source, step.args.fields, step.args.delimiter);
+            result = fields_to_csv(source, step.args.fields, delimiter);
         }
 
         if (step.args.target != null) {
@@ -51,7 +53,8 @@ export class ArrayActions {
     static async concat(step, context, process, item) {
         let result = [];
 
-        for (let source of step.args.sources) {
+        const sources = await crs.process.getValue(step.args.sources, context, process, item);
+        for (let source of sources) {
             let array = await crs.process.getValue(source, context, process, item);
             result = [...result, ...array];
         }

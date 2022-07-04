@@ -68,6 +68,11 @@
       "title": "perspective",
       "hash": "#perspective",
       "view": "perspective"
+    },
+    {
+      "title": "observer",
+      "hash": "#observer",
+      "view": "observer"
     }
   ]
 }

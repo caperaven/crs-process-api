@@ -1,0 +1,80 @@
+{
+  "array": {
+    "description": "Actions for working with arrays",
+    "visible": true,
+    "actions": {
+      "add": {
+        "description": "Add a item to an array",
+        "args": {
+          "target": {
+            "description": "Array to add item too",
+            "type": "path",
+            "required": true
+          },
+          "value": {
+            "description": "item that must be added to array",
+            "type": "any",
+            "required": true
+          }
+        },
+        "returns": null
+      },
+      "field_to_csv": {
+        "description": "convert array to a csv",
+        "args": {
+          "source": {
+            "description": "the array to convert to csv",
+            "type": "path",
+            "required": true
+          },
+          "fields": {
+            "description": "field names to use in csv",
+            "type": "strings",
+            "required": true
+          },
+          "delimiter": {
+            "description": "what character to use as the delimiter between values",
+            "required": false,
+            "default": ","
+          }
+        },
+        "returns": {
+          "type": "array",
+          "example": "1, 2, 3, 4"
+        }
+      },
+      "concat": {
+        "description": "combine multiple arrays into a single",
+        "args": {
+          "sources": {
+            "description": "collection of paths to arrays to use",
+            "type": "string array",
+            "required": true
+          }
+        },
+        "result": "array"
+      }
+    }
+  },
+  "condition": {},
+  "console": {},
+  "loop": {},
+  "object": {},
+  "math": {},
+  "process": {},
+  "dom": {},
+  "binding": {},
+  "system": {},
+  "events": {},
+  "reset": {},
+  "random": {
+    "visible": false
+  },
+  "string": {},
+  "db": {},
+  "storage": {},
+  "session": {},
+  "translations": {},
+  "validate": {},
+  "files": {}
+}

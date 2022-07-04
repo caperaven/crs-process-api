@@ -22,6 +22,7 @@ import {SessionStorageAction} from "./action-systems/session-storage.js";
 import {TranslationActions} from "./action-systems/translation-actions.js";
 import {ValidateActions} from "./action-systems/validate-actions.js";
 import {FileActions} from "./action-systems/files-action.js";
+import {ComponentActions} from "./action-systems/component-actions.js";
 
 globalThis.crs = globalThis.crs || {};
 
@@ -51,7 +52,8 @@ globalThis.crs.intent = {
     session     : SessionStorageAction,
     translations: TranslationActions,
     validate    : ValidateActions,
-    files       : FileActions
+    files       : FileActions,
+    component   : ComponentActions
 }
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
