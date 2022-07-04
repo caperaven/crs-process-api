@@ -61,8 +61,9 @@ test("binding - get and set property", async() => {
         type: "object",
         action: "set",
         args: {
-            target: "$context.field2",
-            value: "$binding.field1"
+            properties: {
+                "$context.field2": "$binding.field1"
+            }
         }
     }
 

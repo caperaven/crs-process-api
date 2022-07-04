@@ -61,8 +61,9 @@ test("LoopActions - loop through - set item value", async () => {
                     type: "object",
                     action: "set",
                     args: {
-                        target: "$item.value",
-                        value: 10
+                        properties: {
+                            "$item.value": 10
+                        }
                     }
                 }
             }
@@ -89,8 +90,9 @@ test("LoopActions - uppercase item value", async () => {
                     type: "object",
                     action: "set",
                     args: {
-                        target: "$item.code",
-                        value: "$item.code.toUpperCase()"
+                        properties: {
+                            "$item.code": "$item.code.toUpperCase()"
+                        }
                     }
                 }
             }

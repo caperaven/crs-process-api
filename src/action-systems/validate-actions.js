@@ -18,7 +18,7 @@ export class ValidateActions {
         const processObj = source[process_name];
         const stepObj = processObj.steps[step_name];
         for (const property of required) {
-            const passed = await crs.call("object", "assert", {source: stepObj.args, paths: [property]});
+            const passed = await crs.call("object", "assert", {source: stepObj.args, properties: [property]});
 
             if (passed == false) {
                 result.passed = false;

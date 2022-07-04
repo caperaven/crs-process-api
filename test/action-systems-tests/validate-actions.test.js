@@ -80,7 +80,7 @@ test("ValidateActions - required - true", async () => {
 
     const result = await crs.call("validate", "required", {
         source  : obj,
-        paths   : ["value", "person/name"]
+        properties   : ["value", "person/name"]
     })
 
     expect(result).toEqual(true);
@@ -89,7 +89,7 @@ test("ValidateActions - required - true", async () => {
 test("ValidateActions - required - false", async () => {
     const result = await crs.call("validate", "required", {
         source  : {},
-        paths   : ["value", "person/name"]
+        properties   : ["value", "person/name"]
     })
 
     expect(result).toEqual(false);
@@ -108,7 +108,7 @@ test("ValidateActions - required - next step", async () => {
                 action: "required",
                 args: {
                     source: "$data",
-                    paths: ["person/firstName"]
+                    properties: ["person/firstName"]
                 },
                 pass_step: "pass_step",
                 fail_step: "fail_step"
