@@ -18,6 +18,7 @@ export class FileActions {
                     name: fileDetails.name,
                     ext: fileDetails.ext,
                     type: file.type,
+                    size: file.size,
                     value: data
                 })
             }
@@ -124,9 +125,10 @@ export async function get_file_name(path) {
     const pathParts = path.split("/");
     const filePart = pathParts[pathParts.length - 1];
     const fileParts = filePart.split(".");
+    const ext =  fileParts[fileParts.length - 1];
     return {
         name: fileParts[0],
-        ext: fileParts[1]
+        ext
     }
 }
 

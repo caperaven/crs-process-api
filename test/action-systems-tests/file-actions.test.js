@@ -7,7 +7,7 @@ beforeAll(async () => {
 })
 
 test("get_file_name", async () => {
-    const file = await get_file_name("/folder/file1.png");
+    const file = await get_file_name("/folder/file1.additional.png");
     expect(file.name).toEqual("file1");
     expect(file.ext).toEqual("png");
 })
