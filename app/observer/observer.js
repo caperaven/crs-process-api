@@ -11,16 +11,16 @@ export default class Observer extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         this.id = "observer_viewmodel";
 
-        crs.call("component", "observe", {
+        this.id1 = await crs.call("component", "observe", {
             element: this,
             properties: ["data-observer", "loaded-observer"],
             callback: this.callback
         })
 
-        crs.call("component", "observe", {
+        this.id2 = await crs.call("component", "observe", {
             element: this,
-            properties: ["data-observer", "loaded-observer, loaded2-observer"],
-            callback: this.callback
+            properties: ["data-observer", "loaded-observer", "loaded2-observer"],
+            callback: this.callback2
         })
 
         await super.connectedCallback();
@@ -34,7 +34,20 @@ export default class Observer extends crsbinding.classes.ViewBase {
         crsbinding.data.setProperty(this, "title", "observer is ready");
     }
 
+    callback2() {
+        crsbinding.data.setProperty(this, "title2", "observer2 is ready");
+
+        crs.call("component", "unobserve", {
+            element: this,
+            ids: [this.id1, this.id2]
+        })
+    }
+
     ready() {
         crsbinding.data.setProperty(this, "loaded-observer", true);
+    }
+
+    ready2() {
+        crsbinding.data.setProperty(this, "loaded2-observer", true);
     }
 }
