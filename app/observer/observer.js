@@ -34,10 +34,10 @@ export default class Observer extends crsbinding.classes.ViewBase {
         crsbinding.data.setProperty(this, "title", "observer is ready");
     }
 
-    callback2() {
+    async callback2() {
         crsbinding.data.setProperty(this, "title2", "observer2 is ready");
 
-        crs.call("component", "unobserve", {
+        await crs.call("component", "unobserve", {
             element: this,
             ids: [this.id1, this.id2]
         })
