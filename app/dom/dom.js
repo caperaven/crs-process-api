@@ -359,14 +359,14 @@ export default class Dom extends crsbinding.classes.ViewBase {
             { description: "item 5" }
         ]
 
-        await crs.intent.dom.elements_from_template({ args: {
+        await crs.call("dom", "elements_from_template", {
             template_id     : "tpl_simple",
             template        : "#tpl_simple",
             data            : data,
             parent          : "#tpl_simple-parent",
             remove_template : true,
             recycle         : false
-        }}, this)
+        }, this)
     }
 
     async createFromObject() {
@@ -381,7 +381,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
             { description: "item 8 from object" }
         ]
 
-        await crs.intent.dom.create_inflation_template({args: {
+        await crs.call("dom", "create_inflation_template", {
             template_id: "tpl_generated",
             wrapper: {
                 tag_name: "ul",
@@ -399,14 +399,14 @@ export default class Dom extends crsbinding.classes.ViewBase {
             source: {
                 description: {}
             }
-        }})
+        })
 
-        await crs.intent.dom.elements_from_template({ args: {
+        await crs.call("dom", "elements_from_template", {
             template_id     : "tpl_generated",
             data            : data,
             parent          : "#tpl_simple-parent",
             remove_template : true
-        }}, this)
+        }, this);
     }
 
     async getElementInstance() {

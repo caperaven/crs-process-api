@@ -57,7 +57,7 @@ export class TranslationActions {
         const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
         let string = await crsbinding.translations.get(key);
 
-        let result = await crs.intent.string.inflate({
+        let result = await crs.call("string", "inflate", {
             template: string,
             parameters: parameters
         }, context, process, item);
@@ -69,3 +69,5 @@ export class TranslationActions {
         return result;
     }
 }
+
+crs.intent.translations = TranslationActions;

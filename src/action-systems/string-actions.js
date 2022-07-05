@@ -84,3 +84,5 @@ async function sanitise_parameters(parameters, context, process, item) {
 
     return parameters
 }
+
+crs.intent.string = StringActions;

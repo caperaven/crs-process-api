@@ -52,3 +52,5 @@ async function processBatch(step, stepKeys, collection, target, context, process
         }
     }
 }
+
+crs.intent.loop = LoopActions;

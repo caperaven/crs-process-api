@@ -1,69 +1,51 @@
-import {ProcessRunner} from "./process-runner.js";
-import {SchemaRegistry} from "./process-registry.js";
-import {ArrayActions} from "./action-systems/array-actions.js";
-import {ConditionActions} from "./action-systems/condition-actions.js";
-import {ConsoleActions} from "./action-systems/console-actions.js";
-import {LoopActions} from "./action-systems/loop-actions.js";
-import {ObjectActions} from './action-systems/object-actions.js';
-import {ActionActions} from './action-systems/action-actions.js';
-import {MathActions} from "./action-systems/math-actions.js";
-import {ProcessActions} from "./action-systems/process-actions.js";
-import {ModuleActions} from "./action-systems/module-actions.js";
-import {DomActions} from "./action-systems/dom-actions.js";
-import {BindingActions} from "./action-systems/binding-actions.js";
-import {SystemActions} from "./action-systems/system-actions.js";
-import {EventsActions} from "./action-systems/events.js";
-import {RestServicesAction} from "./action-systems/rest-services-action.js";
-import {RandomActions} from "./action-systems/random.js";
-import {StringActions} from "./action-systems/string-actions.js";
-import {DatabaseActions} from "./action-systems/database-actions.js";
-import {StorageAction} from "./action-systems/storage.js";
-import {SessionStorageAction} from "./action-systems/session-storage.js";
-import {TranslationActions} from "./action-systems/translation-actions.js";
-import {ValidateActions} from "./action-systems/validate-actions.js";
-import {FileActions} from "./action-systems/files-action.js";
-import {ComponentActions} from "./action-systems/component-actions.js";
+import {SchemaRegistry} from "./process-registry";
+import {ProcessRunner} from "./process-runner";
+
+export async function initialize(root) {
+    await crs.modules.add("action", `${root}/action-systems/action-actions.js`);
+    await crs.modules.add("array", `${root}/action-systems/array-actions.js`);
+    await crs.modules.add("binding", `${root}/action-systems/binding-actions.js`);
+    await crs.modules.add("component", `${root}/action-systems/component-actions.js`);
+    await crs.modules.add("condition", `${root}/action-systems/condition-actions.js`);
+    await crs.modules.add("console", `${root}/action-systems/console-actions.js`);
+    await crs.modules.add("css-grid", `${root}/action-systems/css-grid-actions.js`);
+    await crs.modules.add("data", `${root}/action-systems/data-actions.js`);
+    await crs.modules.add("database", `${root}/action-systems/database-actions.js`);
+    await crs.modules.add("dom", `${root}/action-systems/dom-actions.js`);
+    await crs.modules.add("events", `${root}/action-systems/events-actions.js`);
+    await crs.modules.add("files", `${root}/action-systems/files-actions.js`);
+    await crs.modules.add("fs", `${root}/action-systems/fs-actions.js`);
+    await crs.modules.add("loop", `${root}/action-systems/loop-actions.js`);
+    await crs.modules.add("math", `${root}/action-systems/math-actions.js`);
+    await crs.modules.add("media", `${root}/action-systems/media-actions.js`);
+    await crs.modules.add("module", `${root}/action-systems/module-actions.js`);
+    await crs.modules.add("object", `${root}/action-systems/object-actions.js`);
+    await crs.modules.add("process", `${root}/action-systems/process-actions.js`);
+    await crs.modules.add("random", `${root}/action-systems/random-actions.js`);
+    await crs.modules.add("rest-service", `${root}/action-systems/rest-service-actions.js`);
+    await crs.modules.add("session-storage", `${root}/action-systems/session-storage-actions.js`);
+    await crs.modules.add("local-storage", `${root}/action-systems/local-storage-actions.js`);
+    await crs.modules.add("string", `${root}/action-systems/string-actions.js`);
+    await crs.modules.add("system", `${root}/action-systems/system-actions.js`);
+    await crs.modules.add("translation", `${root}/action-systems/translation-actions.js`);
+    await crs.modules.add("validate", `${root}/action-systems/validate-actions.js`);
+}
 
 globalThis.crs = globalThis.crs || {};
-
-/**
- * Register features on the intent.
- * This can be used programmatically.
- */
-globalThis.crs.intent = {
-    array       : ArrayActions,
-    condition   : ConditionActions,
-    console     : ConsoleActions,
-    loop        : LoopActions,
-    object      : ObjectActions,
-    action      : ActionActions,
-    math        : MathActions,
-    process     : ProcessActions,
-    module      : ModuleActions,
-    dom         : DomActions,
-    binding     : BindingActions,
-    system      : SystemActions,
-    events      : EventsActions,
-    rest        : RestServicesAction,
-    random      : RandomActions,
-    string      : StringActions,
-    db          : DatabaseActions,
-    storage     : StorageAction,
-    session     : SessionStorageAction,
-    translations: TranslationActions,
-    validate    : ValidateActions,
-    files       : FileActions,
-    component   : ComponentActions
-}
+globalThis.crs.intent = {}
 
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-globalThis.crs.dom = {
-    get_element: globalThis.crs.intent.dom.get_element
-}
+globalThis.crs.dom = await crs.modules.get("dom");
+
 globalThis.crs.call = (system, fn, args, context, process, item) => {
     return crs.intent[system][fn]({args: args}, context, process, item);
+}
+
+globalThis.crs.getNextStep = (process, step) => {
+    if (typeof step == "object") return step;
+    return crsbinding.utils.getValueOnPath(process.steps, step);
 }
 
 crsbinding.events.emitter.on("crs-process-error", (message) => {

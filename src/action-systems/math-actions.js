@@ -54,3 +54,5 @@ export class MathActions {
         return result;
     }
 }
+
+crs.intent.math = MathActions;

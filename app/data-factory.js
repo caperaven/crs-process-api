@@ -47,10 +47,10 @@ async function getRandomCode() {
     let results = [];
 
     for (let i = 0; i < 6; i++) {
-        const int = await crs.intent.random.integer({ args: {
+        const int = await crs.call("random", "integer", {
             min: 48,
             max: 122
-        }})
+        })
 
         results.push(int);
     }
@@ -59,10 +59,10 @@ async function getRandomCode() {
 }
 
 async function getRandomNumber(min, max) {
-    return await crs.intent.random.integer({ args: {
-            min: min,
-            max: max
-        }})
+    return await crs.call("random", "integer",{
+        min: min,
+        max: max
+    })
 }
 
 async function getRandomExternalCode() {

@@ -405,7 +405,7 @@ export class DomActions {
                         if (errors.length > 0) {
                             if (process.parameters?.bId !== null) {
                                 step.args.errors = errors;
-                                await crs.intent.binding.set_errors(step, context, process, item);
+                                await crs.call("binding", "set_errors", step.args, context, process, item);
                             }
 
                             return;
@@ -512,11 +512,9 @@ export class DomActions {
     }
 
     static async open_tab(step, context, process, item) {
-        let url = await crs.intent.string.inflate({
-            args: {
-                template: step.args.url,
-                parameters: step.args.parameters
-            }
+        let url = await crs.call("string", "inflate", {
+            template: step.args.url,
+            parameters: step.args.parameters
         }, context, process, item);
 
         window.open(url, "_blank");
@@ -605,13 +603,6 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async update_cells(step, context, process, item) {
-        /**
-            await crs.intent.dom.update_cells({ args: {
-                template_id     : "tpl_generated",
-                data            : batch,
-                row_index       : 5
-            }}, this)
-         */
         return this.elements_from_template(step, context, process, item);
     }
 
@@ -784,3 +775,5 @@ async function setWidgetContent(id, html, url, context, process, item) {
         document.querySelector(`#${id}`).focus();
     }
 }
+
+crs.intent.dom = DomActions;

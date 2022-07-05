@@ -38,15 +38,17 @@ export class ValidateActions {
         const success = await crs.call("object", "assert", step.args, context, process, item);
 
         if (success && step.pass_step != null) {
-            const nextStep = await crs.intent.condition.getNextStep(process, step.pass_step);
+            const nextStep = await crs.getNextStep(process, step.pass_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
 
         if (!success && step.fail_step != null) {
-            const nextStep = await crs.intent.condition.getNextStep(process, step.fail_step);
+            const nextStep = await crs.getNextStep(process, step.fail_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
 
         return success;
     }
 }
+
+crs.intent.validate = ValidateActions;

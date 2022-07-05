@@ -20,7 +20,7 @@ export class ProcessRunner {
             populatePrefixes(prefixes, process);
 
             if (process.bindable == true) {
-                await crs.intent.binding.create_context(null, context, process, null);
+                await crs.call("binding", "create_context", {}, context, process, null);
             }
 
             await crsbinding.events.emitter.emit("process-starting", process);
@@ -63,7 +63,7 @@ export class ProcessRunner {
 
         let result;
         if (step.type != null) {
-            result = await crs.intent[step.type].perform(step, context, process, item);
+            result = await crs.call(step.type, "perform", step.args, context, process, item);
         }
 
         if (step.args?.log != null) {
@@ -220,11 +220,9 @@ async function setBinding(name, step, context, process, item) {
 
     const keys = Object.keys(obj);
     for (let key of keys) {
-        await crs.intent.binding.set_property({
-            args: {
-                property: key,
-                value: obj[key]
-            }
+        await crs.call("binding", "set_property", {
+            property: key,
+            value: obj[key]
         }, context, process, item);
     }
 }

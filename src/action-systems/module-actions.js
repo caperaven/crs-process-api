@@ -28,3 +28,5 @@ export class ModuleActions {
         return await crs.modules.getConstant(step.args.module, step.args.name);
     }
 }
+
+crs.intent.module = ModuleActions;

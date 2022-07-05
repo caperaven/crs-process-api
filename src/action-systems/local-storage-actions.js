@@ -1,4 +1,4 @@
-export class StorageAction {
+export class LocalStorageAction {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
@@ -44,3 +44,5 @@ export class StorageAction {
         localStorage.removeItem(key);
     }
 }
+
+crs.intent.local_storage = LocalStorageAction;

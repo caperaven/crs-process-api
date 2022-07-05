@@ -223,3 +223,5 @@ async function fields_to_csv(array, fields, delimiter) {
 
     return result;
 }
+
+crs.intent.array = ArrayActions;

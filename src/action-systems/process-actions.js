@@ -18,3 +18,5 @@ export class ProcessActions {
         });
     }
 }
+
+crs.intent.process = ProcessActions;

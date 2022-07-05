@@ -1,6 +1,7 @@
 /**
  * ConsoleActions provides access to the console.md with common features
  */
+import * as Console from "console";
 
 export class ConsoleActions {
     static async perform(step, context, process, item) {
@@ -32,3 +33,5 @@ export class ConsoleActions {
         console.table(message);
     }
 }
+
+crs.intent.console = ConsoleActions;

@@ -31,19 +31,16 @@ export class ConditionActions {
         const success = expf.function(ctx) == true;
 
         if (success && step.pass_step != null) {
-            const nextStep = await this.getNextStep(process, step.pass_step);
+            const nextStep = await crs.getNextStep(process, step.pass_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
         if (!success && step.fail_step != null) {
-            const nextStep = await this.getNextStep(process, step.fail_step);
+            const nextStep = await crs.getNextStep(process, step.fail_step);
             await crs.process.runStep(nextStep, context, process, item);
         }
 
         return success;
     }
-
-    static async getNextStep(process, step) {
-        if (typeof step == "object") return step;
-        return crsbinding.utils.getValueOnPath(process.steps, step);
-    }
 }
+
+crs.intent.condition = ConditionActions;

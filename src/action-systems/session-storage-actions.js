@@ -44,3 +44,5 @@ export class SessionStorageAction {
         sessionStorage.removeItem(key);
     }
 }
+
+crs.intent.session_storage = SessionStorageAction;

@@ -1,5 +1,3 @@
-import "./../../src/action-systems/data-actions.js";
-
 export default class Data extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
@@ -11,23 +9,23 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async groupData() {
-        const result = await crs.intent.data.group({ args: {
+        const result = await crs.call("data", "group", {
             source: "$context.data",
             fields: ["site", "value"]
-        }}, this);
+        }, this);
 
         console.log(result);
     }
 
     async filterData() {
-        const result = await crs.intent.data.filter({ args: {
+        const result = await crs.call("data", "filter", {
             source: "$context.data",
             filter: [
                 { "field": "site", "operator": "==", "value": "site 1" },
                 { "field": "value", "operator": "gt", "value": 10    }
             ],
             case_sensitive: false
-        }}, this);
+        }, this);
 
         console.table(this.data);
 
@@ -37,13 +35,13 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async filterPath() {
-        const result = await crs.intent.data.filter({ args: {
+        const result = await crs.call("data", "filter", {
                 source: "$context.data",
                 filter: [
                     { "field": "person.age", "operator": ">", "value": 50 }
                 ],
                 case_sensitive: false
-            }}, this);
+            }, this);
 
         console.table(this.data);
 
@@ -53,37 +51,37 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async inFilter() {
-        let result = await crs.intent.data.in_filter({ args: {
+        let result = await crs.call("data", "in_filter", {
             source: {site: "Site 1", value: 15},
             filter: [
                 { "field": "site", "operator": "==", "value": "site 1" },
                 { "field": "value", "operator": "gt", "value": 10    }
             ],
             case_sensitive: false
-        }}, this);
+        }, this);
 
         console.log(result);
 
-        result = await crs.intent.data.in_filter({ args: {
-                source: {site: "Site 1", value: 5},
-                filter: [
-                    { "field": "site", "operator": "==", "value": "site 1" },
-                    { "field": "value", "operator": "gt", "value": 10    }
-                ],
-                case_sensitive: false
-            }}, this);
+        result = await crs.call("data", "in_filter", {
+            source: {site: "Site 1", value: 5},
+            filter: [
+                { "field": "site", "operator": "==", "value": "site 1" },
+                { "field": "value", "operator": "gt", "value": 10    }
+            ],
+            case_sensitive: false
+        }, this);
 
         console.log(result);
     }
 
     async sortData() {
-        const result = await crs.intent.data.sort( { args: {
+        const result = await crs.call("data", "sort", {
             source: "$context.data",
             sort: [
                 { "name": "site", "direction": "dec" },
                 { "name": "value", "direction": "asc" }
             ]
-        }}, this)
+        }, this);
 
         const print = [];
         for (const item of result) {
@@ -100,22 +98,21 @@ export default class Data extends crsbinding.classes.ViewBase {
             {value: "PT010H00M00S"},
         ]
 
-        const result = await crs.intent.data.sort( { args: {
-                source: data,
-                sort: [
-                    { "name": "value", "direction": "asc" }
-                ]
-            }}, this)
+        const result = await crs.call("data", "sort", {
+            source: data,
+            sort: [
+                { "name": "value", "direction": "asc" }
+            ]
+        }, this)
 
         const print = [];
         for (const item of result) {
             print.push(data[item]);
         }
-        console.table(print);
     }
 
     async aggData() {
-        const result = await crs.intent.data.aggregate( { args: {
+        const result = await crs.call("data", "aggregate", {
             source: "$context.data",
             aggregate: {
                 "min": "value",
@@ -127,30 +124,30 @@ export default class Data extends crsbinding.classes.ViewBase {
                 "max:duration": "duration",
                 "ave:duration": "duration"
             }
-        }}, this)
+        }, this)
 
         console.log(result);
         console.table(this.data);
     }
 
     async unique() {
-        await crs.intent.data.debug();
+        await crs.call("data", "debug");
 
-        let result = await crs.intent.data.unique_values({args: {
+        let result = await crs.call("data", "unique_values", {
                 source: "$context.data",
                 fields: [{"name": "site"}, {"name": "value2", "type": "number"}]
-        }}, this);
+        }, this);
 
         console.log(result);
     }
 
     async aggGroup() {
-        let group = await crs.intent.data.group({ args: {
+        let group = await crs.call("data", "group",  {
             source: "$context.data",
             fields: ["site", "value"]
-        }}, this);
+        }, this);
 
-        let result = await crs.intent.data.aggregate_group({ args: {
+        let result = await crs.call("data", "aggregate_group", {
             source: "$context.data",
             group: group,
             aggregate: {
@@ -159,12 +156,12 @@ export default class Data extends crsbinding.classes.ViewBase {
                 "ave": "value",
                 "sum": "value2"
             }
-        }}, this);
+        }, this);
 
         console.log(result);
         group = result.root.children["Site 1"];
 
-        const site1 = await crs.intent.data.aggregate_group({ args: {
+        const site1 = await crs.call("data", "aggregate_group", {
                 source: "$context.data",
                 group: group,
                 aggregate: {
@@ -173,22 +170,22 @@ export default class Data extends crsbinding.classes.ViewBase {
                     "ave": "value",
                     "sum": "value2"
                 }
-            }}, this);
+            }, this);
 
         result.root.children["Site 1"] = site1;
         console.log(result);
     }
 
     async convertDuration() {
-        const result = await crs.intent.data.iso8601_to_string({args: {value: "P0DT0H9M30.200954S"}});
+        const result = await crs.call("data", "iso8601_to_string", {value: "P0DT0H9M30.200954S"});
         console.log(result);
     }
 
     async convertDurationBatch() {
-        let result = await crs.intent.data.iso8601_batch({args: {value: ["P0DT0H9M30.200954S", "P10DT0H9M"]}});
+        let result = await crs.call("data", "iso8601_batch", {value: ["P0DT0H9M30.200954S", "P10DT0H9M"]});
         console.log(result);
 
-        result = await crs.intent.data.iso8601_batch({args: {
+        result = await crs.call("data", "iso8601_batch", {
             value: [
                 {
                     value: "P0DT0H9M30.200954S",
@@ -200,23 +197,23 @@ export default class Data extends crsbinding.classes.ViewBase {
                 }
             ],
             field: "value"
-        }});
+        });
 
         console.log(result);
     }
 
     async assertObj() {
-        let result = await crs.intent.data.assert_equal({ args: {
+        let result = await crs.call("data", "assert_equal", {
                 source: {person: {name: "John"}},
                 expr: {"field": "person.name", "operator": "==", "value": "John"}
-            }})
+            })
 
         console.log(result);
 
-        result = await crs.intent.data.assert_equal({ args: {
+        result = await crs.call("data", "assert_equal", {
                 source: {person: {name: "John"}},
                 expr: {"field": "person.name", "operator": "==", "value": "Jane"}
-            }})
+            })
 
         console.log(result);
     }
@@ -226,7 +223,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async batches_db() {
         const data = await createData(100, this._dataId);
 
-        let db = await crs.intent.db.create_data_dump({args: {
+        let db = await crs.call("db", "create_data_dump", {
                 name: "batch_db",
                 version: 1,
                 tables: {
@@ -238,23 +235,23 @@ export default class Data extends crsbinding.classes.ViewBase {
                 },
                 store: "data",
                 records: data
-            }});
+            });
 
-        let batch = await crs.intent.db.get_batch({ args: {
+        let batch = await crs.call("db", "get_batch", {
             db: db,
             store: "data",
             start: 0,
             end: 9
-        }})
+        })
 
         console.log(batch);
 
-        batch = await crs.intent.db.get_batch({ args: {
+        batch = await crs.call("db", "get_batch", {
                 db: db,
                 store: "data",
                 start: 10,
                 end: 19
-            }})
+            })
 
         console.log(batch);
 
@@ -264,7 +261,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async get_values() {
         const data = await createData(100, this._dataId);
 
-        let db = await crs.intent.db.create_data_dump({args: {
+        let db = await crs.call("db", "create_data_dump", {
                 name: "batch_db",
                 version: 1,
                 tables: {
@@ -276,13 +273,13 @@ export default class Data extends crsbinding.classes.ViewBase {
                 },
                 store: "data",
                 records: data
-            }});
+            });
 
-        const result = await crs.intent.db.get_values({ args: {
+        const result = await crs.call("db", "get_values", {
             db: db,
             store: "data",
             fields: ["code", "number"]
-        }});
+        });
 
         console.log(result);
     }
@@ -290,7 +287,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async create_page_data() {
         const data = await createData(100, this._dataId);
 
-        let db = await crs.intent.db.create_data_dump({args: {
+        let db = await crs.call("db", "create_data_dump", {
                 name: "batch_db",
                 version: 1,
                 tables: {
@@ -302,46 +299,46 @@ export default class Data extends crsbinding.classes.ViewBase {
                 },
                 store: "data",
                 records: data
-            }});
+            });
 
         db.close();
     }
 
     async calculate_paging() {
-        const db = await crs.intent.db.open({args: {
+        const db = await crs.call("db", "open", {
             name: "batch_db"
-        }})
+        })
 
-        const result = await crs.intent.db.calculate_paging({ args: {
+        const result = await crs.call("db", "calculate_paging", {
                 db: db,
                 store: "data",
                 page_size: 10
-            }});
+            });
 
         console.log(result);
 
         for (let page of [0, 1, 2]) {
-            const page1 = await crs.intent.db.get_page({args: {
+            const page1 = await crs.call("db", "get_page", {
                 db: db,
                 store: "data",
                 page_size: 10,
                 page_number: page,
                 fields: ["id", "code", "number"]
-            }})
+            })
             console.table(page1);
         }
 
-        const range = await crs.intent.db.get_range({ args: {
+        const range = await crs.call("db", "get_range", {
                 db: db,
                 store: "data",
                 field: "number"
-            }})
+            })
 
         console.log(range);
     }
 
     async create_db() {
-        this.db = await crs.intent.db.open({args: {
+        this.db = await crs.call("db", "open", {
             name: "test_db",
             version: 1,
             tables: {
@@ -351,123 +348,119 @@ export default class Data extends crsbinding.classes.ViewBase {
                     }
                 }
             }
-        }});
+        });
     }
 
     async open_db() {
-        this.db = await crs.intent.db.open({args: {
+        this.db = await crs.call("db", "open", {
             name: "test_db",
             version: 1,
-        }});
+        });
     }
 
     async delete_db() {
-        await crs.intent.db.delete({args: {name: "test_db"}});
+        await crs.call("db", "delete", {name: "test_db"});
     }
 
     async close_db() {
-        this.db = await crs.intent.db.close({args: {db: this.db}});
+        this.db = await crs.call("db", "close", {db: this.db});
     }
 
     async dump_db() {
-        await crs.intent.db.dump({args: {db: this.db, store: "people", records: [
+        await crs.call("db", "dump", {db: this.db, store: "people", records: [
             {
                 name: "John"
             },
             {
                 name: "Jane"
             }
-        ]}})
+        ]})
     }
 
     async get_from_index_db() {
-        let result = await crs.intent.db.get_from_index({args: {db: this.db, store: "people", keys: [0, 1]}});
+        let result = await crs.call("db", "get_from_index", {db: this.db, store: "people", keys: [0, 1]});
         console.table(result);
     }
 
     async get_all_db() {
-        let result = await crs.intent.db.get_all({ args: {db: this.db, store: "people"}});
+        let result = await crs.call("db", "get_all", {db: this.db, store: "people"});
         console.log(result);
     }
 
     async clear_db() {
-        await crs.intent.db.clear({ args: {db: this.db, store: "people"}});
+        await crs.call("db", "clear", {db: this.db, store: "people"});
     }
 
     async delete_record_db() {
-        await crs.intent.db.delete_record({args: {db: this.db, store: "people", key: 0}});
+        await crs.call("db", "delete_record", {db: this.db, store: "people", key: 0});
     }
 
     async update_record_db() {
-        await crs.intent.db.update_record({args: {db: this.db, store: "people", key: 1, model: {name: "Updated"}}});
+        await crs.call("db", "update_record", {db: this.db, store: "people", key: 1, model: {name: "Updated"}});
     }
 
     async add_record_db() {
-        await crs.intent.db.add_record({args: {db: this.db, store: "people", model: {name: "Added"}}});
+        await crs.call("db", "add_record", {db: this.db, store: "people", model: {name: "Added"}});
     }
 
     // -------- STORE ------- //
 
     async save_value() {
-        await crs.intent.storage.set_value({
-            args: {
-                key: "name",
-                value: "John Doe"
-            }
+        await crs.call("storage", "set_value", {
+            key: "name",
+            value: "John Doe"
         })
     }
 
     async get_value() {
-        const result = await crs.intent.storage.get_value({args: {key: "name"}});
+        const result = await crs.call("storage", "get_value", {key: "name"});
         alert(result);
     }
 
     async save_object() {
-        await crs.intent.storage.set_object({args: {
+        await crs.call("storage", "set_object", {
             key: "person",
             value: {
                 firstName: "John",
                 lastName: "Doe"
             }
-        }})
+        })
     }
 
     async get_object() {
-        const result = await crs.intent.storage.get_object({args: {key: "person"}});
+        const result = await crs.call("storage", "get_object", {key: "person"});
         console.log(result);
     }
 
     async session_save_value() {
-        await crs.intent.session.set_value({
-            args: {
-                key: "name",
-                value: "John Doe"
-            }
+        await crs.call("session", "set_value", {
+            key: "name",
+            value: "John Doe"
         })
     }
 
     async session_get_value() {
-        const result = await crs.intent.session.get_value({args: {key: "name"}});
+        const result = await crs.call("session", "get_value", {key: "name"});
         alert(result);
     }
 
     async session_save_object() {
-        await crs.intent.session.set_object({args: {
-                key: "person",
-                value: {
-                    firstName: "John",
-                    lastName: "Doe"
-                }
-            }})
+        await crs.call("session", "set_object", {
+            key: "person",
+            value: {
+                firstName: "John",
+                lastName: "Doe"
+            }
+        })
     }
 
     async session_get_object() {
-        const result = await crs.intent.session.get_object({args: {key: "person"}});
+        const result = await crs.call("session", "get_object", {key: "person"});
         console.log(result);
     }
 
     async create_tables() {
-        const db = await crs.intent.db.open({args: {
+        const db = await crs.call("db", "open", {
             name: "test_db",
             version: 1,
             tables: {
@@ -483,7 +476,7 @@ export default class Data extends crsbinding.classes.ViewBase {
                 }
             },
             add_timestamp: true
-        }});
+        });
 
         await db.dump("test1", [
             { id: 0, code: "Code 0" },
@@ -506,9 +499,9 @@ export default class Data extends crsbinding.classes.ViewBase {
 async function createData(count) {
     let result = [];
     for (let i = 0; i < count; i++) {
-        let value = await crs.intent.random.integer({args: {min: 0, max: 100}});
-        let value2 = await crs.intent.random.integer({args: {min: -10, max: 10}});
-        let age = await crs.intent.random.integer({args: {min: 20, max: 60}});
+        let value = await crs.call("random", "integer", {min: 0, max: 100});
+        let value2 = await crs.call("random", "integer", {min: -10, max: 10});
+        let age = await crs.call("random", "integer", {min: 20, max: 60});
 
         let site;
         let duration;

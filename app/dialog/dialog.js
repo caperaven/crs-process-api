@@ -22,7 +22,6 @@ export default class Input extends crsbinding.classes.ViewBase {
     }
 
     async execute() {
-        crs.intent.onkey_service.getData("field", "query")
     }
 
     async getTemplate(args) {

@@ -66,3 +66,5 @@ function createPropertiesEvaluation(context, properties, id) {
     const fn = new Function(script);
     return fn.bind(context);
 }
+
+crs.intent.component = ComponentActions;

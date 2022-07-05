@@ -44,3 +44,5 @@ export class EventsActions {
         return result;
     }
 }
+
+crs.intent.events = EventsActions;

@@ -30,7 +30,7 @@ export class DataActions {
     }
 
     static async filter(step, context, process, item) {
-        await crs.intent.data.debug();
+        await crs.call("data", "debug");
 
         let source = await crs.process.getValue(step.args.source, context, process, item);
 

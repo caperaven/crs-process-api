@@ -272,3 +272,5 @@ async function copyPath(source, target, path) {
 
     await setValueOnPath(target, path, newValue);
 }
+
+crs.intent.object = ObjectActions;

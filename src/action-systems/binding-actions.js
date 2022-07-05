@@ -89,3 +89,5 @@ export class BindingActions {
         await crsbinding.data.setProperty(process.parameters.bId, store, errors);
     }
 }
+
+crs.intent.binding = BindingActions;

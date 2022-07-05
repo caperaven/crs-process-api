@@ -110,3 +110,5 @@ export class SystemActions {
         return result;
     }
 }
+
+crs.intent.system = SystemActions;

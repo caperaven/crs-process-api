@@ -23,3 +23,5 @@ export class RandomActions {
         return result;
     }
 }
+
+crs.intent.random = RandomActions;

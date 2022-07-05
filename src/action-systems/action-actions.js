@@ -55,3 +55,5 @@ export async function callFunctionOnPath(source, step, context, process, item) {
 
     return fn.call(callContext, ...args);
 }
+
+crs.intent.action = ActionActions;

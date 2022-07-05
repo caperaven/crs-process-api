@@ -9,7 +9,7 @@ const BASE_REQUEST = {
     }
 }
 
-export class RestServicesAction {
+export class RestServicesActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
@@ -86,3 +86,5 @@ async function setTarget(step, result, context, process, item) {
 
     return result;
 }
+
+crs.intent.rest_services = RestServicesActions;
