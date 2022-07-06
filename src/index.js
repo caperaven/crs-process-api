@@ -10,7 +10,7 @@ export async function initialize(root) {
     await crs.modules.add("console", `${root}/action-systems/console-actions.js`);
     await crs.modules.add("css-grid", `${root}/action-systems/css-grid-actions.js`);
     await crs.modules.add("data", `${root}/action-systems/data-actions.js`);
-    await crs.modules.add("database", `${root}/action-systems/database-actions.js`);
+    await crs.modules.add("db", `${root}/action-systems/database-actions.js`);
     await crs.modules.add("dom", `${root}/action-systems/dom-actions.js`);
     await crs.modules.add("events", `${root}/action-systems/events-actions.js`);
     await crs.modules.add("files", `${root}/action-systems/files-actions.js`);
@@ -22,9 +22,9 @@ export async function initialize(root) {
     await crs.modules.add("object", `${root}/action-systems/object-actions.js`);
     await crs.modules.add("process", `${root}/action-systems/process-actions.js`);
     await crs.modules.add("random", `${root}/action-systems/random-actions.js`);
-    await crs.modules.add("rest-service", `${root}/action-systems/rest-service-actions.js`);
-    await crs.modules.add("session-storage", `${root}/action-systems/session-storage-actions.js`);
-    await crs.modules.add("local-storage", `${root}/action-systems/local-storage-actions.js`);
+    await crs.modules.add("rest_services", `${root}/action-systems/rest-services-actions.js`);
+    await crs.modules.add("session_storage", `${root}/action-systems/session-storage-actions.js`);
+    await crs.modules.add("local_storage", `${root}/action-systems/local-storage-actions.js`);
     await crs.modules.add("string", `${root}/action-systems/string-actions.js`);
     await crs.modules.add("system", `${root}/action-systems/system-actions.js`);
     await crs.modules.add("translation", `${root}/action-systems/translation-actions.js`);
@@ -45,7 +45,12 @@ globalThis.crs.call = async (system, fn, args, context, process, item) => {
         await crs.modules.get(system);
     }
 
-    return await crs.intent[system][fn]({args: args}, context, process, item);
+    const module = crs.intent[system];
+    if (module[fn] == null) {
+        console.error(`function "${fn}" does not exist on "${system}"`);
+    }
+
+    return await module[fn]({args: args}, context, process, item);
 }
 
 globalThis.crs.getNextStep = (process, step) => {

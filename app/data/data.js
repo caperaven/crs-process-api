@@ -223,7 +223,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async batches_db() {
         const data = await createData(100, this._dataId);
 
-        let db = await crs.call("db", "create_data_dump", {
+        let db = await crs.call("db", "dump", {
                 name: "batch_db",
                 version: 1,
                 tables: {
@@ -261,7 +261,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async get_values() {
         const data = await createData(100, this._dataId);
 
-        let db = await crs.call("db", "create_data_dump", {
+        let db = await crs.call("db", "dump", {
                 name: "batch_db",
                 version: 1,
                 tables: {
@@ -287,7 +287,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     async create_page_data() {
         const data = await createData(100, this._dataId);
 
-        let db = await crs.call("db", "create_data_dump", {
+        let db = await crs.call("db", "dump", {
                 name: "batch_db",
                 version: 1,
                 tables: {
@@ -406,19 +406,19 @@ export default class Data extends crsbinding.classes.ViewBase {
     // -------- STORE ------- //
 
     async save_value() {
-        await crs.call("storage", "set_value", {
+        await crs.call("local_storage", "set_value", {
             key: "name",
             value: "John Doe"
         })
     }
 
     async get_value() {
-        const result = await crs.call("storage", "get_value", {key: "name"});
+        const result = await crs.call("local_storage", "get_value", {key: "name"});
         alert(result);
     }
 
     async save_object() {
-        await crs.call("storage", "set_object", {
+        await crs.call("local_storage", "set_object", {
             key: "person",
             value: {
                 firstName: "John",
@@ -428,24 +428,24 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async get_object() {
-        const result = await crs.call("storage", "get_object", {key: "person"});
+        const result = await crs.call("local_storage", "get_object", {key: "person"});
         console.log(result);
     }
 
     async session_save_value() {
-        await crs.call("session", "set_value", {
+        await crs.call("session_storage", "set_value", {
             key: "name",
             value: "John Doe"
         })
     }
 
     async session_get_value() {
-        const result = await crs.call("session", "get_value", {key: "name"});
+        const result = await crs.call("session_storage", "get_value", {key: "name"});
         alert(result);
     }
 
     async session_save_object() {
-        await crs.call("session", "set_object", {
+        await crs.call("session_storage", "set_object", {
             key: "person",
             value: {
                 firstName: "John",
@@ -455,7 +455,7 @@ export default class Data extends crsbinding.classes.ViewBase {
     }
 
     async session_get_object() {
-        const result = await crs.call("session", "get_object", {key: "person"});
+        const result = await crs.call("session_storage", "get_object", {key: "person"});
         console.log(result);
     }
 

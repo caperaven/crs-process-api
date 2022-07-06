@@ -560,4 +560,4 @@ function cloneProperties(source, properties) {
     return result;
 }
 
-crs.intent.database = DatabaseActions;
+crs.intent.db = DatabaseActions;
