@@ -47,7 +47,7 @@ globalThis.crs.call = async (system, fn, args, context, process, item) => {
 
     const module = crs.intent[system];
     if (module[fn] == null) {
-        console.error(`function "${fn}" does not exist on "${system}"`);
+        return await module["perform"]({ action: fn, args: args }, context, process, item);
     }
 
     return await module[fn]({args: args}, context, process, item);
