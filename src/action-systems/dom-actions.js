@@ -294,7 +294,9 @@ export class DomActions {
 
     static async clear_animation_layer(step, context, process, item) {
         const element = document.querySelector("#animation-layer");
-        element.innerHTML = "";
+        if (element != null) {
+            element.innerHTML = "";
+        }
     }
 
     static async remove_animation_layer(step, context, process, item) {

@@ -1,5 +1,5 @@
-import {SchemaRegistry} from "./process-registry";
-import {ProcessRunner} from "./process-runner";
+import {SchemaRegistry} from "./process-registry.js";
+import {ProcessRunner} from "./process-runner.js";
 
 export async function initialize(root) {
     await crs.modules.add("action", `${root}/action-systems/action-actions.js`);
@@ -29,6 +29,8 @@ export async function initialize(root) {
     await crs.modules.add("system", `${root}/action-systems/system-actions.js`);
     await crs.modules.add("translation", `${root}/action-systems/translation-actions.js`);
     await crs.modules.add("validate", `${root}/action-systems/validate-actions.js`);
+
+    crs.dom = (await crs.modules.get("dom")).DomActions;
 }
 
 globalThis.crs = globalThis.crs || {};
@@ -37,10 +39,13 @@ globalThis.crs.intent = {}
 globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-globalThis.crs.dom = await crs.modules.get("dom");
 
-globalThis.crs.call = (system, fn, args, context, process, item) => {
-    return crs.intent[system][fn]({args: args}, context, process, item);
+globalThis.crs.call = async (system, fn, args, context, process, item) => {
+    if (crs.intent[system] == null) {
+        await crs.modules.get(system);
+    }
+
+    return await crs.intent[system][fn]({args: args}, context, process, item);
 }
 
 globalThis.crs.getNextStep = (process, step) => {

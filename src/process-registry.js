@@ -1,6 +1,3 @@
-/**
- *
- */
 export class SchemaRegistry {
     constructor() {
         this._schemas = {};
