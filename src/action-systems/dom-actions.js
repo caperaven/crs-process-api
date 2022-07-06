@@ -417,7 +417,7 @@ export class DomActions {
                     delete bc.pass;
                     delete bc.fail;
 
-                    await this.remove_element({args: {query: `#${parts.layer.id}`}});
+                    await this.remove_element({args: {element: `#${parts.layer.id}`}});
 
                     const stepName = step[next_step];
                     if (stepName != null) {
@@ -707,7 +707,7 @@ async function validate_form(query) {
         const message = input.validationMessage;
 
         if (message.length > 0) {
-            errors.push(`${label.children[0].text_content}: ${message}`);
+            errors.push(`${label.children[0].textContent}: ${message}`);
         }
     }
     return errors;

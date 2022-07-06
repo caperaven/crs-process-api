@@ -77,7 +77,7 @@ export class BindingActions {
      */
     static async set_errors(step, context, process, item) {
         const store = step.args.error_store || "errors";
-        const source = crs.process.getValue(step.args.errors, context, process, item);
+        const source = await crs.process.getValue(step.args.errors, context, process, item);
         const errors = [];
 
         for (let error of source) {
