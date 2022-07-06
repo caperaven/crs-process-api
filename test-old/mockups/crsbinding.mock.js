@@ -10,5 +10,6 @@ export async function loadBinding() {
     }
     globalThis.document = new DocumentMock();
     await import("./../../node_modules/crs-binding/crs-binding.js");
+    await import("./../../node_modules/crs-modules/crs-modules.js");
 }
 
