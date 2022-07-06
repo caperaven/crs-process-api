@@ -26,7 +26,7 @@ export const schema = {
                 type: "dom",
                 action: "set_style",
                 args: {
-                    query: "#h2-test",
+                    element: "#h2-test",
                     style: "color",
                     value: "#ff0090"
                 },

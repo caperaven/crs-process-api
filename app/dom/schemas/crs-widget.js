@@ -12,7 +12,7 @@ export const schema = {
                 action: "set_widget",
 
                 args: {
-                    query: "#widget",
+                    element: "#widget",
                     html: "$template.dom-summary",
                     url: "/app/dom/template.html"
                 }
@@ -26,7 +26,7 @@ export const schema = {
                 type: "dom",
                 action: "clear_widget",
                 args: {
-                    query: "#widget"
+                    element: "#widget"
                 }
             }
         }

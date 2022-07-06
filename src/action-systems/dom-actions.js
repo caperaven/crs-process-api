@@ -1,4 +1,4 @@
-import {callFunctionOnPath} from "./action-actions.js";
+    import {callFunctionOnPath} from "./action-actions.js";
 
 export class DomActions {
     static async perform(step, context, process, item) {
@@ -446,11 +446,11 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async set_widget(step, context, process, item) {
-        const query = step.args.query;
+        const element = step.args.element;
         const html = await getHTML(step, context, process, item);
         const ctx = (await crs.process.getValue(step.args.context, context, process, item)) || process?.parameters?.bId;
 
-        await crsbinding.events.emitter.postMessage(query, {
+        await crsbinding.events.emitter.postMessage(element, {
             context: ctx,
             html: html
         })
@@ -461,9 +461,9 @@ export class DomActions {
      * @returns {Promise<void>}
      */
     static async clear_widget(step, context, process, item) {
-        const query = step.args.query;
+        const element = step.args.element;
 
-        await crsbinding.events.emitter.postMessage(query, {
+        await crsbinding.events.emitter.postMessage(element, {
             context: null,
             html: ""
         });
@@ -685,8 +685,8 @@ async function move_element(element, target, position) {
     target.parentElement.insertBefore(element, target.nextSibling);
 }
 
-async function filter(query, filter) {
-    const element = await crs.dom.get_element(query);
+async function filter(element, filter) {
+    element = await crs.dom.get_element(element);
     const hasFilter = filter.length > 0;
 
     for (let child of element.children) {
@@ -763,7 +763,7 @@ function createWidgetLayer(step) {
 async function setWidgetContent(id, html, url, context, process, item) {
     await DomActions.set_widget({
         args: {
-            query : `#${id}`,
+            element : `#${id}`,
             html  : html,
             url   : url
         }

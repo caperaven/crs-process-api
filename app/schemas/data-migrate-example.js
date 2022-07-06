@@ -61,7 +61,7 @@ export const schema = {
                 type: "dom",
                 action: "remove_element",
                 args: {
-                    query: "#current-process-ui"
+                    element: "#current-process-ui"
                 }
             }
         }

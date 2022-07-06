@@ -38,7 +38,7 @@ export const schema = {
                 type: "dom",
                 action: "remove_element",
                 args: {
-                    query: "#dialog-ui"
+                    element: "#dialog-ui"
                 }
             }
         }

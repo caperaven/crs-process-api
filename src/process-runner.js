@@ -223,6 +223,10 @@ export class ProcessRunner {
 }
 
 async function setBinding(name, step, context, process, item) {
+    if (crs.intent.binding == null) {
+        await crs.modules.get("binding");
+    }
+
     const obj = step[name];
     if (obj == null || process.parameters?.bId == null) return;
 

@@ -22,7 +22,7 @@ export const schema = {
                 type: "events",
                 action: "post_message",
                 args: {
-                    query: "my-component",
+                    element: "my-component",
                     parameters: {
                         message: "Hello from post message"
                     }
@@ -37,7 +37,7 @@ export const schema = {
                 type: "events",
                 action: "on",
                 args: {
-                    query: "my-event",
+                    element: "my-event",
                     event_step: "set_value"
                 },
                 next_step: "pause"
