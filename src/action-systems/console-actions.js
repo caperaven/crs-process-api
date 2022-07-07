@@ -3,31 +3,31 @@
  */
 export class ConsoleActions {
     static async perform(step, context, process, item) {
-        if (step.args.messages != null) {
-            for (let message of step.args.messages) {
-                let value = await crs.process.getValue(message, context, process, item);
-                await this[step.action]?.(value, context, process);
-            }
-            return;
+        await this[step.action](step, context, process, item);
+    }
+
+    static async log(step, context, process, item) {
+        let message = await crs.process.getValue(step.args.message || step.args.messages, context, process, item);
+
+        if (!Array.isArray(message)) {
+            message = [message];
         }
 
+        console.log(...message);
+    }
+
+    static async error(step, context, process, item) {
         const message = await crs.process.getValue(step.args.message, context, process, item);
-        await this[step.action]?.(message, context, process);
-    }
-
-    static async log(message) {
-        console.log(message);
-    }
-
-    static async error(message) {
         console.error(message);
     }
 
-    static async warn(message) {
+    static async warn(step, context, process, item) {
+        const message = await crs.process.getValue(step.args.message, context, process, item);
         console.warn(message);
     }
 
-    static async table(message) {
+    static async table(step, context, process, item) {
+        const message = await crs.process.getValue(step.args.message, context, process, item);
         console.table(message);
     }
 }
