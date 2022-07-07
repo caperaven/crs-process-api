@@ -8,7 +8,7 @@
     },
     "scripts": {
         "build-documents": "cd documents & hugo -d \"./../publish/documents\"",
-        "test": "jest",
+        "test": "deno test tests --allow-read",
         "bundle": "rollup -c",
         "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
         "build-publish": "npm run bundle & npm run build-wasm &  node build/publish.js & npm run build-documents"
