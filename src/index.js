@@ -29,6 +29,7 @@ export async function initialize(root) {
     await crs.modules.add("system", `${root}/action-systems/system-actions.js`);
     await crs.modules.add("translation", `${root}/action-systems/translation-actions.js`);
     await crs.modules.add("validate", `${root}/action-systems/validate-actions.js`);
+    await crs.modules.add("fixed_layout", `${root}/action-systems/fixed-layout-actions.js`);
 
     crs.dom = (await crs.modules.get("dom")).DomActions;
 }

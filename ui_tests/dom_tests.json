@@ -1,0 +1,167 @@
+{
+    "id": "dom-tests",
+    
+    "sequence": [
+        {
+            "caption": "main",
+            "process": "main"
+        },
+        {
+            "caption": "notify ready",
+            "process": "notify_ready"
+        }
+    ],
+    
+    "main": {
+        "steps": {
+            "start": {
+                "type": "perform",
+                "action": "navigate",
+                "args": {
+                    "url": "http://127.0.0.1:8000/#dom"
+                },
+                "next_step": "notify_ready"
+            }
+        }
+    },
+    
+    "notify_ready": {
+        "steps": {}
+    },
+
+    "call_on_element": {
+      "steps": {}
+    },
+
+    "call_on_element": {
+        "steps": {}
+    },
+
+    "get_property": {
+        "steps": {}
+    },
+
+    "set_properties": {
+        "steps": {}
+    },
+
+    "set_attribute": {
+        "steps": {}
+    },
+
+    "get_attribute": {
+        "steps": {}
+    },
+
+    "add_class": {
+        "steps": {}
+    },
+    
+    "remove_class": {
+        "steps": {}
+    },
+    
+    "set_style": {
+        "steps": {}
+    },
+    
+    "set_styles": {
+        "steps": {}
+    },
+
+    "get_style": {
+        "steps": {}
+    },
+
+    "set_text": {
+        "steps": {}
+    },
+    
+    "get_text": {
+        "steps": {}
+    },
+
+    "get_element": {
+        "steps": {}
+    },
+
+    "create_element": {
+        "steps": {}
+    },
+
+    "get_animation_layer": {
+        "steps": {}
+    },
+
+    "clear_animation_layer": {
+        "steps": {}
+    },
+
+    "remove_animation_layer": {
+        "steps": {}
+    },
+
+    "highlight": {
+        "steps": {}
+    },
+
+    "remove_element": {
+        "steps": {}
+    },
+
+    "clear_element": {
+        "steps": {}
+    },
+    
+    "show_widget_dialog": {
+        "steps": {}
+    },
+
+    "show_form_dialog": {
+        "steps": {}
+    },
+    
+    "set_widget": {
+        "steps": {}
+    },
+    
+    "clear_widget": {
+        "steps": {}
+    },
+    
+    "move_element": {
+        "steps": {}
+    },
+    
+    "move_element_down": {
+        "steps": {}
+    },
+
+    "move_element_up": {
+        "steps": {}
+    },
+
+    "filter_children": {
+        "steps": {}
+    },
+
+    "open_tab": {
+        "steps": {}
+    },
+
+    "clone_for_movement": {
+        "steps": {}
+    },
+
+    "elements_from_template": {
+        "steps": {}
+    },
+
+    "update_cells": {
+        "steps": {}
+    },
+
+    "create_inflation_template": {
+        "steps": {}
+    }
+}

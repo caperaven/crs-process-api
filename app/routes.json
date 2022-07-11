@@ -73,6 +73,11 @@
       "title": "observer",
       "hash": "#observer",
       "view": "observer"
+    },
+    {
+      "title": "fixed-position",
+      "hash": "#fixed-position",
+      "view": "fixed-position"
     }
   ]
 }

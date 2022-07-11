@@ -1,4 +1,4 @@
-    import {callFunctionOnPath} from "./action-actions.js";
+import {callFunctionOnPath} from "./action-actions.js";
 
 export class DomActions {
     static async perform(step, context, process, item) {
@@ -648,6 +648,17 @@ export class DomActions {
         }
 
         crsbinding.inflationManager.register(id, template, ctxName || "context");
+    }
+
+    static async get_element_bounds(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const bounds = element.getBoundingClientRect();
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, bounds, context, process, item);
+        }
+
+        return bounds;
     }
 }
 
