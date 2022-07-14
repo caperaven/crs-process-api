@@ -11,13 +11,13 @@ export class FixedLayoutActions {
         const screenPadding = (await crs.process.getValue(step.args.screen_padding, context, process, item) || 0);
 
         switch(location) {
-            case "left": await placeLeft(parentElement, element, padding); break;
-            case "right": await placeRight(parentElement, element, padding); break;
-            case "top": await placeTop(parentElement, element, padding); break;
-            case "bottom": await placeBottom(parentElement, element, padding); break;
+            case "left": await crs.call("fixed_layout", "place_left", step.args, context, process, item); break;
+            case "right": await crs.call("fixed_layout", "place_right", step.args, context, process, item); break;
+            case "top": await crs.call("fixed_layout", "place_top", step.args, context, process, item); break;
+            case "bottom": await crs.call("fixed_layout", "place_bottom", step.args, context, process, item); break;
         }
 
-        await ensureOnScreen(element, screenPadding);
+        await crs.call("fixed_layout", "ensure_on_screen", {element: element}, context, process, item);
     }
 
     static async set_fixed_position(step, context, process, item) {
@@ -35,11 +35,12 @@ export class FixedLayoutActions {
         const parentRect = await crs.call("dom", "get_element_bounds", {element: parentElement}, context, process, item);
         const rect = await crs.call("dom", "get_element_bounds", {element: element}, context, process, item);
         const padding = await crs.process.getValue(step.args.padding || 0, context, process, item);
+        const parentStyles = getComputedStyle(parentElement);
+        const styles = getComputedStyle(element);
 
-        const left = parentRect.left - rect.width - padding;
+        const left = parentRect.left - rect.width - padding - getPixels(parentStyles.marginLeft) - getPixels(styles.marginRight);
         const top = parentRect.top;
-        setFixedPosition(element, left, top);
-        await crs.call("fixed_layout", "ensure_on_screen", {element: element}, context, process, item);
+        await setFixedPosition(element, left, top);
     }
 
     static async place_right(step, context, process, item) {
@@ -48,11 +49,12 @@ export class FixedLayoutActions {
         const parentRect = await crs.call("dom", "get_element_bounds", {element: parentElement}, context, process, item);
         const rect = await crs.call("dom", "get_element_bounds", {element: element}, context, process, item);
         const padding = await crs.process.getValue(step.args.padding || 0, context, process, item);
+        const parentStyles = getComputedStyle(parentElement);
+        const styles = getComputedStyle(element);
 
-        const left = parentRect.left + parentRect.width + padding;
+        const left = parentRect.left + parentRect.width + padding + getPixels(parentStyles.marginRight) + getPixels(styles.marginLeft);
         const top = parentRect.top;
         await setFixedPosition(element, left, top);
-        await crs.call("fixed_layout", "ensure_on_screen", {element: element}, context, process, item);
     }
 
     static async place_top(step, context, process, item) {
@@ -61,11 +63,12 @@ export class FixedLayoutActions {
         const parentRect = await crs.call("dom", "get_element_bounds", {element: parentElement}, context, process, item);
         const rect = await crs.call("dom", "get_element_bounds", {element: element}, context, process, item);
         const padding = await crs.process.getValue(step.args.padding || 0, context, process, item);
+        const parentStyles = getComputedStyle(parentElement);
+        const styles = getComputedStyle(element);
 
         const left = parentRect.left;
-        const top = parentRect.top - rect.height - padding;
+        const top = parentRect.top - rect.height - padding - getPixels(parentStyles.marginTop) - getPixels(styles.marginBottom);
         await setFixedPosition(element, left, top);
-        await crs.call("fixed_layout", "ensure_on_screen", {element: element}, context, process, item);
     }
 
     static async place_bottom(step, context, process, item) {
@@ -74,11 +77,12 @@ export class FixedLayoutActions {
         const parentRect = await crs.call("dom", "get_element_bounds", {element: parentElement}, context, process, item);
         const rect = await crs.call("dom", "get_element_bounds", {element: element}, context, process, item);
         const padding = await crs.process.getValue(step.args.padding || 0, context, process, item);
+        const parentStyles = getComputedStyle(parentElement);
+        const styles = getComputedStyle(element);
 
         const left = parentRect.left;
-        const top = parentRect.top + parentRect.height + padding;
+        const top = parentRect.top + parentRect.height + padding + getPixels(parentStyles.marginBottom) + getPixels(styles.marginTop);
         await setFixedPosition(element, left, top);
-        await crs.call("fixed_layout", "ensure_on_screen", {element: element}, context, process, item);
     }
 
     static async ensure_on_screen(step, context, process, item) {
@@ -117,6 +121,10 @@ function setFixedPosition(element, left, top) {
     element.style.position = "fixed";
     element.style.left = `${left}px`;
     element.style.top = `${top}px`;
+}
+
+function getPixels(str) {
+    return Number(str.replace("px", ""));
 }
 
 crs.intent.fixed_layout = FixedLayoutActions;
