@@ -1,4 +1,4 @@
-export class TranslationActions {
+export class TranslationsActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
@@ -70,4 +70,4 @@ export class TranslationActions {
     }
 }
 
-crs.intent.translations = TranslationActions;
+crs.intent.translations = TranslationsActions;

@@ -6,17 +6,7 @@
     <cargoProject FILE="$PROJECT_DIR$/wasm/random_data/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/fixed-position/fixed-position.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/fixed-position/fixed-position.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/crs-starter.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deno.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/fixed-layout-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/fixed-layout-actions.js" afterDir="false" />
-    </list>
+    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -467,6 +457,7 @@
       <workItem from="1657545812853" duration="4039000" />
       <workItem from="1657607945654" duration="19000" />
       <workItem from="1657809010805" duration="403000" />
+      <workItem from="1657865277464" duration="434000" />
     </task>
     <task id="LOCAL-00178" summary="update dom feature to include path">
       <created>1652446865129</created>

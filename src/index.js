@@ -27,7 +27,7 @@ export async function initialize(root) {
     await crs.modules.add("local_storage", `${root}/action-systems/local-storage-actions.js`);
     await crs.modules.add("string", `${root}/action-systems/string-actions.js`);
     await crs.modules.add("system", `${root}/action-systems/system-actions.js`);
-    await crs.modules.add("translation", `${root}/action-systems/translation-actions.js`);
+    await crs.modules.add("translations", `${root}/action-systems/translations-actions.js`);
     await crs.modules.add("validate", `${root}/action-systems/validate-actions.js`);
     await crs.modules.add("fixed_layout", `${root}/action-systems/fixed-layout-actions.js`);
 

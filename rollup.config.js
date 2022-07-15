@@ -109,8 +109,8 @@ export default [
         output: [{file: 'dist/action-systems/system-actions.js', format: 'es'}], plugins: [terser()]
     },
     {
-        input: "src/action-systems/translation-actions.js",
-        output: [{file: 'dist/action-systems/translation-actions.js', format: 'es'}], plugins: [terser()]
+        input: "src/action-systems/translations-actions.js",
+        output: [{file: 'dist/action-systems/translations-actions.js', format: 'es'}], plugins: [terser()]
     },
     {
         input: "src/action-systems/validate-actions.js",
