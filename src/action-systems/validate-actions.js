@@ -1,6 +1,6 @@
 export class ValidateActions {
     static async perform(step, context, process, item) {
-        await this[step.action](step, context, process, item);
+        return await this[step.action](step, context, process, item);
     }
 
     static async assert_step(step, context, process, item) {
