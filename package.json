@@ -9,30 +9,14 @@
     "scripts": {
         "build-documents": "cd documents & hugo -d \"./../publish/documents\"",
         "test": "deno test tests --allow-read",
-        "bundle": "rollup -c",
-        "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
-        "build-publish": "npm run bundle & npm run build-wasm &  node build/publish.js & npm run build-documents"
+        "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@babel/core": "^7.6.0",
-        "@babel/plugin-proposal-throw-expressions": "^7.2.0",
-        "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-        "@babel/preset-env": "^7.6.0",
-        "@types/jest": "^24.0.18",
-        "babel-jest": "^24.9.0",
         "crs-binding": "^0.0.249",
         "crs-modules": "^1.0.17",
-        "crs-router": "^0.0.78",
-        "glob": "^7.1.4",
-        "jest": "^27.3.1",
-        "mkdirp": "^0.5.1",
-        "nyc": "^15.1.0",
-        "puppeteer": "^2.1.1",
-        "puppeteer-to-istanbul": "^1.4.0",
-        "rollup": "^2.53.3",
-        "rollup-plugin-terser": "^7.0.2"
+        "crs-router": "^0.0.78"
     }
 }
