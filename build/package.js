@@ -14,25 +14,29 @@ async function packageDirectory(def, loader, format, minified) {
                 continue;
             }
 
-            const file = `${dir}/${dirEntry.name}`;
-            const src = await Deno.readTextFile(file);
-            const result = await esbuild.transform(src, { loader: loader, minify: minified, format: format });
+            const sourceFile = `${dir}/${dirEntry.name}`;
 
-            let path = `${def.target}${dir}/${dirEntry.name}`;
-            let replaceKeys = Object.keys(def.targetReplace || {});
-            for (const replaceKey of replaceKeys) {
-                path = path.replace(replaceKey, def.targetReplace[replaceKey]);
+            let targetFile = `${def.target}${dir}/${dirEntry.name}`;
+            let keys = Object.keys(def.replace || {});
+            for (const key of keys) {
+                targetFile = targetFile.replace(key, def.replace[key]);
             }
 
-            await Deno.writeTextFile(path, result.code);
+            await packageFile(sourceFile, targetFile, loader, format, minified);
         }
     }
+}
+
+async function packageFile(sourceFile, targetFile, loader, format, minified) {
+    const src = await Deno.readTextFile(sourceFile);
+    const result = await esbuild.transform(src, { loader: loader, minify: minified, format: format });
+    await Deno.writeTextFile(targetFile, result.code);
 }
 
 
 const jsFiles = {
     "dir": ["./src", "./src/action-systems"],
-    "targetReplace": {
+    "replace": {
         "./src": ""
     },
     "target": "./bundle"

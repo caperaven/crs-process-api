@@ -1,6 +1,6 @@
 {
     "name": "crs-process-api",
-    "version": "0.0.173",
+    "version": "0.0.190",
     "description": "process api for executing loging using json structure",
     "main": "crs-process-api.js",
     "directories": {
@@ -9,7 +9,10 @@
     "scripts": {
         "build-documents": "cd documents & hugo -d \"./../publish/documents\"",
         "test": "deno test tests --allow-read",
-        "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin"
+        "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
+        "build-bundle": "deno run --allow-read --allow-write --allow-env --allow-run ./build/package.js",
+        "bundel-to-version": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js",
+        "bundel-to-version-beta": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js --beta"
     },
     "keywords": [],
     "author": "",

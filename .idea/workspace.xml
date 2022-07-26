@@ -7,15 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/build/package.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-binding-actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-collection-actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-crud-actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-layout-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/version.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jest.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/package.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/package.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +69,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
-    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.5080.210\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
+    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -93,20 +87,14 @@
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno:  package">
+  <component name="RunManager" selected="Deno.Deno:  version">
     <configuration name="Deno:  package" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/package.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: console-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/console-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <option name="applicationArguments" value="--allow-read" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: css-grid-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <option name="applicationArguments" value="--allow-read" />
+    <configuration name="Deno:  version" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/version.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
+      <option name="applicationArguments" value="--beta" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -122,6 +110,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="build-bundle" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build-bundle" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="build-publish" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -132,11 +130,21 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="bundel-to-version-beta" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="test" />
+        <script value="bundel-to-version-beta" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="bundel-to-version" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="bundel-to-version" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -145,19 +153,20 @@
     <list>
       <item itemvalue="Deno.Deno: " />
       <item itemvalue="Deno.Deno:  package" />
+      <item itemvalue="Deno.Deno:  version" />
       <item itemvalue="Deno.Deno: dom-actions.test.js" />
-      <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
-      <item itemvalue="Deno.Deno: console-actions.test.js" />
+      <item itemvalue="npm.build-bundle" />
+      <item itemvalue="npm.bundel-to-version" />
+      <item itemvalue="npm.bundel-to-version-beta" />
       <item itemvalue="npm.build-publish" />
-      <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.bundel-to-version" />
+        <item itemvalue="npm.bundel-to-version-beta" />
+        <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.build-publish" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
-        <item itemvalue="npm.test" />
-        <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
-        <item itemvalue="Deno.Deno: console-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -463,14 +472,7 @@
       <workItem from="1657809010805" duration="403000" />
       <workItem from="1657865277464" duration="434000" />
       <workItem from="1657875930430" duration="17000" />
-      <workItem from="1658818529648" duration="8456000" />
-    </task>
-    <task id="LOCAL-00178" summary="update dom feature to include path">
-      <created>1652446865129</created>
-      <option name="number" value="00178" />
-      <option name="presentableId" value="LOCAL-00178" />
-      <option name="project" value="LOCAL" />
-      <updated>1652446865129</updated>
+      <workItem from="1658818529648" duration="13604000" />
     </task>
     <task id="LOCAL-00179" summary="update dom feature to include path">
       <created>1652446989034</created>
@@ -808,7 +810,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657545766675</updated>
     </task>
-    <option name="localTasksCounter" value="227" />
+    <task id="LOCAL-00227" summary="add new actions and build actions">
+      <created>1658831772550</created>
+      <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1658831772550</updated>
+    </task>
+    <option name="localTasksCounter" value="228" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -828,7 +837,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add delete old databases" />
     <MESSAGE value="added __ind on saved records for usage in vis" />
     <MESSAGE value="fixed context fetching for set widget" />
     <MESSAGE value="files features added for loading and saving" />
@@ -853,7 +861,8 @@
     <MESSAGE value="moved old tests out to make space for new deno tests" />
     <MESSAGE value="add deno tests" />
     <MESSAGE value="fix some fixed layout issues" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix some fixed layout issues" />
+    <MESSAGE value="add new actions and build actions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new actions and build actions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
