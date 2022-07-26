@@ -61,9 +61,14 @@ async function updateGit(version) {
     await Deno.run({
         cmd: ["git", "add", `./dist/${version}`],
         stdout: "piped",
-        stderr: "piped" });
+        stderr: "piped"
+    });
 
-    //await Deno.run({ cmd: ["git", "commit", "-m", version]});
+    await Deno.run({
+        cmd: ["git", "commit", "-m", version],
+        stdout: "piped",
+        stderr: "piped"
+    });
 }
 
 const isBeta = Deno.args.indexOf("--beta") != -1
