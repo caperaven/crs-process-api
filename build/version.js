@@ -57,26 +57,6 @@ async function removeBetaFolder(version) {
     }
 }
 
-async function updateGit(version) {
-    const add = await Deno.run({
-        cmd: ["git", "add", `"./dist/${version}"`, "-f"],
-        stdout: "piped",
-        stderr: "piped"
-    });
-
-    await add.status();
-    console.log(await add.stderrOutput())
-
-    const commit = await Deno.run({
-        cmd: ["git", "commit", "-m", version],
-        stdout: "piped",
-        stderr: "piped"
-    });
-
-    await commit.status();
-    console.log(await commit.stderrOutput());
-}
-
 const isBeta = Deno.args.indexOf("--beta") != -1
 const version = await determineVersion(isBeta);
 const target = await createFolderStructure(version, isBeta);
@@ -86,4 +66,3 @@ if (isBeta != true) {
 }
 
 await copyFilesToVersion("./bundle", target);
-await updateGit(version);
