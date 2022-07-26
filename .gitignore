@@ -3,7 +3,7 @@ package-lock.json
 yarn.lock
 yarn-error.log
 /coverage/
-/dist/
+/bundle/
 /publish/
 /wasm/data/target/
 wasm/data/Cargo.lock

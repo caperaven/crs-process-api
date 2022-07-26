@@ -59,16 +59,20 @@ async function removeBetaFolder(version) {
 
 async function updateGit(version) {
     await Deno.run({
-        cmd: ["git", "add", `./dist/${version}`],
+        cmd: ["git", "add", `"./dist/${version}"`],
         stdout: "piped",
         stderr: "piped"
     });
+
+    console.log(`git add "./dist/${version}"`);
 
     await Deno.run({
         cmd: ["git", "commit", "-m", version],
         stdout: "piped",
         stderr: "piped"
     });
+
+    console.log(`git commit -m ${version}`);
 }
 
 const isBeta = Deno.args.indexOf("--beta") != -1
