@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/wasm/data/Cargo.toml" />
     <cargoProject FILE="$PROJECT_DIR$/wasm/tests/Cargo.toml" />
     <cargoProject FILE="$PROJECT_DIR$/wasm/random_data/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="add new actions and build actions">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/version.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/version.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/package.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/package.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/files-action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/files-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-old/action-systems-tests/file-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test-old/action-systems-tests/file-actions.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,30 +61,30 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-process-api/build/package.js&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "openjdk-17",
+    "last_opened_file_path": "F:/caperaven projects/test",
+    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
+    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\caperaven projects\crs-process-api\build" />
       <recent name="F:\caperaven projects\crs-process-api\tests\mockups" />
       <recent name="F:\caperaven projects\crs-process-api\app\files" />
       <recent name="F:\caperaven projects\crs-process-api\documents" />
       <recent name="F:\caperaven projects\crs-process-api\app" />
-      <recent name="F:\caperaven projects\crs-process-api\app\css-grid" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\schema-manager\providers" />
@@ -86,7 +93,7 @@
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno:  version">
+  <component name="RunManager" selected="Deno.Deno:  package">
     <configuration name="Deno:  package" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/package.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -161,9 +168,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundel-to-version" />
         <item itemvalue="npm.bundel-to-version-beta" />
-        <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.build-publish" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
       </list>
@@ -472,13 +479,13 @@
       <workItem from="1657865277464" duration="434000" />
       <workItem from="1657875930430" duration="17000" />
       <workItem from="1658818529648" duration="13604000" />
-    </task>
-    <task id="LOCAL-00179" summary="update dom feature to include path">
-      <created>1652446989034</created>
-      <option name="number" value="00179" />
-      <option name="presentableId" value="LOCAL-00179" />
-      <option name="project" value="LOCAL" />
-      <updated>1652446989034</updated>
+      <workItem from="1658863389047" duration="21000" />
+      <workItem from="1658863606248" duration="1582000" />
+      <workItem from="1658931168793" duration="972000" />
+      <workItem from="1658937200453" duration="692000" />
+      <workItem from="1658944967827" duration="600000" />
+      <workItem from="1658990972505" duration="654000" />
+      <workItem from="1659002887967" duration="608000" />
     </task>
     <task id="LOCAL-00180" summary="update dom feature to include path">
       <created>1652448835217</created>
@@ -816,7 +823,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658831772550</updated>
     </task>
-    <option name="localTasksCounter" value="228" />
+    <task id="LOCAL-00228" summary="add new actions and build actions">
+      <created>1658842963428</created>
+      <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1658842963428</updated>
+    </task>
+    <option name="localTasksCounter" value="229" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

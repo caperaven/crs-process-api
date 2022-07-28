@@ -2,9 +2,9 @@ import { emptyDir, ensureDir } from "https://deno.land/std@0.149.0/fs/mod.ts";
 import * as esbuild from 'https://deno.land/x/esbuild@v0.14.50/mod.js'
 
 async function createFolderStructure() {
-    await ensureDir("./bundle");
-    await emptyDir("./bundle");
-    await ensureDir("./bundle/action-systems");
+    await ensureDir("./dist");
+    await emptyDir("./dist");
+    await ensureDir("./dist/action-systems")
 }
 
 async function packageDirectory(def, loader, format, minified) {
@@ -27,21 +27,41 @@ async function packageDirectory(def, loader, format, minified) {
     }
 }
 
+async function packageFiles(def, loader, format, minified) {
+    for (const file of def.files) {
+        const target = file.replace("./src", "./dist");
+        await packageFile(file, target, loader, format, minified);
+    }
+}
+
 async function packageFile(sourceFile, targetFile, loader, format, minified) {
     const src = await Deno.readTextFile(sourceFile);
     const result = await esbuild.transform(src, { loader: loader, minify: minified, format: format });
     await Deno.writeTextFile(targetFile, result.code);
 }
 
+async function bundle(file, output) {
+    const result = await esbuild.build({
+        entryPoints: [file],
+        bundle: true,
+        outfile: output,
+        format: "esm",
+        minify: true
+    })
 
-const jsFiles = {
-    "dir": ["./src", "./src/action-systems"],
-    "replace": {
-        "./src": ""
-    },
-    "target": "./bundle"
+    console.log(result);
 }
 
+
 await createFolderStructure();
-await packageDirectory(jsFiles, "js", "esm", true);
+
+await packageDirectory({
+    dir: ["./src/action-systems"],
+    replace: {
+        "./src": ""
+    },
+    target: "./dist"
+}, "js", "esm", true);
+
+await bundle("./src/index.js", "./dist/crs-process-api.js");
 Deno.exit(0);

@@ -1,5 +1,5 @@
 import {loadBinding} from "../mockups/crsbinding.mock.js";
-import {get_file_name, get_files} from "../../src/action-systems/files-action.js";
+import {get_file_name, get_files} from "../../src/action-systems/files-actions.js";
 
 beforeAll(async () => {
     await loadBinding();

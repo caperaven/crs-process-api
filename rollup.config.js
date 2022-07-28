@@ -53,8 +53,8 @@ export default [
         output: [{file: 'dist/action-systems/events-actions.js', format: 'es'}], plugins: [terser()]
     },
     {
-        input: "src/action-systems/files-action.js",
-        output: [{file: 'dist/action-systems/files-action.js', format: 'es'}], plugins: [terser()]
+        input: "src/action-systems/files-actions.js",
+        output: [{file: 'dist/action-systems/files-actions.js', format: 'es'}], plugins: [terser()]
     },
     {
         input: "src/action-systems/fs-actions.js",
