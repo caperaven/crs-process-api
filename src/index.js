@@ -12,6 +12,11 @@ export async function initialize(root) {
     await crs.modules.add("data", `${root}/action-systems/data-actions.js`);
     await crs.modules.add("db", `${root}/action-systems/database-actions.js`);
     await crs.modules.add("dom", `${root}/action-systems/dom-actions.js`);
+    await crs.modules.add("dom_binding", `${root}/action-systems/dom-binding-actions.js`);
+    await crs.modules.add("dom_collection", `${root}/action-systems/dom-collection-actions.js`);
+    await crs.modules.add("dom_interactive", `${root}/action-systems/dom-interactive-actions.js`);
+    await crs.modules.add("dom_utils", `${root}/action-systems/dom-utils-actions.js`);
+    await crs.modules.add("dom_widget", `${root}/action-systems/dom-widgets-actions.js`);
     await crs.modules.add("events", `${root}/action-systems/events-actions.js`);
     await crs.modules.add("files", `${root}/action-systems/files-actions.js`);
     await crs.modules.add("fs", `${root}/action-systems/fs-actions.js`);

@@ -40,13 +40,13 @@ async function packageFile(sourceFile, targetFile, loader, format, minified) {
     await Deno.writeTextFile(targetFile, result.code);
 }
 
-async function bundle(file, output) {
+async function bundle(file, output, minify = true) {
     const result = await esbuild.build({
         entryPoints: [file],
         bundle: true,
         outfile: output,
         format: "esm",
-        minify: true
+        minify: minify
     })
 
     console.log(result);
@@ -63,5 +63,5 @@ await packageDirectory({
     target: "./dist"
 }, "js", "esm", true);
 
-await bundle("./src/index.js", "./dist/crs-process-api.js");
+await bundle("./src/index.js", "./dist/crs-process-api.js", false);
 Deno.exit(0);

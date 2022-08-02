@@ -9,14 +9,20 @@
     <cargoProject FILE="$PROJECT_DIR$/wasm/random_data/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="add new actions and build actions">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-utils-actions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/dom-widgets-actions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/package.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/package.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/rollup.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/files-action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/files-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test-old/action-systems-tests/file-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test-old/action-systems-tests/file-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/crs-process-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/crs-process-api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/component-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/component-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-binding-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-binding-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-collection-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-collection-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-crud-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-layout-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,23 +67,23 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "openjdk-17",
-    "last_opened_file_path": "F:/caperaven projects/test",
-    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
-    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-17&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/test&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\build" />
@@ -485,14 +491,11 @@
       <workItem from="1658937200453" duration="692000" />
       <workItem from="1658944967827" duration="600000" />
       <workItem from="1658990972505" duration="654000" />
-      <workItem from="1659002887967" duration="608000" />
-    </task>
-    <task id="LOCAL-00180" summary="update dom feature to include path">
-      <created>1652448835217</created>
-      <option name="number" value="00180" />
-      <option name="presentableId" value="LOCAL-00180" />
-      <option name="project" value="LOCAL" />
-      <updated>1652448835217</updated>
+      <workItem from="1659002887967" duration="1246000" />
+      <workItem from="1659008207844" duration="2089000" />
+      <workItem from="1659079406481" duration="1004000" />
+      <workItem from="1659341470590" duration="165000" />
+      <workItem from="1659438907911" duration="4686000" />
     </task>
     <task id="LOCAL-00181" summary="update dom to better handle get element">
       <created>1652688629581</created>
@@ -830,7 +833,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658842963428</updated>
     </task>
-    <option name="localTasksCounter" value="229" />
+    <task id="LOCAL-00229" summary="add new actions and build actions">
+      <created>1659003530322</created>
+      <option name="number" value="00229" />
+      <option name="presentableId" value="LOCAL-00229" />
+      <option name="project" value="LOCAL" />
+      <updated>1659003530323</updated>
+    </task>
+    <option name="localTasksCounter" value="230" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

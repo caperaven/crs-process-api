@@ -1,3 +1,7 @@
+/**
+ * Helper functions for working with custom components
+ */
+
 export class ComponentActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
@@ -46,6 +50,12 @@ export class ComponentActions {
             def.callback = null;
             delete element._processObserver[id];
         }
+    }
+
+    static async notify_ready(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        element.dataset.ready = "true";
+        element.dispatchEvent(new CustomEvent("ready"));
     }
 }
 
