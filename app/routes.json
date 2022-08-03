@@ -15,6 +15,11 @@
       "view": "files"
     },
     {
+      "title": "Resize",
+      "hash": "#resize",
+      "view": "resize"
+    },
+    {
       "title": "Media",
       "hash": "#media",
       "view": "media"

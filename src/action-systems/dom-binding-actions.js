@@ -159,4 +159,16 @@ async function getHTML(step, context) {
     }
 }
 
+async function load_template(template, id, context) {
+    let templateElement;
+    if (template instanceof HTMLTemplateElement) {
+        templateElement = template;
+    }
+    else {
+        templateElement = document.querySelector(template);
+    }
+
+    crsbinding.inflationManager.register(id, templateElement);
+}
+
 crs.intent.dom_binding = DomBindingActions;
