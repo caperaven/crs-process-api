@@ -14,26 +14,39 @@ export default class Resize extends crsbinding.classes.ViewBase {
                     width: 300,
                     height: 300
                 }
-            },
-
-
-            options1: {
-                min: {
-                    width: 100,
-                    height: 100
-                },
-                max: {
-                    width: 100,
-                    height: 100
-                }
-            },
-            options2: {
-                min: "original",
-                max: {
-                    width: 300,
-                    height: 500
-                }
             }
         })
+
+        await crs.call("dom_interactive", "enable_resize", {
+            element: this._element.querySelector(".columns-bar"),
+            resize_query: ".resize",
+            options: {
+                lock_axis: "x"
+            }
+        })
+
+        await crs.call("dom_interactive", "enable_resize", {
+            element: this._element.querySelector(".row-bar"),
+            resize_query: ".resize",
+            options: {
+                lock_axis: "y"
+            }
+        })
+    }
+
+    async disconnectedCallback() {
+        await crs.call("dom_interactive", "disable_resize", {
+            element: this._element.querySelector(".parent")
+        })
+
+        await crs.call("dom_interactive", "disable_resize", {
+            element: this._element.querySelector(".columns-bar")
+        })
+
+        await crs.call("dom_interactive", "disable_resize", {
+            element: this._element.querySelector(".row-bar")
+        })
+
+        super.disconnectedCallback();
     }
 }

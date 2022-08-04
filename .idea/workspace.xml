@@ -10,21 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/resize/resize.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/resize/resize.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-binding/crs-binding.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-modules/crs-modules.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-router/crs-loader.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-router/crs-loader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-router/crs-router.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-router/crs-static-provider.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-router/crs-url-provider.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/crs-router/crs-utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/welcome/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/welcome/welcome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-binding-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-binding-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resize/resize.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/resize/resize.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resize/resize.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/resize/resize.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -70,23 +58,23 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "openjdk-17",
-    "last_opened_file_path": "F:/caperaven projects/crs-process-api/packages",
-    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
-    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-17&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-process-api/packages&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\packages" />
@@ -499,14 +487,8 @@
       <workItem from="1659079406481" duration="1004000" />
       <workItem from="1659341470590" duration="165000" />
       <workItem from="1659438907911" duration="5416000" />
-      <workItem from="1659518020741" duration="9036000" />
-    </task>
-    <task id="LOCAL-00182" summary="update dom to better handle get element">
-      <created>1652690192146</created>
-      <option name="number" value="00182" />
-      <option name="presentableId" value="LOCAL-00182" />
-      <option name="project" value="LOCAL" />
-      <updated>1652690192146</updated>
+      <workItem from="1659518020741" duration="10263000" />
+      <workItem from="1659600758159" duration="4678000" />
     </task>
     <task id="LOCAL-00183" summary="update dom to better handle get element">
       <created>1652693629630</created>
@@ -844,7 +826,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659446338393</updated>
     </task>
-    <option name="localTasksCounter" value="231" />
+    <task id="LOCAL-00231" summary="add move actions">
+      <created>1659531269943</created>
+      <option name="number" value="00231" />
+      <option name="presentableId" value="LOCAL-00231" />
+      <option name="project" value="LOCAL" />
+      <updated>1659531269944</updated>
+    </task>
+    <option name="localTasksCounter" value="232" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -864,7 +853,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="fixed context fetching for set widget" />
     <MESSAGE value="files features added for loading and saving" />
     <MESSAGE value="update dom feature to include path" />
     <MESSAGE value="update dom to better handle get element" />
@@ -889,7 +877,8 @@
     <MESSAGE value="fix some fixed layout issues" />
     <MESSAGE value="add new actions and build actions" />
     <MESSAGE value="refactor dom to more logical files" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor dom to more logical files" />
+    <MESSAGE value="add move actions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add move actions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

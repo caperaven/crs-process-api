@@ -189,8 +189,17 @@ class ResizeElementManager {
     }
 
     mouseMove(event) {
-        const offsetX = event.clientX - this._startPos.x;
-        const offsetY = event.clientY - this._startPos.y;
+        let offsetX = event.clientX - this._startPos.x;
+        let offsetY = event.clientY - this._startPos.y;
+
+        if (this._options.lock_axis == "x") {
+            offsetY = 0;
+        }
+
+        if (this._options.lock_axis == "y") {
+            offsetX = 0;
+        }
+
         let width = this._bounds.width + offsetX;
         let height = this._bounds.height + offsetY;
 
