@@ -11,9 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resize/resize.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/resize/resize.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resize/resize.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/resize/resize.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/system-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/system-actions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +44,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedIndex" value="2" />
@@ -488,14 +489,16 @@
       <workItem from="1659341470590" duration="165000" />
       <workItem from="1659438907911" duration="5416000" />
       <workItem from="1659518020741" duration="10263000" />
-      <workItem from="1659600758159" duration="4678000" />
-    </task>
-    <task id="LOCAL-00183" summary="update dom to better handle get element">
-      <created>1652693629630</created>
-      <option name="number" value="00183" />
-      <option name="presentableId" value="LOCAL-00183" />
-      <option name="project" value="LOCAL" />
-      <updated>1652693629630</updated>
+      <workItem from="1659600758159" duration="6703000" />
+      <workItem from="1660289778688" duration="1216000" />
+      <workItem from="1660297782307" duration="7000" />
+      <workItem from="1660306783679" duration="626000" />
+      <workItem from="1660587205799" duration="30000" />
+      <workItem from="1660588841390" duration="2148000" />
+      <workItem from="1660633327590" duration="30000" />
+      <workItem from="1660654569372" duration="3032000" />
+      <workItem from="1660987531791" duration="17000" />
+      <workItem from="1661000510886" duration="28000" />
     </task>
     <task id="LOCAL-00184" summary="update dom to better handle get element">
       <created>1652693720673</created>
@@ -833,7 +836,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659531269944</updated>
     </task>
-    <option name="localTasksCounter" value="232" />
+    <task id="LOCAL-00232" summary="add move actions">
+      <created>1659607900407</created>
+      <option name="number" value="00232" />
+      <option name="presentableId" value="LOCAL-00232" />
+      <option name="project" value="LOCAL" />
+      <updated>1659607900407</updated>
+    </task>
+    <option name="localTasksCounter" value="233" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
