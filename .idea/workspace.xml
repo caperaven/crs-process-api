@@ -10,8 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/system-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/system-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resize/resize.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/resize/resize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/welcome/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/welcome/welcome.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/random-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/random-actions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,30 +69,30 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-process-api/packages&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "openjdk-17",
+    "last_opened_file_path": "F:/caperaven projects/crs-process-api/app/drag-drop",
+    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\caperaven projects\crs-process-api\app\drag-drop" />
       <recent name="F:\caperaven projects\crs-process-api\packages" />
       <recent name="F:\caperaven projects\crs-process-api\app\resize" />
       <recent name="F:\caperaven projects\crs-process-api\app\rest" />
       <recent name="F:\caperaven projects\crs-process-api\build" />
-      <recent name="F:\caperaven projects\crs-process-api\tests\mockups" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\schema-manager\providers" />
@@ -166,8 +176,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundel-to-version" />
+        <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundel-to-version-beta" />
         <item itemvalue="npm.build-publish" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
@@ -498,14 +508,26 @@
       <workItem from="1660633327590" duration="30000" />
       <workItem from="1660654569372" duration="3032000" />
       <workItem from="1660987531791" duration="17000" />
-      <workItem from="1661000510886" duration="28000" />
-    </task>
-    <task id="LOCAL-00184" summary="update dom to better handle get element">
-      <created>1652693720673</created>
-      <option name="number" value="00184" />
-      <option name="presentableId" value="LOCAL-00184" />
-      <option name="project" value="LOCAL" />
-      <updated>1652693720673</updated>
+      <workItem from="1661000510886" duration="69000" />
+      <workItem from="1661027857137" duration="1374000" />
+      <workItem from="1661032180911" duration="10000" />
+      <workItem from="1661032615404" duration="697000" />
+      <workItem from="1661078406163" duration="41000" />
+      <workItem from="1661078964891" duration="615000" />
+      <workItem from="1661103852163" duration="1311000" />
+      <workItem from="1661178021532" duration="1018000" />
+      <workItem from="1661417947413" duration="1477000" />
+      <workItem from="1661422619901" duration="3063000" />
+      <workItem from="1661760375828" duration="644000" />
+      <workItem from="1661841262246" duration="140000" />
+      <workItem from="1661856692501" duration="1522000" />
+      <workItem from="1661934770824" duration="33000" />
+      <workItem from="1661934811025" duration="54000" />
+      <workItem from="1661934926775" duration="9000" />
+      <workItem from="1661954380445" duration="3000" />
+      <workItem from="1662038111620" duration="1148000" />
+      <workItem from="1662043347371" duration="5000" />
+      <workItem from="1662229118292" duration="6099000" />
     </task>
     <task id="LOCAL-00185" summary="add file and media handling">
       <created>1652701161872</created>
@@ -843,7 +865,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659607900407</updated>
     </task>
-    <option name="localTasksCounter" value="233" />
+    <task id="LOCAL-00233" summary="add is mobile check">
+      <created>1661000550067</created>
+      <option name="number" value="00233" />
+      <option name="presentableId" value="LOCAL-00233" />
+      <option name="project" value="LOCAL" />
+      <updated>1661000550067</updated>
+    </task>
+    <option name="localTasksCounter" value="234" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -863,7 +892,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="files features added for loading and saving" />
     <MESSAGE value="update dom feature to include path" />
     <MESSAGE value="update dom to better handle get element" />
     <MESSAGE value="add file and media handling" />
@@ -888,7 +916,8 @@
     <MESSAGE value="add new actions and build actions" />
     <MESSAGE value="refactor dom to more logical files" />
     <MESSAGE value="add move actions" />
-    <option name="LAST_COMMIT_MESSAGE" value="add move actions" />
+    <MESSAGE value="add is mobile check" />
+    <option name="LAST_COMMIT_MESSAGE" value="add is mobile check" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

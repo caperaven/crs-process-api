@@ -11,8 +11,8 @@ export default class Resize extends crsbinding.classes.ViewBase {
                     height: 100
                 },
                 max: {
-                    width: 300,
-                    height: 300
+                    width: 500,
+                    height: 500
                 }
             }
         })

@@ -1,0 +1,53 @@
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: repeat(4, 200px);
+        grid-template-rows: 600px;
+    }
+
+    [role="list"] {
+        border: solid silver 1px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+
+    .card {
+        background: #ff6666;
+        border-radius: 5px;
+        border: solid 1px #ff4646;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .placeholder {
+        background: silver;
+        border: solid black 1px;
+        border-radius: 5px;
+    }
+
+    [aria-grabbed="true"] {
+        transform: rotate(10deg);
+    }
+</style>
+
+<h2>${title}</h2>
+
+<div class="container">
+    <div role="list">
+        <div class="card" draggable="true">Card 1</div>
+        <div class="card" draggable="true">Card 2</div>
+        <div class="card" draggable="true">Card 3</div>
+    </div>
+    <div role="list">
+        <div class="card" draggable="true">Card 4</div>
+        <div class="card" draggable="true">Card 5</div>
+        <div class="card" draggable="true">Card 6</div>
+    </div>
+    <div role="list"></div>
+    <div role="list"></div>
+</div>

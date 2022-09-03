@@ -19,7 +19,6 @@ export class RandomActions {
         if (step.args?.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
-
         return result;
     }
 }
