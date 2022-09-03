@@ -11,6 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -517,14 +518,7 @@
       <workItem from="1661954380445" duration="3000" />
       <workItem from="1662038111620" duration="1148000" />
       <workItem from="1662043347371" duration="5000" />
-      <workItem from="1662229118292" duration="7575000" />
-    </task>
-    <task id="LOCAL-00187" summary="fix bug on grouping where rows were ignored.">
-      <created>1652959284455</created>
-      <option name="number" value="00187" />
-      <option name="presentableId" value="LOCAL-00187" />
-      <option name="project" value="LOCAL" />
-      <updated>1652959284456</updated>
+      <workItem from="1662229118292" duration="10114000" />
     </task>
     <task id="LOCAL-00188" summary="add notify_ready to dom functions">
       <created>1653324541885</created>
@@ -862,7 +856,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662236241414</updated>
     </task>
-    <option name="localTasksCounter" value="236" />
+    <task id="LOCAL-00236" summary="add enable drop drop">
+      <created>1662236960071</created>
+      <option name="number" value="00236" />
+      <option name="presentableId" value="LOCAL-00236" />
+      <option name="project" value="LOCAL" />
+      <updated>1662236960071</updated>
+    </task>
+    <option name="localTasksCounter" value="237" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
