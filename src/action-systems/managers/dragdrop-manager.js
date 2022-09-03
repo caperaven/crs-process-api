@@ -148,7 +148,7 @@ export class DragDropManager {
         const element = this._dragElement;
 
         const animate = setTimeout(() => {
-            element.style.transition = "all 0.3s ease-out";
+            element.style.transition = "all 0.2s ease-out";
             element.style.transform = `translate(${bounds.x}px, ${bounds.y}px) rotate(0deg)`;
         })
 
@@ -160,7 +160,7 @@ export class DragDropManager {
             await this.clearDragProperties();
             this._busy = false;
             callback();
-        }, 300);
+        }, 200);
     }
 
     async clearDragProperties() {
