@@ -5,7 +5,8 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
         await crs.call("dom_interactive", "enable_dragdrop", {
             element: ".container",
             options: {
-                rotate: 10
+                rotate: 10,
+                allow_drop: '[role="list"]'
             }
         })
     }

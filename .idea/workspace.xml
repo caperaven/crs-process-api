@@ -10,18 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resize/resize.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/resize/resize.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/welcome/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/welcome/welcome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-interactive-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/random-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/random-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -527,14 +518,7 @@
       <workItem from="1661954380445" duration="3000" />
       <workItem from="1662038111620" duration="1148000" />
       <workItem from="1662043347371" duration="5000" />
-      <workItem from="1662229118292" duration="6099000" />
-    </task>
-    <task id="LOCAL-00185" summary="add file and media handling">
-      <created>1652701161872</created>
-      <option name="number" value="00185" />
-      <option name="presentableId" value="LOCAL-00185" />
-      <option name="project" value="LOCAL" />
-      <updated>1652701161872</updated>
+      <workItem from="1662229118292" duration="6960000" />
     </task>
     <task id="LOCAL-00186" summary="add file and media handling">
       <created>1652856613054</created>
@@ -872,7 +856,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661000550067</updated>
     </task>
-    <option name="localTasksCounter" value="234" />
+    <task id="LOCAL-00234" summary="add enable drop drop">
+      <created>1662235354338</created>
+      <option name="number" value="00234" />
+      <option name="presentableId" value="LOCAL-00234" />
+      <option name="project" value="LOCAL" />
+      <updated>1662235354338</updated>
+    </task>
+    <option name="localTasksCounter" value="235" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -892,7 +883,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="update dom feature to include path" />
     <MESSAGE value="update dom to better handle get element" />
     <MESSAGE value="add file and media handling" />
     <MESSAGE value="fix bug on grouping where rows were ignored." />
@@ -917,7 +907,8 @@
     <MESSAGE value="refactor dom to more logical files" />
     <MESSAGE value="add move actions" />
     <MESSAGE value="add is mobile check" />
-    <option name="LAST_COMMIT_MESSAGE" value="add is mobile check" />
+    <MESSAGE value="add enable drop drop" />
+    <option name="LAST_COMMIT_MESSAGE" value="add enable drop drop" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

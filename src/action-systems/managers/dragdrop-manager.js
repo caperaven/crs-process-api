@@ -65,6 +65,27 @@ export class DragDropManager {
     }
 
     async mouseUp(event) {
+        this._dragElement.parentElement.removeChild(this._dragElement);
+
+        await crs.call("dom", "set_styles", {
+            element: this._dragElement,
+            styles: {
+                "transform": "",
+                "width": "",
+                "height": ""
+            }
+        })
+
+        const drop_element = document.elementFromPoint(event.clientX, event.clientY);
+
+        if (drop_element.matches(this._options.allow_drop)) {
+            drop_element.appendChild(this._dragElement);
+            this._placeholder.parentElement.removeChild(this._placeholder);
+        }
+        else {
+            this._placeholder.parentElement.replaceChild(this._dragElement, this._placeholder);
+        }
+
         this._dragElement?.removeAttribute("aria-grabbed");
 
         document.removeEventListener("mousemove", this._mouseMoveHandler);
