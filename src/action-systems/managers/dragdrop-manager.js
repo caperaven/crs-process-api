@@ -7,6 +7,7 @@ export class DragDropManager {
         this._mouseDownHandler = this.mouseDown.bind(this);
         this._mouseMoveHandler = this.mouseMove.bind(this);
         this._mouseUpHandler = this.mouseUp.bind(this);
+        this._mouseOverHandler = this.mouseOver.bind(this);
         this._updateHandler = this.update.bind(this);
         this._element.addEventListener("mousedown", this._mouseDownHandler);
 
@@ -43,6 +44,9 @@ export class DragDropManager {
             this._dragElement.setAttribute("aria-grabbed", "true");
             this._placeholder = await createPlaceholder(this._dragElement, this.bounds);
 
+            this._marker = this._placeholder.cloneNode();
+            this._marker.setAttribute("class", "marker");
+
             const animationLayer = await crs.call("dom_interactive", "get_animation_layer");
             animationLayer.appendChild(this._dragElement);
 
@@ -57,6 +61,8 @@ export class DragDropManager {
 
             document.addEventListener("mousemove", this._mouseMoveHandler);
             document.addEventListener("mouseup", this._mouseUpHandler);
+            this._element.addEventListener("mouseover", this._mouseOverHandler);
+
             this.update();
         }
     }
@@ -64,6 +70,18 @@ export class DragDropManager {
     async mouseMove(event) {
         this._offsetX = event.clientX - this._start.x;
         this._offsetY = event.clientY - this._start.y;
+    }
+
+    async mouseOver(event) {
+        if (event.target == this._placeholder.parentElement) {
+            this._marker.parentElement?.removeChild(this._marker);
+        }
+        else if (event.target.matches(this._options.allow_drop)) {
+            if (event.target != this._marker.parentElement) {
+                this._marker.parentElement?.removeChild(this._marker);
+                event.target.appendChild(this._marker);
+            }
+        }
     }
 
     update() {
@@ -77,6 +95,7 @@ export class DragDropManager {
     }
 
     async mouseUp(event) {
+        this._element.removeEventListener("mouseover", this._mouseOverHandler);
         document.removeEventListener("mousemove", this._mouseMoveHandler);
         document.removeEventListener("mouseup", this._mouseUpHandler);
 
@@ -85,7 +104,7 @@ export class DragDropManager {
 
         const drop_element = document.elementFromPoint(event.clientX, event.clientY);
 
-        if (drop_element.matches(this._options.allow_drop)) {
+        if (drop_element.matches(this._options.allow_drop) || drop_element == this._marker) {
             await this.moveToTarget(drop_element);
         }
         else {
@@ -96,39 +115,52 @@ export class DragDropManager {
 
         delete this._dragElement;
         delete this._placeholder;
+        delete this._marker;
         delete this._start;
 
         await crs.call("dom_interactive", "remove_animation_layer");
     }
 
-    async moveToTarget(drop_element) {
-        this._dragElement.parentElement.removeChild(this._dragElement);
-        drop_element.appendChild(this._dragElement);
-        this._placeholder.parentElement.removeChild(this._placeholder);
+    moveToTarget(drop_element) {
+        return new Promise(async resolve => {
+            const bounds = this._marker.parentElement == null ? this.bounds : this._marker.getBoundingClientRect();
+            const target = this._marker.parentElement == null ? this._placeholder : this._marker;
 
-        await this.clearDragProperties();
+            this.moveToTargetBounds(target, bounds, async () => {
+                this._placeholder.parentElement?.removeChild(this._placeholder);
+
+                await this.clearDragProperties();
+                resolve();
+            })
+        })
     }
 
     returnToStart() {
         return new Promise(resolve => {
-            this._busy = true;
-            const element = this._dragElement;
-            const target = this._placeholder;
-
-            const animate = setTimeout(() => {
-                element.style.transition = "all 0.3s ease-out";
-                element.style.transform = `translate(${this.bounds.x}px, ${this.bounds.y}px) rotate(0deg)`;
-            })
-
-            const timeout = setTimeout(async () => {
-                target.parentElement.replaceChild(element, target);
-                clearTimeout(timeout);
-                clearTimeout(animate);
-                await this.clearDragProperties();
-                this._busy = false;
+            this.moveToTargetBounds(this._placeholder, this.bounds, () => {
                 resolve();
-            }, 300);
+            })
         })
+    }
+
+    moveToTargetBounds(target, bounds, callback) {
+        this._busy = true;
+        const element = this._dragElement;
+
+        const animate = setTimeout(() => {
+            element.style.transition = "all 0.3s ease-out";
+            element.style.transform = `translate(${bounds.x}px, ${bounds.y}px) rotate(0deg)`;
+        })
+
+        const timeout = setTimeout(async () => {
+            target.parentElement.replaceChild(element, target);
+            this._marker.parentElement?.removeChild(this._marker);
+            clearTimeout(timeout);
+            clearTimeout(animate);
+            await this.clearDragProperties();
+            this._busy = false;
+            callback();
+        }, 300);
     }
 
     async clearDragProperties() {
