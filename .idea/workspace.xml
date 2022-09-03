@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -519,13 +519,6 @@
       <workItem from="1662043347371" duration="5000" />
       <workItem from="1662229118292" duration="13549000" />
     </task>
-    <task id="LOCAL-00189" summary="add filesystem features">
-      <created>1653505117196</created>
-      <option name="number" value="00189" />
-      <option name="presentableId" value="LOCAL-00189" />
-      <option name="project" value="LOCAL" />
-      <updated>1653505117196</updated>
-    </task>
     <task id="LOCAL-00190" summary="build">
       <created>1653939960578</created>
       <option name="number" value="00190" />
@@ -862,7 +855,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662239437912</updated>
     </task>
-    <option name="localTasksCounter" value="238" />
+    <task id="LOCAL-00238" summary="add enable drop drop">
+      <created>1662244480399</created>
+      <option name="number" value="00238" />
+      <option name="presentableId" value="LOCAL-00238" />
+      <option name="project" value="LOCAL" />
+      <updated>1662244480399</updated>
+    </task>
+    <option name="localTasksCounter" value="239" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
