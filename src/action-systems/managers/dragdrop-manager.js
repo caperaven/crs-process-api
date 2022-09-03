@@ -7,6 +7,7 @@ export class DragDropManager {
         this._mouseDownHandler = this.mouseDown.bind(this);
         this._mouseMoveHandler = this.mouseMove.bind(this);
         this._mouseUpHandler = this.mouseUp.bind(this);
+        this._updateHandler = this.update.bind(this);
         this._element.addEventListener("mousedown", this._mouseDownHandler);
 
         element.__dragDropManager = this;
@@ -52,19 +53,30 @@ export class DragDropManager {
 
             document.addEventListener("mousemove", this._mouseMoveHandler);
             document.addEventListener("mouseup", this._mouseUpHandler);
+            this.update();
         }
 
         event.preventDefault();
     }
 
     async mouseMove(event) {
-        const offsetX = event.clientX - this._start.x;
-        const offsetY = event.clientY - this._start.y;
+        this._offsetX = event.clientX - this._start.x;
+        this._offsetY = event.clientY - this._start.y;
+    }
 
-        this._dragElement.style.transform = `translate(${this.bounds.x + offsetX}px, ${this.bounds.y + offsetY}px) rotate(${this._options.rotate}deg)`
+    update() {
+        if (this._offsetX && this._dragElement) {
+            this._dragElement.style.transform = `translate(${this.bounds.x + this._offsetX}px, ${this.bounds.y + this._offsetY}px) rotate(${this._options.rotate}deg)`;
+        }
+
+        if (this._dragElement) {
+            requestAnimationFrame(this._updateHandler);
+        }
     }
 
     async mouseUp(event) {
+        this._offsetX = null;
+        this._offsetY = null;
         this._dragElement.parentElement.removeChild(this._dragElement);
 
         await crs.call("dom", "set_styles", {
