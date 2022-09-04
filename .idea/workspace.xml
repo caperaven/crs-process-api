@@ -11,7 +11,8 @@
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

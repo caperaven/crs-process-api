@@ -6,7 +6,8 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
             element: ".container",
             options: {
                 rotate: 10,
-                allow_drop: '[role="list"]'
+                allow_drop: '[role="list"]',
+                insert_between: true
             }
         })
     }

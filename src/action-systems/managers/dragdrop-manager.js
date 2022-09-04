@@ -39,6 +39,7 @@ export class DragDropManager {
 
         if (this._dragElement) {
             this.bounds = this._dragElement.getBoundingClientRect();
+            this.startBounds = JSON.parse(JSON.stringify(this.bounds));
 
             this._start = {x: event.clientX, y: event.clientY};
             this._dragElement.setAttribute("aria-grabbed", "true");
@@ -75,18 +76,43 @@ export class DragDropManager {
     async mouseOver(event) {
         if (event.target == this._placeholder.parentElement) {
             this._marker.parentElement?.removeChild(this._marker);
+
+            const parent = this._placeholder.parentElement;
+            parent.removeChild(this._placeholder);
+            parent.appendChild(this._placeholder);
+            this.bounds = this._placeholder.getBoundingClientRect();
+            return;
         }
-        else if (event.target.matches(this._options.allow_drop)) {
-            if (event.target != this._marker.parentElement) {
+
+        if (event.target.matches(this._options.allow_drop)) {
+            this._marker.parentElement?.removeChild(this._marker);
+            event.target.appendChild(this._marker);
+            return;
+        }
+
+        if (event.target.previousElementSibling == this._placeholder) {
+            return;
+        }
+
+        if (this._options.insert_between == true) {
+            if (event.target.getAttribute("draggable") == "true") {
                 this._marker.parentElement?.removeChild(this._marker);
-                event.target.appendChild(this._marker);
+
+                if (event.target.parentElement == this._placeholder.parentElement) {
+                    this._placeholder.parentElement.removeChild(this._placeholder);
+                    event.target.parentElement?.insertBefore(this._placeholder, event.target);
+                    this.bounds = this._placeholder.getBoundingClientRect();
+                }
+                else {
+                    event.target.parentElement?.insertBefore(this._marker, event.target);
+                }
             }
         }
     }
 
     update() {
         if (this._offsetX && this._dragElement) {
-            this._dragElement.style.transform = `translate(${this.bounds.x + this._offsetX}px, ${this.bounds.y + this._offsetY}px) rotate(${this._options.rotate}deg)`;
+            this._dragElement.style.transform = `translate(${this.startBounds.x + this._offsetX}px, ${this.startBounds.y + this._offsetY}px) rotate(${this._options.rotate}deg)`;
         }
 
         if (this._dragElement) {
@@ -117,6 +143,8 @@ export class DragDropManager {
         delete this._placeholder;
         delete this._marker;
         delete this._start;
+        this.startBounds = null;
+        this.bounds = null;
 
         await crs.call("dom_interactive", "remove_animation_layer");
     }
