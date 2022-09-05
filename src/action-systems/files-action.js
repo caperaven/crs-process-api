@@ -11,7 +11,6 @@ export class FileActions {
 
             let results = [];
             for (const file of files) {
-                const data = await FileFormatter.blob(file);
                 const fileDetails = await get_file_name(file.name);
 
                 results.push({
@@ -19,7 +18,7 @@ export class FileActions {
                     ext: fileDetails.ext,
                     type: file.type,
                     size: file.size,
-                    value: data
+                    value: file
                 })
             }
 
@@ -87,8 +86,8 @@ export class FileActions {
     static async enable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const handler = await crs.process.getValue(step.args.handler, context, process, item);
-        document.addEventListener("drop", filedrop_handler.bind(this, handler));
-        document.addEventListener("dragover", dragover_handler)
+        element.addEventListener("drop", filedrop_handler.bind(this, handler));
+        element.addEventListener("dragover", dragover_handler)
         element.__dropHandler = filedrop_handler;
         element.__dragoverHandler = dragover_handler;
     }
@@ -99,8 +98,8 @@ export class FileActions {
      */
     static async disable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
-        document.removeEventListener("drop", element.__dropHandler);
-        document.removeEventListener("dragover", element.__dragoverHandler);
+        element.removeEventListener("drop", element.__dropHandler);
+        element.removeEventListener("dragover", element.__dragoverHandler);
         delete element.__dropHandler;
         delete element.__dragoverHandler;
     }
@@ -180,7 +179,7 @@ async function filedrop_handler(handler, event) {
             name: fileDetails.name,
             ext: fileDetails.ext,
             size: file.size,
-            value: await file.arrayBuffer()
+            value: file
         });
     }
 
