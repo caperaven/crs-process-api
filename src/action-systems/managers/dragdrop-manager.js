@@ -1,6 +1,6 @@
 import {ensureOptions} from "./dragdrop-manager/options.js";
 import {applyPlaceholder} from "./dragdrop-manager/placeholder-type.js";
-import {performDrop} from "./dragdrop-manager/perform-drop.js";
+import {drop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
 
 export class DragDropManager {
@@ -27,6 +27,9 @@ export class DragDropManager {
 
     async mouseDown(event) {
         event.preventDefault();
+
+        if (this._isBusy == true) return;
+
         this._startPoint = {x: event.clientX, y: event.clientY};
         this._movePoint = {x: event.clientX, y: event.clientY};
 
@@ -51,6 +54,7 @@ export class DragDropManager {
     }
 
     async mouseUp(event) {
+        this._isBusy = true;
         event.preventDefault();
         this._updateDragHandler = null;
         this._movePoint = null;
@@ -59,10 +63,11 @@ export class DragDropManager {
         document.removeEventListener("mousemove", this._mouseMoveHandler);
         document.removeEventListener("mouseup", this._mouseUpHandler);
 
-        await performDrop(this._dragElement, this._placeholder, this._options);
+        await drop(this._dragElement, this._placeholder, this._options);
 
         delete this._dragElement;
         delete this._placeholder;
+        this._isBusy = false;
     }
 
     async mouseOver(event) {

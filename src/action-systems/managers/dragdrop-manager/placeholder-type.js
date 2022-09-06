@@ -1,3 +1,10 @@
+/**
+ * Create the appropriate placeholder and apply it to the screen.
+ * The placeholder is also returned for later use.
+ * @param element
+ * @param options
+ * @returns {Promise<*>}
+ */
 export async function applyPlaceholder(element, options) {
     const bounds = element.getBoundingClientRect();
     element._bounds = bounds;
@@ -16,6 +23,7 @@ class PlaceholderType {
     /**
      * Create an element that will replace the existing item being dragged
      * @param element: element being dragged
+     * @param bounds: element client bounding rect
      * @returns {Promise<void>}
      */
     static async standard(element, bounds) {
