@@ -10,8 +10,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/options.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/perform-drop.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder-type.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/package.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/package.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/action-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/array-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/binding-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/component-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/condition-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/console-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/css-grid-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/data-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/database-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-binding-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-collection-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-crud-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-interactive-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-layout-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/events-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/files-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/fixed-layout-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/fs-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/local-storage-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/loop-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/math-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/media-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/module-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/object-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/process-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/random-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/rest-services-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/session-storage-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/string-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/system-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/translations-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/action-systems/validate-actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/crs-process-api.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -167,8 +207,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.bundel-to-version" />
         <item itemvalue="npm.build-bundle" />
+        <item itemvalue="npm.bundel-to-version" />
         <item itemvalue="npm.bundel-to-version-beta" />
         <item itemvalue="npm.build-publish" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
@@ -519,6 +559,15 @@
       <workItem from="1662038111620" duration="1148000" />
       <workItem from="1662043347371" duration="5000" />
       <workItem from="1662229118292" duration="13549000" />
+      <workItem from="1662358290042" duration="1966000" />
+      <workItem from="1662364444290" duration="2176000" />
+      <workItem from="1662366823085" duration="4000" />
+      <workItem from="1662388684744" duration="2304000" />
+      <workItem from="1662391324338" duration="128000" />
+      <workItem from="1662457370272" duration="603000" />
+      <workItem from="1662467809980" duration="326000" />
+      <workItem from="1662468208678" duration="1513000" />
+      <workItem from="1662477738221" duration="8882000" />
     </task>
     <task id="LOCAL-00190" summary="build">
       <created>1653939960578</created>

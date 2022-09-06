@@ -3,11 +3,29 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
         await super.connectedCallback();
 
         await crs.call("dom_interactive", "enable_dragdrop", {
-            element: ".container",
+            element: "#divStartStandard",
             options: {
-                rotate: 10,
-                allow_drop: '[role="list"]',
-                insert_between: true
+                drag: {
+                    placeholderType: "standard"
+                }
+            }
+        })
+
+        await crs.call("dom_interactive", "enable_dragdrop", {
+            element: "#divStartOpacity",
+            options: {
+                drag: {
+                    placeholderType: "opacity"
+                }
+            }
+        })
+
+        await crs.call("dom_interactive", "enable_dragdrop", {
+            element: "#divStartNone",
+            options: {
+                drag: {
+                    placeholderType: "none"
+                }
             }
         })
     }

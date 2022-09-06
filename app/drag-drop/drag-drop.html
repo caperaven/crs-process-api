@@ -28,8 +28,12 @@
         color: white;
     }
 
+    .small {
+        width: 100px;
+    }
+
     .placeholder {
-        border: solid silver 1px;
+        border: solid silver 2px;
         border-radius: 5px;
     }
 
@@ -44,21 +48,23 @@
         filter: drop-shadow(0 0 5px #0000007d);
         transform: rotate(10deg);
     }
+
+    section {
+        padding: 1rem;
+    }
 </style>
 
-<h2>${title}</h2>
+<section id="divStartStandard">
+    <h2>Placeholder Type - standard</h2>
+    <div class="card small" draggable="true" >Standard</div>
+</section>
 
-<div class="container">
-    <div role="list">
-        <div class="card" draggable="true">Card 1</div>
-        <div class="card" draggable="true">Card 2</div>
-        <div class="card" draggable="true">Card 3</div>
-    </div>
-    <div role="list">
-        <div class="card" draggable="true">Card 4</div>
-        <div class="card" draggable="true">Card 5</div>
-        <div class="card" draggable="true">Card 6</div>
-    </div>
-    <div role="list"></div>
-    <div role="list"></div>
-</div>
+<section id="divStartOpacity">
+    <h2>Placeholder Type - Opacity</h2>
+    <div class="card small" draggable="true" >Opacity</div>
+</section>
+
+<section id="divStartNone">
+    <h2>Placeholder Type - None</h2>
+    <div class="card small" draggable="true" >None</div>
+</section>

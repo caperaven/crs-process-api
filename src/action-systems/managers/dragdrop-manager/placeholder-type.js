@@ -1,0 +1,45 @@
+export async function applyPlaceholder(element, options) {
+    const bounds = element.getBoundingClientRect();
+    element._bounds = bounds;
+
+    const placeholder = await PlaceholderType[options.drag.placeholderType](element, bounds, options);
+    placeholder._bounds = bounds;
+
+    element.parentElement.replaceChild(placeholder, element);
+    element.style.width = `${bounds.width}px`;
+    element.style.height = `${bounds.height}px`;
+
+    return placeholder;
+}
+
+class PlaceholderType {
+    /**
+     * Create an element that will replace the existing item being dragged
+     * @param element: element being dragged
+     * @returns {Promise<void>}
+     */
+    static async standard(element, bounds) {
+        return await crs.call("dom", "create_element", {
+            classes: ["placeholder"],
+            styles: {
+                width: `${bounds.width}px`,
+                height: `${bounds.height}px`
+            }
+        })
+    }
+
+    /**
+     * Create a copy of the element and set its opacity
+     * @param element
+     * @returns {Promise<void>}
+     */
+    static async opacity(element, bounds, options) {
+        const result = element.cloneNode(true);
+        result.style.opacity = options.drag.opacity || 0.5;
+        return result;
+    }
+
+    static async none(element, bounds, options) {
+        return element.cloneNode(true);
+    }
+}

@@ -1,17 +1,19 @@
+import {ensureOptions} from "./dragdrop-manager/options.js";
+import {applyPlaceholder} from "./dragdrop-manager/placeholder-type.js";
+import {performDrop} from "./dragdrop-manager/perform-drop.js";
+import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
+
 export class DragDropManager {
     constructor(element, options) {
         this._element = element;
-        this._options = options;
-        this._options.rotation = this._options.rotate || 0;
+        this._options = ensureOptions(options);
 
         this._mouseDownHandler = this.mouseDown.bind(this);
         this._mouseMoveHandler = this.mouseMove.bind(this);
         this._mouseUpHandler = this.mouseUp.bind(this);
         this._mouseOverHandler = this.mouseOver.bind(this);
-        this._updateHandler = this.update.bind(this);
-        this._element.addEventListener("mousedown", this._mouseDownHandler);
 
-        element.__dragDropManager = this;
+        this._element.addEventListener("mousedown", this._mouseDownHandler);
     }
 
     dispose() {
@@ -20,199 +22,68 @@ export class DragDropManager {
         this._mouseDownHandler = null;
         this._mouseMoveHandler = null;
         this._mouseUpHandler = null;
-
-        delete this._element.__dragDropManager;
-        delete this._element;
+        this._mouseOverHandler = null;
     }
 
     async mouseDown(event) {
         event.preventDefault();
+        this._startPoint = {x: event.clientX, y: event.clientY};
+        this._movePoint = {x: event.clientX, y: event.clientY};
 
-        if (this._busy == true) return;
+        const element = getDraggable(event, this._options);
+        if (element == null) return;
 
-        if (event.target.getAttribute("draggable") == "true") {
-            this._dragElement = event.target;
-        }
-        else if (event.target.parentElement.getAttribute("draggable") == "true") {
-            this._dragElement = event.target.parentElement;
-        }
+        this._dragElement = element;
+        this._placeholder = await applyPlaceholder(element, this._options);
+        await startDrag(this._dragElement);
 
-        if (this._dragElement) {
-            this.bounds = this._dragElement.getBoundingClientRect();
-            this.startBounds = JSON.parse(JSON.stringify(this.bounds));
+        document.addEventListener("mousemove", this._mouseMoveHandler);
+        document.addEventListener("mouseup", this._mouseUpHandler);
 
-            this._start = {x: event.clientX, y: event.clientY};
-            this._dragElement.setAttribute("aria-grabbed", "true");
-            this._placeholder = await createPlaceholder(this._dragElement, this.bounds);
-
-            this._marker = this._placeholder.cloneNode();
-            this._marker.setAttribute("class", "marker");
-
-            const animationLayer = await crs.call("dom_interactive", "get_animation_layer");
-            animationLayer.appendChild(this._dragElement);
-
-            await crs.call("dom", "set_styles", {
-                element: this._dragElement,
-                styles: {
-                    transform: `translate(${this.bounds.x}px, ${this.bounds.y}px) rotate(${this._options.rotate}deg)`,
-                    width: `${this.bounds.width}px`,
-                    height: `${this.bounds.height}px`
-                }
-            })
-
-            document.addEventListener("mousemove", this._mouseMoveHandler);
-            document.addEventListener("mouseup", this._mouseUpHandler);
-            this._element.addEventListener("mouseover", this._mouseOverHandler);
-
-            this.update();
-        }
+        this._updateDragHandler = updateDrag.bind(this);
+        this._updateDragHandler();
     }
 
     async mouseMove(event) {
-        this._offsetX = event.clientX - this._start.x;
-        this._offsetY = event.clientY - this._start.y;
-    }
-
-    async mouseOver(event) {
-        if (event.target == this._placeholder.parentElement) {
-            this._marker.parentElement?.removeChild(this._marker);
-
-            const parent = this._placeholder.parentElement;
-            parent.removeChild(this._placeholder);
-            parent.appendChild(this._placeholder);
-            this.bounds = this._placeholder.getBoundingClientRect();
-            return;
-        }
-
-        if (event.target.matches(this._options.allow_drop)) {
-            this._marker.parentElement?.removeChild(this._marker);
-            event.target.appendChild(this._marker);
-            return;
-        }
-
-        if (event.target.previousElementSibling == this._placeholder) {
-            return;
-        }
-
-        if (this._options.insert_between == true) {
-            if (event.target.getAttribute("draggable") == "true") {
-                this._marker.parentElement?.removeChild(this._marker);
-
-                if (event.target.parentElement == this._placeholder.parentElement) {
-                    this._placeholder.parentElement.removeChild(this._placeholder);
-                    event.target.parentElement?.insertBefore(this._placeholder, event.target);
-                    this.bounds = this._placeholder.getBoundingClientRect();
-                }
-                else {
-                    event.target.parentElement?.insertBefore(this._marker, event.target);
-                }
-            }
-        }
-    }
-
-    update() {
-        if (this._offsetX && this._dragElement) {
-            this._dragElement.style.transform = `translate(${this.startBounds.x + this._offsetX}px, ${this.startBounds.y + this._offsetY}px) rotate(${this._options.rotate}deg)`;
-        }
-
-        if (this._dragElement) {
-            requestAnimationFrame(this._updateHandler);
-        }
+        event.preventDefault();
+        this._movePoint.x = event.clientX;
+        this._movePoint.y = event.clientY;
     }
 
     async mouseUp(event) {
-        this._element.removeEventListener("mouseover", this._mouseOverHandler);
+        event.preventDefault();
+        this._updateDragHandler = null;
+        this._movePoint = null;
+        this._startPoint = null;
+
         document.removeEventListener("mousemove", this._mouseMoveHandler);
         document.removeEventListener("mouseup", this._mouseUpHandler);
 
-        this._offsetX = null;
-        this._offsetY = null;
-
-        const drop_element = document.elementFromPoint(event.clientX, event.clientY);
-
-        if (drop_element.matches(this._options.allow_drop) || drop_element == this._marker) {
-            await this.moveToTarget(drop_element);
-        }
-        else {
-            await this.returnToStart();
-        }
-
-        this._dragElement?.removeAttribute("aria-grabbed");
+        await performDrop(this._dragElement, this._placeholder, this._options);
 
         delete this._dragElement;
         delete this._placeholder;
-        delete this._marker;
-        delete this._start;
-        this.startBounds = null;
-        this.bounds = null;
-
-        await crs.call("dom_interactive", "remove_animation_layer");
     }
 
-    moveToTarget(drop_element) {
-        return new Promise(async resolve => {
-            const bounds = this._marker.parentElement == null ? this.bounds : this._marker.getBoundingClientRect();
-            const target = this._marker.parentElement == null ? this._placeholder : this._marker;
+    async mouseOver(event) {
 
-            this.moveToTargetBounds(target, bounds, async () => {
-                this._placeholder.parentElement?.removeChild(this._placeholder);
-
-                await this.clearDragProperties();
-                resolve();
-            })
-        })
-    }
-
-    returnToStart() {
-        return new Promise(resolve => {
-            this.moveToTargetBounds(this._placeholder, this.bounds, () => {
-                resolve();
-            })
-        })
-    }
-
-    moveToTargetBounds(target, bounds, callback) {
-        this._busy = true;
-        const element = this._dragElement;
-
-        const animate = setTimeout(() => {
-            element.style.transition = "all 0.2s ease-out";
-            element.style.transform = `translate(${bounds.x}px, ${bounds.y}px) rotate(0deg)`;
-        })
-
-        const timeout = setTimeout(async () => {
-            target.parentElement.replaceChild(element, target);
-            this._marker.parentElement?.removeChild(this._marker);
-            clearTimeout(timeout);
-            clearTimeout(animate);
-            await this.clearDragProperties();
-            this._busy = false;
-            callback();
-        }, 200);
-    }
-
-    async clearDragProperties() {
-        await crs.call("dom", "set_styles", {
-            element: this._dragElement,
-            styles: {
-                "transition": "",
-                "transform": "",
-                "width": "",
-                "height": ""
-            }
-        });
     }
 }
 
-async function createPlaceholder(element, bounds) {
-    const placeholder = await crs.call("dom", "create_element", {
-        classes: ["placeholder"],
-        styles: {
-            "width": `${bounds.width}px`,
-            "height": `${bounds.height}px`
-        }
-    })
+/**
+ * From the event get the element that can be dragged.
+ * @param event
+ * @param options
+ * @returns {null|any}
+ */
+function getDraggable(event, options) {
+    if (event.target.matches(options.dragQuery)) {
+        return event.target;
+    }
 
-    element.parentElement.replaceChild(placeholder, element);
-    return placeholder;
+    if (event.target.parentElement?.matches(options.dragQuery)) {
+        return event.target.parentElement;
+    }
+
+    return null;
 }

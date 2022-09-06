@@ -4,7 +4,9 @@ import * as esbuild from 'https://deno.land/x/esbuild@v0.14.50/mod.js'
 async function createFolderStructure() {
     await ensureDir("./dist");
     await emptyDir("./dist");
-    await ensureDir("./dist/action-systems")
+    await ensureDir("./dist/action-systems");
+    await ensureDir("./dist/action-systems/managers");
+    await ensureDir("./dist/action-systems/managers/dragdrop-manager");
 }
 
 async function packageDirectory(def, loader, format, minified) {
@@ -57,6 +59,22 @@ await createFolderStructure();
 
 await packageDirectory({
     dir: ["./src/action-systems"],
+    replace: {
+        "./src": ""
+    },
+    target: "./dist"
+}, "js", "esm", true);
+
+await packageDirectory({
+    dir: ["./src/action-systems/managers"],
+    replace: {
+        "./src": ""
+    },
+    target: "./dist"
+}, "js", "esm", true);
+
+await packageDirectory({
+    dir: ["./src/action-systems/managers/dragdrop-manager"],
     replace: {
         "./src": ""
     },
