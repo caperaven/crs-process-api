@@ -5,12 +5,36 @@
  */
 export async function startDrag(dragElement, options) {
     const layer = await crs.call("dom_interactive", "get_animation_layer");
-    dragElement.style.translate = `${dragElement._bounds.x}px ${dragElement._bounds.y}px`;
-    dragElement.style.filter = "drop-shadow(0 0 5px #00000080)";
-    layer.appendChild(dragElement);
+    const element = await DragClone[options.drag.clone](dragElement, options);
+    element.style.translate = `${dragElement._bounds.x}px ${dragElement._bounds.y}px`;
+    element.style.filter = "drop-shadow(0 0 5px #00000080)";
+    layer.appendChild(element);
+    return element;
+}
 
+class DragClone {
+    static async element(dragElement) {
+        return dragElement;
+    }
 
-    // JHR: todo check if you need to clone the element or from template
+    /**
+     * The template can be defined on the options under drag or on the drag element as a data-template attribute
+     * @param dragElement
+     * @param options
+     * @returns {Promise<void>}
+     */
+    static async template(dragElement, options) {
+        let template = options.drag.template;
+        if (template == null) {
+            template = document.querySelector(`#${dragElement.dataset.template}`);
+        }
+
+        const result =  template.content.cloneNode(true).children[0];
+        result._bounds = dragElement._bounds;
+        result._dragElement = dragElement;
+        return result;
+        // JHR: todo, enable inflation on templates
+    }
 }
 
 /**

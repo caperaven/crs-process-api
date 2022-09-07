@@ -56,19 +56,62 @@
     section {
         padding: 1rem;
     }
+
+    .drag-box {
+        border-radius: 5px;
+        border: solid silver 1px;
+        background: #f4f4f4;
+        padding: 0.5rem;
+        width: max-content;
+        height: max-content;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: max-content 20rem;
+        gap: 1rem;
+        margin: 1rem;
+    }
+
+    .drop-target {
+        background: #f4f4f4;
+        border: 1px silver solid;
+    }
 </style>
 
-<section id="divStartStandard">
-    <h2>Placeholder Type - standard</h2>
-    <div class="card small" draggable="true" >Standard</div>
-</section>
+<div class="grid">
+    <section id="divStartStandard">
+        <h2>Placeholder Type - standard</h2>
+        <div class="card small" draggable="true" >Standard</div>
+    </section>
 
-<section id="divStartOpacity">
-    <h2>Placeholder Type - Opacity</h2>
-    <div class="card small" draggable="true" >Opacity</div>
-</section>
+    <div class="drop-target"></div>
 
-<section id="divStartNone">
-    <h2>Placeholder Type - None</h2>
-    <div class="card small" draggable="true" >None</div>
-</section>
+    <section id="divStartOpacity">
+        <h2>Placeholder Type - Opacity</h2>
+        <div class="card small" draggable="true" >Opacity</div>
+    </section>
+
+    <div class="drop-target"></div>
+
+    <section id="divStartNone">
+        <h2>Placeholder Type - None</h2>
+        <div class="card small" draggable="true" >None</div>
+    </section>
+
+    <div class="drop-target"></div>
+
+    <section id="divCloneTemplate">
+        <template id="tplInput">
+            <div class="drag-box">
+                <div>Text Input</div>
+                <input>
+            </div>
+        </template>
+
+        <h2>Clone Template</h2>
+        <div class="card small" draggable="true" data-template="tplInput">None</div>
+    </section>
+
+    <div class="drop-target"></div>
+</div>

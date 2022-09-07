@@ -6,9 +6,26 @@
  * @returns {Promise<void>}
  */
 export async function drop(dragElement, placeholder, options) {
-    await gotoBounds(dragElement, placeholder._bounds);
-    placeholder.parentElement.replaceChild(dragElement, placeholder);
+    await gotoOrigin(dragElement, placeholder);
     cleanElements(dragElement, placeholder);
+}
+
+/**
+ * Move back to where you started the drag operation from
+ * @param dragElement
+ * @param placeholder
+ * @returns {Promise<void>}
+ */
+async function gotoOrigin(dragElement, placeholder) {
+    await gotoBounds(dragElement, placeholder._bounds);
+
+    if (dragElement._dragElement != null) {
+        const element = dragElement._dragElement;
+        delete dragElement._dragElement;
+        dragElement = element;
+    }
+
+    placeholder.parentElement.replaceChild(dragElement, placeholder);
 }
 
 /**
@@ -26,6 +43,7 @@ function gotoBounds(element, bounds) {
         const wait = setTimeout(() => {
             clearTimeout(start);
             clearTimeout(wait);
+            element.parentElement.removeChild(element);
             resolve();
         }, 350);
     })

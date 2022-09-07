@@ -37,9 +37,8 @@ export class DragDropManager {
         const element = getDraggable(event, this._options);
         if (element == null) return;
 
-        this._dragElement = element;
         this._placeholder = await applyPlaceholder(element, this._options);
-        await startDrag(this._dragElement, this._options);
+        this._dragElement = await startDrag(element, this._options);
 
         document.addEventListener("mousemove", this._mouseMoveHandler);
         document.addEventListener("mouseup", this._mouseUpHandler);

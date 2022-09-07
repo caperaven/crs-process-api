@@ -21,6 +21,6 @@ export function ensureOptions(options) {
 function ensureDragOptions(drag) {
     drag = drag || {};
     drag.placeholderType = drag.placeholderType || "standard";
-    drag.dragClone = drag.dragClone || "element";
+    drag.clone = drag.clone || "element";
     return drag;
 }

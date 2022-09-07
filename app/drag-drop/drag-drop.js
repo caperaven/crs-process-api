@@ -28,6 +28,16 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 }
             }
         })
+
+        await crs.call("dom_interactive", "enable_dragdrop", {
+            element: "#divCloneTemplate",
+            options: {
+                drag: {
+                    placeholderType: "none",
+                    clone: "template"
+                }
+            }
+        })
     }
 
     async disconnectedCallback() {
