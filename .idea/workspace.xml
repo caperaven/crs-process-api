@@ -10,13 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder-type.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -532,14 +527,9 @@
       <workItem from="1662467809980" duration="326000" />
       <workItem from="1662468208678" duration="1513000" />
       <workItem from="1662477738221" duration="13179000" />
-      <workItem from="1662531515436" duration="2656000" />
-    </task>
-    <task id="LOCAL-00192" summary="add documentation">
-      <created>1654076973745</created>
-      <option name="number" value="00192" />
-      <option name="presentableId" value="LOCAL-00192" />
-      <option name="project" value="LOCAL" />
-      <updated>1654076973746</updated>
+      <workItem from="1662531515436" duration="2855000" />
+      <workItem from="1662535699716" duration="4000" />
+      <workItem from="1662568168246" duration="300000" />
     </task>
     <task id="LOCAL-00193" summary="add documentation">
       <created>1654082031038</created>
@@ -877,7 +867,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662502077034</updated>
     </task>
-    <option name="localTasksCounter" value="241" />
+    <task id="LOCAL-00241" summary="fix drag and drop issue and make new build">
+      <created>1662535642988</created>
+      <option name="number" value="00241" />
+      <option name="presentableId" value="LOCAL-00241" />
+      <option name="project" value="LOCAL" />
+      <updated>1662535642988</updated>
+    </task>
+    <option name="localTasksCounter" value="242" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -897,7 +894,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="update dom to better handle get element" />
     <MESSAGE value="add file and media handling" />
     <MESSAGE value="fix bug on grouping where rows were ignored." />
     <MESSAGE value="add notify_ready to dom functions" />
@@ -922,7 +918,8 @@
     <MESSAGE value="add move actions" />
     <MESSAGE value="add is mobile check" />
     <MESSAGE value="add enable drop drop" />
-    <option name="LAST_COMMIT_MESSAGE" value="add enable drop drop" />
+    <MESSAGE value="fix drag and drop issue and make new build" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix drag and drop issue and make new build" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

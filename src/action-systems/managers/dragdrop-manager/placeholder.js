@@ -12,9 +12,10 @@ export async function applyPlaceholder(element, options) {
     const placeholder = await Placeholder[options.drag.placeholderType](element, bounds, options);
     placeholder._bounds = bounds;
 
-
     element.style.width = `${bounds.width}px`;
     element.style.height = `${bounds.height}px`;
+
+    element.parentElement.replaceChild(placeholder, element);
 
     return placeholder;
 }
