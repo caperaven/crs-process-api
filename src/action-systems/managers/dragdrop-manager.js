@@ -63,7 +63,7 @@ export class DragDropManager {
         document.removeEventListener("mousemove", this._mouseMoveHandler);
         document.removeEventListener("mouseup", this._mouseUpHandler);
 
-        await drop(this._dragElement, this._placeholder, this._options);
+        await drop(event, this._dragElement, this._placeholder, this._options);
 
         delete this._dragElement;
         delete this._placeholder;

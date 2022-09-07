@@ -5,8 +5,15 @@
  * @param options
  * @returns {Promise<void>}
  */
-export async function drop(dragElement, placeholder, options) {
-    await gotoOrigin(dragElement, placeholder);
+export async function drop(event, dragElement, placeholder, options) {
+    const target = await allowDrop(event, dragElement, options);
+
+    if (target == false) {
+        await gotoOrigin(dragElement, placeholder);
+    }
+    else {
+        await gotoTarget(event, dragElement, target, options);
+    }
     cleanElements(dragElement, placeholder);
 }
 
@@ -26,6 +33,11 @@ async function gotoOrigin(dragElement, placeholder) {
     }
 
     placeholder.parentElement.replaceChild(dragElement, placeholder);
+}
+
+async function gotoTarget(event, dragElement, target, options) {
+    dragElement.parentElement.removeChild(dragElement);
+    target.appendChild(dragElement);
 }
 
 /**
@@ -64,4 +76,36 @@ function cleanElements(dragElement, placeholder) {
     dragElement.style.filter = "";
 
     delete placeholder._bounds;
+}
+
+/**
+ * Check if you are allowed to drop here
+ * @param event
+ * @param options
+ * @returns {Promise<*>}
+ */
+async function allowDrop(event, dragElement, options) {
+    return AllowDrop[typeof options.drop.allowDrop](event, options);
+}
+
+class AllowDrop {
+    static async string(event, options) {
+        if (event.target.matches(options.drop.allowDrop)) {
+            return event.target;
+        }
+
+        if (event.target.parentElement?.matches(options.drop.allowDrop)) {
+            return event.target.parentElement;
+        }
+
+        return false;
+    }
+
+    static async function(event, options) {
+        return await options.drop.allowDrop(event)
+    }
+
+    static async object(event) {
+
+    }
 }

@@ -12,9 +12,7 @@
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drop.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/options.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/options.js" afterDir="false" />
     </list>
@@ -534,14 +532,7 @@
       <workItem from="1662477738221" duration="13179000" />
       <workItem from="1662531515436" duration="2855000" />
       <workItem from="1662535699716" duration="4000" />
-      <workItem from="1662568168246" duration="2637000" />
-    </task>
-    <task id="LOCAL-00194" summary="add documentation">
-      <created>1654085745250</created>
-      <option name="number" value="00194" />
-      <option name="presentableId" value="LOCAL-00194" />
-      <option name="project" value="LOCAL" />
-      <updated>1654085745250</updated>
+      <workItem from="1662568168246" duration="7449000" />
     </task>
     <task id="LOCAL-00195" summary="add documentation">
       <created>1654087102946</created>
@@ -879,7 +870,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662568496995</updated>
     </task>
-    <option name="localTasksCounter" value="243" />
+    <task id="LOCAL-00243" summary="add drag and drop template support">
+      <created>1662570938576</created>
+      <option name="number" value="00243" />
+      <option name="presentableId" value="LOCAL-00243" />
+      <option name="project" value="LOCAL" />
+      <updated>1662570938576</updated>
+    </task>
+    <option name="localTasksCounter" value="244" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -899,7 +897,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add file and media handling" />
     <MESSAGE value="fix bug on grouping where rows were ignored." />
     <MESSAGE value="add notify_ready to dom functions" />
     <MESSAGE value="add filesystem features" />
@@ -924,7 +921,8 @@
     <MESSAGE value="add is mobile check" />
     <MESSAGE value="add enable drop drop" />
     <MESSAGE value="fix drag and drop issue and make new build" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix drag and drop issue and make new build" />
+    <MESSAGE value="add drag and drop template support" />
+    <option name="LAST_COMMIT_MESSAGE" value="add drag and drop template support" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

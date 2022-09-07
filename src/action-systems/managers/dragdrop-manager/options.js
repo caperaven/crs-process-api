@@ -10,6 +10,7 @@ export function ensureOptions(options) {
     options.insertBetween = options.insertBetween || true;
 
     options.drag = ensureDragOptions(options.drag);
+    options.drop = ensureDropOptions(options.drop);
     return options;
 }
 
@@ -23,4 +24,12 @@ function ensureDragOptions(drag) {
     drag.placeholderType = drag.placeholderType || "standard";
     drag.clone = drag.clone || "element";
     return drag;
+}
+
+function ensureDropOptions(drop) {
+    drop = drop || {};
+
+    drop.allowDrop = drop.allowDrop || "[aria-dropeffect]"
+
+    return drop;
 }
