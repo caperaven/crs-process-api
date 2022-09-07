@@ -10,13 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/options.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/perform-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder-type.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder-type.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder-type.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/placeholder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -531,14 +531,8 @@
       <workItem from="1662457370272" duration="603000" />
       <workItem from="1662467809980" duration="326000" />
       <workItem from="1662468208678" duration="1513000" />
-      <workItem from="1662477738221" duration="13034000" />
-    </task>
-    <task id="LOCAL-00191" summary="enable file reading from handle">
-      <created>1653985602854</created>
-      <option name="number" value="00191" />
-      <option name="presentableId" value="LOCAL-00191" />
-      <option name="project" value="LOCAL" />
-      <updated>1653985602854</updated>
+      <workItem from="1662477738221" duration="13179000" />
+      <workItem from="1662531515436" duration="2656000" />
     </task>
     <task id="LOCAL-00192" summary="add documentation">
       <created>1654076973745</created>
@@ -876,7 +870,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662495547726</updated>
     </task>
-    <option name="localTasksCounter" value="240" />
+    <task id="LOCAL-00240" summary="add enable drop drop">
+      <created>1662502077034</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1662502077034</updated>
+    </task>
+    <option name="localTasksCounter" value="241" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

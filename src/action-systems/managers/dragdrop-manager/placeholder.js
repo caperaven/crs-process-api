@@ -9,17 +9,17 @@ export async function applyPlaceholder(element, options) {
     const bounds = element.getBoundingClientRect();
     element._bounds = bounds;
 
-    const placeholder = await PlaceholderType[options.drag.placeholderType](element, bounds, options);
+    const placeholder = await Placeholder[options.drag.placeholderType](element, bounds, options);
     placeholder._bounds = bounds;
 
-    element.parentElement.replaceChild(placeholder, element);
+
     element.style.width = `${bounds.width}px`;
     element.style.height = `${bounds.height}px`;
 
     return placeholder;
 }
 
-class PlaceholderType {
+class Placeholder {
     /**
      * Create an element that will replace the existing item being dragged
      * @param element: element being dragged

@@ -1,7 +1,8 @@
 import {ensureOptions} from "./dragdrop-manager/options.js";
-import {applyPlaceholder} from "./dragdrop-manager/placeholder-type.js";
+import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
 import {drop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
+import {getDraggable} from "./drag-utils.js";
 
 export class DragDropManager {
     constructor(element, options) {
@@ -38,7 +39,7 @@ export class DragDropManager {
 
         this._dragElement = element;
         this._placeholder = await applyPlaceholder(element, this._options);
-        await startDrag(this._dragElement);
+        await startDrag(this._dragElement, this._options);
 
         document.addEventListener("mousemove", this._mouseMoveHandler);
         document.addEventListener("mouseup", this._mouseUpHandler);
@@ -73,22 +74,4 @@ export class DragDropManager {
     async mouseOver(event) {
 
     }
-}
-
-/**
- * From the event get the element that can be dragged.
- * @param event
- * @param options
- * @returns {null|any}
- */
-function getDraggable(event, options) {
-    if (event.target.matches(options.dragQuery)) {
-        return event.target;
-    }
-
-    if (event.target.parentElement?.matches(options.dragQuery)) {
-        return event.target.parentElement;
-    }
-
-    return null;
 }

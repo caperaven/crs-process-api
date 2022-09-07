@@ -1,3 +1,5 @@
+import {getDraggable} from "./drag-utils.js";
+
 export class ResizeElementManager {
     constructor(element, resizeQuery, options) {
         this._element = element;
@@ -25,22 +27,23 @@ export class ResizeElementManager {
     }
 
     mouseDown(event) {
-        if (event.target.matches(this._resizeQuery)) {
-            this._targetElement = event.target.parentElement;
-            this._bounds = this._targetElement.getBoundingClientRect();
-            this._startPos = {x: event.clientX, y: event.clientY};
+        const draggable = getDraggable(event, {dragQuery: this._resizeQuery});
+        if (draggable == null) return;
 
-            this._options.min = this._options.min || {};
-            this._options.min.width = this._options.min.width || this._bounds.width;
-            this._options.min.height = this._options.min.height || this._bounds.height;
+        this._targetElement = draggable.parentElement;
+        this._bounds = this._targetElement.getBoundingClientRect();
+        this._startPos = {x: event.clientX, y: event.clientY};
 
-            this._options.max = this._options.max || {};
-            this._options.max.width = this._options.max.width || Number.MAX_VALUE;
-            this._options.max.height = this._options.max.height || Number.MAX_VALUE;
+        this._options.min = this._options.min || {};
+        this._options.min.width = this._options.min.width || this._bounds.width;
+        this._options.min.height = this._options.min.height || this._bounds.height;
 
-            document.addEventListener("mousemove", this._mouseMoveHandler);
-            document.addEventListener("mouseup", this._mouseUpHandler);
-        }
+        this._options.max = this._options.max || {};
+        this._options.max.width = this._options.max.width || Number.MAX_VALUE;
+        this._options.max.height = this._options.max.height || Number.MAX_VALUE;
+
+        document.addEventListener("mousemove", this._mouseMoveHandler);
+        document.addEventListener("mouseup", this._mouseUpHandler);
     }
 
     mouseMove(event) {

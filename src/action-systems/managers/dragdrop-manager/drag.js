@@ -3,11 +3,14 @@
  * @param dragElement
  * @returns {Promise<void>}
  */
-export async function startDrag(dragElement) {
+export async function startDrag(dragElement, options) {
     const layer = await crs.call("dom_interactive", "get_animation_layer");
     dragElement.style.translate = `${dragElement._bounds.x}px ${dragElement._bounds.y}px`;
     dragElement.style.filter = "drop-shadow(0 0 5px #00000080)";
     layer.appendChild(dragElement);
+
+
+    // JHR: todo check if you need to clone the element or from template
 }
 
 /**

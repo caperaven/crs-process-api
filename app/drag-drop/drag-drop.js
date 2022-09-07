@@ -6,7 +6,7 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
             element: "#divStartStandard",
             options: {
                 drag: {
-                    placeholderType: "standard"
+                    placeholderType: "standard",
                 }
             }
         })
