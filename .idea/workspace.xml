@@ -9,10 +9,9 @@
     <cargoProject FILE="$PROJECT_DIR$/wasm/random_data/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="fix some fixed layout issues">
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/size-manager.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/size-manager.test.js" afterDir="false" />
+    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/managers/size-manager.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/size-manager.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,27 +56,26 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/temp/crs-designer-api&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.5080.210\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "F:/temp/crs-designer-api",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
+    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.5080.210\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\tests\mockups" />
@@ -458,13 +456,6 @@
       <workItem from="1657875930430" duration="17000" />
       <workItem from="1662367633185" duration="1322000" />
     </task>
-    <task id="LOCAL-00178" summary="update dom feature to include path">
-      <created>1652446865129</created>
-      <option name="number" value="00178" />
-      <option name="presentableId" value="LOCAL-00178" />
-      <option name="project" value="LOCAL" />
-      <updated>1652446865129</updated>
-    </task>
     <task id="LOCAL-00179" summary="update dom feature to include path">
       <created>1652446989034</created>
       <option name="number" value="00179" />
@@ -801,7 +792,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657545766675</updated>
     </task>
-    <option name="localTasksCounter" value="227" />
+    <task id="LOCAL-00227" summary="add size manager skeleton and starter tests">
+      <created>1662629098274</created>
+      <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1662629098274</updated>
+    </task>
+    <option name="localTasksCounter" value="228" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -821,7 +819,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add delete old databases" />
     <MESSAGE value="added __ind on saved records for usage in vis" />
     <MESSAGE value="fixed context fetching for set widget" />
     <MESSAGE value="files features added for loading and saving" />
@@ -846,7 +843,8 @@
     <MESSAGE value="moved old tests out to make space for new deno tests" />
     <MESSAGE value="add deno tests" />
     <MESSAGE value="fix some fixed layout issues" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix some fixed layout issues" />
+    <MESSAGE value="add size manager skeleton and starter tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="add size manager skeleton and starter tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

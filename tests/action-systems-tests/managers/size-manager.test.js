@@ -30,6 +30,6 @@ Deno.test("size-manager - append", async () => {
     ]);
 
     // 5. assert the second set
-    assertEquals(instance.size, 30);
+    assertEquals(instance.size, 80);
     assertEquals(updateCalled, true);
 })
