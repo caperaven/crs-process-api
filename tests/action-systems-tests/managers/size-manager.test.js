@@ -7,6 +7,7 @@ Deno.test("size-manager - fill", async () => {
     const instance = new SizeManager(() => updateCalled = true);
     instance.fill(10, 100);
 
+    assertEquals(instance._collection.length, 100);
     assertEquals(instance.size, 1000);
     assertEquals(updateCalled, true);
 })

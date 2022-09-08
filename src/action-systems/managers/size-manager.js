@@ -3,10 +3,15 @@
  */
 export class SizeManager {
     get size() {
-        return this._size || 0;
+        return this._size;
     }
 
+    /**
+     * constructor
+     * @param updateCallback {function} this is called when size or indexing changes
+     */
     constructor(updateCallback) {
+        this._size = 0;
         this._updateCallback = updateCallback;
         this._collection = [];
     }
@@ -23,7 +28,16 @@ export class SizeManager {
      * @param count {number}
      */
     fill(size, count) {
-        // @Andre:NOTE - when managing the total size use the this._size field as this.size is a readonly property - remove this comment once you understand
+        this._collection = [];
+        for (let i = 0; i < count; i++) {
+            this._collection.push({
+                size: size,
+                dataIndex: i
+            })
+        }
+
+        this._size = size * count;
+        this._updateCallback();
     }
 
     /**
@@ -37,6 +51,7 @@ export class SizeManager {
     /**
      * Change the size of the item at that index
      * Update the size using the difference between the old value and new value
+     * dataIndex parameter is optional, if provided update it if note leave alone
      * @param index {number}
      * @param size {number}
      */
