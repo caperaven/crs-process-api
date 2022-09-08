@@ -35,6 +35,9 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 drag: {
                     placeholderType: "none",
                     clone: "template"
+                },
+                drop: {
+                    clone: "template"
                 }
             }
         })
