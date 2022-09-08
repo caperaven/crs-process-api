@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {SizeManager} from "./../../../src/action-systems/managers/size-manager.js"
+import {SizeManager} from "./../../../src/action-systems/managers/size-manager.js";
 
 Deno.test("size-manager - fill", async () => {
     let updateCalled = false;

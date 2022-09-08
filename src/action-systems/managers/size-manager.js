@@ -45,7 +45,9 @@ export class SizeManager {
      * @param items {array}
      */
     append(items) {
+        this._collection.push(this._size)
 
+        this._updateCallback();
     }
 
     /**
@@ -56,7 +58,13 @@ export class SizeManager {
      * @param size {number}
      */
     update(index, size, dataIndex) {
+        index = this._collection.at(0)
+        let oldSize = 20;
+        let newSize = oldSize - index
 
+        this._collection[index].size = newSize;
+
+        this._updateCallback();
     }
 
     /**
@@ -66,7 +74,10 @@ export class SizeManager {
      * @param dataIndex {number}
      */
     insert(index, size, dataIndex) {
+        let itemIndex = this._collection.at(0);
+        this._collection.splice(2, 0, this._size);
 
+        this._updateCallback();
     }
 
     /**
@@ -75,7 +86,13 @@ export class SizeManager {
      * @param toIndex {number}
      */
     move(fromIndex, toIndex) {
+        fromIndex = this._collection.indexOf('size');
+        toIndex = 2;
 
+        const newIndex = this._collection.splice(fromIndex, 1)[0];
+        this._collection.splice(toIndex, 0, newIndex);
+
+        this._updateCallback();
     }
 
     /**
@@ -83,7 +100,10 @@ export class SizeManager {
      * @param index {number}
      * @param count {number}     */
     remove(index, count) {
+        index = this._collection.at(0);
 
+        this._collection.splice(index, 1);
+        this._updateCallback();
     }
 
     /**
@@ -91,6 +111,7 @@ export class SizeManager {
      */
     recalculate() {
         // this._size = ... sum of items;
+
     }
 
     /**
@@ -98,6 +119,6 @@ export class SizeManager {
      * @param index
      */
     at(index) {
-
+        return this._collection.at(index)
     }
 }
