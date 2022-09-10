@@ -45,7 +45,19 @@ export class SizeManager {
      * @param items {array}
      */
     append(items) {
-        this._collection.push(this._size)
+        //let items = [{
+        //     size: null,
+        //     dataIndex: null
+        // }]
+        // this._collection.push({size: items["size"], dataIndex: items["dataIndex"]})
+        this._collection.push(...items)
+
+        let total = 0;
+        this._collection.forEach(item => {
+            total = total + item.size;
+        })
+
+        this._size = total;
 
         this._updateCallback();
     }
@@ -69,14 +81,20 @@ export class SizeManager {
 
     /**
      * Insert an item at a particular index
+     * Create an object to insert into the index given and use the size and dataIndex provided to create the item and at it to the collection
      * @param index {number}
      * @param size {number}
      * @param dataIndex {number}
      */
     insert(index, size, dataIndex) {
-        let itemIndex = this._collection.at(0);
-        this._collection.splice(2, 0, this._size);
+        this._collection.splice(index, 0, {size: size, dataIndex: dataIndex});
 
+        let total = 0;
+        this._collection.forEach(item => {
+            total = total + item.size;
+        })
+
+        this._size = total;
         this._updateCallback();
     }
 
