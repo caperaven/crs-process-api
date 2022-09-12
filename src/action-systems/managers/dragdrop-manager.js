@@ -2,7 +2,7 @@ import {ensureOptions} from "./dragdrop-manager/options.js";
 import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
 import {drop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
-import {getDraggable} from "./drag-utils.js";
+import {getDraggable, getScrollAreas} from "./drag-utils.js";
 
 export class DragDropManager {
     constructor(element, options) {
@@ -14,12 +14,17 @@ export class DragDropManager {
         this._mouseUpHandler = this.mouseUp.bind(this);
         this._mouseOverHandler = this.mouseOver.bind(this);
 
+        if (options.autoScroll != null) {
+            this._scrollAreas = getScrollAreas(this._element, options.autoScroll);
+        }
+
         this._element.addEventListener("mousedown", this._mouseDownHandler);
     }
 
     dispose() {
         this._element.removeEventListener("mousedown", this._mouseDownHandler);
 
+        this._scrollAreas = null;
         this._mouseDownHandler = null;
         this._mouseMoveHandler = null;
         this._mouseUpHandler = null;

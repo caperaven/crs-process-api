@@ -10,51 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/call.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/scroll-areas.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/action-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/action-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/array-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/array-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/binding-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/binding-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/component-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/component-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/condition-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/condition-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/console-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/console-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/css-grid-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/css-grid-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/data-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/data-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/database-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/database-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/dom-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-binding-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/dom-binding-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-collection-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/dom-collection-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-interactive-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/dom-interactive-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-utils-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/dom-utils-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/dom-widgets-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/dom-widgets-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/events-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/events-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/files-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/files-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/fixed-layout-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/fixed-layout-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/fs-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/fs-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/local-storage-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/local-storage-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/loop-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/loop-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/managers/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/managers/drag-utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/managers/dragdrop-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/managers/dragdrop-manager/options.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/managers/dragdrop-manager/options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/managers/resize-element-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/managers/resize-element-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/math-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/math-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/media-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/media-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/module-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/module-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/object-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/object-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/process-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/process-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/random-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/random-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/rest-services-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/rest-services-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/session-storage-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/session-storage-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/string-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/string-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/system-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/system-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/translations-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/translations-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/action-systems/validate-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/action-systems/validate-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/crs-process-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/crs-process-api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +95,7 @@
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno:  package">
+  <component name="RunManager" selected="Deno.Deno: drag-utils.test.js">
     <configuration name="Deno:  package" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/package.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -142,6 +103,11 @@
     </configuration>
     <configuration name="Deno:  version" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/version.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <option name="applicationArguments" value="--beta" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: drag-utils.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests/managers">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -156,16 +122,6 @@
       <command value="run" />
       <scripts>
         <script value="build-bundle" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="build-publish" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build-publish" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -205,19 +161,19 @@
       <item itemvalue="Deno.Deno: " />
       <item itemvalue="Deno.Deno:  package" />
       <item itemvalue="Deno.Deno:  version" />
+      <item itemvalue="Deno.Deno: drag-utils.test.js" />
       <item itemvalue="npm.bundle" />
       <item itemvalue="npm.build-bundle" />
       <item itemvalue="npm.bundel-to-version" />
       <item itemvalue="npm.bundel-to-version-beta" />
-      <item itemvalue="npm.build-publish" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Deno.Deno: drag-utils.test.js" />
         <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundle" />
         <item itemvalue="npm.bundel-to-version" />
         <item itemvalue="npm.bundel-to-version-beta" />
-        <item itemvalue="npm.build-publish" />
       </list>
     </recent_temporary>
   </component>
@@ -580,14 +536,7 @@
       <workItem from="1662619018676" duration="1315000" />
       <workItem from="1662648847524" duration="406000" />
       <workItem from="1662799190261" duration="95000" />
-      <workItem from="1662965138491" duration="3882000" />
-    </task>
-    <task id="LOCAL-00196" summary="add documentation">
-      <created>1654087506884</created>
-      <option name="number" value="00196" />
-      <option name="presentableId" value="LOCAL-00196" />
-      <option name="project" value="LOCAL" />
-      <updated>1654087506884</updated>
+      <workItem from="1662965138491" duration="7884000" />
     </task>
     <task id="LOCAL-00197" summary="add rest api feature">
       <created>1654097227667</created>
@@ -925,7 +874,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662579950774</updated>
     </task>
-    <option name="localTasksCounter" value="245" />
+    <task id="LOCAL-00245" summary="add hover feature for drag and drop">
+      <created>1662979588270</created>
+      <option name="number" value="00245" />
+      <option name="presentableId" value="LOCAL-00245" />
+      <option name="project" value="LOCAL" />
+      <updated>1662979588270</updated>
+    </task>
+    <option name="localTasksCounter" value="246" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -945,7 +901,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="fix bug on grouping where rows were ignored." />
     <MESSAGE value="add notify_ready to dom functions" />
     <MESSAGE value="add filesystem features" />
     <MESSAGE value="enable file reading from handle" />
@@ -970,7 +925,8 @@
     <MESSAGE value="add enable drop drop" />
     <MESSAGE value="fix drag and drop issue and make new build" />
     <MESSAGE value="add drag and drop template support" />
-    <option name="LAST_COMMIT_MESSAGE" value="add drag and drop template support" />
+    <MESSAGE value="add hover feature for drag and drop" />
+    <option name="LAST_COMMIT_MESSAGE" value="add hover feature for drag and drop" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
