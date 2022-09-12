@@ -61,6 +61,47 @@ export class StringActions {
 
         return result;
     }
+
+    static async get_query_string(step, context, process, item) {
+        const str = await crs.process.getValue(step.args.source, context, process, item);
+        if (str == null || str.trim() === '') return;
+
+        let result;
+        const queryStr = str.includes("?") ? str.split("?")[1] : str;
+        const queryStrParams = Object.fromEntries(new URLSearchParams(queryStr));
+        const keys = Object.keys(queryStrParams);
+
+        for (const key of keys) {
+            if (key === ''|| queryStrParams[key] == null || queryStrParams[key].trim() === '') continue;
+
+            if (queryStrParams[key].includes('=')) {
+                let obj;
+                const nestedParamPairs = queryStrParams[key].split(";");
+                for (const nestedParamPair of nestedParamPairs) {
+                    const parts = nestedParamPair.split("=");
+                    if (parts.length < 2 || parts[0].trim() === '' || parts[1].trim() === '') continue;
+
+                    obj = obj || {};
+                    obj[parts[0]] = parts[1];
+                }
+
+                if (obj != null) {
+                    result = result || {};
+                    result[key] = obj
+                }
+                continue;
+            }
+
+            result = result || {};
+            result[key] = queryStrParams[key];
+        }
+
+        if (step.args.target != null && result != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function inflate_string(string, parameters, context, process, item) {
