@@ -1,3 +1,5 @@
+import {call} from "./call.js";
+
 /**
  * Start the drag operation by creating the animation layer and adding the drag element too it.
  * @param dragElement
@@ -43,12 +45,17 @@ class DragClone {
  * "this" is the drag manager.
  * @returns {Promise<void>}
  */
-export async function updateDrag() {
+export async function updateDrag(frameTime) {
     if (this._updateDragHandler == null) return;
 
     const x = this._dragElement._bounds.x + (this._movePoint.x - this._startPoint.x);
     const y = this._dragElement._bounds.y + (this._movePoint.y - this._startPoint.y);
 
     this._dragElement.style.translate = `${x}px ${y}px`;
+
+    if (this._target?.dataset?.hover != null && this._options.hover != null) {
+        await call(this._options.hover, this._dragElement, this._target, frameTime);
+    }
+
     requestAnimationFrame(this._updateDragHandler);
 }

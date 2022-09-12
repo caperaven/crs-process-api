@@ -51,6 +51,7 @@ export class DragDropManager {
         event.preventDefault();
         this._movePoint.x = event.clientX;
         this._movePoint.y = event.clientY;
+        this._target = event.target;
     }
 
     async mouseUp(event) {
@@ -67,6 +68,7 @@ export class DragDropManager {
 
         delete this._dragElement;
         delete this._placeholder;
+        delete this._target;
         this._isBusy = false;
     }
 

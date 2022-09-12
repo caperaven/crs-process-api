@@ -7,7 +7,8 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
             options: {
                 drag: {
                     placeholderType: "standard",
-                }
+                },
+                hover: (dragElement, target, frameTime) => console.log(frameTime)
             }
         })
 
