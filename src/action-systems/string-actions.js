@@ -64,36 +64,30 @@ export class StringActions {
 
     static async get_query_string(step, context, process, item) {
         const str = await crs.process.getValue(step.args.source, context, process, item);
-        if (str == null || str.trim() === '') return;
+        const complex_parameters = await crs.process.getValue(step.args.complex_parameters, context, process, item);
+        if ((str || '').trim() === '') return;
 
         let result;
         const queryStr = str.includes("?") ? str.split("?")[1] : str;
-        const queryStrParams = Object.fromEntries(new URLSearchParams(queryStr));
-        const keys = Object.keys(queryStrParams);
+        const searchParams = new URLSearchParams(queryStr);
+        for (const [key, value] of searchParams) {
+            if ((key || '').trim() === '' || (value || '').trim() === '') continue;
 
-        for (const key of keys) {
-            if (key === ''|| queryStrParams[key] == null || queryStrParams[key].trim() === '') continue;
-
-            if (queryStrParams[key].includes('=')) {
-                let obj;
-                const nestedParamPairs = queryStrParams[key].split(";");
+            if ((complex_parameters || []).includes(key)) {
+                const nestedParamPairs = value.split(";");
                 for (const nestedParamPair of nestedParamPairs) {
-                    const parts = nestedParamPair.split("=");
-                    if (parts.length < 2 || parts[0].trim() === '' || parts[1].trim() === '') continue;
-
-                    obj = obj || {};
-                    obj[parts[0]] = parts[1];
-                }
-
-                if (obj != null) {
-                    result = result || {};
-                    result[key] = obj
+                    const nestedParamResult = await this.get_query_string({args: {source: nestedParamPair}});
+                    if (nestedParamResult != null) {
+                        result = result || {};
+                        result[key] = result[key] || {};
+                        Object.assign(result[key], nestedParamResult);
+                    }
                 }
                 continue;
             }
 
             result = result || {};
-            result[key] = queryStrParams[key];
+            result[key] = value;
         }
 
         if (step.args.target != null && result != null) {
