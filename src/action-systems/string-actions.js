@@ -62,6 +62,10 @@ export class StringActions {
         return result;
     }
 
+    /**
+     * Accepts a query string, or string of key value pairs i.e. 'param1=value1&param2=value2...' and converts the string
+     * into an equivalent object. Supports 2nd level nesting through optional complex_parameters array.
+     */
     static async get_query_string(step, context, process, item) {
         const str = await crs.process.getValue(step.args.source, context, process, item);
         const complex_parameters = await crs.process.getValue(step.args.complex_parameters, context, process, item);
