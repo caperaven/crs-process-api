@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {getScrollAreas} from "./../../../src/action-systems/managers/drag-utils.js"
+import {getScrollAreas} from "../../../src/action-systems/managers/dragdrop-manager/drag-utils.js"
 
 Deno.test("drag-utils - getScrollArea", () => {
     const result = getScrollAreas({

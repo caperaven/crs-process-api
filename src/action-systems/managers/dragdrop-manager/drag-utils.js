@@ -18,6 +18,12 @@ export function getDraggable(event, options) {
     return null;
 }
 
+/**
+ * From the element calculate the element bounds and then calculate the auto scroll hotspots
+ * @param element
+ * @param opts
+ * @returns {*[]}
+ */
 export function getScrollAreas(element, opts) {
     const size = 32;
     const bounds = element.getBoundingClientRect();

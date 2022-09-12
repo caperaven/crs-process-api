@@ -10,12 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/scroll-areas.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag-utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/crsbinding.mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/crsbinding.mock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/init-required.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/init-required.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +90,7 @@
       <recent name="F:\caperaven projects\crs-process-api\build" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\caperaven projects\crs-process-api\src\action-systems\managers\dragdrop-manager" />
       <recent name="F:\caperaven projects\crs-process-api\schema-manager\providers" />
       <recent name="F:\caperaven projects\crs-process-api\app" />
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\dates" />
@@ -127,16 +129,6 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="bundel-to-version-beta" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="bundel-to-version-beta" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
     <configuration name="bundel-to-version" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -157,23 +149,33 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Deno.Deno: " />
       <item itemvalue="Deno.Deno:  package" />
       <item itemvalue="Deno.Deno:  version" />
       <item itemvalue="Deno.Deno: drag-utils.test.js" />
+      <item itemvalue="npm.test" />
       <item itemvalue="npm.bundle" />
       <item itemvalue="npm.build-bundle" />
       <item itemvalue="npm.bundel-to-version" />
-      <item itemvalue="npm.bundel-to-version-beta" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.test" />
         <item itemvalue="Deno.Deno: drag-utils.test.js" />
         <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundle" />
         <item itemvalue="npm.bundel-to-version" />
-        <item itemvalue="npm.bundel-to-version-beta" />
       </list>
     </recent_temporary>
   </component>
@@ -536,14 +538,7 @@
       <workItem from="1662619018676" duration="1315000" />
       <workItem from="1662648847524" duration="406000" />
       <workItem from="1662799190261" duration="95000" />
-      <workItem from="1662965138491" duration="7884000" />
-    </task>
-    <task id="LOCAL-00197" summary="add rest api feature">
-      <created>1654097227667</created>
-      <option name="number" value="00197" />
-      <option name="presentableId" value="LOCAL-00197" />
-      <option name="project" value="LOCAL" />
-      <updated>1654097227668</updated>
+      <workItem from="1662965138491" duration="8373000" />
     </task>
     <task id="LOCAL-00198" summary="add animation layer in dom features">
       <created>1654117878043</created>
@@ -881,7 +876,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662979588270</updated>
     </task>
-    <option name="localTasksCounter" value="246" />
+    <task id="LOCAL-00246" summary="add drop zones">
+      <created>1662988365610</created>
+      <option name="number" value="00246" />
+      <option name="presentableId" value="LOCAL-00246" />
+      <option name="project" value="LOCAL" />
+      <updated>1662988365610</updated>
+    </task>
+    <option name="localTasksCounter" value="247" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -901,7 +903,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add notify_ready to dom functions" />
     <MESSAGE value="add filesystem features" />
     <MESSAGE value="enable file reading from handle" />
     <MESSAGE value="add documentation" />
@@ -926,7 +927,8 @@
     <MESSAGE value="fix drag and drop issue and make new build" />
     <MESSAGE value="add drag and drop template support" />
     <MESSAGE value="add hover feature for drag and drop" />
-    <option name="LAST_COMMIT_MESSAGE" value="add hover feature for drag and drop" />
+    <MESSAGE value="add drop zones" />
+    <option name="LAST_COMMIT_MESSAGE" value="add drop zones" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

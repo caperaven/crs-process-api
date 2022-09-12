@@ -1,4 +1,4 @@
-import {getDraggable} from "./drag-utils.js";
+import {getDraggable} from "./dragdrop-manager/drag-utils.js";
 
 export class ResizeElementManager {
     constructor(element, resizeQuery, options) {

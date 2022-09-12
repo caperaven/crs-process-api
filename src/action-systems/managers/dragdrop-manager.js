@@ -2,7 +2,7 @@ import {ensureOptions} from "./dragdrop-manager/options.js";
 import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
 import {drop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
-import {getDraggable, getScrollAreas} from "./drag-utils.js";
+import {getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
 
 export class DragDropManager {
     constructor(element, options) {
