@@ -10,13 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/scroll.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag-utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/resize-element-manager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag-utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/crsbinding.mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/crsbinding.mock.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/init-required.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/init-required.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,8 +170,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.test" />
         <item itemvalue="Deno.Deno: drag-utils.test.js" />
+        <item itemvalue="npm.test" />
         <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundle" />
         <item itemvalue="npm.bundel-to-version" />
@@ -538,14 +537,7 @@
       <workItem from="1662619018676" duration="1315000" />
       <workItem from="1662648847524" duration="406000" />
       <workItem from="1662799190261" duration="95000" />
-      <workItem from="1662965138491" duration="8373000" />
-    </task>
-    <task id="LOCAL-00198" summary="add animation layer in dom features">
-      <created>1654117878043</created>
-      <option name="number" value="00198" />
-      <option name="presentableId" value="LOCAL-00198" />
-      <option name="project" value="LOCAL" />
-      <updated>1654117878044</updated>
+      <workItem from="1662965138491" duration="11610000" />
     </task>
     <task id="LOCAL-00199" summary="add animation layer in dom features">
       <created>1654118944245</created>
@@ -883,7 +875,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662988365610</updated>
     </task>
-    <option name="localTasksCounter" value="247" />
+    <task id="LOCAL-00247" summary="add drop zones">
+      <created>1662988816451</created>
+      <option name="number" value="00247" />
+      <option name="presentableId" value="LOCAL-00247" />
+      <option name="project" value="LOCAL" />
+      <updated>1662988816451</updated>
+    </task>
+    <option name="localTasksCounter" value="248" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

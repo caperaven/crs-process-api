@@ -1,4 +1,5 @@
-import {call} from "./call.js";
+import {scrollY, scrollX} from "./scroll.js";
+import {inArea} from "./drag-utils.js";
 
 /**
  * Start the drag operation by creating the animation layer and adding the drag element too it.
@@ -53,9 +54,21 @@ export async function updateDrag(frameTime) {
 
     this._dragElement.style.translate = `${x}px ${y}px`;
 
-    if (this._target?.dataset?.hover != null && this._options.hover != null) {
-        await call(this._options.hover, this._dragElement, this._target, frameTime);
+    if (this._scrollAreas != null) {
+        if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.left)) {
+            await scrollX.call(this, frameTime, -1);
+        }
+        else if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.right)) {
+            await scrollX.call(this, frameTime, 1);
+        }
+        else if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.top)) {
+            await scrollX.call(this, frameTime, -1);
+        }
+        else if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.bottom)) {
+            await scrollX.call(this, frameTime, 1);
+        }
     }
 
     requestAnimationFrame(this._updateDragHandler);
 }
+
