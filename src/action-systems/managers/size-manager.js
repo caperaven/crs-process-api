@@ -45,19 +45,9 @@ export class SizeManager {
      * @param items {array}
      */
     append(items) {
-        //let items = [{
-        //     size: null,
-        //     dataIndex: null
-        // }]
-        // this._collection.push({size: items["size"], dataIndex: items["dataIndex"]})
         this._collection.push(...items)
 
-        let total = 0;
-        this._collection.forEach(item => {
-            total = total + item.size;
-        })
-
-        this._size = total;
+        this.recalculate()
 
         this._updateCallback();
     }
@@ -70,11 +60,19 @@ export class SizeManager {
      * @param size {number}
      */
     update(index, size, dataIndex) {
-        index = this._collection.at(0)
-        let oldSize = 20;
-        let newSize = oldSize - index
+        this._collection[index].size = size;
+        this._collection[index].dataIndex = dataIndex;
 
-        this._collection[index].size = newSize;
+        let oldValue = this._collection[index].size
+        let sizeDifference = size- oldValue
+
+        if(size > this._collection[index]) {
+            this._size = this._size + sizeDifference
+        }
+        else {
+            this._size = this._size - sizeDifference
+        }
+        this.recalculate();
 
         this._updateCallback();
     }
@@ -104,11 +102,9 @@ export class SizeManager {
      * @param toIndex {number}
      */
     move(fromIndex, toIndex) {
-        fromIndex = this._collection.indexOf('size');
-        toIndex = 2;
-
-        const newIndex = this._collection.splice(fromIndex, 1)[0];
-        this._collection.splice(toIndex, 0, newIndex);
+        let item = this._collection[fromIndex];
+        this._collection.splice(fromIndex, 1);
+        this._collection.splice(toIndex,0, item);
 
         this._updateCallback();
     }
@@ -118,9 +114,8 @@ export class SizeManager {
      * @param index {number}
      * @param count {number}     */
     remove(index, count) {
-        index = this._collection.at(0);
-
-        this._collection.splice(index, 1);
+        this._collection.splice(index, count);
+        this.recalculate()
         this._updateCallback();
     }
 
@@ -129,6 +124,12 @@ export class SizeManager {
      */
     recalculate() {
         // this._size = ... sum of items;
+        let total = 0;
+        this._collection.forEach(item => {
+            total = total + item.size;
+        })
+
+        this._size = total;
 
     }
 

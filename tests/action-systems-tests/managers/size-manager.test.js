@@ -45,8 +45,6 @@ Deno.test("size-manager - append", async () => {
     // console.log(instance);
 
 
-
-
     // 2. assert first set changes too, place
 
     assertEquals(instance.size, 182);
@@ -73,4 +71,69 @@ Deno.test("size-manager - at", async () => {
 
     assertEquals(value, instance._collection[4]);
     assertEquals(updateCalled, true);
+})
+
+Deno.test("size-manager - update", async () =>{
+    // AW: ToDo- Write test for "update" function
+    let updateCalled = false;
+    const instance = new SizeManager(() => updateCalled = true);
+
+    instance.fill(10, 5);
+
+    instance.update(4, 20, 7)
+    assertEquals(instance._collection[4].size, 20)
+
+    assertEquals(instance.size, 60)
+})
+
+Deno.test("size-manager - move", async () =>{
+    // AW: ToDo- Write test for "move" function
+    let updateCalled = false;
+    const instance = new SizeManager(() => updateCalled = true);
+
+    instance.fill(10, 5);
+
+    instance.append([
+        { size: 77, dataIndex: 2 }
+    ])
+
+    instance.move(5,0)
+    assertEquals(instance._collection[0].size, 77);
+
+    assertEquals(instance.size, 127)
+
+})
+
+Deno.test("size-manager - remove", async () =>{
+    // AW: ToDo- Write test for "remove" function
+    let updateCalled = false;
+    const instance = new SizeManager(() => updateCalled = true);
+
+    instance.fill(10, 5);
+    assertEquals(instance.size, 50)
+
+    instance.remove(2, 1)
+    assertEquals(instance.size, 40)
+
+    assertEquals(updateCalled, true);
+
+})
+
+Deno.test("size-manager - recalculate", async () =>{
+    // AW: ToDo- Write test for "recalculate" function
+
+    let updateCalled = false;
+    const instance = new SizeManager(() => updateCalled = true);
+
+    instance.fill(10, 5);
+    assertEquals(instance.size, 50)
+
+    instance.append([
+        { size: 18, dataIndex: 2 }
+    ]);
+    assertEquals(instance.size, 68)
+
+    instance.remove(5, 1)
+    assertEquals(instance.size, 50)
+
 })
