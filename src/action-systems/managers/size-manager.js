@@ -45,9 +45,9 @@ export class SizeManager {
      * @param items {array}
      */
     append(items) {
-        this._collection.push(...items)
+        this._collection.push(...items);
 
-        this.recalculate()
+        this._size += calculateSize(items);
 
         this._updateCallback();
     }
@@ -60,19 +60,13 @@ export class SizeManager {
      * @param size {number}
      */
     update(index, size, dataIndex) {
+        let oldValue = this._collection[index].size;
+        const sizeDifference = size - oldValue;
+
+        this._size = this._size + sizeDifference;
+
         this._collection[index].size = size;
         this._collection[index].dataIndex = dataIndex;
-
-        let oldValue = this._collection[index].size
-        let sizeDifference = size- oldValue
-
-        if(size > this._collection[index]) {
-            this._size = this._size + sizeDifference
-        }
-        else {
-            this._size = this._size - sizeDifference
-        }
-        this.recalculate();
 
         this._updateCallback();
     }
@@ -87,12 +81,7 @@ export class SizeManager {
     insert(index, size, dataIndex) {
         this._collection.splice(index, 0, {size: size, dataIndex: dataIndex});
 
-        let total = 0;
-        this._collection.forEach(item => {
-            total = total + item.size;
-        })
-
-        this._size = total;
+        this._size = this._size + size;
         this._updateCallback();
     }
 
@@ -114,23 +103,19 @@ export class SizeManager {
      * @param index {number}
      * @param count {number}     */
     remove(index, count) {
+        this._size = this._size - this._collection[index].size;
+
         this._collection.splice(index, count);
-        this.recalculate()
+
         this._updateCallback();
     }
 
     /**
      * Recalculate the size by looking at all the items in the collection
      */
+
     recalculate() {
-        // this._size = ... sum of items;
-        let total = 0;
-        this._collection.forEach(item => {
-            total = total + item.size;
-        })
-
-        this._size = total;
-
+        return this._size = calculateSize(this._collection);
     }
 
     /**
@@ -140,4 +125,13 @@ export class SizeManager {
     at(index) {
         return this._collection.at(index)
     }
+}
+
+function calculateSize(collection) {
+    let total = 0;
+    collection.forEach(item => {
+        total = total + item.size;
+    });
+
+    return total;
 }
