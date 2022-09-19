@@ -10,9 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/math-actions.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/colors-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/colors-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/math-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/math-actions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +94,7 @@
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: colors-actions.test.js">
+  <component name="RunManager" selected="Deno.Deno: math-actions.test.js">
     <configuration name="Deno:  package" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/package.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -115,6 +116,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Deno: math-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/math-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Deno: " type="DenoConfigurationType" nameIsGenerated="true" programParameters="test" workingDirectory="$PROJECT_DIR$/tests">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -125,16 +131,6 @@
       <command value="run" />
       <scripts>
         <script value="build-bundle" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="bundle" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="bundle" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -154,19 +150,19 @@
       <item itemvalue="Deno.Deno: " />
       <item itemvalue="Deno.Deno:  package" />
       <item itemvalue="Deno.Deno:  version" />
+      <item itemvalue="Deno.Deno: math-actions.test.js" />
       <item itemvalue="Deno.Deno: colors-actions.test.js" />
       <item itemvalue="Deno.Deno: drag-utils.test.js" />
       <item itemvalue="npm.test" />
-      <item itemvalue="npm.bundle" />
       <item itemvalue="npm.build-bundle" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Deno.Deno: math-actions.test.js" />
+        <item itemvalue="npm.build-bundle" />
         <item itemvalue="Deno.Deno: colors-actions.test.js" />
         <item itemvalue="Deno.Deno: drag-utils.test.js" />
         <item itemvalue="npm.test" />
-        <item itemvalue="npm.build-bundle" />
-        <item itemvalue="npm.bundle" />
       </list>
     </recent_temporary>
   </component>
@@ -534,21 +530,7 @@
       <workItem from="1663013655885" duration="30000" />
       <workItem from="1663052362351" duration="621000" />
       <workItem from="1663343460060" duration="664000" />
-      <workItem from="1663611479834" duration="1166000" />
-    </task>
-    <task id="LOCAL-00201" summary="build">
-      <created>1654161983052</created>
-      <option name="number" value="00201" />
-      <option name="presentableId" value="LOCAL-00201" />
-      <option name="project" value="LOCAL" />
-      <updated>1654161983052</updated>
-    </task>
-    <task id="LOCAL-00202" summary="build">
-      <created>1654173270382</created>
-      <option name="number" value="00202" />
-      <option name="presentableId" value="LOCAL-00202" />
-      <option name="project" value="LOCAL" />
-      <updated>1654173270382</updated>
+      <workItem from="1663611479834" duration="2197000" />
     </task>
     <task id="LOCAL-00203" summary="refactor object actions to be cleaner">
       <created>1654500744158</created>
@@ -879,7 +861,21 @@
       <option name="project" value="LOCAL" />
       <updated>1663612188038</updated>
     </task>
-    <option name="localTasksCounter" value="250" />
+    <task id="LOCAL-00250" summary="add color functions">
+      <created>1663612782222</created>
+      <option name="number" value="00250" />
+      <option name="presentableId" value="LOCAL-00250" />
+      <option name="project" value="LOCAL" />
+      <updated>1663612782222</updated>
+    </task>
+    <task id="LOCAL-00251" summary="add color functions">
+      <created>1663612818425</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1663612818425</updated>
+    </task>
+    <option name="localTasksCounter" value="252" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
