@@ -10,10 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/action-systems/colors-actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/colors-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/colors-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -535,14 +534,7 @@
       <workItem from="1663013655885" duration="30000" />
       <workItem from="1663052362351" duration="621000" />
       <workItem from="1663343460060" duration="664000" />
-      <workItem from="1663611479834" duration="659000" />
-    </task>
-    <task id="LOCAL-00200" summary="add animation layer in dom features">
-      <created>1654161953775</created>
-      <option name="number" value="00200" />
-      <option name="presentableId" value="LOCAL-00200" />
-      <option name="project" value="LOCAL" />
-      <updated>1654161953776</updated>
+      <workItem from="1663611479834" duration="1166000" />
     </task>
     <task id="LOCAL-00201" summary="build">
       <created>1654161983052</created>
@@ -880,7 +872,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662993805859</updated>
     </task>
-    <option name="localTasksCounter" value="249" />
+    <task id="LOCAL-00249" summary="add color functions">
+      <created>1663612188037</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1663612188038</updated>
+    </task>
+    <option name="localTasksCounter" value="250" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -900,7 +899,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add filesystem features" />
     <MESSAGE value="enable file reading from handle" />
     <MESSAGE value="add documentation" />
     <MESSAGE value="add rest api feature" />
@@ -925,7 +923,8 @@
     <MESSAGE value="add drag and drop template support" />
     <MESSAGE value="add hover feature for drag and drop" />
     <MESSAGE value="add drop zones" />
-    <option name="LAST_COMMIT_MESSAGE" value="add drop zones" />
+    <MESSAGE value="add color functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add color functions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
