@@ -10,12 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/scroll.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/action-systems/colors-actions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/drag-drop/drag-drop.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag-utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag-utils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/managers/dragdrop-manager/drag.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,23 +61,23 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "openjdk-17",
-    "last_opened_file_path": "F:/caperaven projects/crs-process-api",
-    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-17&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-framework&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\app\drag-drop" />
@@ -96,7 +94,7 @@
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: drag-utils.test.js">
+  <component name="RunManager" selected="Deno.Deno: colors-actions.test.js">
     <configuration name="Deno:  package" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/package.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -104,6 +102,11 @@
     </configuration>
     <configuration name="Deno:  version" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/version.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
       <option name="applicationArguments" value="--beta" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-read" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -123,16 +126,6 @@
       <command value="run" />
       <scripts>
         <script value="build-bundle" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="bundel-to-version" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="bundel-to-version" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -162,19 +155,19 @@
       <item itemvalue="Deno.Deno: " />
       <item itemvalue="Deno.Deno:  package" />
       <item itemvalue="Deno.Deno:  version" />
+      <item itemvalue="Deno.Deno: colors-actions.test.js" />
       <item itemvalue="Deno.Deno: drag-utils.test.js" />
       <item itemvalue="npm.test" />
       <item itemvalue="npm.bundle" />
       <item itemvalue="npm.build-bundle" />
-      <item itemvalue="npm.bundel-to-version" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Deno.Deno: colors-actions.test.js" />
         <item itemvalue="Deno.Deno: drag-utils.test.js" />
         <item itemvalue="npm.test" />
         <item itemvalue="npm.build-bundle" />
         <item itemvalue="npm.bundle" />
-        <item itemvalue="npm.bundel-to-version" />
       </list>
     </recent_temporary>
   </component>
@@ -537,14 +530,12 @@
       <workItem from="1662619018676" duration="1315000" />
       <workItem from="1662648847524" duration="406000" />
       <workItem from="1662799190261" duration="95000" />
-      <workItem from="1662965138491" duration="11610000" />
-    </task>
-    <task id="LOCAL-00199" summary="add animation layer in dom features">
-      <created>1654118944245</created>
-      <option name="number" value="00199" />
-      <option name="presentableId" value="LOCAL-00199" />
-      <option name="project" value="LOCAL" />
-      <updated>1654118944245</updated>
+      <workItem from="1662965138491" duration="12290000" />
+      <workItem from="1663010831949" duration="8000" />
+      <workItem from="1663013655885" duration="30000" />
+      <workItem from="1663052362351" duration="621000" />
+      <workItem from="1663343460060" duration="664000" />
+      <workItem from="1663611479834" duration="659000" />
     </task>
     <task id="LOCAL-00200" summary="add animation layer in dom features">
       <created>1654161953775</created>
@@ -882,7 +873,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662988816451</updated>
     </task>
-    <option name="localTasksCounter" value="248" />
+    <task id="LOCAL-00248" summary="add drop zones">
+      <created>1662993805859</created>
+      <option name="number" value="00248" />
+      <option name="presentableId" value="LOCAL-00248" />
+      <option name="project" value="LOCAL" />
+      <updated>1662993805859</updated>
+    </task>
+    <option name="localTasksCounter" value="249" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
