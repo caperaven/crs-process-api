@@ -57,6 +57,9 @@ export class ColorsActions {
     static async css_to_hex(step, context, process, item) {
         const results = await processVariables(step, context, process, item, async (value) => {
             if (value.indexOf("#") != -1) {
+                if (value.length == 7) {
+                    return `${value}ff`;
+                }
                 return value;
             }
             else {
@@ -80,6 +83,14 @@ export class ColorsActions {
 
     static async css_to_normalized(step, context, process, item) {
         const results = await this.css_to_hex(step, context, process, item);
+        const keys = Object.keys(results);
+
+        for (const key of keys) {
+            const value = results[key];
+            results[key] = await this.hex_to_normalised({args: {hex: value}}, context, process, item).catch(e => console.error(error));
+        }
+
+        return results;
     }
 }
 

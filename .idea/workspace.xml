@@ -10,12 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/mockups/computed-style-mock.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/publish.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/crs-binding/crs-binding.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/crs-binding/crs-binding.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/action-systems/colors-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/colors-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/math-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/math-actions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,11 +110,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: drag-utils.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/managers/drag-utils.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests/managers">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Deno: math-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/math-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -144,6 +135,16 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Deno.Deno: " />
       <item itemvalue="Deno.Deno:  package" />
@@ -151,16 +152,16 @@
       <item itemvalue="Deno.Deno: test.test.js" />
       <item itemvalue="Deno.Deno: math-actions.test.js" />
       <item itemvalue="Deno.Deno: colors-actions.test.js" />
-      <item itemvalue="Deno.Deno: drag-utils.test.js" />
+      <item itemvalue="npm.test" />
       <item itemvalue="npm.build-bundle" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.test" />
         <item itemvalue="Deno.Deno: colors-actions.test.js" />
         <item itemvalue="Deno.Deno: test.test.js" />
         <item itemvalue="npm.build-bundle" />
         <item itemvalue="Deno.Deno: math-actions.test.js" />
-        <item itemvalue="Deno.Deno: drag-utils.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -533,14 +534,7 @@
       <workItem from="1663654373817" duration="41000" />
       <workItem from="1663654901788" duration="3558000" />
       <workItem from="1663673186200" duration="12625000" />
-      <workItem from="1663696621797" duration="459000" />
-    </task>
-    <task id="LOCAL-00205" summary="update build commands to include documents now.">
-      <created>1654507048923</created>
-      <option name="number" value="00205" />
-      <option name="presentableId" value="LOCAL-00205" />
-      <option name="project" value="LOCAL" />
-      <updated>1654507048923</updated>
+      <workItem from="1663696621797" duration="1667000" />
     </task>
     <task id="LOCAL-00206" summary="update documentation">
       <created>1654513193447</created>
@@ -878,7 +872,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663613782941</updated>
     </task>
-    <option name="localTasksCounter" value="254" />
+    <task id="LOCAL-00254" summary="add css variable to hex function">
+      <created>1663697125064</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1663697125064</updated>
+    </task>
+    <option name="localTasksCounter" value="255" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -898,7 +899,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add documentation" />
     <MESSAGE value="add rest api feature" />
     <MESSAGE value="add animation layer in dom features" />
     <MESSAGE value="build" />
@@ -923,7 +923,8 @@
     <MESSAGE value="add drop zones" />
     <MESSAGE value="add color functions" />
     <MESSAGE value="add normalize to math" />
-    <option name="LAST_COMMIT_MESSAGE" value="add normalize to math" />
+    <MESSAGE value="add css variable to hex function" />
+    <option name="LAST_COMMIT_MESSAGE" value="add css variable to hex function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

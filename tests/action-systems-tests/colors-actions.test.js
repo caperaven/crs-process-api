@@ -79,7 +79,36 @@ Deno.test("colors - css_to_hex", async () => {
         variables: ["--color-hex", "--color-rgb", "--color-rgba"]
     })
 
-    assertEquals(result["--color-hex"], "#ff0000");
+    assertEquals(result["--color-hex"], "#ff0000ff");
     assertEquals(result["--color-rgb"], "#ff0000ff");
     assertEquals(result["--color-rgba"], "#ff00007d");
+})
+
+Deno.test("colors - css_to_normalized", async () => {
+    const element = new ElementMock();
+    element.variables = {
+        "--color-hex": "#ff0000",
+        "--color-rgb": "rgb(255, 0, 0)",
+        "--color-rgba": "rgb(255, 0, 0, 125)"
+    };
+
+    const result = await crs.call("colors", "css_to_normalized", {
+        element: element,
+        variables: ["--color-hex", "--color-rgb", "--color-rgba"]
+    })
+
+    assertEquals(result["--color-hex"].r, 1);
+    assertEquals(result["--color-hex"].g, 0);
+    assertEquals(result["--color-hex"].b, 0);
+    assertEquals(result["--color-hex"].a, 1);
+
+    assertEquals(result["--color-rgb"].r, 1);
+    assertEquals(result["--color-rgb"].g, 0);
+    assertEquals(result["--color-rgb"].b, 0);
+    assertEquals(result["--color-rgb"].a, 1);
+
+    assertEquals(result["--color-rgba"].r, 1);
+    assertEquals(result["--color-rgba"].g, 0);
+    assertEquals(result["--color-rgba"].b, 0);
+    assertEquals(result["--color-rgba"].a, 0.49);
 })
