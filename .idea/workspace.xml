@@ -9,10 +9,12 @@
     <cargoProject FILE="$PROJECT_DIR$/wasm/random_data/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="">
+    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="fix some fixed layout issues">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crs-process-api.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/colors-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/colors-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/files-action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/files-action.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,9 +48,6 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/package.json" />
-  </component>
   <component name="ProblemsViewState">
     <option name="selectedIndex" value="2" />
   </component>
@@ -60,62 +59,57 @@
     <option name="showLibraryContents" value="true" />
     <option name="showModules" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-process-api/packages/crs-binding&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;F:/caperaven projects/crs-process-api/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.6008.13\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "F:/temp/crs-designer-api",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "F:/caperaven projects/crs-process-api/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
+    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.5080.210\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\caperaven projects\crs-process-api\packages\crs-binding" />
-      <recent name="F:\caperaven projects\crs-process-api\dist" />
-      <recent name="F:\caperaven projects\crs-process-api\app\drag-drop" />
-      <recent name="F:\caperaven projects\crs-process-api\packages" />
-      <recent name="F:\caperaven projects\crs-process-api\app\resize" />
+      <recent name="F:\caperaven projects\crs-process-api\tests\mockups" />
+      <recent name="F:\caperaven projects\crs-process-api\app\files" />
+      <recent name="F:\caperaven projects\crs-process-api\documents" />
+      <recent name="F:\caperaven projects\crs-process-api\app" />
+      <recent name="F:\caperaven projects\crs-process-api\app\css-grid" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\caperaven projects\crs-process-api\src\action-systems\managers\dragdrop-manager" />
       <recent name="F:\caperaven projects\crs-process-api\schema-manager\providers" />
       <recent name="F:\caperaven projects\crs-process-api\app" />
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\dates" />
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: colors-actions.test.js">
-    <configuration name="Deno:  package" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/package.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
+  <component name="RunManager" selected="Deno.Deno: dom-actions.test.js">
+    <configuration name="Deno: console-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/console-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <option name="applicationArguments" value="--allow-read" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno:  version" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/build/version.js" programParameters="run --allow-read --allow-write --allow-env --allow-run">
-      <option name="applicationArguments" value="--beta" />
+    <configuration name="Deno: css-grid-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <option name="applicationArguments" value="--allow-read" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-read" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: math-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/math-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: test.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/test.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+    <configuration name="Deno: dom-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <option name="applicationArguments" value="--allow-read" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -125,11 +119,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="build-bundle" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="build-publish" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="build-bundle" />
+        <script value="build-publish" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -147,21 +141,19 @@
     </configuration>
     <list>
       <item itemvalue="Deno.Deno: " />
-      <item itemvalue="Deno.Deno:  package" />
-      <item itemvalue="Deno.Deno:  version" />
-      <item itemvalue="Deno.Deno: test.test.js" />
-      <item itemvalue="Deno.Deno: math-actions.test.js" />
-      <item itemvalue="Deno.Deno: colors-actions.test.js" />
+      <item itemvalue="Deno.Deno: dom-actions.test.js" />
+      <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
+      <item itemvalue="Deno.Deno: console-actions.test.js" />
+      <item itemvalue="npm.build-publish" />
       <item itemvalue="npm.test" />
-      <item itemvalue="npm.build-bundle" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.build-publish" />
+        <item itemvalue="Deno.Deno: dom-actions.test.js" />
         <item itemvalue="npm.test" />
-        <item itemvalue="Deno.Deno: colors-actions.test.js" />
-        <item itemvalue="Deno.Deno: test.test.js" />
-        <item itemvalue="npm.build-bundle" />
-        <item itemvalue="Deno.Deno: math-actions.test.js" />
+        <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
+        <item itemvalue="Deno.Deno: console-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -467,74 +459,203 @@
       <workItem from="1657809010805" duration="403000" />
       <workItem from="1657865277464" duration="434000" />
       <workItem from="1657875930430" duration="17000" />
-      <workItem from="1658818529648" duration="13604000" />
-      <workItem from="1658863389047" duration="21000" />
-      <workItem from="1658863606248" duration="1582000" />
-      <workItem from="1658931168793" duration="972000" />
-      <workItem from="1658937200453" duration="692000" />
-      <workItem from="1658944967827" duration="600000" />
-      <workItem from="1658990972505" duration="654000" />
-      <workItem from="1659002887967" duration="1246000" />
-      <workItem from="1659008207844" duration="2089000" />
-      <workItem from="1659079406481" duration="1004000" />
-      <workItem from="1659341470590" duration="165000" />
-      <workItem from="1659438907911" duration="5416000" />
-      <workItem from="1659518020741" duration="10263000" />
-      <workItem from="1659600758159" duration="6703000" />
-      <workItem from="1660289778688" duration="1216000" />
-      <workItem from="1660297782307" duration="7000" />
-      <workItem from="1660306783679" duration="626000" />
-      <workItem from="1660587205799" duration="30000" />
-      <workItem from="1660588841390" duration="2148000" />
-      <workItem from="1660633327590" duration="30000" />
-      <workItem from="1660654569372" duration="3032000" />
-      <workItem from="1660987531791" duration="17000" />
-      <workItem from="1661000510886" duration="69000" />
-      <workItem from="1661027857137" duration="1374000" />
-      <workItem from="1661032180911" duration="10000" />
-      <workItem from="1661032615404" duration="697000" />
-      <workItem from="1661078406163" duration="41000" />
-      <workItem from="1661078964891" duration="615000" />
-      <workItem from="1661103852163" duration="1311000" />
-      <workItem from="1661178021532" duration="1018000" />
-      <workItem from="1661417947413" duration="1477000" />
-      <workItem from="1661422619901" duration="3063000" />
-      <workItem from="1661760375828" duration="644000" />
-      <workItem from="1661841262246" duration="140000" />
-      <workItem from="1661856692501" duration="1522000" />
-      <workItem from="1661934770824" duration="33000" />
-      <workItem from="1661934811025" duration="54000" />
-      <workItem from="1661934926775" duration="9000" />
-      <workItem from="1661954380445" duration="3000" />
-      <workItem from="1662038111620" duration="1148000" />
-      <workItem from="1662043347371" duration="5000" />
-      <workItem from="1662229118292" duration="13549000" />
-      <workItem from="1662358290042" duration="1966000" />
-      <workItem from="1662364444290" duration="2176000" />
-      <workItem from="1662366823085" duration="4000" />
-      <workItem from="1662388684744" duration="2304000" />
-      <workItem from="1662391324338" duration="128000" />
-      <workItem from="1662457370272" duration="603000" />
-      <workItem from="1662467809980" duration="326000" />
-      <workItem from="1662468208678" duration="1513000" />
-      <workItem from="1662477738221" duration="13179000" />
-      <workItem from="1662531515436" duration="2855000" />
-      <workItem from="1662535699716" duration="4000" />
-      <workItem from="1662568168246" duration="7520000" />
-      <workItem from="1662619018676" duration="1315000" />
-      <workItem from="1662648847524" duration="406000" />
-      <workItem from="1662799190261" duration="95000" />
-      <workItem from="1662965138491" duration="12290000" />
-      <workItem from="1663010831949" duration="8000" />
-      <workItem from="1663013655885" duration="30000" />
-      <workItem from="1663052362351" duration="621000" />
-      <workItem from="1663343460060" duration="664000" />
-      <workItem from="1663611479834" duration="2541000" />
-      <workItem from="1663615052791" duration="2587000" />
-      <workItem from="1663654373817" duration="41000" />
-      <workItem from="1663654901788" duration="3558000" />
-      <workItem from="1663673186200" duration="12625000" />
-      <workItem from="1663696621797" duration="1667000" />
+      <workItem from="1662367633185" duration="1322000" />
+    </task>
+    <task id="LOCAL-00178" summary="update dom feature to include path">
+      <created>1652446865129</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1652446865129</updated>
+    </task>
+    <task id="LOCAL-00179" summary="update dom feature to include path">
+      <created>1652446989034</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1652446989034</updated>
+    </task>
+    <task id="LOCAL-00180" summary="update dom feature to include path">
+      <created>1652448835217</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1652448835217</updated>
+    </task>
+    <task id="LOCAL-00181" summary="update dom to better handle get element">
+      <created>1652688629581</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1652688629581</updated>
+    </task>
+    <task id="LOCAL-00182" summary="update dom to better handle get element">
+      <created>1652690192146</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1652690192146</updated>
+    </task>
+    <task id="LOCAL-00183" summary="update dom to better handle get element">
+      <created>1652693629630</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1652693629630</updated>
+    </task>
+    <task id="LOCAL-00184" summary="update dom to better handle get element">
+      <created>1652693720673</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1652693720673</updated>
+    </task>
+    <task id="LOCAL-00185" summary="add file and media handling">
+      <created>1652701161872</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1652701161872</updated>
+    </task>
+    <task id="LOCAL-00186" summary="add file and media handling">
+      <created>1652856613054</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1652856613055</updated>
+    </task>
+    <task id="LOCAL-00187" summary="fix bug on grouping where rows were ignored.">
+      <created>1652959284455</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1652959284456</updated>
+    </task>
+    <task id="LOCAL-00188" summary="add notify_ready to dom functions">
+      <created>1653324541885</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1653324541886</updated>
+    </task>
+    <task id="LOCAL-00189" summary="add filesystem features">
+      <created>1653505117196</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1653505117196</updated>
+    </task>
+    <task id="LOCAL-00190" summary="build">
+      <created>1653939960578</created>
+      <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
+      <option name="project" value="LOCAL" />
+      <updated>1653939960578</updated>
+    </task>
+    <task id="LOCAL-00191" summary="enable file reading from handle">
+      <created>1653985602854</created>
+      <option name="number" value="00191" />
+      <option name="presentableId" value="LOCAL-00191" />
+      <option name="project" value="LOCAL" />
+      <updated>1653985602854</updated>
+    </task>
+    <task id="LOCAL-00192" summary="add documentation">
+      <created>1654076973745</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1654076973746</updated>
+    </task>
+    <task id="LOCAL-00193" summary="add documentation">
+      <created>1654082031038</created>
+      <option name="number" value="00193" />
+      <option name="presentableId" value="LOCAL-00193" />
+      <option name="project" value="LOCAL" />
+      <updated>1654082031038</updated>
+    </task>
+    <task id="LOCAL-00194" summary="add documentation">
+      <created>1654085745250</created>
+      <option name="number" value="00194" />
+      <option name="presentableId" value="LOCAL-00194" />
+      <option name="project" value="LOCAL" />
+      <updated>1654085745250</updated>
+    </task>
+    <task id="LOCAL-00195" summary="add documentation">
+      <created>1654087102946</created>
+      <option name="number" value="00195" />
+      <option name="presentableId" value="LOCAL-00195" />
+      <option name="project" value="LOCAL" />
+      <updated>1654087102946</updated>
+    </task>
+    <task id="LOCAL-00196" summary="add documentation">
+      <created>1654087506884</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1654087506884</updated>
+    </task>
+    <task id="LOCAL-00197" summary="add rest api feature">
+      <created>1654097227667</created>
+      <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
+      <option name="project" value="LOCAL" />
+      <updated>1654097227668</updated>
+    </task>
+    <task id="LOCAL-00198" summary="add animation layer in dom features">
+      <created>1654117878043</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1654117878044</updated>
+    </task>
+    <task id="LOCAL-00199" summary="add animation layer in dom features">
+      <created>1654118944245</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1654118944245</updated>
+    </task>
+    <task id="LOCAL-00200" summary="add animation layer in dom features">
+      <created>1654161953775</created>
+      <option name="number" value="00200" />
+      <option name="presentableId" value="LOCAL-00200" />
+      <option name="project" value="LOCAL" />
+      <updated>1654161953776</updated>
+    </task>
+    <task id="LOCAL-00201" summary="build">
+      <created>1654161983052</created>
+      <option name="number" value="00201" />
+      <option name="presentableId" value="LOCAL-00201" />
+      <option name="project" value="LOCAL" />
+      <updated>1654161983052</updated>
+    </task>
+    <task id="LOCAL-00202" summary="build">
+      <created>1654173270382</created>
+      <option name="number" value="00202" />
+      <option name="presentableId" value="LOCAL-00202" />
+      <option name="project" value="LOCAL" />
+      <updated>1654173270382</updated>
+    </task>
+    <task id="LOCAL-00203" summary="refactor object actions to be cleaner">
+      <created>1654500744158</created>
+      <option name="number" value="00203" />
+      <option name="presentableId" value="LOCAL-00203" />
+      <option name="project" value="LOCAL" />
+      <updated>1654500744158</updated>
+    </task>
+    <task id="LOCAL-00204" summary="refactor object actions to be cleaner and document it">
+      <created>1654505371814</created>
+      <option name="number" value="00204" />
+      <option name="presentableId" value="LOCAL-00204" />
+      <option name="project" value="LOCAL" />
+      <updated>1654505371814</updated>
+    </task>
+    <task id="LOCAL-00205" summary="update build commands to include documents now.">
+      <created>1654507048923</created>
+      <option name="number" value="00205" />
+      <option name="presentableId" value="LOCAL-00205" />
+      <option name="project" value="LOCAL" />
+      <updated>1654507048923</updated>
     </task>
     <task id="LOCAL-00206" summary="update documentation">
       <created>1654513193447</created>
@@ -683,203 +804,7 @@
       <option name="project" value="LOCAL" />
       <updated>1657545766675</updated>
     </task>
-    <task id="LOCAL-00227" summary="add new actions and build actions">
-      <created>1658831772550</created>
-      <option name="number" value="00227" />
-      <option name="presentableId" value="LOCAL-00227" />
-      <option name="project" value="LOCAL" />
-      <updated>1658831772550</updated>
-    </task>
-    <task id="LOCAL-00228" summary="add new actions and build actions">
-      <created>1658842963428</created>
-      <option name="number" value="00228" />
-      <option name="presentableId" value="LOCAL-00228" />
-      <option name="project" value="LOCAL" />
-      <updated>1658842963428</updated>
-    </task>
-    <task id="LOCAL-00229" summary="add new actions and build actions">
-      <created>1659003530322</created>
-      <option name="number" value="00229" />
-      <option name="presentableId" value="LOCAL-00229" />
-      <option name="project" value="LOCAL" />
-      <updated>1659003530323</updated>
-    </task>
-    <task id="LOCAL-00230" summary="refactor dom to more logical files">
-      <created>1659446338393</created>
-      <option name="number" value="00230" />
-      <option name="presentableId" value="LOCAL-00230" />
-      <option name="project" value="LOCAL" />
-      <updated>1659446338393</updated>
-    </task>
-    <task id="LOCAL-00231" summary="add move actions">
-      <created>1659531269943</created>
-      <option name="number" value="00231" />
-      <option name="presentableId" value="LOCAL-00231" />
-      <option name="project" value="LOCAL" />
-      <updated>1659531269944</updated>
-    </task>
-    <task id="LOCAL-00232" summary="add move actions">
-      <created>1659607900407</created>
-      <option name="number" value="00232" />
-      <option name="presentableId" value="LOCAL-00232" />
-      <option name="project" value="LOCAL" />
-      <updated>1659607900407</updated>
-    </task>
-    <task id="LOCAL-00233" summary="add is mobile check">
-      <created>1661000550067</created>
-      <option name="number" value="00233" />
-      <option name="presentableId" value="LOCAL-00233" />
-      <option name="project" value="LOCAL" />
-      <updated>1661000550067</updated>
-    </task>
-    <task id="LOCAL-00234" summary="add enable drop drop">
-      <created>1662235354338</created>
-      <option name="number" value="00234" />
-      <option name="presentableId" value="LOCAL-00234" />
-      <option name="project" value="LOCAL" />
-      <updated>1662235354338</updated>
-    </task>
-    <task id="LOCAL-00235" summary="add enable drop drop">
-      <created>1662236241414</created>
-      <option name="number" value="00235" />
-      <option name="presentableId" value="LOCAL-00235" />
-      <option name="project" value="LOCAL" />
-      <updated>1662236241414</updated>
-    </task>
-    <task id="LOCAL-00236" summary="add enable drop drop">
-      <created>1662236960071</created>
-      <option name="number" value="00236" />
-      <option name="presentableId" value="LOCAL-00236" />
-      <option name="project" value="LOCAL" />
-      <updated>1662236960071</updated>
-    </task>
-    <task id="LOCAL-00237" summary="add enable drop drop">
-      <created>1662239437912</created>
-      <option name="number" value="00237" />
-      <option name="presentableId" value="LOCAL-00237" />
-      <option name="project" value="LOCAL" />
-      <updated>1662239437912</updated>
-    </task>
-    <task id="LOCAL-00238" summary="add enable drop drop">
-      <created>1662244480399</created>
-      <option name="number" value="00238" />
-      <option name="presentableId" value="LOCAL-00238" />
-      <option name="project" value="LOCAL" />
-      <updated>1662244480399</updated>
-    </task>
-    <task id="LOCAL-00239" summary="add enable drop drop">
-      <created>1662495547726</created>
-      <option name="number" value="00239" />
-      <option name="presentableId" value="LOCAL-00239" />
-      <option name="project" value="LOCAL" />
-      <updated>1662495547726</updated>
-    </task>
-    <task id="LOCAL-00240" summary="add enable drop drop">
-      <created>1662502077034</created>
-      <option name="number" value="00240" />
-      <option name="presentableId" value="LOCAL-00240" />
-      <option name="project" value="LOCAL" />
-      <updated>1662502077034</updated>
-    </task>
-    <task id="LOCAL-00241" summary="fix drag and drop issue and make new build">
-      <created>1662535642988</created>
-      <option name="number" value="00241" />
-      <option name="presentableId" value="LOCAL-00241" />
-      <option name="project" value="LOCAL" />
-      <updated>1662535642988</updated>
-    </task>
-    <task id="LOCAL-00242" summary="fix drag and drop issue and make new build">
-      <created>1662568496994</created>
-      <option name="number" value="00242" />
-      <option name="presentableId" value="LOCAL-00242" />
-      <option name="project" value="LOCAL" />
-      <updated>1662568496995</updated>
-    </task>
-    <task id="LOCAL-00243" summary="add drag and drop template support">
-      <created>1662570938576</created>
-      <option name="number" value="00243" />
-      <option name="presentableId" value="LOCAL-00243" />
-      <option name="project" value="LOCAL" />
-      <updated>1662570938576</updated>
-    </task>
-    <task id="LOCAL-00244" summary="add drag and drop template support">
-      <created>1662579950774</created>
-      <option name="number" value="00244" />
-      <option name="presentableId" value="LOCAL-00244" />
-      <option name="project" value="LOCAL" />
-      <updated>1662579950774</updated>
-    </task>
-    <task id="LOCAL-00245" summary="add hover feature for drag and drop">
-      <created>1662979588270</created>
-      <option name="number" value="00245" />
-      <option name="presentableId" value="LOCAL-00245" />
-      <option name="project" value="LOCAL" />
-      <updated>1662979588270</updated>
-    </task>
-    <task id="LOCAL-00246" summary="add drop zones">
-      <created>1662988365610</created>
-      <option name="number" value="00246" />
-      <option name="presentableId" value="LOCAL-00246" />
-      <option name="project" value="LOCAL" />
-      <updated>1662988365610</updated>
-    </task>
-    <task id="LOCAL-00247" summary="add drop zones">
-      <created>1662988816451</created>
-      <option name="number" value="00247" />
-      <option name="presentableId" value="LOCAL-00247" />
-      <option name="project" value="LOCAL" />
-      <updated>1662988816451</updated>
-    </task>
-    <task id="LOCAL-00248" summary="add drop zones">
-      <created>1662993805859</created>
-      <option name="number" value="00248" />
-      <option name="presentableId" value="LOCAL-00248" />
-      <option name="project" value="LOCAL" />
-      <updated>1662993805859</updated>
-    </task>
-    <task id="LOCAL-00249" summary="add color functions">
-      <created>1663612188037</created>
-      <option name="number" value="00249" />
-      <option name="presentableId" value="LOCAL-00249" />
-      <option name="project" value="LOCAL" />
-      <updated>1663612188038</updated>
-    </task>
-    <task id="LOCAL-00250" summary="add color functions">
-      <created>1663612782222</created>
-      <option name="number" value="00250" />
-      <option name="presentableId" value="LOCAL-00250" />
-      <option name="project" value="LOCAL" />
-      <updated>1663612782222</updated>
-    </task>
-    <task id="LOCAL-00251" summary="add color functions">
-      <created>1663612818425</created>
-      <option name="number" value="00251" />
-      <option name="presentableId" value="LOCAL-00251" />
-      <option name="project" value="LOCAL" />
-      <updated>1663612818425</updated>
-    </task>
-    <task id="LOCAL-00252" summary="add normalize to math">
-      <created>1663613748094</created>
-      <option name="number" value="00252" />
-      <option name="presentableId" value="LOCAL-00252" />
-      <option name="project" value="LOCAL" />
-      <updated>1663613748094</updated>
-    </task>
-    <task id="LOCAL-00253" summary="add normalize to math">
-      <created>1663613782941</created>
-      <option name="number" value="00253" />
-      <option name="presentableId" value="LOCAL-00253" />
-      <option name="project" value="LOCAL" />
-      <updated>1663613782941</updated>
-    </task>
-    <task id="LOCAL-00254" summary="add css variable to hex function">
-      <created>1663697125064</created>
-      <option name="number" value="00254" />
-      <option name="presentableId" value="LOCAL-00254" />
-      <option name="project" value="LOCAL" />
-      <updated>1663697125064</updated>
-    </task>
-    <option name="localTasksCounter" value="255" />
+    <option name="localTasksCounter" value="227" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -899,6 +824,18 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="add delete old databases" />
+    <MESSAGE value="added __ind on saved records for usage in vis" />
+    <MESSAGE value="fixed context fetching for set widget" />
+    <MESSAGE value="files features added for loading and saving" />
+    <MESSAGE value="update dom feature to include path" />
+    <MESSAGE value="update dom to better handle get element" />
+    <MESSAGE value="add file and media handling" />
+    <MESSAGE value="fix bug on grouping where rows were ignored." />
+    <MESSAGE value="add notify_ready to dom functions" />
+    <MESSAGE value="add filesystem features" />
+    <MESSAGE value="enable file reading from handle" />
+    <MESSAGE value="add documentation" />
     <MESSAGE value="add rest api feature" />
     <MESSAGE value="add animation layer in dom features" />
     <MESSAGE value="build" />
@@ -912,19 +849,7 @@
     <MESSAGE value="moved old tests out to make space for new deno tests" />
     <MESSAGE value="add deno tests" />
     <MESSAGE value="fix some fixed layout issues" />
-    <MESSAGE value="add new actions and build actions" />
-    <MESSAGE value="refactor dom to more logical files" />
-    <MESSAGE value="add move actions" />
-    <MESSAGE value="add is mobile check" />
-    <MESSAGE value="add enable drop drop" />
-    <MESSAGE value="fix drag and drop issue and make new build" />
-    <MESSAGE value="add drag and drop template support" />
-    <MESSAGE value="add hover feature for drag and drop" />
-    <MESSAGE value="add drop zones" />
-    <MESSAGE value="add color functions" />
-    <MESSAGE value="add normalize to math" />
-    <MESSAGE value="add css variable to hex function" />
-    <option name="LAST_COMMIT_MESSAGE" value="add css variable to hex function" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix some fixed layout issues" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

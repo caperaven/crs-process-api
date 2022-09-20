@@ -61,6 +61,45 @@ export class StringActions {
 
         return result;
     }
+
+    /**
+     * Accepts a query string, or string of key value pairs i.e. 'param1=value1&param2=value2...' and converts the string
+     * into an equivalent object. Supports 2nd level nesting through optional complex_parameters array.
+     */
+    static async get_query_string(step, context, process, item) {
+        const str = await crs.process.getValue(step.args.source, context, process, item);
+        const complex_parameters = await crs.process.getValue(step.args.complex_parameters, context, process, item);
+        if ((str || '').trim() === '') return;
+
+        let result;
+        const queryStr = str.includes("?") ? str.split("?")[1] : str;
+        const searchParams = new URLSearchParams(queryStr);
+        for (const [key, value] of searchParams) {
+            if ((key || '').trim() === '' || (value || '').trim() === '') continue;
+
+            if ((complex_parameters || []).includes(key)) {
+                const nestedParamPairs = value.split(";");
+                for (const nestedParamPair of nestedParamPairs) {
+                    const nestedParamResult = await this.get_query_string({args: {source: nestedParamPair}});
+                    if (nestedParamResult != null) {
+                        result = result || {};
+                        result[key] = result[key] || {};
+                        Object.assign(result[key], nestedParamResult);
+                    }
+                }
+                continue;
+            }
+
+            result = result || {};
+            result[key] = value;
+        }
+
+        if (step.args.target != null && result != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
 }
 
 async function inflate_string(string, parameters, context, process, item) {
