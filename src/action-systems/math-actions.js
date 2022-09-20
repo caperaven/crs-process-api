@@ -58,7 +58,7 @@ export class MathActions {
         const value = await crs.process.getValue(step.args.value, context, process, item);
         const min = await crs.process.getValue(step.args.min, context, process, item);
         const max = await crs.process.getValue(step.args.max, context, process, item);
-        const result = (value - min) / (max - min);
+        const result = Number(((value - min) / (max - min)).toFixed(2));
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
