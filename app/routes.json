@@ -15,6 +15,11 @@
       "view": "files"
     },
     {
+      "title": "Resize",
+      "hash": "#resize",
+      "view": "resize"
+    },
+    {
       "title": "Media",
       "hash": "#media",
       "view": "media"
@@ -78,6 +83,11 @@
       "title": "fixed-position",
       "hash": "#fixed-position",
       "view": "fixed-position"
+    },
+    {
+      "title": "drag and drop",
+      "hash": "#drag-drop",
+      "view": "drag-drop"
     }
   ]
 }
