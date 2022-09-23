@@ -58,7 +58,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "F:/temp/crs-designer-api",
+    "last_opened_file_path": "C:/Development/crs-process-api",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -89,7 +89,12 @@
       <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: size-manager.test.js">
+  <component name="RunManager" selected="Node.js.size-manager.test.js">
+    <configuration name="Deno: " type="DenoConfigurationType" nameIsGenerated="true" programParameters="test" workingDirectory="$PROJECT_DIR$/tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Deno: dom-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <option name="applicationArguments" value="--allow-read" />
       <method v="2">
@@ -97,11 +102,6 @@
       </method>
     </configuration>
     <configuration name="Deno: size-manager.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/managers/size-manager.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests/managers">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: " type="DenoConfigurationType" nameIsGenerated="true" programParameters="test" workingDirectory="$PROJECT_DIR$/tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -130,16 +130,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Deno.Deno: " />
-      <item itemvalue="Deno.Deno: dom-actions.test.js" />
-      <item itemvalue="Deno.Deno: size-manager.test.js" />
       <item itemvalue="Node.js.size-manager.test.js" />
       <item itemvalue="npm.build-publish" />
       <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Deno.Deno: size-manager.test.js" />
         <item itemvalue="Node.js.size-manager.test.js" />
         <item itemvalue="npm.build-publish" />
         <item itemvalue="npm.test" />
@@ -456,6 +452,7 @@
       <workItem from="1662797631616" duration="4000" />
       <workItem from="1662797649655" duration="127000" />
       <workItem from="1662797789219" duration="27182000" />
+      <workItem from="1663906418571" duration="517000" />
     </task>
     <task id="LOCAL-00179" summary="update dom feature to include path">
       <created>1652446989034</created>

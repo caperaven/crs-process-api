@@ -46,9 +46,7 @@ export class SizeManager {
      */
     append(items) {
         this._collection.push(...items);
-
         this._size += calculateSize(items);
-
         this._updateCallback();
     }
 
@@ -64,7 +62,6 @@ export class SizeManager {
         const sizeDifference = size - oldValue;
 
         this._size = this._size + sizeDifference;
-
         this._collection[index].size = size;
         this._collection[index].dataIndex = dataIndex;
 
@@ -73,14 +70,13 @@ export class SizeManager {
 
     /**
      * Insert an item at a particular index
-     * Create an object to insert into the index given and use the size and dataIndex provided to create the item and at it to the collection
+     * Create an object to insert into the index given and use the size and dataIndex provided to create the item and add it to the collection
      * @param index {number}
      * @param size {number}
      * @param dataIndex {number}
      */
     insert(index, size, dataIndex) {
         this._collection.splice(index, 0, {size: size, dataIndex: dataIndex});
-
         this._size = this._size + size;
         this._updateCallback();
     }
@@ -94,7 +90,6 @@ export class SizeManager {
         let item = this._collection[fromIndex];
         this._collection.splice(fromIndex, 1);
         this._collection.splice(toIndex,0, item);
-
         this._updateCallback();
     }
 
@@ -104,16 +99,13 @@ export class SizeManager {
      * @param count {number}     */
     remove(index, count) {
         this._size = this._size - this._collection[index].size;
-
         this._collection.splice(index, count);
-
         this._updateCallback();
     }
 
     /**
      * Recalculate the size by looking at all the items in the collection
      */
-
     recalculate() {
         return this._size = calculateSize(this._collection);
     }

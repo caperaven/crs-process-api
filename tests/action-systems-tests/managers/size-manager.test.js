@@ -20,7 +20,6 @@ Deno.test("size-manager - insert", async () =>{
     assertEquals(instance.size, 50);
     instance.insert(3, 20, 7);
 
-
     assertEquals(instance._collection[3].size, 20);
     assertEquals(updateCalled, true);
     assertEquals(instance.size, 70);
@@ -33,7 +32,6 @@ Deno.test("size-manager - append", async () => {
 
     instance.append([
         { size: 55, dataIndex: 0 }
-
     ]);
 
     assertEquals(instance.size, 105);
@@ -88,7 +86,6 @@ Deno.test("size-manager - move", async () =>{
     assertEquals(instance._collection[0].size, 77);
 
     assertEquals(instance.size, 127)
-
 })
 
 Deno.test("size-manager - remove", async () =>{
@@ -102,7 +99,6 @@ Deno.test("size-manager - remove", async () =>{
     assertEquals(instance.size, 40)
 
     assertEquals(updateCalled, true);
-
 })
 
 Deno.test("size-manager - recalculate", async () =>{
@@ -121,5 +117,4 @@ Deno.test("size-manager - recalculate", async () =>{
 
     instance.remove(5, 1);
     assertEquals(instance.size, 50);
-
 })
