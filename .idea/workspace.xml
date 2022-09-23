@@ -9,13 +9,7 @@
     <cargoProject FILE="$PROJECT_DIR$/wasm/random_data/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="fix some fixed layout issues">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crs-process-api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/files-action.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/files-action.js" afterDir="false" />
-    </list>
+    <list default="true" id="daff13f8-c38a-42fa-a3f3-d09bf6576098" name="Changes" comment="fix some fixed layout issues" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -78,82 +72,6 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.Mappings&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\221.5080.210\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;
-  }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\caperaven projects\crs-process-api\tests\mockups" />
-      <recent name="F:\caperaven projects\crs-process-api\app\files" />
-      <recent name="F:\caperaven projects\crs-process-api\documents" />
-      <recent name="F:\caperaven projects\crs-process-api\app" />
-      <recent name="F:\caperaven projects\crs-process-api\app\css-grid" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\caperaven projects\crs-process-api\schema-manager\providers" />
-      <recent name="F:\caperaven projects\crs-process-api\app" />
-      <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\dates" />
-      <recent name="F:\caperaven projects\crs-process-api\wasm\data\src\aggregates\numbers" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Deno.Deno: dom-actions.test.js">
-    <configuration name="Deno: console-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/console-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <option name="applicationArguments" value="--allow-read" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: css-grid-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <option name="applicationArguments" value="--allow-read" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: dom-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" programParameters="test" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <option name="applicationArguments" value="--allow-read" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: " type="DenoConfigurationType" nameIsGenerated="true" programParameters="test" workingDirectory="$PROJECT_DIR$/tests">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="build-publish" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build-publish" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="test" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Deno.Deno: " />
-      <item itemvalue="Deno.Deno: dom-actions.test.js" />
-      <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
-      <item itemvalue="Deno.Deno: console-actions.test.js" />
-      <item itemvalue="npm.build-publish" />
-      <item itemvalue="npm.test" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="npm.test" />
-        <item itemvalue="npm.build-publish" />
-        <item itemvalue="Deno.Deno: dom-actions.test.js" />
-        <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
-        <item itemvalue="Deno.Deno: console-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -460,13 +378,14 @@
       <workItem from="1657865277464" duration="434000" />
       <workItem from="1657875930430" duration="17000" />
       <workItem from="1662367633185" duration="1322000" />
-    </task>
-    <task id="LOCAL-00178" summary="update dom feature to include path">
-      <created>1652446865129</created>
-      <option name="number" value="00178" />
-      <option name="presentableId" value="LOCAL-00178" />
-      <option name="project" value="LOCAL" />
-      <updated>1652446865129</updated>
+      <workItem from="1662644649344" duration="2000" />
+      <workItem from="1662644659142" duration="2387000" />
+      <workItem from="1662664965927" duration="205000" />
+      <workItem from="1662665180616" duration="6331000" />
+      <workItem from="1662797631616" duration="4000" />
+      <workItem from="1662797649655" duration="127000" />
+      <workItem from="1662797789219" duration="27182000" />
+      <workItem from="1663906418571" duration="517000" />
     </task>
     <task id="LOCAL-00179" summary="update dom feature to include path">
       <created>1652446989034</created>
@@ -804,7 +723,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657545766675</updated>
     </task>
-    <option name="localTasksCounter" value="227" />
+    <task id="LOCAL-00227" summary="add size manager skeleton and starter tests">
+      <created>1662629098274</created>
+      <option name="number" value="00227" />
+      <option name="presentableId" value="LOCAL-00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1662629098274</updated>
+    </task>
+    <option name="localTasksCounter" value="228" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -824,7 +750,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="add delete old databases" />
     <MESSAGE value="added __ind on saved records for usage in vis" />
     <MESSAGE value="fixed context fetching for set widget" />
     <MESSAGE value="files features added for loading and saving" />
@@ -849,7 +774,8 @@
     <MESSAGE value="moved old tests out to make space for new deno tests" />
     <MESSAGE value="add deno tests" />
     <MESSAGE value="fix some fixed layout issues" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix some fixed layout issues" />
+    <MESSAGE value="add size manager skeleton and starter tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="add size manager skeleton and starter tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
