@@ -15,7 +15,7 @@ export class FixedLayoutActions {
         const target = await crs.dom.get_element(step.args.target, context, process, item);
         const at = await crs.process.getValue(step.args.at || "bottom", context, process, item);
         const anchor = await crs.process.getValue(step.args.anchor, context, process, item);
-        const padding = await crs.process.getValue(step.args.padding || 0, context, process, item);
+        const margin = await crs.process.getValue(step.args.margin || 0, context, process, item);
 
         element.style.position = "fixed";
         element.style.left = 0;
@@ -24,35 +24,35 @@ export class FixedLayoutActions {
         const elementBounds = element.getBoundingClientRect();
         const targetBounds = target.getBoundingClientRect();
 
-        const position = this.#actions[at](elementBounds, targetBounds, padding, anchor);
+        const position = this.#actions[at](elementBounds, targetBounds, margin, anchor);
         element.style.translate = `${position.x}px ${position.y}px`;
     }
 
-    static #left(elementBounds, targetBounds, padding, anchor) {
+    static #left(elementBounds, targetBounds, margin, anchor) {
         return {
-            x: targetBounds.left - elementBounds.width - padding,
+            x: targetBounds.left - elementBounds.width - margin,
             y: anchor == "bottom" ? targetBounds.bottom - elementBounds.height : targetBounds.top
         }
     }
 
-    static #right(elementBounds, targetBounds, padding, anchor) {
+    static #right(elementBounds, targetBounds, margin, anchor) {
         return {
-            x: targetBounds.left + targetBounds.width + padding,
+            x: targetBounds.left + targetBounds.width + margin,
             y: anchor == "bottom" ? targetBounds.bottom - elementBounds.height : targetBounds.top
         }
     }
 
-    static #top(elementBounds, targetBounds, padding, anchor) {
+    static #top(elementBounds, targetBounds, margin, anchor) {
         return {
             x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
-            y: targetBounds.top - elementBounds.height - padding
+            y: targetBounds.top - elementBounds.height - margin
         }
     }
 
-    static #bottom(elementBounds, targetBounds, padding, anchor) {
+    static #bottom(elementBounds, targetBounds, margin, anchor) {
         return {
             x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
-            y: targetBounds.top + targetBounds.height + padding
+            y: targetBounds.top + targetBounds.height + margin
         }
     }
 }

@@ -8,7 +8,8 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
             target: this.target,
             element: this.move,
             at: "left",
-            anchor: "top"
+            anchor: "top",
+            margin: 10
         })
     }
 
