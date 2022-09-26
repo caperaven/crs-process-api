@@ -1,5 +1,7 @@
 # CRS Process API
 
+[![Deno](https://github.com/caperaven/crs-process-api/actions/workflows/deno.yml/badge.svg)](https://github.com/caperaven/crs-process-api/actions/workflows/deno.yml)
+
 ## Introduction
 
 This library provides a basis to develop process driven application where users and developers use the same API to define features.  
