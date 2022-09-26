@@ -14,6 +14,7 @@ export class FixedLayoutActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const target = await crs.dom.get_element(step.args.target, context, process, item);
         const at = await crs.process.getValue(step.args.at || "bottom", context, process, item);
+        const anchor = await crs.process.getValue(step.args.anchor, context, process, item);
         const padding = await crs.process.getValue(step.args.padding || 0, context, process, item);
 
         element.style.position = "fixed";
@@ -23,34 +24,34 @@ export class FixedLayoutActions {
         const elementBounds = element.getBoundingClientRect();
         const targetBounds = target.getBoundingClientRect();
 
-        const position = this.#actions[at](elementBounds, targetBounds, padding);
+        const position = this.#actions[at](elementBounds, targetBounds, padding, anchor);
         element.style.translate = `${position.x}px ${position.y}px`;
     }
 
-    static #left(elementBounds, targetBounds, padding) {
+    static #left(elementBounds, targetBounds, padding, anchor) {
         return {
             x: targetBounds.left - elementBounds.width - padding,
-            y: targetBounds.top
+            y: anchor == "bottom" ? targetBounds.bottom - elementBounds.height : targetBounds.top
         }
     }
 
-    static #right(elementBounds, targetBounds, padding) {
+    static #right(elementBounds, targetBounds, padding, anchor) {
         return {
             x: targetBounds.left + targetBounds.width + padding,
-            y: targetBounds.top
+            y: anchor == "bottom" ? targetBounds.bottom - elementBounds.height : targetBounds.top
         }
     }
 
-    static #top(elementBounds, targetBounds, padding) {
+    static #top(elementBounds, targetBounds, padding, anchor) {
         return {
-            x: targetBounds.left,
+            x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
             y: targetBounds.top - elementBounds.height - padding
         }
     }
 
-    static #bottom(elementBounds, targetBounds, padding) {
+    static #bottom(elementBounds, targetBounds, padding, anchor) {
         return {
-            x: targetBounds.left,
+            x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
             y: targetBounds.top + targetBounds.height + padding
         }
     }

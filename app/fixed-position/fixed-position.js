@@ -7,7 +7,8 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
         await crs.call("fixed_layout", "set", {
             target: this.target,
             element: this.move,
-            at: "left"
+            at: "left",
+            anchor: "top"
         })
     }
 
@@ -15,7 +16,8 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
         await crs.call("fixed_layout", "set", {
             target: this.target,
             element: this.move,
-            at: "right"
+            at: "right",
+            anchor: "bottom"
         })
     }
 
@@ -23,7 +25,8 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
         await crs.call("fixed_layout", "set", {
             target: this.target,
             element: this.move,
-            at: "top"
+            at: "top",
+            anchor: "left"
         })
     }
 
@@ -31,7 +34,8 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
         await crs.call("fixed_layout", "set", {
             target: this.target,
             element: this.move,
-            at: "bottom"
+            at: "bottom",
+            anchor: "right"
         })
     }
 }
