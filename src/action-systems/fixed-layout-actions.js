@@ -24,7 +24,8 @@ export class FixedLayoutActions {
         const elementBounds = element.getBoundingClientRect();
         const targetBounds = target.getBoundingClientRect();
 
-        const position = this.#actions[at](elementBounds, targetBounds, margin, anchor);
+        let position = this.#actions[at](elementBounds, targetBounds, margin, anchor);
+        position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height);
         element.style.translate = `${position.x}px ${position.y}px`;
     }
 
@@ -54,6 +55,26 @@ export class FixedLayoutActions {
             x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
             y: targetBounds.top + targetBounds.height + margin
         }
+    }
+
+    static #ensureInFrustum(position, width, height) {
+        if (position.x < 0) {
+            position.x = 1;
+        }
+
+        if (position.x + width > screen.width) {
+            position.x = screen.width - width - 1;
+        }
+
+        if (position.y < 0) {
+            position.y = 1;
+        }
+
+        if (position.y + height > screen.height) {
+            position.y = screen.height - height - 1;
+        }
+
+        return position;
     }
 }
 
