@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Creating your own system#Basics#A system is a standard javascript class that contains static async functions.
+export class MyActions { // this is a required function with required parameters static async perform(step, context, process, item) { await this[step.action](step, context, process, item); } } The &ldquo;perform&rdquo; function is called by the process runner and is required to be there.
+Now that you have the class you need to add it to the intent.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Creating your own system#Basics#A system is a standard javascript class that contains static async functions.
+export class MyActions { // this is a required function with required parameters static async perform(step, context, process, item) { await this[step.action](step, context, process, item); } } The &ldquo;perform&rdquo; function is called by the process runner and is required to be there.
+Now that you have the class you need to add it to the intent." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/create/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Create | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.fe88c9a9e8e4f572bab4a6827f5041ea9a4ae55e2a2eed4e7c57808df9489c8c.js" integrity="sha256-/ojJqejk9XK6tKaCf1BB6ppK5V4qLu1OfFeAjflInIw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/"class=active>Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Create</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#basics">Basics</a></li>
+    <li><a href="#complex-operations">Complex operations</a></li>
+    <li><a href="#enable--disable-feature">Enable / Disable Feature</a></li>
+    <li><a href="#initialize-feature">Initialize Feature</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="creating-your-own-system">
+  Creating your own system
+  <a class="anchor" href="#creating-your-own-system">#</a>
+</h1>
+<h2 id="basics">
+  Basics
+  <a class="anchor" href="#basics">#</a>
+</h2>
+<p>A system is a standard javascript class that contains static async functions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActions</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// this is a required function with required parameters
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">perform</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">action</span>](<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>The &ldquo;perform&rdquo; function is called by the process runner and is required to be there.<br>
+Now that you have the class you need to add it to the intent.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">intent</span>.<span style="color:#a6e22e">myactions</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">MyActions</span>;</span></span></code></pre></div>
+<p>Some systems don&rsquo;t have functions and the &ldquo;perform&rdquo; function is sufficient.<br>
+In those cases you can read the intent from the step and execute it as required.</p>
+<p>Let&rsquo;s add a function to &ldquo;MyActions&rdquo; and perform some standard operations.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActions</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// this is a required function with required parameters
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">perform</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">action</span>](<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">do_something</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">getValue</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// .. so stuff
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">stuff</span>(<span style="color:#a6e22e">value</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">target</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">setValue</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Some important things to note.</p>
+<ol>
+<li>Don&rsquo;t assume that the args properties contains the final value.  The value could be <a href="/docs/prefixes/">prefixed</a>.  Use <code>crs.process.getValue</code>.</li>
+<li>Always check if the step has a target set and if so, set the target using <code>crs.process.setValue</code>.</li>
+<li>Always return the result (if the step has one) so that you can use the step from JavaScript.</li>
+<li>Your function parameters should always contain the &ldquo;step&rdquo;, &ldquo;context&rdquo;, &ldquo;process&rdquo;, &ldquo;item&rdquo; parameters</li>
+</ol>
+<p>That is pretty much the basics of it.<br>
+Next up we will look at some conventions for more complicated tasks.</p>
+<h2 id="complex-operations">
+  Complex operations
+  <a class="anchor" href="#complex-operations">#</a>
+</h2>
+<p>There are times when the action you are executing has a lot of code too it.<br>
+In those cases you want to use the system&rsquo;s function to extract information and call an external function or method passing on the required data as parameters.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">do_something</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">getValue</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">value1</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">getValue</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">value2</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">doComplexStuff</span>(<span style="color:#a6e22e">value1</span>, <span style="color:#a6e22e">value2</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">target</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">setValue</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">target</span>, <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<h2 id="enable--disable-feature">
+  Enable / Disable Feature
+  <a class="anchor" href="#enable--disable-feature">#</a>
+</h2>
+<p>Some scenarios require a operations class.<br>
+Before you can use the required actions you need to enable the feature on a target object.<br>
+Once done you need to clean up the memory you instanciated.</p>
+<p>Let us assume we are writing a complex dom manipulation operation.<br>
+Something like writing custom interactions &hellip;</p>
+<p>In those cases your system will need an &ldquo;enable&rdquo; and &ldquo;disable&rdquo; function.<br>
+&ldquo;enable&rdquo; initializes the resources required.<br>
+&ldquo;disable&rdquo; cleans up those resources.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActions</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">perform</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">action</span>](<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">enable</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">element</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getElement</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">element</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">element</span>.<span style="color:#a6e22e">_manager</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ElementManager</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">disable</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">element</span>.<span style="color:#a6e22e">_manager</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">element</span>.<span style="color:#a6e22e">_manager</span>.<span style="color:#a6e22e">dispose</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Note that in the above example, manager.dispose() returns null.<br>
+That way you can dispose the resources in one line, including setting the field &ldquo;_manager&rdquo; to null;</p>
+<h2 id="initialize-feature">
+  Initialize Feature
+  <a class="anchor" href="#initialize-feature">#</a>
+</h2>
+<p>In the scenario where you want to perform some initialization that does not involve instantiating memory, use the <code>init</code> function instead.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActions</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">perform</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">this</span>[<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">action</span>](<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">init</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">element</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getElement</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">element</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">element</span>.<span style="color:#a6e22e">style</span>.<span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;grid&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">async</span> <span style="color:#a6e22e">add_rows</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">element</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getElement</span>(<span style="color:#a6e22e">step</span>.<span style="color:#a6e22e">args</span>.<span style="color:#a6e22e">element</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// .. do stuff
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>In the above example you need to ensure that the element is a css grid or the other actions will not work correctly.
+It is up to the user to first init the relevant element before executing actions on it.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#basics">Basics</a></li>
+    <li><a href="#complex-operations">Complex operations</a></li>
+    <li><a href="#enable--disable-feature">Enable / Disable Feature</a></li>
+    <li><a href="#initialize-feature">Initialize Feature</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

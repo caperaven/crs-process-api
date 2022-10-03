@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="String#Functions that help you interact with strings
+Actions#inflate to_array from_array replace inflate#Considering the following string examples, inflate the strings with values.
+templates example const str1 = &#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;; const str2 = &#34;${firstName} ${lastName} = ${age} old&#34;;
+properties
+property description required template string that contains the inflation markers true parameters object who&rsquo;s properties will be used in the inflation true target where the inflated string must be copied too false json { &#34;type&#34;: &#34;string&#34;, &#34;action&#34;: &#34;inflate&#34;, &#34;args&#34;: { &#34;template&#34;: &#34;#input/${id}?">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="String#Functions that help you interact with strings
+Actions#inflate to_array from_array replace inflate#Considering the following string examples, inflate the strings with values.
+templates example const str1 = &#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;; const str2 = &#34;${firstName} ${lastName} = ${age} old&#34;;
+properties
+property description required template string that contains the inflation markers true parameters object who&rsquo;s properties will be used in the inflation true target where the inflated string must be copied too false json { &#34;type&#34;: &#34;string&#34;, &#34;action&#34;: &#34;inflate&#34;, &#34;args&#34;: { &#34;template&#34;: &#34;#input/${id}?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/string/" /><meta property="article:section" content="docs" />
+
+
+
+<title>String | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.31920005161dfa6419b76cf5c2e2cee2ae0a60d2f1736a188cf4ec4a71335b8c.js" integrity="sha256-MZIABRYd&#43;mQZt2z1wuLO4q4KYNLxc2oYjPTsSnEzW4w=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/"class=active>String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>String</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#inflate">inflate</a></li>
+    <li><a href="#to_array">to_array</a></li>
+    <li><a href="#from_array">from_array</a></li>
+    <li><a href="#replace">replace</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="string">
+  String
+  <a class="anchor" href="#string">#</a>
+</h1>
+<p>Functions that help you interact with strings</p>
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#inflate">inflate</a></li>
+<li><a href="#to_array">to_array</a></li>
+<li><a href="#from_array">from_array</a></li>
+<li><a href="#replace">replace</a></li>
+</ol>
+<h2 id="inflate">
+  inflate
+  <a class="anchor" href="#inflate">#</a>
+</h2>
+<p>Considering the following string examples, inflate the strings with values.</p>
+<p><em><strong>templates example</strong></em>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">str1</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">str2</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;${firstName} ${lastName} = ${age} old&#34;</span>;</span></span></code></pre></div></p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">template</td>
+<td style="text-align:left">string that contains the inflation markers</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">parameters</td>
+<td style="text-align:left">object who&rsquo;s properties will be used in the inflation</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the inflated string must be copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>json</strong></em>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;inflate&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;template&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parameters&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;typeId&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.typeId&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.result&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<p><em><strong>js</strong></em>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">inflated</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#e6db74">&#34;inflate&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;template&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;parameters&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">100</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;typeId&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.typeId&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div></p>
+<h2 id="to_array">
+  to_array
+  <a class="anchor" href="#to_array">#</a>
+</h2>
+<p>This is a feature geared towards schemas.<br>
+This provides you with the string split function. <br>
+In coding, rather just use the string split function.<br>
+This function will return an array</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">string to split</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">pattern</td>
+<td style="text-align:left">pattern char to do the split on</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the inflated string must be copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>json</strong></em>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;to_array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;pattern&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;,&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.target&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<h2 id="from_array">
+  from_array
+  <a class="anchor" href="#from_array">#</a>
+</h2>
+<p>This is the opposite of to_array where you start with an array but get a string back.<br>
+This provides you with the join ability.</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array of values</td>
+<td style="text-align:center">true</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">separator</td>
+<td style="text-align:left">char used in joining the array values</td>
+<td style="text-align:center">true</td>
+<td style="text-align:left">&quot;&quot;</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the string must be copied too</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>json</strong></em>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;from_array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;separator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;,&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.target&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<p>The above example will return a comma seperated string based on the array values.</p>
+<h2 id="replace">
+  replace
+  <a class="anchor" href="#replace">#</a>
+</h2>
+<p>Given a string, replace string values based on the pattern defined.<br>
+This function will replace all instances of the pattern found.</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array of values</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">pattern</td>
+<td style="text-align:left">pattern to search for</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">where the string must be copied too</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>json</strong></em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;replace&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;pattern&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;old&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;new&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><em><strong>js</strong></em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">newValue</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#e6db74">&#34;replace&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;hello old world&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;pattern&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;old&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;new&#34;</span>
+</span></span><span style="display:flex;"><span>})</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#inflate">inflate</a></li>
+    <li><a href="#to_array">to_array</a></li>
+    <li><a href="#from_array">from_array</a></li>
+    <li><a href="#replace">replace</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

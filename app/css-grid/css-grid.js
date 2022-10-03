@@ -6,9 +6,15 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
 
         requestAnimationFrame(() => {
             this.element = document.querySelector("#grid");
-            crs.call("cssgrid", "init",         {element: this.element});
-            crs.call("cssgrid", "set_columns",  {element: this.element, columns: "1fr 1fr 1fr"});
-            crs.call("cssgrid", "set_rows",     {element: this.element, rows: "1fr 1fr 1fr"});
+            // crs.call("cssgrid", "init",         {element: this.element});
+            // crs.call("cssgrid", "set_columns",  {element: this.element, columns: "1fr 1fr 1fr"});
+            // crs.call("cssgrid", "set_rows",     {element: this.element, rows: "1fr 1fr 1fr"});
+
+            crs.call("cssgrid", "autofill", {
+                element : this.element,
+                columns: "2fr 2fr 2fr",
+                rows: "1fr 1fr"
+            })
         })
     }
 

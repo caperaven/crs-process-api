@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="JSON schema processes example#{ &#34;id&#34;: &#34;my_schema_id&#34;, &#34;process1&#34;: { &#34;parameters_def&#34;: { &#34;bId&#34; : { type: &#34;number&#34;, required: true }, &#34;taskId&#34; : { type: &#34;string&#34;, required: true }, }, &#34;data&#34;: { &#34;count&#34;: 10 }, &#34;steps&#34;: { &#34;start&#34;: { &#34;type&#34;: &#34;math&#34;, &#34;action&#34;: &#34;add&#34;, &#34;args&#34;: { &#34;value1&#34;: &#34;$data.count&#34;, &#34;value2&#34;: 20, &#34;target&#34;: &#34;$data.count&#34; }, &#34;binding_before&#34;: { &#34;currentStep&#34;: &#34;adding values&#34; }, &#34;next_step&#34;: &#34;print&#34; }, &#34;print&#34;: { &#34;type&#34;: &#34;console&#34;, &#34;action&#34;: &#34;log&#34;, &#34;args&#34;: { &#34;message&#34;: &#34;$data.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="JSON schema processes example#{ &#34;id&#34;: &#34;my_schema_id&#34;, &#34;process1&#34;: { &#34;parameters_def&#34;: { &#34;bId&#34; : { type: &#34;number&#34;, required: true }, &#34;taskId&#34; : { type: &#34;string&#34;, required: true }, }, &#34;data&#34;: { &#34;count&#34;: 10 }, &#34;steps&#34;: { &#34;start&#34;: { &#34;type&#34;: &#34;math&#34;, &#34;action&#34;: &#34;add&#34;, &#34;args&#34;: { &#34;value1&#34;: &#34;$data.count&#34;, &#34;value2&#34;: 20, &#34;target&#34;: &#34;$data.count&#34; }, &#34;binding_before&#34;: { &#34;currentStep&#34;: &#34;adding values&#34; }, &#34;next_step&#34;: &#34;print&#34; }, &#34;print&#34;: { &#34;type&#34;: &#34;console&#34;, &#34;action&#34;: &#34;log&#34;, &#34;args&#34;: { &#34;message&#34;: &#34;$data." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/example/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Example | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.fe88c9a9e8e4f572bab4a6827f5041ea9a4ae55e2a2eed4e7c57808df9489c8c.js" integrity="sha256-/ojJqejk9XK6tKaCf1BB6ppK5V4qLu1OfFeAjflInIw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/"class=active>Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Example</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#schema-parts">Schema Parts</a></li>
+    <li><a href="#process-parts">Process Parts</a>
+      <ul>
+        <li><a href="#parameters_def">parameters_def</a></li>
+        <li><a href="#data">data</a></li>
+        <li><a href="#steps">steps</a></li>
+        <li><a href="#step-parts">step parts</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="json-schema-processes-example">
+  JSON schema processes example
+  <a class="anchor" href="#json-schema-processes-example">#</a>
+</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;my_schema_id&#34;</span>,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;process1&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parameters_def&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;bId&#34;</span>    <span style="color:#f92672">:</span> { <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;number&#34;</span>, <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span> },
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;taskId&#34;</span> <span style="color:#f92672">:</span> { <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#a6e22e">required</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span> },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;data&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;count&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;steps&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;start&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;math&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;add&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;value1&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$data.count&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;value2&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">20</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$data.count&#34;</span>
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;binding_before&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;currentStep&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;adding values&#34;</span>
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;next_step&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;print&#34;</span>
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;print&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;console&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;log&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$data.count&#34;</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;binding_before&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;currentStep&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;logging values&#34;</span>
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<h2 id="schema-parts">
+  Schema Parts
+  <a class="anchor" href="#schema-parts">#</a>
+</h2>
+<p>A schema can have more than one process.<br>
+The schema should have an id property that uniquely identifies the schema.<br>
+When you call processes from other processes this id is used as a reference on where to look for the process you defined.</p>
+<p>All other properties on the schema are processes where the property name is the schema name.<br>
+In the above example we have a schema with the name &ldquo;process1&rdquo;</p>
+<h2 id="process-parts">
+  Process Parts
+  <a class="anchor" href="#process-parts">#</a>
+</h2>
+<p>The purpose of this example is not to be exhaustive but an overview of the core parts.<br>
+See the system documentation for details on particular steps.<br>
+Some steps my differ slightly from this example, but the fast majority follows the same pattern.</p>
+<h3 id="parameters_def">
+  parameters_def
+  <a class="anchor" href="#parameters_def">#</a>
+</h3>
+<p>Optional property set if you want to pass data onto a process.<br>
+This is done when the execution of the process requires additional, external information.<br>
+&ldquo;parameters_def&rdquo; defines what the parameters object on the process will contain.<br>
+To access the parameter values, use the &ldquo;$parameters&rdquo; <a href="/docs/prefixes/">prefix</a>.</p>
+<h3 id="data">
+  data
+  <a class="anchor" href="#data">#</a>
+</h3>
+<p>Optional property where you can store data during the execution of the process.
+To access the parameter values, use the &ldquo;$data&rdquo; <a href="/docs/prefixes/">prefix</a>.</p>
+<h3 id="steps">
+  steps
+  <a class="anchor" href="#steps">#</a>
+</h3>
+<p>Every process must have a &ldquo;steps&rdquo; property.<br>
+This object must also have a &ldquo;start&rdquo; property.<br>
+When a process is executed it always executes &ldquo;start&rdquo; first.<br>
+Each property on the &ldquo;steps&rdquo; object defines a process step.<br>
+The property name defines the step name.<br>
+Use the step name in the &ldquo;next_step&rdquo;, &ldquo;pass_step&rdquo; and &ldquo;fail_step&rdquo; properties.<br>
+See <a href="/docs/systems/condition">the conditions system</a> for details on the &ldquo;pass_step&rdquo; and &ldquo;fail_step&rdquo; usage.</p>
+<h3 id="step-parts">
+  step parts
+  <a class="anchor" href="#step-parts">#</a>
+</h3>
+<h4 id="type">
+  type
+  <a class="anchor" href="#type">#</a>
+</h4>
+<p>This is a required property.
+Type defines the intent type you want to execute.
+This could be array functions, data actions, anything on the <code>crs.intent</code> object.<br>
+In the start step we want to use the &ldquo;math&rdquo; intent actions.<br>
+In the log step we use the &ldquo;console&rdquo; intent actions.</p>
+<h4 id="action">
+  action
+  <a class="anchor" href="#action">#</a>
+</h4>
+<p>This is mostly required but on special cases not required.
+The action property defines the function on the intent that you want to execute.<br>
+In the start step we want to call the &ldquo;add&rdquo; function and in the console step we want to call the &ldquo;log&rdquo; function.
+The action property is on most intent systems but not all.<br>
+<a href="/docs/systems/actions">Action</a> and <a href="/docs/systems/condition">condition</a> for example do not have intent actions, so the action property is omitted.</p>
+<h4 id="args">
+  args
+  <a class="anchor" href="#args">#</a>
+</h4>
+<p>This is a required property.
+The args object defines the parameters used by intent actions to execute the intent.<br>
+The properties will differ from intent to intent but, there are a number of standard ones.<br>
+When creating new systems it is important to retain the standard names for consistency purposes.</p>
+<ol>
+<li>source: the origin of data to use</li>
+<li>target: the destination where the result must be copied too</li>
+</ol>
+<h4 id="binding_after">
+  binding_after
+  <a class="anchor" href="#binding_after">#</a>
+</h4>
+<p>This is an optional property.
+<a href="https://github.com/caperaven/crs-process-api">crs-process-api</a> uses <a href="https://github.com/caperaven/crs-binding">crs-binding</a> under the hood and allows binding access as part of your process execution.<br>
+This is often used to:</p>
+<ol>
+<li>Update UI</li>
+<li>Get data from binding contexts</li>
+<li>Set data on binding contexts</li>
+</ol>
+<p><code>binding_after</code> is used for setting properties on the binding context.<br>
+For this to work you must have the &ldquo;bId&rdquo; parameter defined on the process.<br>
+See the <code>parameter_def</code> property for details.</p>
+<p>This binding operation happens after the step has executed.</p>
+<h4 id="binding_before">
+  binding_before
+  <a class="anchor" href="#binding_before">#</a>
+</h4>
+<p>This is the same as <code>binding_after</code> except, it executes before the step is run.</p>
+<h4 id="next_step">
+  next_step
+  <a class="anchor" href="#next_step">#</a>
+</h4>
+<p>This defines the next step on the same process to execute.<br>
+If no <code>next_step</code> is defined the process will end at the end of the current step.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#schema-parts">Schema Parts</a></li>
+    <li><a href="#process-parts">Process Parts</a>
+      <ul>
+        <li><a href="#parameters_def">parameters_def</a></li>
+        <li><a href="#data">data</a></li>
+        <li><a href="#steps">steps</a></li>
+        <li><a href="#step-parts">step parts</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

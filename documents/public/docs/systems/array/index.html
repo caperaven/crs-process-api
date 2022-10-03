@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Array#Working with array features.
+For the most part performing array actions in javascript is simple enough and, you don&rsquo;t need to use the process api for this. The documentation will show how you could use the api to do it but know that the main goal here was for the execution using json schema. The source or target properties that refers to arrays can be either a path or an array object.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Array#Working with array features.
+For the most part performing array actions in javascript is simple enough and, you don&rsquo;t need to use the process api for this. The documentation will show how you could use the api to do it but know that the main goal here was for the execution using json schema. The source or target properties that refers to arrays can be either a path or an array object." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/array/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Array | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.fe88c9a9e8e4f572bab4a6827f5041ea9a4ae55e2a2eed4e7c57808df9489c8c.js" integrity="sha256-/ojJqejk9XK6tKaCf1BB6ppK5V4qLu1OfFeAjflInIw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/"class=active>Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Array</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#add">add</a></li>
+    <li><a href="#field_to_csv">field_to_csv</a></li>
+    <li><a href="#concat">concat</a></li>
+    <li><a href="#change_values">change_values</a></li>
+    <li><a href="#get_value">get_value</a></li>
+    <li><a href="#map_objects">map_objects</a></li>
+    <li><a href="#get_range">get_range</a></li>
+    <li><a href="#get_records">get_records</a></li>
+    <li><a href="#calculate_paging">calculate_paging</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="array">
+  Array
+  <a class="anchor" href="#array">#</a>
+</h1>
+<p>Working with array features.<br>
+For the most part performing array actions in javascript is simple enough and, you don&rsquo;t need to use the process api for this.
+The documentation will show how you could use the api to do it but know that the main goal here was for the execution using json schema. 
+The source or target properties that refers to arrays can be either a path or an array object.</p>
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#add">add</a></li>
+<li><a href="#field_to_csv">field_to_csv</a></li>
+<li><a href="#concat">concat</a></li>
+<li><a href="#change_values">change_values</a></li>
+<li><a href="#get_value">get_value</a></li>
+<li><a href="#map_objects">map_objects</a></li>
+<li><a href="#get_records">get_records</a></li>
+<li><a href="#get_range">get_range</a></li>
+<li><a href="#calculate_paging">calculate_paging</a></li>
+</ol>
+<h2 id="add">
+  add
+  <a class="anchor" href="#add">#</a>
+</h2>
+<p>Add an item to an existing array.</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">the array to add too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">the value to add to the array</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;add&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;item&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;add&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">value</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;item&#34;</span>
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>);</span></span></code></pre></div>
+<h2 id="field_to_csv">
+  field_to_csv
+  <a class="anchor" href="#field_to_csv">#</a>
+</h2>
+<p>Convert an array of objects to a string of values separated by a delimiter.</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array of objects that must be converted</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+<tr>
+<td style="text-align:left">delimiter</td>
+<td style="text-align:left">the separator between the values</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">field</td>
+<td style="text-align:left">the field who&rsquo;s value will make up the result</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;field_to_csv&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.csv&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;delimiter&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;;&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;field&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;field_to_csv&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">delimiter</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">field</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div>
+<h2 id="concat">
+  concat
+  <a class="anchor" href="#concat">#</a>
+</h2>
+<p>Combine two or more arrays into one.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">sources</td>
+<td style="text-align:left">array of paths for arrays to combine</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;concat&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sources&#34;</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;$context.collection1&#34;</span>, <span style="color:#e6db74">&#34;$context.collection1&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.result&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;concat&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sources</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;$context.collection1&#34;</span>, <span style="color:#e6db74">&#34;$context.collection1&#34;</span>],
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div>
+<h2 id="change_values">
+  change_values
+  <a class="anchor" href="#change_values">#</a>
+</h2>
+<p>Loop through a defined array and change each item&rsquo;s properties as defined.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">sources</td>
+<td style="text-align:left">array to change</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">changes</td>
+<td style="text-align:left">object that defines the values to change</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p>The changes object represents a key value pair of changes to be made.<br>
+You can define N properties this way.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;change_values&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sources&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;changes&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">value1</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;done&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;change_values&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sources</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">changes</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">value1</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">status</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;done&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div></p>
+<p>At the end of this, each item in the array will have a value1 of 10 and a status of &ldquo;done&rdquo;.</p>
+<h2 id="get_value">
+  get_value
+  <a class="anchor" href="#get_value">#</a>
+</h2>
+<p>Given an array of objects, get the value of a property from the object at the defined position.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array to work with</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">index</td>
+<td style="text-align:left">index of the object to get the value from</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">field</td>
+<td style="text-align:left">the field name to get the value from</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_value&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sources&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;index&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;field&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.value&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;get_value&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sources</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">index</span>   <span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">field</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div></p>
+<h2 id="map_objects">
+  map_objects
+  <a class="anchor" href="#map_objects">#</a>
+</h2>
+<p>Given an array of objects, get an array values back based on a given fields.<br>
+The resulting array is a flat list of values.
+Consider the following array of objects.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">values</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">v1</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">v2</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">v3</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span> }, 
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">v1</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">4</span>, <span style="color:#a6e22e">v2</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">5</span>, <span style="color:#a6e22e">v3</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">6</span> }, 
+</span></span><span style="display:flex;"><span>    { <span style="color:#a6e22e">v1</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">7</span>, <span style="color:#a6e22e">v2</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">8</span>, <span style="color:#a6e22e">v3</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">9</span> }
+</span></span><span style="display:flex;"><span>];</span></span></code></pre></div>
+<p>If we map it out using properties: &ldquo;v1&rdquo; and &ldquo;v3&rdquo; the result will contain both the values of &ldquo;v1&rdquo; and &ldquo;v3&rdquo;.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>];</span></span></code></pre></div></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array to work with</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">fields</td>
+<td style="text-align:left">array of field names</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;map_objects&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;fields&#34;</span> <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;v1&#34;</span>, <span style="color:#e6db74">&#34;v3&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.value&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;map_objects&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fields</span> <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;v1&#34;</span>, <span style="color:#e6db74">&#34;v3&#34;</span>]
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div>
+<h2 id="get_range">
+  get_range
+  <a class="anchor" href="#get_range">#</a>
+</h2>
+<p>This function gets the min and max value from an array of objects.<br>
+The result is an object literal with a &ldquo;min&rdquo; and &ldquo;max&rdquo; property.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array to work with</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">field</td>
+<td style="text-align:left">field to get value from</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_range&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;field&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.range&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;get_range&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">field</span>  <span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">value</span>,
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div>
+<h2 id="get_records">
+  get_records
+  <a class="anchor" href="#get_records">#</a>
+</h2>
+<p>This function gets a batch of records from a source array.<br>
+You can use this function in conjunction with <code>calculate_paging</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array to work with</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">page_number</td>
+<td style="text-align:left">what is the page number you want to get</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">page_size</td>
+<td style="text-align:left">how big is a page</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_records&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;page_number&#34;</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;page_size&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.page&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;get_records&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page_number</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page_size</span>   <span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div>
+<h2 id="calculate_paging">
+  calculate_paging
+  <a class="anchor" href="#calculate_paging">#</a>
+</h2>
+<p>Calculate the paging of a given collection.<br>
+The result is an object literal with two properties.</p>
+<ol>
+<li>record_count</li>
+<li>page_count</li>
+</ol>
+<p>You can use this to manage getting batches of records for virtualization.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array to work with</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">page_size</td>
+<td style="text-align:left">how big is a page</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;array&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;calculate_paging&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;page_size&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.size&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;array&#34;</span>, <span style="color:#e6db74">&#34;calculate_paging&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.collection&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page_size</span>   <span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>}, <span style="color:#a6e22e">context</span>)</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#add">add</a></li>
+    <li><a href="#field_to_csv">field_to_csv</a></li>
+    <li><a href="#concat">concat</a></li>
+    <li><a href="#change_values">change_values</a></li>
+    <li><a href="#get_value">get_value</a></li>
+    <li><a href="#map_objects">map_objects</a></li>
+    <li><a href="#get_range">get_range</a></li>
+    <li><a href="#get_records">get_records</a></li>
+    <li><a href="#calculate_paging">calculate_paging</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
