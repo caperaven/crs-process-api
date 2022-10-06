@@ -7,12 +7,33 @@
         justify-content: center;
     }
 
-    #moved {
-        position: absolute;
+    .center, .moved {
+        width: 100px;
+        height: 100px;
+        background: silver;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .moved {
+        width: 50px;
+        height: 50px;
+        background: #ff6666;
     }
 </style>
 
+<label>
+    <div>Padding</div>
+    <input type="number" value.bind="value">
+    <input type="range" min="0" max="50" value.bind="value">
+</label>
+<button click.call="left">Left</button>
+<button click.call="right">Right</button>
+<button click.call="top">Top</button>
+<button click.call="bottom">Bottom</button>
+
 <div class="container">
-    <h2 class="center">center</h2>
-    <h2 class="moved">moved</h2>
+    <div class="center" ref="target">center</div>
+    <div class="moved" ref="move">moved</div>
 </div>

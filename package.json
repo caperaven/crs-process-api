@@ -4,7 +4,7 @@
     "description": "process api for executing loging using json structure",
     "main": "crs-process-api.js",
     "directories": {
-        "test": "test-old"
+        "test": "backups"
     },
     "scripts": {
         "build-documents": "cd documents & hugo -d \"./../publish/documents\"",
