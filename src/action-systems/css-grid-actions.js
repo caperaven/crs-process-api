@@ -30,19 +30,21 @@ export class CssGridActions {
 
         const columnCount = columns.split(" ").length;
         const rowCount = rows.split(" ").length;
+        const cellCount = rowCount * columnCount;
 
-        for(let row = 0; row <rowCount; row ++){
+        for(let cell = 0; cell < cellCount; cell ++){
             await crs.call("dom", "create_element",{
+                "parent" : element,
                 "tag_name" : "div",
                 "dataset" : {
-                    "id" : row
+                    "id" : cell
                 },
                 "styles" : {
-                    "width" : "100px",
-                    "height" : "100px",
-                    "border" : "1px solid silver"
-                }
+                    "border" : "1px solid silver",
+                },
+                "classes" : ["grid-cell"]
             })
+
         }
     }
 

@@ -59,7 +59,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Development/crs-binding&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Development/PragmaDev/pragma-ui-testing&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -460,7 +460,8 @@
       <workItem from="1657875930430" duration="17000" />
       <workItem from="1662367633185" duration="1322000" />
       <workItem from="1664808817290" duration="404000" />
-      <workItem from="1664809290143" duration="8474000" />
+      <workItem from="1664809290143" duration="11629000" />
+      <workItem from="1665007671347" duration="6122000" />
     </task>
     <task id="LOCAL-00178" summary="update dom feature to include path">
       <created>1652446865129</created>
