@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Database#Working with IndexDB. There are a number of components that render themselves from data. This data can be in memory, or it can be in indexDB. There is a particular way how the IndexDB works, and you should take note of it.
+The store has key and value fields. The key field is also the index of the row in the table. Most all render from store is done using the indexes, that is why the key is the record index.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Database#Working with IndexDB. There are a number of components that render themselves from data. This data can be in memory, or it can be in indexDB. There is a particular way how the IndexDB works, and you should take note of it.
+The store has key and value fields. The key field is also the index of the row in the table. Most all render from store is done using the indexes, that is why the key is the record index." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/database/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Database | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.31920005161dfa6419b76cf5c2e2cee2ae0a60d2f1736a188cf4ec4a71335b8c.js" integrity="sha256-MZIABRYd&#43;mQZt2z1wuLO4q4KYNLxc2oYjPTsSnEzW4w=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/"class=active>Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Database</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#open">open</a></li>
+    <li><a href="#delete">delete</a></li>
+    <li><a href="#delete_old">delete_old</a></li>
+    <li><a href="#close">close</a></li>
+    <li><a href="#dump">dump</a></li>
+    <li><a href="#get_from_index">get_from_index</a></li>
+    <li><a href="#get_all">get_all</a></li>
+    <li><a href="#clear">clear</a></li>
+    <li><a href="#delete_record">delete_record</a></li>
+    <li><a href="#update_record">update_record</a></li>
+    <li><a href="#add_record">add_record</a></li>
+    <li><a href="#get_batch">get_batch</a></li>
+    <li><a href="#get_values">get_values</a></li>
+    <li><a href="#calculate_paging">calculate_paging</a></li>
+    <li><a href="#get_page">get_page</a></li>
+    <li><a href="#get_range">get_range</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="database">
+  Database
+  <a class="anchor" href="#database">#</a>
+</h1>
+<p>Working with IndexDB.
+There are a number of components that render themselves from data. 
+This data can be in memory, or it can be in indexDB.
+There is a particular way how the IndexDB works, and you should take note of it.</p>
+<p>The store has key and value fields.
+The key field is also the index of the row in the table.
+Most all render from store is done using the indexes, that is why the key is the record index.</p>
+<p>When you open a database, the db instance passed to you has operational functions you can use for crud operations.
+The process api calls are mostly there for when you call the indexdb functions in a json process.<br>
+You can evaluate the instance for its details.<br>
+For best practice I would recommend just using the process api system to keep things consistent.</p>
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#open">add</a></li>
+<li><a href="#delete">delete</a></li>
+<li><a href="#delete_old">delete_old</a></li>
+<li><a href="#close">close</a></li>
+<li><a href="#dump">dump</a></li>
+<li><a href="#get_from_index">get_from_index</a></li>
+<li><a href="#get_all">get_all</a></li>
+<li><a href="#clear">clear</a></li>
+<li><a href="#delete_record">delete_record</a></li>
+<li><a href="#update_record">update_record</a></li>
+<li><a href="#add_record">add_record</a></li>
+<li><a href="#get_batch">get_batch</a></li>
+<li><a href="#get_values">get_values</a></li>
+<li><a href="#calculate_paging">calculate_paging</a></li>
+<li><a href="#get_page">get_page</a></li>
+<li><a href="#get_range">get_range</a></li>
+</ol>
+<h2 id="open">
+  open
+  <a class="anchor" href="#open">#</a>
+</h2>
+<p>Create a database object.<br>
+In this process the database and tables are created.</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">name</td>
+<td style="text-align:left">database name</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">version</td>
+<td style="text-align:left">version of database</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">tables</td>
+<td style="text-align:left">what tables to create</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">add_timestamp</td>
+<td style="text-align:left">should the time stamp be used in the name</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where to copy the database class instance</td>
+<td style="text-align:center">false</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The &ldquo;tables&rdquo; property is an object where the property name is the table name and the body is the properties.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;open&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;version&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;tables&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;data&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;indexes&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">unique</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span> }    
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;add_timestamp&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.db&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tablesDef</span>[<span style="color:#e6db74">&#34;data&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">indexes</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">unique</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span> }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;open&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">dbName</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">version</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">tables</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">tablesDef</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">add_timestamp</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>})</span></span></code></pre></div>
+<h2 id="delete">
+  delete
+  <a class="anchor" href="#delete">#</a>
+</h2>
+<p>Delete a IndexDB database</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">name</td>
+<td style="text-align:left">database name</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;delete&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">db</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;delete&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>
+</span></span><span style="display:flex;"><span>})</span></span></code></pre></div>
+<h2 id="delete_old">
+  delete_old
+  <a class="anchor" href="#delete_old">#</a>
+</h2>
+<p>Delete all databases older than the defined days.<br>
+Use fractions for hours or minutes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">days</td>
+<td style="text-align:left">number of days before deleting the database</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;delete_old&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;days&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;delete_old&#34;</span>, {<span style="color:#a6e22e">days</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>})</span></span></code></pre></div></p>
+<h2 id="close">
+  close
+  <a class="anchor" href="#close">#</a>
+</h2>
+<p>Close the database connection to the indexdb database instance.<br>
+For this you will need to pass in the db object created during the open operation.<br>
+You could also just call the close action directly on the instance but if you are doing this as part of a process, this makes it a bit easier.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;close&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;db&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.db&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;close&#34;</span>, {<span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>})</span></span></code></pre></div></p>
+<h2 id="dump">
+  dump
+  <a class="anchor" href="#dump">#</a>
+</h2>
+<p>This function does a data dump of records to a data store for a given record set.
+The db passed in is an open database, so you should use open before calling this.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">records</td>
+<td style="text-align:left">array of objects to add to the store</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p>During this process each record is added an &ldquo;__ind&rdquo; is added to the record indicating what index in the db it is on.
+This speeds things up from a development perspective to say get me the next batch from this record forward.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dump&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;db&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.db&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;store&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;records&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.records&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;close&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">records</span><span style="color:#f92672">:</span> [...]
+</span></span><span style="display:flex;"><span>})</span></span></code></pre></div>
+<h2 id="get_from_index">
+  get_from_index
+  <a class="anchor" href="#get_from_index">#</a>
+</h2>
+<p>This function will get you a set of records based on a number array of key values.<br>
+Since the key is the index of the record, this means you will send an array of indexes to fetch a batch of records.<br>
+The values do not have to be in sequence, rather the items you want in the order that you want them.</p>
+<p>This will return an array of records for the items found in the database.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">keys</td>
+<td style="text-align:left">array indexes to get</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where do you want the result to be copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_from_index,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">keys</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">10</span>]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_from_index&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">keys</span><span style="color:#f92672">:</span> [...]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_all">
+  get_all
+  <a class="anchor" href="#get_all">#</a>
+</h2>
+<p>This function gets all the records in the table and returns it to you.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where do you want the result to be copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_all,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_all&#34;</span>, {<span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>});</span></span></code></pre></div>
+<h2 id="clear">
+  clear
+  <a class="anchor" href="#clear">#</a>
+</h2>
+<p>Clear a given store on an already open indexdb instance, removing all records from that store.
+You can also call the clear function directly on the db instance.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;clear,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;clear&#34;</span>, {<span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>});</span></span></code></pre></div>
+<h2 id="delete_record">
+  delete_record
+  <a class="anchor" href="#delete_record">#</a>
+</h2>
+<p>For a given set of key, remove the records from the store.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">key</td>
+<td style="text-align:left">key value of the record you want to delete</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;delete_record,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">key</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;delete_record&#34;</span>, {<span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>});</span></span></code></pre></div>
+<h2 id="update_record">
+  update_record
+  <a class="anchor" href="#update_record">#</a>
+</h2>
+<p>For a given key, replace the row object.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">key</td>
+<td style="text-align:left">key value of the record you want to delete</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">model</td>
+<td style="text-align:left">new row object</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;update_record,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">key</span><span style="color:#e6db74">&#34;: 0,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">model</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">newModel</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;update_record&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">model</span><span style="color:#f92672">:</span> {...}
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="add_record">
+  add_record
+  <a class="anchor" href="#add_record">#</a>
+</h2>
+<p>Add a new record object to the defined indexdb store</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">model</td>
+<td style="text-align:left">new row object</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;add_record,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">model</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">newModel</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;add_record&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">model</span><span style="color:#f92672">:</span> {...}
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_batch">
+  get_batch
+  <a class="anchor" href="#get_batch">#</a>
+</h2>
+<p>This function gets a batch of records starting at the start index to the end index and everything between.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">start</td>
+<td style="text-align:left">start index</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">end</td>
+<td style="text-align:left">end index</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where to copy the results</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_batch,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">start</span><span style="color:#e6db74">&#34;: 0,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">end</span><span style="color:#e6db74">&#34;: 10,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">target</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">records</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">results</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_batch&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_values">
+  get_values
+  <a class="anchor" href="#get_values">#</a>
+</h2>
+<p>For a given set of keys, I want to fetch a custom object structure that only contains the properties I have defined.
+This allows you to fetch a subset of what is stored and limit the amount of memory you use.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">keys</td>
+<td style="text-align:left">array of key values</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">fields</td>
+<td style="text-align:left">array of strings defining the fields</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where to copy the results</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_values,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">keys</span><span style="color:#e6db74">&#34;: [0, 1, 2, 3],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">fields</span><span style="color:#e6db74">&#34;: [&#34;</span><span style="color:#a6e22e">id</span><span style="color:#e6db74">&#34;, &#34;</span><span style="color:#a6e22e">code</span><span style="color:#e6db74">&#34;, &#34;</span><span style="color:#a6e22e">description</span><span style="color:#e6db74">&#34;],
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">target</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">records</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">results</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_values&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">keys</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>], 
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fields</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;id&#34;</span>, <span style="color:#e6db74">&#34;code&#34;</span>, <span style="color:#e6db74">&#34;description&#34;</span>]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="calculate_paging">
+  calculate_paging
+  <a class="anchor" href="#calculate_paging">#</a>
+</h2>
+<p>This function looks at a defined store and lets you know how many pages it contains based on the page size defined.
+It returns a object literal that contains two properties.</p>
+<ol>
+<li>record_count</li>
+<li>page_count</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">page_size</td>
+<td style="text-align:left">how big is a page</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_values,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">page_size</span><span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">results</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_values&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page_size</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_page">
+  get_page
+  <a class="anchor" href="#get_page">#</a>
+</h2>
+<p>Based on the page number and page size, get me the records for that page.<br>
+Use &ldquo;calculate_paging&rdquo; to determine the number of pages so you don&rsquo;t go over.
+You can also define what fields to return but if you leave that out, the entire record will be returned.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">page_size</td>
+<td style="text-align:left">how big is a page</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">page_number</td>
+<td style="text-align:left">what is the page number to fetch</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">fields</td>
+<td style="text-align:left">what field&rsquo;s values must be returned</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where to copy the result</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_page,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">page_size</span><span style="color:#e6db74">&#34;: 10
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">page_size</span><span style="color:#e6db74">&#34;: 3,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">fields</span><span style="color:#e6db74">&#34;: [&#34;</span><span style="color:#a6e22e">id</span><span style="color:#e6db74">&#34;, &#34;</span><span style="color:#a6e22e">code</span><span style="color:#e6db74">&#34;, &#34;</span><span style="color:#a6e22e">description</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.results&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">results</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_page&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page_size</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">page_number</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_range">
+  get_range
+  <a class="anchor" href="#get_range">#</a>
+</h2>
+<p>For a given store and field, get me the range values of that field.
+This will give you back a object containing the following fields.</p>
+<ol>
+<li>min</li>
+<li>max</li>
+</ol>
+<p>This is used to calculate the range of that field for display purposes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">db</td>
+<td style="text-align:left">index db instance</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">table name to add the records too</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">field</td>
+<td style="text-align:left">field name to calculate the range on</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where to copy the result</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_range,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;</span><span style="color:#a6e22e">args</span><span style="color:#e6db74">&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">db</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">store</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">data</span><span style="color:#e6db74">&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">field</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">number</span><span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;</span><span style="color:#a6e22e">target</span><span style="color:#e6db74">&#34;: &#34;</span><span style="color:#a6e22e">$context</span>.<span style="color:#a6e22e">range</span><span style="color:#960050;background-color:#1e0010">&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">results</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;db&#34;</span>, <span style="color:#e6db74">&#34;get_page&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">db</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">instance</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">store</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;db&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">field</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;number&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#open">open</a></li>
+    <li><a href="#delete">delete</a></li>
+    <li><a href="#delete_old">delete_old</a></li>
+    <li><a href="#close">close</a></li>
+    <li><a href="#dump">dump</a></li>
+    <li><a href="#get_from_index">get_from_index</a></li>
+    <li><a href="#get_all">get_all</a></li>
+    <li><a href="#clear">clear</a></li>
+    <li><a href="#delete_record">delete_record</a></li>
+    <li><a href="#update_record">update_record</a></li>
+    <li><a href="#add_record">add_record</a></li>
+    <li><a href="#get_batch">get_batch</a></li>
+    <li><a href="#get_values">get_values</a></li>
+    <li><a href="#calculate_paging">calculate_paging</a></li>
+    <li><a href="#get_page">get_page</a></li>
+    <li><a href="#get_range">get_range</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

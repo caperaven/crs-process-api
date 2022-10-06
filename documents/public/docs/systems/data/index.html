@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Data#These functions perform data functions helping you build data perspectives.
+Not loaded by default
+This uses web assembly so it is not loaded by default. If you want this feature, all you need to do is import the data-actions.js file.
+This will auto register the intent as crs.intent.dataActions#filter_data sort group aggregate aggregate_group in_filter unique_values debug perspective iso8601_to_string iso8601_batch filter_data#Filter data based on filter expressions and return an array of indexes of records that match that filter.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Data#These functions perform data functions helping you build data perspectives.
+Not loaded by default
+This uses web assembly so it is not loaded by default. If you want this feature, all you need to do is import the data-actions.js file.
+This will auto register the intent as crs.intent.dataActions#filter_data sort group aggregate aggregate_group in_filter unique_values debug perspective iso8601_to_string iso8601_batch filter_data#Filter data based on filter expressions and return an array of indexes of records that match that filter." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/data/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Data | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.fe88c9a9e8e4f572bab4a6827f5041ea9a4ae55e2a2eed4e7c57808df9489c8c.js" integrity="sha256-/ojJqejk9XK6tKaCf1BB6ppK5V4qLu1OfFeAjflInIw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/"class=active>Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Data</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#filter_data">filter_data</a>
+      <ul>
+        <li><a href="#simple_filter_example">simple_filter_example</a></li>
+        <li><a href="#not_expression">not_expression</a></li>
+        <li><a href="#or_expression">or_expression</a></li>
+        <li><a href="#complex_nexted_statement">complex_nexted_statement</a></li>
+      </ul>
+    </li>
+    <li><a href="#sort">sort</a></li>
+    <li><a href="#group">group</a></li>
+    <li><a href="#aggregate">aggregate</a></li>
+    <li><a href="#aggregate_group">aggregate_group</a></li>
+    <li><a href="#in_filter">in_filter</a></li>
+    <li><a href="#unique_values">unique_values</a></li>
+    <li><a href="#debug">debug</a></li>
+    <li><a href="#perspective">perspective</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="data">
+  Data
+  <a class="anchor" href="#data">#</a>
+</h1>
+<p>These functions perform data functions helping you build data perspectives.</p>
+<blockquote class="book-hint danger">
+  <strong>Not loaded by default</strong><br>
+This uses web assembly so it is not loaded by default.
+If you want this feature, all you need to do is import the <code>data-actions.js</code> file.<br>
+This will auto register the intent as <code>crs.intent.data</code>
+</blockquote>
+
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#filter_data">filter_data</a></li>
+<li><a href="#sort">sort</a></li>
+<li><a href="#group">group</a></li>
+<li><a href="#aggregate">aggregate</a></li>
+<li><a href="#aggregate_group">aggregate_group</a></li>
+<li><a href="#in_filter">in_filter</a></li>
+<li><a href="#unique_values">unique_values</a></li>
+<li><a href="#debug">debug</a></li>
+<li><a href="#perspective">perspective</a></li>
+<li><a href="#iso8601_to_string">iso8601_to_string</a></li>
+<li><a href="#iso8601_batch">iso8601_batch</a></li>
+</ol>
+<h2 id="filter_data">
+  filter_data
+  <a class="anchor" href="#filter_data">#</a>
+</h2>
+<p>Filter data based on filter expressions and return an array of indexes of records that match that filter.</p>
+<p><strong>result example</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">20</span>]</span></span></code></pre></div></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array of records or a json string</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">filter</td>
+<td style="text-align:left">array of filter objects</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>filter object example</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{ <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> }</span></span></code></pre></div>
+<p><strong>list of supported operator values</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">operator</th>
+<th style="text-align:left">description</th>
+<th style="text-align:left">data types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&ldquo;&gt;&rdquo;, &ldquo;gt&rdquo;</td>
+<td style="text-align:left">greater than</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;&gt;=&rdquo;, &ldquo;ge&rdquo;</td>
+<td style="text-align:left">greater or equal too</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;&lt;&rdquo;, &ldquo;lt&rdquo;</td>
+<td style="text-align:left">less than</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;&lt;=&rdquo;, &ldquo;le&rdquo;</td>
+<td style="text-align:left">less or equal too</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;==&rdquo;, &ldquo;=&rdquo;, &ldquo;eq&rdquo;</td>
+<td style="text-align:left">equals</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;!=&rdquo;, &ldquo;&lt;&gt;&rdquo;, &ldquo;ne&rdquo;</td>
+<td style="text-align:left">not equal too</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;is_null&rdquo;</td>
+<td style="text-align:left">is null</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;not_null&rdquo;</td>
+<td style="text-align:left">not null</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;like&rdquo;</td>
+<td style="text-align:left">like</td>
+<td style="text-align:left">string</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;not_like&rdquo;</td>
+<td style="text-align:left">not like</td>
+<td style="text-align:left">string</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;in&rdquo;</td>
+<td style="text-align:left">one of / in collection</td>
+<td style="text-align:left">array of values</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;between&rdquo;</td>
+<td style="text-align:left">greater than value 1 and less than value 2</td>
+<td style="text-align:left">all</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;startswidth&rdquo;</td>
+<td style="text-align:left">string starts with substring</td>
+<td style="text-align:left">string</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;endswidth&rdquo;</td>
+<td style="text-align:left">string ends with substring</td>
+<td style="text-align:left">string</td>
+</tr>
+</tbody>
+</table>
+<p>Filter expressions also support &ldquo;or&rdquo;, &ldquo;and&rdquo; and &ldquo;not&rdquo;.<br>
+&ldquo;and&rdquo; is the default so if you don&rsquo;t define it, the expressions are chained by default using &ldquo;and&rdquo;.<br>
+That means that each expression must pass to return a &ldquo;true&rdquo; result.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">operator</th>
+<th style="text-align:left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&ldquo;and&rdquo;, &ldquo;&amp;&amp;&rdquo;</td>
+<td style="text-align:left">and</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;or&rdquo;,  &ldquo;||&rdquo;</td>
+<td style="text-align:left">or</td>
+</tr>
+<tr>
+<td style="text-align:left">&ldquo;not&rdquo;, &ldquo;!&rdquo;</td>
+<td style="text-align:left">invert of expression</td>
+</tr>
+</tbody>
+</table>
+<h3 id="simple_filter_example">
+  simple_filter_example
+  <a class="anchor" href="#simple_filter_example">#</a>
+</h3>
+<p>This example is true for one to N filter expressions using the &ldquo;and&rdquo; operator.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">filter</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> },
+</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;gt&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>}
+</span></span><span style="display:flex;"><span>]</span></span></code></pre></div>
+<h3 id="not_expression">
+  not_expression
+  <a class="anchor" href="#not_expression">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">filter</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;not&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;expressions&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;gt&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>}
+</span></span><span style="display:flex;"><span>    ]   
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>&ldquo;and&rdquo; the two expressions and return the inverse of that.</p>
+<h3 id="or_expression">
+  or_expression
+  <a class="anchor" href="#or_expression">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">filter</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;or&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;expressions&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;gt&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>}
+</span></span><span style="display:flex;"><span>    ]   
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Either one of the two expressions must be true for the expression to pass.</p>
+<h3 id="complex_nexted_statement">
+  complex_nexted_statement
+  <a class="anchor" href="#complex_nexted_statement">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">filter</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;not&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;expressions&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;and&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;expressions&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;or&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#e6db74">&#34;expressions&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>                        {<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;eq&#34;</span>, <span style="color:#ae81ff">1</span>},
+</span></span><span style="display:flex;"><span>                        {<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;eq&#34;</span>, <span style="color:#ae81ff">2</span>},
+</span></span><span style="display:flex;"><span>                    ]
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                {<span style="color:#e6db74">&#34;value2&#34;</span>, <span style="color:#e6db74">&#34;eq&#34;</span>, <span style="color:#ae81ff">3</span>},
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">the array of data to filter</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">filter</td>
+<td style="text-align:left">filter expressions as seen above</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">case_sensitive</td>
+<td style="text-align:left">the array of data to filter</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;filter&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;filter&#34;</span><span style="color:#f92672">:</span> [{ <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> }],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;case_sensitive&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;filter&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;filter&#34;</span><span style="color:#f92672">:</span> [{ <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> }],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;case_sensitive&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="sort">
+  sort
+  <a class="anchor" href="#sort">#</a>
+</h2>
+<p>Sort the data according to sort definition.<br>
+The result, same as the filter is an array of indexes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">the array of data to sort</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">sort</td>
+<td style="text-align:left">array of sort definition (see examples below)</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;sort&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;sort&#34;</span>  <span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>            { <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;direction&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dec&#34;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;direction&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;asc&#34;</span> },
+</span></span><span style="display:flex;"><span>        ]       
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;sort&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;sort&#34;</span>  <span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;direction&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dec&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;direction&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;asc&#34;</span> },
+</span></span><span style="display:flex;"><span>    ]       
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="group">
+  group
+  <a class="anchor" href="#group">#</a>
+</h2>
+<p>Create a group object that defines how data is grouped based on group definition.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">the array of data to group</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">fields</td>
+<td style="text-align:left">array of field names that define the grouping</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Group by first field, then the next field, and so on&hellip;</p>
+<p><strong>result structure</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;child_count&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;children&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Site 1&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;child_count&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>, 
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;row_count&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;rows&#34;</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            ...
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;row_count&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>A couple of notes:</p>
+<ol>
+<li>There will always be a root object.</li>
+<li>Each grouping has a <code>children</code> property.</li>
+<li>The root level item has a <code>rows</code> property, an array of indexes to the rows in the data.</li>
+<li>The child count indicates the number of children on the next level.</li>
+<li>The row count indicates how many records are represented on this branch.</li>
+</ol>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;group&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;fields&#34;</span>  <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span>]       
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fields&#34;</span>  <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span>]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="aggregate">
+  aggregate
+  <a class="anchor" href="#aggregate">#</a>
+</h2>
+<p>Calculate aggregate values from the data source.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">the array of data to sort</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">aggregate</td>
+<td style="text-align:left">object defining key value pairs for grouping</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The key in the aggregate definition is the aggregate function to use.<br>
+The value is the field name of the value to use in the calculation.</p>
+<p>Supported aggregate functions are:</p>
+<ol>
+<li>min</li>
+<li>max</li>
+<li>ave</li>
+<li>sum</li>
+<li>count</li>
+</ol>
+<p>You can aggregate using different fields in the same call.<br>
+The example below aggregates three different fields, &ldquo;value&rdquo;, &ldquo;value2&rdquo; and &ldquo;value3&rdquo; using different aggregate functions.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;aggregate&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;aggregate&#34;</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;min&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ave&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ave&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value2&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;ave&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value3&#34;</span>
+</span></span><span style="display:flex;"><span>        }     
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;aggregate&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;aggregate&#34;</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;min&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ave&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ave&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value2&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ave&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value3&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="aggregate_group">
+  aggregate_group
+  <a class="anchor" href="#aggregate_group">#</a>
+</h2>
+<p>If you have a grouping result object, you may want to calculate aggregates for records for a given group of sub-group.
+The call looks exactly like the above (aggregate rows)(#aggregate_rows) with two differences.</p>
+<ol>
+<li>the action to call is &ldquo;aggregate_group&rdquo;.</li>
+<li>in the args you need to pass on the group object you want to aggregate.</li>
+</ol>
+<p>So when we say, pass on the group, what are we talking about?<br>
+Consider the <a href="#group_data">group</a> result example above, you can get the group as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">group</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mygroup</span>[<span style="color:#e6db74">&#34;root&#34;</span>].<span style="color:#a6e22e">children</span>[<span style="color:#e6db74">&#34;Site 1&#34;</span>];</span></span></code></pre></div>
+<h2 id="in_filter">
+  in_filter
+  <a class="anchor" href="#in_filter">#</a>
+</h2>
+<p>This function checks if a defined source object fits in a filter expression.<br>
+This is often used when you have an existing filter but have incoming data.<br>
+Do you render the new record or leave it out?<br>
+This function helps you decide if the object is visible based on the filter definition.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">object to check</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">filter</td>
+<td style="text-align:left">filter definition, same as used in filter action</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">case_sensitive</td>
+<td style="text-align:left">is the filter case sensitive or not</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;in_filter&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.record&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;filter&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>            { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;gt&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>}
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;in_filter&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.record&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;filter&#34;</span> <span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;gt&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>}
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="unique_values">
+  unique_values
+  <a class="anchor" href="#unique_values">#</a>
+</h2>
+<p>For a given array of objects, get the unique values and count for given fields.<br>
+There are a number of use cases for this.<br>
+One would be to get an understanding of how the records are distributed between values.<br>
+It is also used as part of filters visualizations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array of objects to use</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">fields</td>
+<td style="text-align:left">field definition object</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p>The field definition object exists out of two properties.</p>
+<ol>
+<li>name</li>
+<li>type</li>
+</ol>
+<p>Supported types are:</p>
+<ol>
+<li>string</li>
+<li>duration</li>
+<li>long</li>
+<li>number</li>
+<li>boolean</li>
+</ol>
+<p>If none is defined it will default to string.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;unique_values&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.record&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;fields&#34;</span> <span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;isActive&#34;</span>, <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;boolean&#34;</span>},
+</span></span><span style="display:flex;"><span>            {<span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;external_code&#34;</span>}
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;unique_values&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.record&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fields&#34;</span> <span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        {<span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;isActive&#34;</span>, <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;boolean&#34;</span>},
+</span></span><span style="display:flex;"><span>        {<span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;external_code&#34;</span>}
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="debug">
+  debug
+  <a class="anchor" href="#debug">#</a>
+</h2>
+<p>This is used for debugging.<br>
+If something goes wrong with your web assembly call and, you want to get debug information back, use this function before making your problematic call.
+The error will now contain stack data.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;debug&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;debug&#34;</span>});</span></span></code></pre></div>
+<h2 id="perspective">
+  perspective
+  <a class="anchor" href="#perspective">#</a>
+</h2>
+<p>This function is a single call to build a perspective.<br>
+The result will change based on the parts of the perspective.<br>
+If you have aggregates defined, you will get an aggregate result.<br>
+If you define grouping, you will get a grouping result.<br>
+If you only define filter and or sort, you will get an array of index back.</p>
+<p>The properties of the perspective object will define what this will do.<br>
+If you add a filter property, a filter will ba applied, add a sort property to perform a sort and so forth.
+The example will show all of them, but know that you can have any subset.</p>
+<p><strong>perspective example</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;filter&#34;</span>     <span style="color:#f92672">:</span> [{ <span style="color:#e6db74">&#34;field&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site&#34;</span>, <span style="color:#e6db74">&#34;operator&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;==&#34;</span>, <span style="color:#e6db74">&#34;value&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;site 1&#34;</span> }],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;sort&#34;</span>       <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;field1&#34;</span>, <span style="color:#e6db74">&#34;field2&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;group&#34;</span>      <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;field1&#34;</span>, <span style="color:#e6db74">&#34;field2&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;aggregates&#34;</span> <span style="color:#f92672">:</span> {<span style="color:#e6db74">&#34;min&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;max&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>}
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">array of objects to use</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">perspective</td>
+<td style="text-align:left">perspective object as shown above</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;perspective&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.record&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;perspective&#34;</span> <span style="color:#f92672">:</span> { ... }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#e6db74">&#34;perspective&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.record&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;perspective&#34;</span> <span style="color:#f92672">:</span> { ... }
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#filter_data">filter_data</a>
+      <ul>
+        <li><a href="#simple_filter_example">simple_filter_example</a></li>
+        <li><a href="#not_expression">not_expression</a></li>
+        <li><a href="#or_expression">or_expression</a></li>
+        <li><a href="#complex_nexted_statement">complex_nexted_statement</a></li>
+      </ul>
+    </li>
+    <li><a href="#sort">sort</a></li>
+    <li><a href="#group">group</a></li>
+    <li><a href="#aggregate">aggregate</a></li>
+    <li><a href="#aggregate_group">aggregate_group</a></li>
+    <li><a href="#in_filter">in_filter</a></li>
+    <li><a href="#unique_values">unique_values</a></li>
+    <li><a href="#debug">debug</a></li>
+    <li><a href="#perspective">perspective</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

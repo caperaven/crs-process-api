@@ -186,6 +186,12 @@ crs.call("cssgrid", "add_columns", {
     width    : "2rem",
     position : 2
 });
+
+crs.call("cssgrid", "add_columns", {
+    element  : this.gridElement,
+    width    : ["10px", "11px", "12px"],
+    position : 'end'
+});
 {{< / highlight >}}
 
 ## remove_columns

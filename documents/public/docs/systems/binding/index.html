@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Binding#This allows you to work more directly with crs-binding features.
+We are not going to explain binding features here, you can read the binding documentation for more about that.
+Actions#create_context free_context get_property set_property get_data set_errors create_context#Binding contexts are used when you have UI in your process.
+If you don&rsquo;t have an existing context to lean on you can create one.
+This means that when you set a template, you can pass the context on.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Binding#This allows you to work more directly with crs-binding features.
+We are not going to explain binding features here, you can read the binding documentation for more about that.
+Actions#create_context free_context get_property set_property get_data set_errors create_context#Binding contexts are used when you have UI in your process.
+If you don&rsquo;t have an existing context to lean on you can create one.
+This means that when you set a template, you can pass the context on." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/binding/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Binding | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.fe88c9a9e8e4f572bab4a6827f5041ea9a4ae55e2a2eed4e7c57808df9489c8c.js" integrity="sha256-/ojJqejk9XK6tKaCf1BB6ppK5V4qLu1OfFeAjflInIw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/"class=active>Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Binding</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#create_context">create_context</a></li>
+    <li><a href="#free_context">free_context</a></li>
+    <li><a href="#get_property">get_property</a></li>
+    <li><a href="#set_property">set_property</a></li>
+    <li><a href="#get_data">get_data</a></li>
+    <li><a href="#set_errors">set_errors</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="binding">
+  Binding
+  <a class="anchor" href="#binding">#</a>
+</h1>
+<p>This allows you to work more directly with <a href="https://github.com/caperaven/crs-binding">crs-binding</a> features.<br>
+We are not going to explain binding features here, you can read the <a href="https://github.com/caperaven/crs-binding-documentation">binding documentation</a> for more about that.</p>
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#create_context">create_context</a></li>
+<li><a href="#free_context">free_context</a></li>
+<li><a href="#get_property">get_property</a></li>
+<li><a href="#set_property">set_property</a></li>
+<li><a href="#get_data">get_data</a></li>
+<li><a href="#set_errors">set_errors</a></li>
+</ol>
+<h2 id="create_context">
+  create_context
+  <a class="anchor" href="#create_context">#</a>
+</h2>
+<p>Binding contexts are used when you have UI in your process.<br>
+If you don&rsquo;t have an existing context to lean on you can create one.<br>
+This means that when you set a template, you can pass the context on.<br>
+This is generally referred to as the <code>bId</code> and, you can pass this to other processes using the process parameters.
+By using this function the resulting <code>bId</code> is automatically added to the <code>process.parameters.bId</code> property.
+From that point forward you can refer to that value using the <code>$bId</code> <a href="/docs/prefixes/">prefix</a>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">defaults too</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">context_id</td>
+<td style="text-align:left">name of the context to be used</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">process_context</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;binding&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;create_context&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">context_id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;my_context&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>javascript</strong><br>
+This is not really recommended.<br>
+If you really need to use this, call the binding engine directly.
+</blockquote>
+
+<h2 id="free_context">
+  free_context
+  <a class="anchor" href="#free_context">#</a>
+</h2>
+<p>This removes the binding context created using <a href="#create_context">create_context</a>.</p>
+<blockquote class="book-hint warning">
+  This function assumes that the process has a parameter called <code>bId</code>.
+</blockquote>
+
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;binding&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;free_context&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>javascript</strong><br>
+Use binding engine directly
+</blockquote>
+
+<h2 id="get_property">
+  get_property
+  <a class="anchor" href="#get_property">#</a>
+</h2>
+<p>Get the property value for a given property on the current process binding context.</p>
+<blockquote class="book-hint warning">
+  This function assumes that the process has a parameter called <code>bId</code>.
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">property</td>
+<td style="text-align:left">property name to get the value from</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;binding&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_property&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;property&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;code&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.code&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>javascript</strong><br>
+Use binding engine directly
+</blockquote>
+
+<h2 id="set_property">
+  set_property
+  <a class="anchor" href="#set_property">#</a>
+</h2>
+<p>Set the property value for a given property on the current process binding context.</p>
+<blockquote class="book-hint warning">
+  This function assumes that the process has a parameter called <code>bId</code>.
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">property</td>
+<td style="text-align:left">property name to set the value on</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">the value to set on the property</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;binding&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_property&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;property&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;code&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.code&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>javascript</strong><br>
+Use binding engine directly
+</blockquote>
+
+<h2 id="get_data">
+  get_data
+  <a class="anchor" href="#get_data">#</a>
+</h2>
+<p>Get the binding data object for the current process binding context.</p>
+<blockquote class="book-hint warning">
+  This function assumes that the process has a parameter called <code>bId</code>.
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">schema</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;binding&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_data&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>javascript</strong><br>
+Use binding engine directly
+</blockquote>
+
+<h2 id="set_errors">
+  set_errors
+  <a class="anchor" href="#set_errors">#</a>
+</h2>
+<p>Save a list of errors to the current binding context using either a defined store name or &ldquo;errors&rdquo;.<br>
+This is mostly used when you have UI that you want to bind errors too.</p>
+<blockquote class="book-hint warning">
+  This function assumes that the process has a parameter called <code>bId</code>.
+</blockquote>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">store</td>
+<td style="text-align:left">property name that will contain errors on the current binding context</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">&ldquo;errors&rdquo;</td>
+</tr>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">an array of error message strings</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;binding&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_errors&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.data&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>javascript</strong><br>
+Use binding engine directly
+</blockquote>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#create_context">create_context</a></li>
+    <li><a href="#free_context">free_context</a></li>
+    <li><a href="#get_property">get_property</a></li>
+    <li><a href="#set_property">set_property</a></li>
+    <li><a href="#get_data">get_data</a></li>
+    <li><a href="#set_errors">set_errors</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

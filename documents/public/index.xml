@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Introduction on Process API Features</title>
+    <link>http://example.org/</link>
+    <description>Recent content in Introduction on Process API Features</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://example.org/docs/create/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/create/</guid>
+      <description>Creating your own system#Basics#A system is a standard javascript class that contains static async functions.
+export class MyActions { // this is a required function with required parameters static async perform(step, context, process, item) { await this[step.action](step, context, process, item); } } The &amp;ldquo;perform&amp;rdquo; function is called by the process runner and is required to be there.
+Now that you have the class you need to add it to the intent.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/example/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/example/</guid>
+      <description>JSON schema processes example#{ &amp;#34;id&amp;#34;: &amp;#34;my_schema_id&amp;#34;, &amp;#34;process1&amp;#34;: { &amp;#34;parameters_def&amp;#34;: { &amp;#34;bId&amp;#34; : { type: &amp;#34;number&amp;#34;, required: true }, &amp;#34;taskId&amp;#34; : { type: &amp;#34;string&amp;#34;, required: true }, }, &amp;#34;data&amp;#34;: { &amp;#34;count&amp;#34;: 10 }, &amp;#34;steps&amp;#34;: { &amp;#34;start&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;math&amp;#34;, &amp;#34;action&amp;#34;: &amp;#34;add&amp;#34;, &amp;#34;args&amp;#34;: { &amp;#34;value1&amp;#34;: &amp;#34;$data.count&amp;#34;, &amp;#34;value2&amp;#34;: 20, &amp;#34;target&amp;#34;: &amp;#34;$data.count&amp;#34; }, &amp;#34;binding_before&amp;#34;: { &amp;#34;currentStep&amp;#34;: &amp;#34;adding values&amp;#34; }, &amp;#34;next_step&amp;#34;: &amp;#34;print&amp;#34; }, &amp;#34;print&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;console&amp;#34;, &amp;#34;action&amp;#34;: &amp;#34;log&amp;#34;, &amp;#34;args&amp;#34;: { &amp;#34;message&amp;#34;: &amp;#34;$data.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/prefixes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/prefixes/</guid>
+      <description>Prefixes#Prefixes are shortcuts helping with keeping pathing shorter.
+There are a number of default prefixes, but you can also add your own.
+Prefixes are on the process object. When you look at calling intent there are a number of standard parameters you need to pass in, though not all are required all the time. Process is one of those parameters if you call it form javascript.
+When executing processes using the JSON schema, the process running will pass on the process by default.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/actions/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/actions/</guid>
+      <description>Actions System#This allows you to execute functions on either the context, process or item.
+Most often it is used to execute a function on the context or a path based on the context. This is one of those example where it makes more sense from a schema perspective.
+property description required parameters array of values passed in as parameters false json
+&amp;#34;step&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;action&amp;#34;, &amp;#34;action&amp;#34;: &amp;#34;$context.log&amp;#34;, &amp;#34;args&amp;#34;: { parameters: [&amp;#34;hello world&amp;#34;] } } javascript</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/array/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/array/</guid>
+      <description>Array#Working with array features.
+For the most part performing array actions in javascript is simple enough and, you don&amp;rsquo;t need to use the process api for this. The documentation will show how you could use the api to do it but know that the main goal here was for the execution using json schema. The source or target properties that refers to arrays can be either a path or an array object.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/binding/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/binding/</guid>
+      <description>Binding#This allows you to work more directly with crs-binding features.
+We are not going to explain binding features here, you can read the binding documentation for more about that.
+Actions#create_context free_context get_property set_property get_data set_errors create_context#Binding contexts are used when you have UI in your process.
+If you don&amp;rsquo;t have an existing context to lean on you can create one.
+This means that when you set a template, you can pass the context on.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/condition/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/condition/</guid>
+      <description>Condition#This allows you to run if statements in the process.
+From a javascript perspective you should not be using this.
+Since this is meant for schema driven processes, all the examples will be json only.
+Conditions is one of those special cases again where it does not have functions.
+Expressions#The first thing you need to understand is that we try and follow a javascript syntax for expressions.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/console/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/console/</guid>
+      <description>Console#Console logging is a very useful way to debug processes.
+The main goal here to provide a debugging tool for schema processes.
+You should not have console actions as part of deployed code.
+Be it JavaScript or schema.Since this is intended for schemas we will not show a JavaScript equivalent.
+All the actions also have the same parameters.
+property description required message single string message to console false messages an array of messages to console false You must have either a message or messages property on args.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/css-grid/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/css-grid/</guid>
+      <description>CSS Grid#CSS grids is often used for dynamic layout of UI parts.
+This feature allows both schema and JavaScript execution of intent, affecting the CSS grid structure of an HTMLElement.
+Not loaded by default
+Managing css grid layout is a specialist job and not something commonly used everywhere.
+Because of that it is not loaded as part of the default stack.
+If you want this feature, all you need to do is import the css-grid-actions.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/data/</guid>
+      <description>Data#These functions perform data functions helping you build data perspectives.
+Not loaded by default
+This uses web assembly so it is not loaded by default. If you want this feature, all you need to do is import the data-actions.js file.
+This will auto register the intent as crs.intent.dataActions#filter_data sort group aggregate aggregate_group in_filter unique_values debug perspective iso8601_to_string iso8601_batch filter_data#Filter data based on filter expressions and return an array of indexes of records that match that filter.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/database/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/database/</guid>
+      <description>Database#Working with IndexDB. There are a number of components that render themselves from data. This data can be in memory, or it can be in indexDB. There is a particular way how the IndexDB works, and you should take note of it.
+The store has key and value fields. The key field is also the index of the row in the table. Most all render from store is done using the indexes, that is why the key is the record index.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/dom/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/dom/</guid>
+      <description>Dom#The dom feature allows common dom manipulation features.
+This can be called from both the schema and javascript.
+Actions#call_on_element get_property set_properties set_attribute get_attribute add_class remove_class set_style set_styles get_style set_text get_text create_element remove_element clear_element show_widget_dialog show_form_dialog set_widget clear_widget move_element move_element_down move_element_up filter_children open_tab clone_for_movement elements_from_template create_inflation_template get_element get_animation_layer clear_animation_layer remove_animation_layer highlight call_on_element#Call a function on an element.
+This is often used when you want to call a function on a custom component.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/files/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/files/</guid>
+      <description>Files#Loading and saving files
+Actions#load save save_canvas load#Launch the file selection dialog, select files and return file information including a bite array of content. The result is an array of objects with the following properties:
+name - file name ext - file extension type - the type of file value - array buffer (file content) properties
+property description required dialog set true of you want to launch the file select dialog false files list of file URL to fetch false json</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/fs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/fs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/loop/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/loop/</guid>
+      <description>Loop#Looping allows you to implement a for loop through an array.
+There are a number of exceptions to how the normal system works.
+The loop step is defined by setting the type to &amp;ldquo;loop&amp;rdquo; but does not have any action property.
+There are two required arguments for the loop action.
+source - the array to loop through steps - the steps to execute on each record basic loop structure { &amp;#34;type&amp;#34;: &amp;#34;loop&amp;#34;, &amp;#34;args&amp;#34;: { &amp;#34;source&amp;#34;: &amp;#34;$context.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/math/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/math/</guid>
+      <description>Math#This allows you to run math operations.
+There are a number of standard functions that process two values.
+add subtract multiply divide In javascript you should just the normal math functions.
+This module is aimed specifically to do math operations as part of a schema process.
+Each of the above operations has the following properties.
+property description required value1 number true value2 number true target where to copy the result true For example</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/object/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/object/</guid>
+      <description>Object#This will allow you to work with objects.
+Be it getting or setting values, making copies or cloning.
+Actions#set get delete copy_on_path create assign clone json_clone assert set#Set properties on objects from a base object be it the context, process or item.
+One of these must be provided.
+The properties object is a object literal where the property name is the path and the value, the value to set.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/process/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/process/</guid>
+      <description>Process#This allows you to call processes as a step within a different process.
+Sub processes are mainly a schema feature.
+The step has some basic requirements
+action name of the process to execute schema name that the process is in step: { type: &amp;#34;process&amp;#34;, action: &amp;#34;create_ui&amp;#34;, args: { schema: &amp;#34;dom-example&amp;#34;, parameters: { &amp;#34;key&amp;#34;: &amp;#34;value&amp;#34; } }, next_step: &amp;#34;set_attributes&amp;#34; } Processes can have input to those processes called parameters.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/random/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/random/</guid>
+      <description>Random#Create random numbers using either integer or float functions. Though you can call this from both schema and code, it is mostly used from code. Both functions you can provide a standard target path in the args so you can call it from schema if you need.
+json
+&amp;#34;step&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;random&amp;#34;, &amp;#34;action&amp;#34;: &amp;#34;integer&amp;#34;, &amp;#34;args&amp;#34;: { &amp;#34;target&amp;#34;: &amp;#34;$context.value&amp;#34; } } js const value = crs.call(&amp;#34;random&amp;#34;, &amp;#34;integer&amp;#34;);</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/session-storage/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/session-storage/</guid>
+      <description>Session Storage#</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/storage/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/storage/</guid>
+      <description>Storage#</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/string/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/string/</guid>
+      <description>String#Functions that help you interact with strings
+Actions#inflate to_array from_array replace inflate#Considering the following string examples, inflate the strings with values.
+templates example const str1 = &amp;#34;#input/${id}?type=&amp;#39;tasks&amp;#39;&amp;amp;typeId=&amp;#39;${typeId}&amp;#39;&amp;#34;; const str2 = &amp;#34;${firstName} ${lastName} = ${age} old&amp;#34;;
+properties
+property description required template string that contains the inflation markers true parameters object who&amp;rsquo;s properties will be used in the inflation true target where the inflated string must be copied too false json { &amp;#34;type&amp;#34;: &amp;#34;string&amp;#34;, &amp;#34;action&amp;#34;: &amp;#34;inflate&amp;#34;, &amp;#34;args&amp;#34;: { &amp;#34;template&amp;#34;: &amp;#34;#input/${id}?</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/system/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/system/</guid>
+      <description>System#This contains system or environmental functions.
+Actions#copy_to_clipboard sleep pause resume abort is_mobile is_portrait is_landscape copy_to_clipboard#Copy a given value to clipboard for system paste functions.
+properties
+property description required source value to add to the clipboard true json
+&amp;#34;step&amp;#34;: { &amp;#34;type&amp;#34;: &amp;#34;system&amp;#34;, &amp;#34;action&amp;#34;: &amp;#34;copy_to_clipboard&amp;#34;, &amp;#34;args&amp;#34;: { &amp;#34;source&amp;#34;: &amp;#34;$context.value&amp;#34;, } } javascript
+await crs.call(&amp;#34;array&amp;#34;, &amp;#34;copy_to_clipboard&amp;#34;, { source: &amp;#34;hello world&amp;#34; }); sleep#Set a delay before executing further.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://example.org/docs/systems/translation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/docs/systems/translation/</guid>
+      <description>Translation#Use the binding engine&amp;rsquo;s translation features as part of your process or code.
+Read the crsbinding translation documentation.
+Actions#add get delete translate_elements format add#Add translation values to the binding engine for use.
+properties
+property description required translations translations object to add true context context name to use for translation true The context is important if you want to delete translations when you are done with it.</description>
+    </item>
+    
+  </channel>
+</rss>
