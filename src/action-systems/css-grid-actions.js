@@ -45,6 +45,13 @@ export class CssGridActions {
                 "classes" : ["grid-cell"]
             })
 
+            // Attempt
+            await crs.call("dom", "set_css_variable", {
+                element : element,
+                "varRoot" : "--grid-cell",
+                "rootStyle" : "cell" + cell,
+            })
+
         }
     }
 

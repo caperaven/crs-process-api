@@ -293,20 +293,10 @@ export class DomActions {
 
     static async set_css_variable(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
-        // let varRoot = document.querySelector(':root');
-        // let rootStyle = getComputedStyle(varRoot);
-        // element.style.setProperty(rootStyle, value);
-        const varRoot = await crs.process.getValue(step.args.columns, context, process, item);
-        const rootStyle = await crs.process.getValue(step.args.rows, context, process, item);
+        const variable = await crs.process.getValue(step.args.variable, context, process, item);
+        const value = await crs.process.getValue(step.args.value, context, process, item);
 
-        // await crs.call("cssgrid", "auto_fill", {
-        //     element : element,
-        //     columns: "2fr 2fr 2fr",
-        //     rows: "1fr 1fr"
-        // })
-
-        element.getComputedStyle(document.querySelector(':root')).style.setProperty(varRoot, rootStyle);
-
+        element.style.setProperty(variable, value);
     }
 
     /**
@@ -319,11 +309,13 @@ export class DomActions {
 
     static async get_css_variable(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
-        const varName = await crs.process.getValue(step.args.rows, context, process, item);
+        const variable = await crs.process.getValue(step.args.variable, context, process, item);
+        const result = getComputedStyle(element).getPropertyValue(variable);
 
-        return element.getComputedStyle(document.querySelector(':root')).getPropertyValue(varName);
-
-        // return getComputedStyle(varRoot).getPropertyValue(name);
+        if(step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item)
+        }
+        return result;
     }
 
     /**
@@ -336,9 +328,10 @@ export class DomActions {
 
     static async set_css_variables(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
-        const varName = await crs.process.getValue(step.args.rows, context, process, item);
-        for (let variable of Object.keys(step.args.styles)) {
-            element.style[varName] = await crs.process.getValue(step.args.styles[variable], context, process, item);
+        const variables = await crs.process.getValue(step.args.variables, context, process, item);
+        for(let key of Object.keys(variables)) {
+            const value = variables[key];
+            element.style.setProperty(key, value);
         }
     }
 
@@ -352,6 +345,13 @@ export class DomActions {
 
     static async get_css_variables(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
+        const variables = await crs.process.getValue(step.args.variables, context, process, item);
+        const variableList = [];
+        for (let item = 0; item < variables.length; item++) {
+            const result = getComputedStyle(element).getPropertyValue(variables[item]);
+            variableList.push(result)
+        }
+        return variableList ;
     }
 }
 
