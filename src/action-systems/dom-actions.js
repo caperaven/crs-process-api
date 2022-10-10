@@ -282,6 +282,77 @@ export class DomActions {
             await move_element(element, target, "before");
         }
     }
+
+    /**
+     *Sets a single CSS variable to an element
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     */
+
+    static async set_css_variable(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element);
+        // let varRoot = document.querySelector(':root');
+        // let rootStyle = getComputedStyle(varRoot);
+        // element.style.setProperty(rootStyle, value);
+        const varRoot = await crs.process.getValue(step.args.columns, context, process, item);
+        const rootStyle = await crs.process.getValue(step.args.rows, context, process, item);
+
+        // await crs.call("cssgrid", "auto_fill", {
+        //     element : element,
+        //     columns: "2fr 2fr 2fr",
+        //     rows: "1fr 1fr"
+        // })
+
+        element.getComputedStyle(document.querySelector(':root')).style.setProperty(varRoot, rootStyle);
+
+    }
+
+    /**
+     *Returns a single CSS variable value of an element
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     */
+
+    static async get_css_variable(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element);
+        const varName = await crs.process.getValue(step.args.rows, context, process, item);
+
+        return element.getComputedStyle(document.querySelector(':root')).getPropertyValue(varName);
+
+        // return getComputedStyle(varRoot).getPropertyValue(name);
+    }
+
+    /**
+     *Sets a multiple CSS variables to an element
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     */
+
+    static async set_css_variables(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element);
+        const varName = await crs.process.getValue(step.args.rows, context, process, item);
+        for (let variable of Object.keys(step.args.styles)) {
+            element.style[varName] = await crs.process.getValue(step.args.styles[variable], context, process, item);
+        }
+    }
+
+    /**
+     *Returns an array of multiple CSS variable values of an element
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     */
+
+    static async get_css_variables(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element);
+    }
 }
 
 async function move_element(element, target, position) {

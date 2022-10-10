@@ -48,68 +48,6 @@ export class CssGridActions {
         }
     }
 
-    /**
-     *Sets a single CSS variable to an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
-     */
-
-    static async set_css_variable(step, context, process, item) {
-        const element = await crs.dom.get_element(step.args.element);
-        let varRoot = document.querySelector(':root');
-        let rootStyle = getComputedStyle(varRoot);
-        element.style.setProperty(rootStyle, value);
-
-        // const variable = await crs.process.getValue(step.args.variable, context, process, item);
-        // const varName = await crs.process.getValue(step.args.varName, context, process, item);
-    }
-
-    /**
-     *Returns a single CSS variable value of an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
-     */
-
-    static async get_css_variable(step, context, process, item) {
-        const element = await crs.dom.get_element(step.args.element);
-        let varRoot = document.querySelector(':root');
-        let varName = getComputedStyle(varRoot);
-        return element.getPropertyValue(varName).value;
-
-        // return getComputedStyle(varRoot).getPropertyValue(name);
-    }
-
-    /**
-     *Sets a multiple CSS variables to an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
-     */
-
-    static async set_css_variables(step, context, process, item) {
-        const element = await crs.dom.get_element(step.args.element);
-        for (let variable of Object.keys(step.args.styles)) {
-            element.style[variable] = await crs.process.getValue(step.args.styles[variable], context, process, item);
-        }
-    }
-
-    /**
-     *Returns an array of multiple CSS variable values of an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
-     */
-
-    static async get_css_variables(step, context, process, item) {
-        const element = await crs.dom.get_element(step.args.element);
-    }
-
 
     /**
      * Set the columns of a grid
