@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+	<meta name="generator" content="Hugo 0.104.2" />
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Files to CRS Process API documentation#Files to crs process feature documentation.
+The systems as documented provide json schema and javascript execute features.
+The purpose is for streamline execution of intent on extendable applications.
+API#Javascript vs JSON#There are two ways you can call the process api.
+Using a JSON schema the intent is to define an execution process.
+This allows non-technical people to define custom processes.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Introduction" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://example.org/" />
+
+<title>Introduction | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.31920005161dfa6419b76cf5c2e2cee2ae0a60d2f1736a188cf4ec4a71335b8c.js" integrity="sha256-MZIABRYd&#43;mQZt2z1wuLO4q4KYNLxc2oYjPTsSnEzW4w=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="http://example.org/index.xml" title="Process API Features" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/"class=active>Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Introduction</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#api">API</a>
+      <ul>
+        <li><a href="#javascript-vs-json">Javascript vs JSON</a></li>
+        <li><a href="#step">step</a></li>
+        <li><a href="#context">context</a></li>
+        <li><a href="#process">process</a></li>
+        <li><a href="#item">item</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="files-to-crs-process-api-documentation">
+  Files to CRS Process API documentation
+  <a class="anchor" href="#files-to-crs-process-api-documentation">#</a>
+</h1>
+<p>Files to crs process feature documentation.<br>
+The systems as documented provide json schema and javascript execute features.<br>
+The purpose is for streamline execution of intent on extendable applications.</p>
+<h2 id="api">
+  API
+  <a class="anchor" href="#api">#</a>
+</h2>
+<h3 id="javascript-vs-json">
+  Javascript vs JSON
+  <a class="anchor" href="#javascript-vs-json">#</a>
+</h3>
+<p>There are two ways you can call the process api.<br>
+Using a JSON schema the intent is to define an execution process.<br>
+This allows non-technical people to define custom processes.<br>
+These schemas can be saved on the server and executed on request.</p>
+<p>Processes are build up using process steps.<br>
+Steps represent intended action to take.<br>
+Since steps need to follow up on each other, you will need to define what the next step is.<br>
+This is done by setting the &ldquo;next_step&rdquo; property on the <a href="#step">step</a></p>
+<p>Calling functions from JavaScript.<br>
+We want the ability to call intent from javascript because it provides us with continuity.
+The code that gets executed during a schema process is the same as the developer will use to execute the same intent.</p>
+<p>The api objects are located on globalThis as crs.</p>
+<p>Each feature is defined as a system on the intent property.<br>
+It is called the intent as, &ldquo;this is what I intend to do&rdquo;.<br>
+The feature has a number of functions you can call as part of that feature.<br>
+The functions be relevant to the context of the system.</p>
+<p>crs-process-api is extendable by adding new functions to existing systems and, you can also <a href="/docs/create">create your own</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">intent</span>.<span style="color:#a6e22e">system</span>.<span style="color:#a6e22e">action</span>(<span style="color:#a6e22e">step</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>);</span></span></code></pre></div>
+<blockquote class="book-hint danger">
+  <strong>calling intent directly</strong><br>
+Though you can it is not recommended that you run the intent directly.
+Instead, use the <strong>crs.call</strong> function.
+</blockquote>
+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;system_name&#34;</span>, <span style="color:#e6db74">&#34;function_name&#34;</span>, <span style="color:#a6e22e">args</span>, <span style="color:#a6e22e">context</span>, <span style="color:#a6e22e">process</span>, <span style="color:#a6e22e">item</span>)</span></span></code></pre></div>
+<p>All functions on a system has four parameters.</p>
+<ol>
+<li>step</li>
+<li>context</li>
+<li>process</li>
+<li>item</li>
+</ol>
+<p>It is important to note that you only have to define the context, process and item if you are calling this from javascript.
+If you are executing your process from a json schema file, you will only define the step.</p>
+<h3 id="step">
+  step
+  <a class="anchor" href="#step">#</a>
+</h3>
+<p>The step is an object that defines what to do.<br>
+You can see the <a href="/docs/example/#step-parts">schema example</a> for more detail.</p>
+<h3 id="context">
+  context
+  <a class="anchor" href="#context">#</a>
+</h3>
+<p>The context is an object that defines the context object for the process. <br>
+This is referenced using the &ldquo;$context&rdquo; prefix.</p>
+<h3 id="process">
+  process
+  <a class="anchor" href="#process">#</a>
+</h3>
+<p>The process is the master object that defines the process to execute. <br>
+This is referenced using the &ldquo;$process&rdquo; prefix.</p>
+<h3 id="item">
+  item
+  <a class="anchor" href="#item">#</a>
+</h3>
+<p>When you are using a loop, item is the current reference object in the loop.<br>
+This is referenced using the &ldquo;$item&rdquo; prefix.</p>
+<p>Enjoy process api</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#api">API</a>
+      <ul>
+        <li><a href="#javascript-vs-json">Javascript vs JSON</a></li>
+        <li><a href="#step">step</a></li>
+        <li><a href="#context">context</a></li>
+        <li><a href="#process">process</a></li>
+        <li><a href="#item">item</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

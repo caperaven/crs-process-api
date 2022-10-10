@@ -12,6 +12,43 @@ export class CssGridActions {
     }
 
     /**
+     * a function that will automatically fill/create a grid according to the number of columns and rows.
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     * @returns {Promise<void>}
+     */
+    static async auto_fill(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element);
+        const columns = await crs.process.getValue(step.args.columns, context, process, item);
+        const rows = await crs.process.getValue(step.args.rows, context, process, item);
+
+        await this.init(step, context, process, item);
+        await this.set_columns(step, context, process, item);
+        await this.set_rows(step, context, process, item);
+
+        const columnCount = columns.split(" ").length;
+        const rowCount = rows.split(" ").length;
+        const cellCount = rowCount * columnCount;
+
+        for(let cell = 0; cell < cellCount; cell ++){
+            await crs.call("dom", "create_element",{
+                "parent" : element,
+                "tag_name" : "div",
+                "dataset" : {
+                    "id" : cell
+                },
+                "styles" : {
+                    "border" : "1px solid silver",
+                },
+                "classes" : ["grid-cell"]
+            })
+
+        }
+    }
+
+    /**
      * Set the columns of a grid
      */
     static async set_columns(step, context, process, item) {

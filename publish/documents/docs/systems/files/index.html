@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Files#Loading and saving files
+Actions#load save save_canvas load#Launch the file selection dialog, select files and return file information including a bite array of content. The result is an array of objects with the following properties:
+name - file name ext - file extension type - the type of file value - array buffer (file content) properties
+property description required dialog set true of you want to launch the file select dialog false files list of file URL to fetch false json">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Files#Loading and saving files
+Actions#load save save_canvas load#Launch the file selection dialog, select files and return file information including a bite array of content. The result is an array of objects with the following properties:
+name - file name ext - file extension type - the type of file value - array buffer (file content) properties
+property description required dialog set true of you want to launch the file select dialog false files list of file URL to fetch false json" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/files/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Files | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.31920005161dfa6419b76cf5c2e2cee2ae0a60d2f1736a188cf4ec4a71335b8c.js" integrity="sha256-MZIABRYd&#43;mQZt2z1wuLO4q4KYNLxc2oYjPTsSnEzW4w=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/"class=active>Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Files</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#load">load</a></li>
+    <li><a href="#save">save</a></li>
+    <li><a href="#save_canvas">save_canvas</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="files">
+  Files
+  <a class="anchor" href="#files">#</a>
+</h1>
+<p>Loading and saving files</p>
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#load">load</a></li>
+<li><a href="#save">save</a></li>
+<li><a href="#save_canvas">save_canvas</a></li>
+</ol>
+<h2 id="load">
+  load
+  <a class="anchor" href="#load">#</a>
+</h2>
+<p>Launch the file selection dialog, select files and return file information including a bite array of content.
+The result is an array of objects with the following properties:</p>
+<ol>
+<li>name - file name</li>
+<li>ext - file extension</li>
+<li>type - the type of file</li>
+<li>value - array buffer (file content)</li>
+</ol>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">dialog</td>
+<td style="text-align:left">set true of you want to launch the file select dialog</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">files</td>
+<td style="text-align:left">list of file URL to fetch</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;files&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;load&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;dialog&#34;</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;files&#34;</span>, <span style="color:#e6db74">&#34;load&#34;</span>, { <span style="color:#a6e22e">dialog</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span> })</span></span></code></pre></div>
+<h2 id="save">
+  save
+  <a class="anchor" href="#save">#</a>
+</h2>
+<p>Save file content by downloading it in the browser.</p>
+<p>This has only one property called &ldquo;details&rdquo;.
+This must be the same structure as you would have gotten from the load function.
+See load for more details.</p>
+<p>This action will cause a download of the file allowing you to save it to the current machine.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;files&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;save&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;details&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.details&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;files&#34;</span>, <span style="color:#e6db74">&#34;save&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">details</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">data</span>
+</span></span><span style="display:flex;"><span>})</span></span></code></pre></div>
+<h2 id="save_canvas">
+  save_canvas
+  <a class="anchor" href="#save_canvas">#</a>
+</h2>
+<p>Save a canvas element&rsquo;s drawing as a image to your local system using the browsers download feature.</p>
+<p><strong>properties</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">canvas element</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">name</td>
+<td style="text-align:left">name to use on download file</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">&ldquo;image&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;files&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;save_canvas&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.canvasElement&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;my_image&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;files&#34;</span>, <span style="color:#e6db74">&#34;save_canvas&#34;</span>, {<span style="color:#e6db74">&#34;source&#34;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">canvasElement</span>});</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#load">load</a></li>
+    <li><a href="#save">save</a></li>
+    <li><a href="#save_canvas">save_canvas</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

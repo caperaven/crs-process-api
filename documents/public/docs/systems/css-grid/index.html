@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CSS Grid#CSS grids is often used for dynamic layout of UI parts.
+This feature allows both schema and JavaScript execution of intent, affecting the CSS grid structure of an HTMLElement.
+Not loaded by default
+Managing css grid layout is a specialist job and not something commonly used everywhere.
+Because of that it is not loaded as part of the default stack.
+If you want this feature, all you need to do is import the css-grid-actions.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="CSS Grid#CSS grids is often used for dynamic layout of UI parts.
+This feature allows both schema and JavaScript execution of intent, affecting the CSS grid structure of an HTMLElement.
+Not loaded by default
+Managing css grid layout is a specialist job and not something commonly used everywhere.
+Because of that it is not loaded as part of the default stack.
+If you want this feature, all you need to do is import the css-grid-actions." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/css-grid/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Css Grid | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.fe88c9a9e8e4f572bab4a6827f5041ea9a4ae55e2a2eed4e7c57808df9489c8c.js" integrity="sha256-/ojJqejk9XK6tKaCf1BB6ppK5V4qLu1OfFeAjflInIw=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/"class=active>CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/">Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Css Grid</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#init">init</a></li>
+    <li><a href="#set_columns">set_columns</a></li>
+    <li><a href="#set_rows">set_rows</a></li>
+    <li><a href="#add_columns">add_columns</a></li>
+    <li><a href="#remove_columns">remove_columns</a></li>
+    <li><a href="#set_column_width">set_column_width</a></li>
+    <li><a href="#add_rows">add_rows</a></li>
+    <li><a href="#remove_rows">remove_rows</a></li>
+    <li><a href="#set_row_height">set_row_height</a></li>
+    <li><a href="#set_regions">set_regions</a></li>
+    <li><a href="#clear_region">clear_region</a></li>
+    <li><a href="#column_count">column_count</a></li>
+    <li><a href="#row_count">row_count</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="css-grid">
+  CSS Grid
+  <a class="anchor" href="#css-grid">#</a>
+</h1>
+<p>CSS grids is often used for dynamic layout of UI parts.<br>
+This feature allows both schema and JavaScript execution of intent, affecting the CSS grid structure of an HTMLElement.</p>
+<blockquote class="book-hint danger">
+  <strong>Not loaded by default</strong><br>
+Managing css grid layout is a specialist job and not something commonly used everywhere.<br>
+Because of that it is not loaded as part of the default stack.<br>
+If you want this feature, all you need to do is import the <code>css-grid-actions.js</code> file.<br>
+This will auto register the intent as <code>crs.intent.cssgrid</code>
+</blockquote>
+
+<blockquote class="book-hint warning">
+  <strong>Display</strong><br>
+The element must have a display of &ldquo;grid&rdquo;.<br>
+If you are creating the element dynamically or just want to ensure it is a css grid, use the init function at the start of your process.
+</blockquote>
+
+<blockquote class="book-hint info">
+  <p>Before we continue please <strong>note</strong>:<br>
+The element property for these calls can either refer to:</p>
+<ol>
+<li>The actual HTMLElement from the dom</li>
+<li>The query string used by <code>document.querySelector</code> to get that element.</li>
+</ol>
+<p>From the javascript side you could pass on either.<br>
+From the schema side it is most likely the query string.</p>
+
+</blockquote>
+
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#init">init</a></li>
+<li><a href="#set_columns">set_columns</a></li>
+<li><a href="#set_rows">set_rows</a></li>
+<li><a href="#add_columns">add_columns</a></li>
+<li><a href="#remove_columns">remove_columns</a></li>
+<li><a href="#set_column_width">set_column_width</a></li>
+<li><a href="#add_rows">add_rows</a></li>
+<li><a href="#remove_rows">remove_rows</a></li>
+<li><a href="#set_row_height">set_row_height</a></li>
+<li><a href="#set_regions">set_regions</a></li>
+<li><a href="#clear_region">clear_region</a></li>
+<li><a href="#column_count">column_count</a></li>
+<li><a href="#row_count">row_count</a></li>
+</ol>
+<h2 id="init">
+  init
+  <a class="anchor" href="#init">#</a>
+</h2>
+<p>Ensure that the given element has the css display of &ldquo;grid&rdquo;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;init&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;init&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">element</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">gridElement</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_columns">
+  set_columns
+  <a class="anchor" href="#set_columns">#</a>
+</h2>
+<p>This sets the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns">grid-template-columns</a> css property.<br>
+If you had existing values on that property it will be overwritten.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">columns</td>
+<td style="text-align:left">string value used to set the css columns</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>columns example</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;1fr 1fr 3rem&#34;</span></span></span></code></pre></div></p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_columns&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;columns&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1fr 1fr 1fr&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;set_columns&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">element</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">gridElement</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">columns</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1fr 1fr 1fr&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_rows">
+  set_rows
+  <a class="anchor" href="#set_rows">#</a>
+</h2>
+<p>This sets the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows">grid-template-rows</a> css property.<br>
+If you had existing values on that property it will be overwritten.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">rows</td>
+<td style="text-align:left">string value used to set the css rows</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>rows example</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;1fr 1fr 3rem&#34;</span></span></span></code></pre></div></p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_rows&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;rows&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1fr 1fr 1fr&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;set_rows&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">element</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">gridElement</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rows</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;repeat(4, max-content)&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="add_columns">
+  add_columns
+  <a class="anchor" href="#add_columns">#</a>
+</h2>
+<p>This function adds columns to existing columns.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">width</td>
+<td style="text-align:left">single width value or array of values</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">position</td>
+<td style="text-align:left">&ldquo;front&rdquo; or &ldquo;end&rdquo; or index value</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">&ldquo;end&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<p>If width is an array, a column will be added for each width in the array.<br>
+The width values must be css width values.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;add_columns&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;width&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;20px&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;position&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;front&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Other width examples</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;width&#34;</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;20px&#34;</span>, <span style="color:#e6db74">&#34;5rem&#34;</span>, <span style="color:#e6db74">&#34;3%&#34;</span>, <span style="color:#e6db74">&#34;1fr&#34;</span>]</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;add_columns&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">element</span>  <span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">gridElement</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">width</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2rem&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">position</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="remove_columns">
+  remove_columns
+  <a class="anchor" href="#remove_columns">#</a>
+</h2>
+<p>Remove a number of columns based on the position defined and the number of columns to remove.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:center">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">position</td>
+<td style="text-align:left">&ldquo;front&rdquo; or &ldquo;end&rdquo; or index value</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">&ldquo;end&rdquo;</td>
+</tr>
+<tr>
+<td style="text-align:left">count</td>
+<td style="text-align:left">the number of columns to remove</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;remove_columns&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;position&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;end&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;count&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;remove_columns&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">element</span>  <span style="color:#f92672">:</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">gridElement</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">position</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">count</span>    <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_column_width">
+  set_column_width
+  <a class="anchor" href="#set_column_width">#</a>
+</h2>
+<p>Set a column&rsquo;s width.<br>
+For this feature you need to provide the index of the column to resizes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">position</td>
+<td style="text-align:left">index value</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">width</td>
+<td style="text-align:left">the width to set the column too</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_column_width&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;width&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2rem&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;position&#34;</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;set_column_width&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;width&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2rem&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;position&#34;</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="add_rows">
+  add_rows
+  <a class="anchor" href="#add_rows">#</a>
+</h2>
+<p>Add rows works exactly the same as <a href="#add_columns">add_columns</a>.<br>
+The only difference is that instead of using <code>width</code> you now set the <code>height</code>.
+The step action to use is &ldquo;add_rows&rdquo;.</p>
+<h2 id="remove_rows">
+  remove_rows
+  <a class="anchor" href="#remove_rows">#</a>
+</h2>
+<p>This works the same as <a href="#remove_columns">remove_columns</a>.</p>
+<h2 id="set_row_height">
+  set_row_height
+  <a class="anchor" href="#set_row_height">#</a>
+</h2>
+<p>This works the same as <a href="#set_column_width">set_column_width</a>.<br>
+Replace with <code>width</code> property with <code>height</code></p>
+<h2 id="set_regions">
+  set_regions
+  <a class="anchor" href="#set_regions">#</a>
+</h2>
+<p>On a css grid element set the <a href="https://www.w3schools.com/cssref/pr_grid-area.asp">areas</a> for the grid.<br>
+Areas are marked using the following object structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>},
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">end</span>  <span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>},
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">name</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area_name&#34;</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">defaults</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">areas</td>
+<td style="text-align:left">array of area objects</td>
+<td style="text-align:center">true</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">auto_fill</td>
+<td style="text-align:left">create and add divs to each reagion</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left">tag_name</td>
+<td style="text-align:left">element tag name to use to auto fill with</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">&ldquo;div&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_regions&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;areas&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>            { <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>}, <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>}, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area1&#34;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>}, <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>}, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area2&#34;</span> },
+</span></span><span style="display:flex;"><span>            { <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>}, <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>}, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area3&#34;</span> }
+</span></span><span style="display:flex;"><span>        ]       
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;set_regions&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;areas&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>        { <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>}, <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>}, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area1&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>}, <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>}, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area2&#34;</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>}, <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">col</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>, <span style="color:#a6e22e">row</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>}, <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area3&#34;</span> }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="clear_region">
+  clear_region
+  <a class="anchor" href="#clear_region">#</a>
+</h2>
+<p>For a given area remove elements in that region based on the <code>data-area</code> attribute.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">area</td>
+<td style="text-align:left">area name</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;clear_region&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;area&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area1&#34;</span> 
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;clear_region&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;area1&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;area1&#34;</span> 
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="column_count">
+  column_count
+  <a class="anchor" href="#column_count">#</a>
+</h2>
+<p>For the given element, return how many columns it has.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;column_count&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;column_count&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="row_count">
+  row_count
+  <a class="anchor" href="#row_count">#</a>
+</h2>
+<p>For the given element, return how many rows it has.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">target element</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;cssgrid&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;row_count&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;cssgrid&#34;</span>, <span style="color:#e6db74">&#34;row_count&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#grid&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#init">init</a></li>
+    <li><a href="#set_columns">set_columns</a></li>
+    <li><a href="#set_rows">set_rows</a></li>
+    <li><a href="#add_columns">add_columns</a></li>
+    <li><a href="#remove_columns">remove_columns</a></li>
+    <li><a href="#set_column_width">set_column_width</a></li>
+    <li><a href="#add_rows">add_rows</a></li>
+    <li><a href="#remove_rows">remove_rows</a></li>
+    <li><a href="#set_row_height">set_row_height</a></li>
+    <li><a href="#set_regions">set_regions</a></li>
+    <li><a href="#clear_region">clear_region</a></li>
+    <li><a href="#column_count">column_count</a></li>
+    <li><a href="#row_count">row_count</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

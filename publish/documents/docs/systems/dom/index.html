@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Dom#The dom feature allows common dom manipulation features.
+This can be called from both the schema and javascript.
+Actions#call_on_element get_property set_properties set_attribute get_attribute add_class remove_class set_style set_styles get_style set_text get_text create_element remove_element clear_element show_widget_dialog show_form_dialog set_widget clear_widget move_element move_element_down move_element_up filter_children open_tab clone_for_movement elements_from_template create_inflation_template get_element get_animation_layer clear_animation_layer remove_animation_layer highlight call_on_element#Call a function on an element.
+This is often used when you want to call a function on a custom component.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="" />
+<meta property="og:description" content="Dom#The dom feature allows common dom manipulation features.
+This can be called from both the schema and javascript.
+Actions#call_on_element get_property set_properties set_attribute get_attribute add_class remove_class set_style set_styles get_style set_text get_text create_element remove_element clear_element show_widget_dialog show_form_dialog set_widget clear_widget move_element move_element_down move_element_up filter_children open_tab clone_for_movement elements_from_template create_inflation_template get_element get_animation_layer clear_animation_layer remove_animation_layer highlight call_on_element#Call a function on an element.
+This is often used when you want to call a function on a custom component." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/docs/systems/dom/" /><meta property="article:section" content="docs" />
+
+
+
+<title>Dom | Process API Features</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css" integrity="sha256-gsXb0jRHzuC0wqo&#43;0Izglh&#43;qQOH6Nw7uT4yfAuDUa18=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.31920005161dfa6419b76cf5c2e2cee2ae0a60d2f1736a188cf4ec4a71335b8c.js" integrity="sha256-MZIABRYd&#43;mQZt2z1wuLO4q4KYNLxc2oYjPTsSnEzW4w=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Process API Features</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li><a href="/">Getting Started</a>
+<ul>
+<li><a href="/docs/example/">Schema Example</a></li>
+<li><a href="/docs/prefixes/">Prefixes</a></li>
+<li><a href="/docs/create/">Create your own system</a></li>
+</ul>
+</li>
+<li><a href="">Systems</a>
+<ul>
+<li><a href="/docs/systems/actions/">Actions</a></li>
+<li><a href="/docs/systems/array/">Array</a></li>
+<li><a href="/docs/systems/binding/">Binding</a></li>
+<li><a href="/docs/systems/condition/">Condition</a></li>
+<li><a href="/docs/systems/console/">Console</a></li>
+<li><a href="/docs/systems/css-grid/">CSS Grid</a></li>
+<li><a href="/docs/systems/data/">Data</a></li>
+<li><a href="/docs/systems/database/">Database</a></li>
+<li><a href="/docs/systems/dom/"class=active>Dom</a></li>
+<li><a href="/docs/systems/files/">Files</a></li>
+<li><a href="/docs/systems/fs/">File System</a></li>
+<li><a href="/docs/systems/loop/">Loop</a></li>
+<li><a href="/docs/systems/math/">Math</a></li>
+<li><a href="/docs/systems/object/">Object</a></li>
+<li><a href="/docs/systems/process/">Process</a></li>
+<li><a href="/docs/systems/random/">Random</a></li>
+<li><a href="/docs/systems/session-storage/">Session Storage</a></li>
+<li><a href="/docs/systems/storage/">Storage</a></li>
+<li><a href="/docs/systems/string/">String</a></li>
+<li><a href="/docs/systems/system/">System</a></li>
+<li><a href="/docs/systems/translation/">Translation</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Dom</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#call_on_element">call_on_element</a></li>
+    <li><a href="#get_property">get_property</a></li>
+    <li><a href="#set_properties">set_properties</a></li>
+    <li><a href="#set_attribute">set_attribute</a></li>
+    <li><a href="#get_attribute">get_attribute</a></li>
+    <li><a href="#add_class">add_class</a></li>
+    <li><a href="#remove_class">remove_class</a></li>
+    <li><a href="#set_style">set_style</a></li>
+    <li><a href="#set_styles">set_styles</a></li>
+    <li><a href="#get_style">get_style</a></li>
+    <li><a href="#set_text">set_text</a></li>
+    <li><a href="#get_text">get_text</a></li>
+    <li><a href="#create_element">create_element</a></li>
+    <li><a href="#remove_element">remove_element</a></li>
+    <li><a href="#clear_element">clear_element</a></li>
+    <li><a href="#show_widget_dialog">show_widget_dialog</a></li>
+    <li><a href="#show_form_dialog">show_form_dialog</a></li>
+    <li><a href="#set_widget">set_widget</a></li>
+    <li><a href="#clear_widget">clear_widget</a></li>
+    <li><a href="#move_element">move_element</a></li>
+    <li><a href="#move_element_down">move_element_down</a></li>
+    <li><a href="#move_element_up">move_element_up</a></li>
+    <li><a href="#filter_children">filter_children</a></li>
+    <li><a href="#open_tab">open_tab</a></li>
+    <li><a href="#clone_for_movement">clone_for_movement</a></li>
+    <li><a href="#elements_from_template">elements_from_template</a></li>
+    <li><a href="#create_inflation_template">create_inflation_template</a></li>
+    <li><a href="#get_element">get_element</a></li>
+    <li><a href="#get_animation_layer">get_animation_layer</a></li>
+    <li><a href="#clear_animation_layer">clear_animation_layer</a></li>
+    <li><a href="#remove_animation_layer">remove_animation_layer</a></li>
+    <li><a href="#highlight">highlight</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="dom">
+  Dom
+  <a class="anchor" href="#dom">#</a>
+</h1>
+<p>The dom feature allows common dom manipulation features.<br>
+This can be called from both the schema and javascript.</p>
+<h2 id="actions">
+  Actions
+  <a class="anchor" href="#actions">#</a>
+</h2>
+<ol>
+<li><a href="#call_on_element">call_on_element</a></li>
+<li><a href="#get_property">get_property</a></li>
+<li><a href="#set_properties">set_properties</a></li>
+<li><a href="#set_attribute">set_attribute</a></li>
+<li><a href="#get_attribute">get_attribute</a></li>
+<li><a href="#add_class">add_class</a></li>
+<li><a href="#remove_class">remove_class</a></li>
+<li><a href="#set_style">set_style</a></li>
+<li><a href="#set_styles">set_styles</a></li>
+<li><a href="#get_style">get_style</a></li>
+<li><a href="#set_text">set_text</a></li>
+<li><a href="#get_text">get_text</a></li>
+<li><a href="#create_element">create_element</a></li>
+<li><a href="#remove_element">remove_element</a></li>
+<li><a href="#clear_element">clear_element</a></li>
+<li><a href="#show_widget_dialog">show_widget_dialog</a></li>
+<li><a href="#show_form_dialog">show_form_dialog</a></li>
+<li><a href="#set_widget">set_widget</a></li>
+<li><a href="#clear_widget">clear_widget</a></li>
+<li><a href="#move_element">move_element</a></li>
+<li><a href="#move_element_down">move_element_down</a></li>
+<li><a href="#move_element_up">move_element_up</a></li>
+<li><a href="#filter_children">filter_children</a></li>
+<li><a href="#open_tab">open_tab</a></li>
+<li><a href="#clone_for_movement">clone_for_movement</a></li>
+<li><a href="#elements_from_template">elements_from_template</a></li>
+<li><a href="#create_inflation_template">create_inflation_template</a></li>
+<li><a href="#get_element">get_element</a></li>
+<li><a href="get_animation_layer">get_animation_layer</a></li>
+<li><a href="clear_animation_layer">clear_animation_layer</a></li>
+<li><a href="remove_animation_layer">remove_animation_layer</a></li>
+<li><a href="highlight">highlight</a></li>
+</ol>
+<h2 id="call_on_element">
+  call_on_element
+  <a class="anchor" href="#call_on_element">#</a>
+</h2>
+<p>Call a function on an element.<br>
+This is often used when you want to call a function on a custom component.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">action</td>
+<td style="text-align:left">the function to call</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">parameters</td>
+<td style="text-align:left">array of values to pass in as parameters to the function</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;call_on_element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;action&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;doSomething&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parameters&#34;</span> <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;hello world&#34;</span>]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;call_on_element&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;doSomething&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;parameters&#34;</span> <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;hello world&#34;</span>]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_property">
+  get_property
+  <a class="anchor" href="#get_property">#</a>
+</h2>
+<p>Get a property value for a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">property</td>
+<td style="text-align:left">property name to get the value from</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_property&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;property&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;get_property&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_properties">
+  set_properties
+  <a class="anchor" href="#set_properties">#</a>
+</h2>
+<p>Set one or more properties on a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">properties</td>
+<td style="text-align:left">object that defines property value pairs</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_properties&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;properties&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;property1&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value1&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;property2&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value2&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;set_properties&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;properties&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;property1&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value1&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;property2&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value2&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_attribute">
+  set_attribute
+  <a class="anchor" href="#set_attribute">#</a>
+</h2>
+<p>Set a attribute value on a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">attr</td>
+<td style="text-align:left">the attribute name</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">value to set</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_attribute&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;attr&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;aria-role&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;menu&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;set_attribute&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;attr&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;aria-role&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;menu&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_attribute">
+  get_attribute
+  <a class="anchor" href="#get_attribute">#</a>
+</h2>
+<p>Get a attribute value from a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">attr</td>
+<td style="text-align:left">the attribute name</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_attribute&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;attr&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;aria-role&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;get_attribute&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;attr&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;aria-role&#34;</span>,
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="add_class">
+  add_class
+  <a class="anchor" href="#add_class">#</a>
+</h2>
+<p>Add a css class to a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">array of class names or a single class name (string)</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;add_class&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;class1&#34;</span> 
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;add_class&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;class1&#34;</span>, <span style="color:#e6db74">&#34;class2&#34;</span>]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="remove_class">
+  remove_class
+  <a class="anchor" href="#remove_class">#</a>
+</h2>
+<p>Remove a css class from a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">array of class names or a single class name (string)</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;remove_class&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;class1&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;remove_class&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;class1&#34;</span>, <span style="color:#e6db74">&#34;class2&#34;</span>]
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_style">
+  set_style
+  <a class="anchor" href="#set_style">#</a>
+</h2>
+<p>Set a style value on a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">style</td>
+<td style="text-align:left">js style name on styles object</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">value to set on style</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_style&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;style&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;background&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#ff0090&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;set_style&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;style&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;background&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#ff0090&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_styles">
+  set_styles
+  <a class="anchor" href="#set_styles">#</a>
+</h2>
+<p>Set a number of style values on a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">styles</td>
+<td style="text-align:left">object with key value pairs of styles to set</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_styles&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;styles&#34;</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;background&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#ff0090&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;color&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;white&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;set_styles&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;styles&#34;</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;background&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#ff0090&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;color&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;white&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_style">
+  get_style
+  <a class="anchor" href="#get_style">#</a>
+</h2>
+<p>Get a value from a style on a element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">style</td>
+<td style="text-align:left">style property name go get value of</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_style&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;style&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;background&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;get_style&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;style&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;background&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_text">
+  set_text
+  <a class="anchor" href="#set_text">#</a>
+</h2>
+<p>Set the textContent value of a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">value</td>
+<td style="text-align:left">the text to set as the content</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_text&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Hello World&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;set_text&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;value&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Hello World&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_text">
+  get_text
+  <a class="anchor" href="#get_text">#</a>
+</h2>
+<p>Get a textContent value for a given element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_text&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;get_text&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="create_element">
+  create_element
+  <a class="anchor" href="#create_element">#</a>
+</h2>
+<p>Create an element for a given tag and set other values on the element such as:</p>
+<ol>
+<li>attributes</li>
+<li>styles</li>
+<li>classes</li>
+<li>dataset attributes</li>
+<li>text content</li>
+<li>id</li>
+<li>children</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">parent</td>
+<td style="text-align:left">element or query selector of where to add the element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">tag_name</td>
+<td style="text-align:left">tag name of element to create</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">id of the new element</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">attributes</td>
+<td style="text-align:left">attributes key value pairs</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">styles</td>
+<td style="text-align:left">styles key value pairs</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">classes</td>
+<td style="text-align:left">array of class names</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">dataset</td>
+<td style="text-align:left">data-attributes key value pairs</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">text_content</td>
+<td style="text-align:left">value to set on element&rsquo;s textContent property</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">children</td>
+<td style="text-align:left">array of objects that will also use create_element so shares these properties</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;create_element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parent&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#parent&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;tag_name&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;my-component&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;id&#34;</span>        <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;component1&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;attributes&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#that&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;styles&#34;</span>    <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;background&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;silver&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;classes&#34;</span>   <span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;class1&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;dataset&#34;</span>   <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test-id&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;text_content&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Hello World&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;children&#34;</span><span style="color:#f92672">:</span> [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;div&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;text_content&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;child&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ]   
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;create_element&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;parent&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#parent&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;tag_name&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;div&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="remove_element">
+  remove_element
+  <a class="anchor" href="#remove_element">#</a>
+</h2>
+<p>Remove a element from the dom.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;remove_element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;remove_element&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="clear_element">
+  clear_element
+  <a class="anchor" href="#clear_element">#</a>
+</h2>
+<p>Clear all the children from a given element and release any bindings on it.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;clear_element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;clear_element&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="show_widget_dialog">
+  show_widget_dialog
+  <a class="anchor" href="#show_widget_dialog">#</a>
+</h2>
+<p>Set a widget&rsquo;s html and context for binding after adding it to the UI as a dialog.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">id of created element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">html</td>
+<td style="text-align:left">template id to use</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">url</td>
+<td style="text-align:left">where to fetch the HTML data if the template does not exists yet.</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p>The url can be a path or a function.</p>
+<ol>
+<li>path : &ldquo;/templates/dialog.html&rdquo;</li>
+<li>url  : &ldquo;$fn.getTemplate&rdquo;</li>
+</ol>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;show_widget_dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;id&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;html&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$template.process-dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;url&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$fn.getTemplate&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;show_widget_dialog&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;id&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;html&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$template.process-dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;url&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$fn.getTemplate&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="show_form_dialog">
+  show_form_dialog
+  <a class="anchor" href="#show_form_dialog">#</a>
+</h2>
+<p>Show a form UI from template as a dialog including an ok and cancel button.
+Validation is done on the form when pressing OK but will not close until the validation passes.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">id of created element</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">html</td>
+<td style="text-align:left">template id to use</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">url</td>
+<td style="text-align:left">where to fetch the HTML data if the template does not exists yet.</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">error_store</td>
+<td style="text-align:left">the name where errors must be saved on the binding context</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;show_form_dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;id&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;html&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$template.process-dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;url&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$fn.getTemplate&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;show_form_dialog&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;id&#34;</span>      <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;html&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$template.process-dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;url&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$fn.getTemplate&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="set_widget">
+  set_widget
+  <a class="anchor" href="#set_widget">#</a>
+</h2>
+<p>Set html and context on an existing widget component.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">query</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">context</td>
+<td style="text-align:left">the context object to set on the widget</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">html</td>
+<td style="text-align:left">template id to use</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">url</td>
+<td style="text-align:left">where to fetch the HTML data if the template does not exists yet.</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;set_widget&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;query&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;context&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.model&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;html&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$template.process-dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;url&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$fn.getTemplate&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;set_widget&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;query&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;context&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.model&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;html&#34;</span>    <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$template.process-dialog&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;url&#34;</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$fn.getTemplate&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="clear_widget">
+  clear_widget
+  <a class="anchor" href="#clear_widget">#</a>
+</h2>
+<p>Clear a existing widget so that it does not have any content or context.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;clear_widget&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;clear_widget&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="move_element">
+  move_element
+  <a class="anchor" href="#move_element">#</a>
+</h2>
+<p>Move an element from one parent to another.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">element or query selector to where the element will be moved</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">position</td>
+<td style="text-align:left">where must this be moved</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>position options</strong></p>
+<ol>
+<li>null: will append element on parent.</li>
+<li>&ldquo;before&rdquo;: will add element on target&rsquo;s parent before the target.</li>
+<li>&ldquo;after&rdquo; : will add element on target&rsquo;s parent after the target.</li>
+</ol>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;move_element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#parent&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;move_element&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;target&#34;</span>   <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#item&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;position&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;before&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="move_element_down">
+  move_element_down
+  <a class="anchor" href="#move_element_down">#</a>
+</h2>
+<p>Move an existing element below its next sibling.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;move_element_down&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;move_element_down&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="move_element_up">
+  move_element_up
+  <a class="anchor" href="#move_element_up">#</a>
+</h2>
+<p>Move an element above its previous sibling.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;move_element_up&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;move_element_up&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="filter_children">
+  filter_children
+  <a class="anchor" href="#filter_children">#</a>
+</h2>
+<p>Perform a dom filter a a given element&rsquo;s children.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">filter</td>
+<td style="text-align:left">string to filter on</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p>The children must have a data-tags attribute.<br>
+The data-tags attribute will be used for the text comparison.<br>
+If the tags are not a match the element will be set as hidden.</p>
+<p>To clear the filter set the filter string to &ldquo;&rdquo;.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;filter_children&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;filter&#34;</span>  <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$binding.filter&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;filter_children&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;filter&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="open_tab">
+  open_tab
+  <a class="anchor" href="#open_tab">#</a>
+</h2>
+<p>Open a URL in a new browser tab.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">url</td>
+<td style="text-align:left">url to navigate</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">parameters</td>
+<td style="text-align:left">key value pair of parameters and values to inflate on url</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p>The parameters use the <a href="/docs/systems/string/">String</a> action&rsquo;s <a href="/docs/systems/string/#inflate">inflate</a> function.</p>
+<p><em><strong>parameterized url</strong></em>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">url</span>         <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">parameters</span>  <span style="color:#f92672">=</span> {<span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1000</span>, <span style="color:#a6e22e">typId</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.typeId&#34;</span>}</span></span></code></pre></div>
+<strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;open_tab&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;url&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;https://www.google.com&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;open_tab&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#input/${id}?type=&#39;tasks&#39;&amp;typeId=&#39;${typeId}&#39;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">parameters</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">typeId</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.typeId&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="clone_for_movement">
+  clone_for_movement
+  <a class="anchor" href="#clone_for_movement">#</a>
+</h2>
+<p>Clone an element and put it on an animation layer for the purpose of moving it on the screen.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">parent</td>
+<td style="text-align:left">parent element or query to copy clone too</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">position</td>
+<td style="text-align:left">object with x and y properties for location</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">{x: 0, y: 0}</td>
+</tr>
+<tr>
+<td style="text-align:left">attributes</td>
+<td style="text-align:left">attributes to set on clone</td>
+<td style="text-align:center">false</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">styles</td>
+<td style="text-align:left">styles to set on clone</td>
+<td style="text-align:center">false</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">classes</td>
+<td style="text-align:left">classes to add to clone</td>
+<td style="text-align:center">false</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Position css property is set to &ldquo;absolute&rdquo; by default with a transform property set to &ldquo;translate&rdquo; on x and y.</p>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;clone_for_movement&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#parent&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;clone_for_movement&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#parent&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="elements_from_template">
+  elements_from_template
+  <a class="anchor" href="#elements_from_template">#</a>
+</h2>
+<p>Given an array of objects</p>
+<ol>
+<li>Create a fragment containing elements based on a template.</li>
+<li>Add the fragment to a parent element if defined</li>
+<li>Return fragment to caller</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">template_id</td>
+<td style="text-align:left">template id to use from the binding engine&rsquo;s template manager</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">data</td>
+<td style="text-align:left">array of objects that for whom we need to create elements</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">template</td>
+<td style="text-align:left">template to use if the required template id does not exists</td>
+<td style="text-align:center">false</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">remove_template</td>
+<td style="text-align:left">remove template when done</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left">recycle</td>
+<td style="text-align:left">recycle existing children in a element</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">false</td>
+</tr>
+<tr>
+<td style="text-align:left">row_index</td>
+<td style="text-align:left">what row to start with during recycle</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">0</td>
+</tr>
+<tr>
+<td style="text-align:left">parent</td>
+<td style="text-align:left">parent element that elements will be on</td>
+<td style="text-align:center">schema</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>There are a lot of properties there for specialized usage but the simple use case looks like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">intent</span>.<span style="color:#a6e22e">dom</span>.<span style="color:#a6e22e">elements_from_template</span>({ <span style="color:#a6e22e">args</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">template_id</span>     <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;tpl_generated&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">data</span>            <span style="color:#f92672">:</span> <span style="color:#a6e22e">batch</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">parent</span>          <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#inflation-grid&#34;</span>
+</span></span><span style="display:flex;"><span>}}, <span style="color:#66d9ef">this</span>)</span></span></code></pre></div>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;elements_from_template&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;elements_from_template&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="create_inflation_template">
+  create_inflation_template
+  <a class="anchor" href="#create_inflation_template">#</a>
+</h2>
+<p>Use an object literal as the source to generate a template for inflation.
+For complex templates use the element from template.
+Function is better for scenarios like cell generation.
+It automatically registers the template on the inflation engine</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">source</td>
+<td style="text-align:left">object to use for generation</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">tag_name</td>
+<td style="text-align:left">element tag name to use for each property</td>
+<td style="text-align:center">true</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:left">ctx</td>
+<td style="text-align:left">the context name to use in the inflation manager</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">&ldquo;context&rdquo;</td>
+</tr>
+<tr>
+<td style="text-align:left">wrapper</td>
+<td style="text-align:left">wrap these elements in a parent element of this tag type</td>
+<td style="text-align:center">false</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;create_inflation_template&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;property&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;tag_name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;li&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;wrapper&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ul&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;create_inflation_template&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;source&#34;</span> <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;property&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;value&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;tag_name&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;li&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;wrapper&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;ul&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_element">
+  get_element
+  <a class="anchor" href="#get_element">#</a>
+</h2>
+<p>Get a element from the dom based on a query or element.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">element</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">where the result is copied too</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_element&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.element&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;get_element&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;element&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;#element&#34;</span>
+</span></span><span style="display:flex;"><span>});</span></span></code></pre></div>
+<h2 id="get_animation_layer">
+  get_animation_layer
+  <a class="anchor" href="#get_animation_layer">#</a>
+</h2>
+<p>There can only be one animation layer.<br>
+This function either creates it for you if it does not exist or returns the existing one.<br>
+The animation layer is full screen and does not accept pointer events.</p>
+<p>The only parameter is the standard &ldquo;target&rdquo; parmaeter</p>
+<p><strong>json</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;get_animation_layer&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;target&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;$context.layer&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">layer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;get_animation_layer&#34;</span>);</span></span></code></pre></div>
+<h2 id="clear_animation_layer">
+  clear_animation_layer
+  <a class="anchor" href="#clear_animation_layer">#</a>
+</h2>
+<p>If the animation layer exists clear it of all children.</p>
+<p><strong>json</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;clear_animation_layer&#34;</span>,
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">layer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;clear_animation_layer&#34;</span>);</span></span></code></pre></div>
+<h2 id="remove_animation_layer">
+  remove_animation_layer
+  <a class="anchor" href="#remove_animation_layer">#</a>
+</h2>
+<p>Remove the animation layer from the dom.</p>
+<p><strong>json</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;remove_animation_layer&#34;</span>,
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<p><strong>javascript</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">layer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;remove_animation_layer&#34;</span>);</span></span></code></pre></div>
+<h2 id="highlight">
+  highlight
+  <a class="anchor" href="#highlight">#</a>
+</h2>
+<p>This feature creates a highlight region around a defined element.<br>
+This can be either a standard styled div or an instance of a template.<br>
+If you do use a template it is important that you only have one child as this child will be sized to the size of the highlighted element.
+A highlight can be permanent until you clear the animation layer or, you can define its timeout by setting the delay.</p>
+<p>I can use this with a existing animation layer but, you don&rsquo;t need to.
+Once you call this it will first create the animation layer if it does not already exist.
+It will however not automatically remove the animation layer once done.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">property</th>
+<th style="text-align:left">description</th>
+<th style="text-align:center">required</th>
+<th style="text-align:left">default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">target</td>
+<td style="text-align:left">element or query selector</td>
+<td style="text-align:center">true</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">classes</td>
+<td style="text-align:left">array of css classes to use on hightlight element</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">duration</td>
+<td style="text-align:left">how long must the highlight show for (0 = infinite)</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left">0</td>
+</tr>
+<tr>
+<td style="text-align:left">template</td>
+<td style="text-align:left">if you want a custom UI, pass this on via the</td>
+<td style="text-align:center">false</td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<p><strong>json</strong>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#e6db74">&#34;step&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;dom&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;action&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;highlight&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;args&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">target</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">target</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">classes</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;highlight&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">duration</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">template</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">template</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
+<p><strong>js</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">await</span> <span style="color:#a6e22e">crs</span>.<span style="color:#a6e22e">call</span>(<span style="color:#e6db74">&#34;dom&#34;</span>, <span style="color:#e6db74">&#34;highlight&#34;</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">target</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">target</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">classes</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;highlight&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">duration</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">500</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">template</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">template</span>
+</span></span><span style="display:flex;"><span>})</span></span></code></pre></div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#call_on_element">call_on_element</a></li>
+    <li><a href="#get_property">get_property</a></li>
+    <li><a href="#set_properties">set_properties</a></li>
+    <li><a href="#set_attribute">set_attribute</a></li>
+    <li><a href="#get_attribute">get_attribute</a></li>
+    <li><a href="#add_class">add_class</a></li>
+    <li><a href="#remove_class">remove_class</a></li>
+    <li><a href="#set_style">set_style</a></li>
+    <li><a href="#set_styles">set_styles</a></li>
+    <li><a href="#get_style">get_style</a></li>
+    <li><a href="#set_text">set_text</a></li>
+    <li><a href="#get_text">get_text</a></li>
+    <li><a href="#create_element">create_element</a></li>
+    <li><a href="#remove_element">remove_element</a></li>
+    <li><a href="#clear_element">clear_element</a></li>
+    <li><a href="#show_widget_dialog">show_widget_dialog</a></li>
+    <li><a href="#show_form_dialog">show_form_dialog</a></li>
+    <li><a href="#set_widget">set_widget</a></li>
+    <li><a href="#clear_widget">clear_widget</a></li>
+    <li><a href="#move_element">move_element</a></li>
+    <li><a href="#move_element_down">move_element_down</a></li>
+    <li><a href="#move_element_up">move_element_up</a></li>
+    <li><a href="#filter_children">filter_children</a></li>
+    <li><a href="#open_tab">open_tab</a></li>
+    <li><a href="#clone_for_movement">clone_for_movement</a></li>
+    <li><a href="#elements_from_template">elements_from_template</a></li>
+    <li><a href="#create_inflation_template">create_inflation_template</a></li>
+    <li><a href="#get_element">get_element</a></li>
+    <li><a href="#get_animation_layer">get_animation_layer</a></li>
+    <li><a href="#clear_animation_layer">clear_animation_layer</a></li>
+    <li><a href="#remove_animation_layer">remove_animation_layer</a></li>
+    <li><a href="#highlight">highlight</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
