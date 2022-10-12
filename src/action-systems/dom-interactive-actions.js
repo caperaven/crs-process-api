@@ -7,6 +7,9 @@ export class DomInteractiveActions {
         await this[step.action]?.(step, context, process, item);
     }
 
+    /**
+     * Create a animation layer for elements to move and animate on.
+     */
     static async get_animation_layer(step, context, process, item) {
         const layer = document.querySelector("#animation-layer");
         if (layer != null) {
@@ -36,6 +39,9 @@ export class DomInteractiveActions {
         return element;
     }
 
+    /**
+     * Remove all elements from the animation layer.
+     */
     static async clear_animation_layer(step, context, process, item) {
         const element = document.querySelector("#animation-layer");
         if (element != null) {
@@ -43,11 +49,17 @@ export class DomInteractiveActions {
         }
     }
 
+    /**
+     * Remove the animation layer from the dom
+     */
     static async remove_animation_layer(step, context, process, item) {
         const element = document.querySelector("#animation-layer");
         element?.parentElement?.removeChild(element);
     }
 
+    /**
+     * Create a highlight graphic around a given element
+     */
     static async highlight(step, context, process, item) {
         const animationLayer = await this.get_animation_layer();
         const target = await crs.dom.get_element(step.args.target, context, process, item);
@@ -96,6 +108,9 @@ export class DomInteractiveActions {
         }
     }
 
+    /**
+     * Clone a element for the purpose of drag and drop
+     */
     static async clone_for_movement(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const parent = await crs.dom.get_element(step.args.parent, context, process, item);
@@ -129,6 +144,9 @@ export class DomInteractiveActions {
         return result;
     }
 
+    /**
+     * Enable resize functionality on a element so that interactions will perform resize operations.
+     */
     static async enable_resize(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const resizeQuery = await crs.process.getValue(step.args.resize_query, context, process, item);
@@ -140,11 +158,17 @@ export class DomInteractiveActions {
         new module.ResizeElementManager(element, resizeQuery, options);
     }
 
+    /**
+     * Resize features are no longer required on an element so remove the resize ability on that element.
+     */
     static async disable_resize(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.__resizeManager?.dispose();
     }
 
+    /**
+     * Enable drag and drop behaviour on a parent element who's children can be dragged.
+     */
     static async enable_dragdrop(step, context, process, item) {
         const options = await crs.process.getValue(step.args.options, context, process, item);
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -154,9 +178,28 @@ export class DomInteractiveActions {
         new module.DragDropManager(element, options);
     }
 
+    /**
+     * Drag and drop operations are no longer required so you can remove the feature from the element
+     */
     static async disable_dragdrop(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.__dragDropManager?.dispose();
+        delete element.__dragDropManager;
+    }
+
+    static async enable_move(step, context, process, item) {
+        const moveQuery = await crs.process.getValue(step.args.move_query, context, process, item);
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+
+        const file = import.meta.url.replace("dom-interactive-actions.js", "managers/move-manager.js");
+        const module = await import(file);
+        new module.MoveManager(element, moveQuery);
+    }
+
+    static async disable_move(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        element.__moveManager?.dispose();
+        delete element.__moveManager;
     }
 }
 

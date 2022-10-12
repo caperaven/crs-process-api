@@ -20,6 +20,11 @@
       "view": "resize"
     },
     {
+      "title": "Move",
+      "hash": "#move",
+      "view": "move"
+    },
+    {
       "title": "Media",
       "hash": "#media",
       "view": "media"
