@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/dom-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/dom-actions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +102,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665562750025</updated>
       <workItem from="1665562751680" duration="7373000" />
-      <workItem from="1665575347981" duration="10715000" />
+      <workItem from="1665575347981" duration="12307000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -137,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665587962450</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add dom tests">
+      <created>1665591110870</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1665591110870</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,5 +170,17 @@
     <MESSAGE value="add tests for style actions" />
     <MESSAGE value="add dom tests" />
     <option name="LAST_COMMIT_MESSAGE" value="add dom tests" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/action-systems/dom-actions.js</url>
+          <line>293</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

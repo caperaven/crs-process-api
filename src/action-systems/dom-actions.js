@@ -182,6 +182,8 @@ export class DomActions {
         const classes = step.args.classes || [];
         const dataset = Object.keys(step.args.dataset || {});
 
+        element.id = await crs.process.getValue(step.args.id, context, process, item);
+
         for (let attr of attributes) {
             element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
         }
@@ -248,8 +250,8 @@ export class DomActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         if (element != null) {
             await crsbinding.observation.releaseChildBinding(element);
-            while (element.firstChild != null) {
-                element.removeChild(element.firstChild);
+            while (element.firstElementChild != null) {
+                element.removeChild(element.firstElementChild);
             }
         }
     }

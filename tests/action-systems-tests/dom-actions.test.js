@@ -141,3 +141,45 @@ Deno.test("create_element", async () => {
     assertEquals(element.children.length, 1);
     assertEquals(element.children[0].nodeName, "INPUT");
 })
+
+Deno.test("remove_element", async () => {
+    const element = await crs.call("dom", "create_element", { parent: document.body });
+    assertEquals(document.body.children.length, 1);
+
+    await crs.call("dom", "remove_element", {element: element});
+    assertEquals(document.body.children.length, 0);
+
+    await crs.call("dom", "create_element", { parent: document.body, id: "item1" });
+    assertEquals(document.body.children.length, 1);
+    await crs.call("dom", "remove_element", {element: "#item1"});
+    assertEquals(document.body.children.length, 0);
+})
+
+Deno.test("clear_element", async () => {
+    await crs.call("dom", "create_element", { parent: document.body });
+    await crs.call("dom", "create_element", { parent: document.body });
+    await crs.call("dom", "create_element", { parent: document.body });
+    assertEquals(document.body.children.length, 3);
+
+    await crs.call("dom", "clear_element", {
+        element: document.body
+    })
+    assertEquals(document.body.children.length, 0);
+})
+
+Deno.test("move_element", async () => {
+    const target = document.createElement("div");
+    const element = document.createElement("div");
+    document.body.appendChild(element);
+
+    assertEquals(target.children.length, 0);
+    assertEquals(document.body.children.length, 1);
+
+    await crs.call("dom", "move_element", {
+        element: element,
+        target: target
+    })
+
+    assertEquals(target.children.length, 1);
+    assertEquals(document.body.children.length, 0);
+})

@@ -48,6 +48,13 @@ export function mockElement(instance, tag, id) {
     instance.performEvent = performEvent.bind(instance);
     instance.attachShadow = attachShadow.bind(instance);
 
+    Object.defineProperty(instance, "firstElementChild", {
+        get() {
+            if (this.children.length == 0) return null;
+            return instance.children[0];
+        }
+    })
+
     return instance;
 }
 
