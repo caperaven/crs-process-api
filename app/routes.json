@@ -93,6 +93,11 @@
       "title": "drag and drop",
       "hash": "#drag-drop",
       "view": "drag-drop"
+    },
+    {
+      "title": "styles",
+      "hash": "#styles",
+      "view": "styles"
     }
   ]
 }
