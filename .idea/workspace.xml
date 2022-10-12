@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/styles-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/styles-actions.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/document-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/document-mock.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,18 +44,18 @@
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: styles-actions.test.js">
-    <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Deno.Deno: dom-actions.test.js">
     <configuration name="Deno: condition-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="Deno: css-grid-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: dom-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -78,19 +76,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Deno.Deno: dom-actions.test.js" />
       <item itemvalue="Deno.Deno: styles-actions.test.js" />
       <item itemvalue="Deno.Deno: condition-actions.test.js" />
       <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
-      <item itemvalue="Deno.Deno: colors-actions.test.js" />
       <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Deno.Deno: dom-actions.test.js" />
         <item itemvalue="Deno.Deno: styles-actions.test.js" />
         <item itemvalue="npm.test" />
         <item itemvalue="Deno.Deno: condition-actions.test.js" />
         <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
-        <item itemvalue="Deno.Deno: colors-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -103,7 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665562750025</updated>
       <workItem from="1665562751680" duration="7373000" />
-      <workItem from="1665575347981" duration="7731000" />
+      <workItem from="1665575347981" duration="8404000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -126,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665579230529</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add tests for style actions">
+      <created>1665587282743</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1665587282743</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +152,7 @@
     <MESSAGE value="refactor resize manager and add move manger starting blocks" />
     <MESSAGE value="add styles loading actions" />
     <MESSAGE value="refactor testing mockups to be closer to framework mocks" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor testing mockups to be closer to framework mocks" />
+    <MESSAGE value="add tests for style actions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add tests for style actions" />
   </component>
 </project>
