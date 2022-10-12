@@ -10,6 +10,7 @@ headless: true
   - [Actions]({{< relref "/docs/systems/actions.md" >}})
   - [Array]({{< relref "/docs/systems/array.md" >}})
   - [Binding]({{< relref "/docs/systems/binding.md" >}})
+  - [Color]({{< relref "/docs/systems/colors.md" >}})
   - [Condition]({{< relref "/docs/systems/condition.md" >}})
   - [Console]({{< relref "/docs/systems/console.md" >}})
   - [CSS Grid]({{< relref "/docs/systems/css-grid.md" >}})
