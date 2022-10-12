@@ -35,6 +35,7 @@ export function mockElement(instance, tag, id) {
     instance.setAttribute = setAttribute.bind(instance);
     instance.removeAttribute = removeAttribute.bind(instance);
     instance.querySelector = querySelector.bind(instance);
+    instance.getElementsByTagName = getElementsByTagName.bind(instance);
     instance.querySelectorAll = querySelectorAll.bind(instance);
     instance.cloneNode = cloneNode.bind(instance);
     instance.appendChild = appendChild.bind(instance);
@@ -95,6 +96,21 @@ function querySelector(selector) {
 
     const callback = createQueryFunction(selector);
     return find(this, callback);
+}
+
+function getElementsByTagName(selector) {
+    if (this.queryResults[selector] != null) {
+        return this.queryResults[selector];
+    }
+
+    const result = [];
+    for (const child of this.children) {
+        if (child.nodeName.toLowerCase() == selector.toLowerCase()) {
+            result.push(child);
+        }
+    }
+
+    return result;
 }
 
 function querySelectorAll(selector) {
