@@ -50,12 +50,27 @@
         align-items: center;
         justify-content: center;
     }
+
+    h2#css-properties {
+        --mybackground : hotpink;
+        --mycolor : white;
+        background-color: var(--mybackground);
+        color: var(--mycolor);
+    }
 </style>
 <h2>Dom Example</h2>
 
 <template id="highlight-template">
     <div class="highlight">some text in the middle</div>
 </template>
+
+<section>
+    <h2 ref="cssH2" id="css-properties">Css Variable</h2>
+    <button click.call="setCssVariable">Set Variable</button>
+    <button click.call="getCssVariable">Get Property</button>
+    <button click.call="setCssVariables">Set Variables</button>
+    <button click.call="getCssVariables">Get Variables</button>
+</section>
 
 <section>
     <div class="toolbar">

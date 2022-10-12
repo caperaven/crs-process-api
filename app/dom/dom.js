@@ -431,4 +431,38 @@ export default class Dom extends crsbinding.classes.ViewBase {
 
         element.textContent = "element step";
     }
+
+    async setCssVariable() {
+        await crs.call("dom", "set_css_variable", {
+            element: this.cssH2,
+            variable: "--mybackground",
+            value: "limegreen"
+        })
+    }
+
+    async getCssVariable() {
+        const result =await crs.call("dom", "get_css_variable", {
+            element: this.cssH2,
+            variable: "--mycolor",
+        })
+        return result;
+    }
+
+    async setCssVariables() {
+        await crs.call("dom", "set_css_variables", {
+            element: this.cssH2,
+            variables: {
+                "--mycolor": "yellow",
+                "--mybackground": "crimson"
+            }
+        })
+    }
+
+    async getCssVariables() {
+        const result = await crs.call("dom", "get_css_variables", {
+            element: this.cssH2,
+            variables: ["--mycolor", "--mybackground"]
+        })
+        return result;
+    }
 }
