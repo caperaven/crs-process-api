@@ -232,3 +232,29 @@ Deno.test("css variables - get and set", async () => {
 
     assertEquals(value, "red");
 })
+
+Deno.test("css variables get and set multiple", async () => {
+    const element = document.createElement("div");
+
+    await crs.call("dom", "set_css_variables", {
+        element: element,
+        variables: {
+            "--background": "blue",
+            "--color": "white"
+        }
+    })
+
+    assertEquals(element.style["--background"], "blue");
+    assertEquals(element.style["--color"], "white");
+
+    element.style["--background"] = "red";
+    element.style["--color"] = "green";
+
+    const result = await crs.call("dom", "get_css_variables", {
+        element: element,
+        variables: ["--background", "--color"]
+    })
+
+    assertEquals(result[0], "red");
+    assertEquals(result[1], "green");
+})
