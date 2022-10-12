@@ -1,9 +1,8 @@
 import { assertEquals } from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {initRequired} from "./../mockups/init-required.js";
-import {ElementMock} from "./../mockups/element.mock.js";
-import "./../mockups/computed-style-mock.js";
+import {ElementMock} from "../mockups/element-mock.js";
+import {init} from "./../mockups/init.js";
 
-await initRequired();
+await init();
 
 Deno.test("colors - hex to rgb", async () => {
     let result = await crs.call("colors", "hex_to_rgb", { hex: "#ff0000" });

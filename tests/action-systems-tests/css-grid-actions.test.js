@@ -1,9 +1,7 @@
 import {assertEquals} from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {initRequired} from "./../mockups/init-required.js";
-import {ElementMock} from "./../mockups/element.mock.js";
-
-await initRequired();
-
+import {ElementMock} from "../mockups/element-mock.js";
+import {init} from "./../mockups/init.js";
+await init();
 let element;
 
 async function beforeEach() {

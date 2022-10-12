@@ -1,7 +1,6 @@
 import { assertEquals, assertExists } from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {initRequired} from "./../mockups/init-required.js";
-
-await initRequired();
+import {init} from "./../mockups/init.js";
+await init();
 
 Deno.test("get_query_string - basic url parameters", async () => {
     const context = {}

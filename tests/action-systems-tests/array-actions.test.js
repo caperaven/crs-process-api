@@ -1,7 +1,7 @@
 import { assertEquals, assertExists, assertNotEquals } from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {initRequired} from "./../mockups/init-required.js";
+import {init} from "./../mockups/init.js";
 
-await initRequired();
+await init();
 
 let log = null;
 globalThis.console = {

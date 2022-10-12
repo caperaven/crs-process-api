@@ -4,18 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="refactor resize manager and add move manger starting blocks">
-      <change afterPath="$PROJECT_DIR$/app/styles/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/styles/styles.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/styles/styles.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dist/action-systems/managers/size-manager.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/action-systems/styles-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+    <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/styles-actions.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/child-mock-factory.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/class-list.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/clone-node.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/computed-style.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/custom-elements.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/document-mock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/event-mock.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/init.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/query.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/style.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/welcome/welcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/welcome/welcome.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documents/public/docs/create/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/documents/public/docs/create/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documents/public/docs/systems/css-grid/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/documents/public/docs/systems/css-grid/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/action-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/action-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/array-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/array-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/binding-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/binding-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/console-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/console-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/math-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/math-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/string-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/string-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/computed-style-mock.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/crsbinding.mock.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/dom-mock.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/element.mock.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/init-required.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/validations-mock-loader.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,14 +62,64 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "F:/caperaven projects/crs-process-api/app/styles",
+    "last_opened_file_path": "F:/caperaven projects/crs-process-api/tests",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\caperaven projects\crs-process-api\tests" />
+      <recent name="F:\caperaven projects\crs-process-api\tests\mockups" />
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
+  </component>
+  <component name="RunManager" selected="Deno.Deno: condition-actions.test.js">
+    <configuration name="Deno: binding-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/binding-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: condition-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: css-grid-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="test" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Deno.Deno: condition-actions.test.js" />
+      <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
+      <item itemvalue="Deno.Deno: colors-actions.test.js" />
+      <item itemvalue="Deno.Deno: binding-actions.test.js" />
+      <item itemvalue="npm.test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.test" />
+        <item itemvalue="Deno.Deno: condition-actions.test.js" />
+        <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
+        <item itemvalue="Deno.Deno: colors-actions.test.js" />
+        <item itemvalue="Deno.Deno: binding-actions.test.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -59,7 +130,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665562750025</updated>
       <workItem from="1665562751680" duration="7373000" />
-      <workItem from="1665575347981" duration="1292000" />
+      <workItem from="1665575347981" duration="3760000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -68,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665566198422</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add styles loading actions">
+      <created>1665576668981</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1665576668981</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,6 +165,19 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="refactor resize manager and add move manger starting blocks" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor resize manager and add move manger starting blocks" />
+    <MESSAGE value="add styles loading actions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add styles loading actions" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js</url>
+          <line>7</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
