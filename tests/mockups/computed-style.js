@@ -1,10 +1,10 @@
 export class ComputedStyleMock {
     constructor(element) {
-        this.variables = JSON.parse(JSON.stringify(element.variables));
+        this.style = JSON.parse(JSON.stringify(element.style));
     }
 
     getPropertyValue(variable) {
-        return this.variables[variable];
+        return this.style[variable];
     }
 }
 

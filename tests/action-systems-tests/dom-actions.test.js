@@ -212,3 +212,23 @@ Deno.test("move element up and down", async () => {
     })
     assertEquals(document.body.children.indexOf(element), 0);
 })
+
+Deno.test("css variables - get and set", async () => {
+    const element = document.createElement("div");
+
+    await crs.call("dom", "set_css_variable", {
+        element: element,
+        variable: "--background",
+        value: "blue"
+    })
+
+    assertEquals(element.style["--background"], "blue");
+
+    element.style["--background"] = "red";
+    const value = await crs.call("dom", "get_css_variable", {
+        element: element,
+        variable: "--background"
+    })
+
+    assertEquals(value, "red");
+})
