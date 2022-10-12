@@ -51,7 +51,21 @@ export function mockElement(instance, tag, id) {
     Object.defineProperty(instance, "firstElementChild", {
         get() {
             if (this.children.length == 0) return null;
-            return instance.children[0];
+            return this.children[0];
+        }
+    })
+
+    Object.defineProperty(instance, "nextElementSibling", {
+        get() {
+            const index = this.parentElement.children.indexOf(this);
+            return this.parentElement.children[index + 1];
+        }
+    })
+
+    Object.defineProperty(instance, "previousElementSibling", {
+        get() {
+            const index = this.parentElement.children.indexOf(this);
+            return this.parentElement.children[index - 1];
         }
     })
 

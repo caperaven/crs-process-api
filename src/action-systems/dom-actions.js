@@ -301,11 +301,11 @@ async function move_element(element, target, position) {
         return target.parentElement.insertBefore(element, target);
     }
 
-    if (target.nextSibling == null) {
+    if (target.nextElementSibling == null) {
         return target.parentElement.appendChild(element);
     }
 
-    target.parentElement.insertBefore(element, target.nextSibling);
+    target.parentElement.insertBefore(element, target.nextElementSibling);
 }
 
 crs.intent.dom = DomActions;

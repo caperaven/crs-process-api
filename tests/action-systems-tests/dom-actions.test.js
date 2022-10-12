@@ -183,3 +183,32 @@ Deno.test("move_element", async () => {
     assertEquals(target.children.length, 1);
     assertEquals(document.body.children.length, 0);
 })
+
+Deno.test("move element up and down", async () => {
+    document.body.appendChild(document.createElement("div1"));
+    document.body.appendChild(document.createElement("div2"));
+    document.body.appendChild(document.createElement("div3"));
+    document.body.appendChild(document.createElement("div4"));
+    document.body.appendChild(document.createElement("div5"));
+
+    const element = document.body.children[0];
+    await crs.call("dom", "move_element_down", {
+        element: element
+    })
+    assertEquals(document.body.children.indexOf(element), 1);
+
+    await crs.call("dom", "move_element_down", {
+        element: element
+    })
+    assertEquals(document.body.children.indexOf(element), 2);
+
+    await crs.call("dom", "move_element_up", {
+        element: element
+    })
+    assertEquals(document.body.children.indexOf(element), 1);
+
+    await crs.call("dom", "move_element_up", {
+        element: element
+    })
+    assertEquals(document.body.children.indexOf(element), 0);
+})
