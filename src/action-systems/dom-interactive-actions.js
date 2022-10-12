@@ -187,6 +187,14 @@ export class DomInteractiveActions {
         delete element.__dragDropManager;
     }
 
+    /**
+     * Enable the movement of fixed position items.
+     * This is used for things like floating menu items that are at a fixed position.
+     * Note that your element's position must be fixed, the top set to 0 and the left set to 0;
+     * Use translate to position the element on the screen.
+     * The element you define will be the item you move.
+     * If a child is responsible for staring the move process, set the move_query to match that of the child.
+     */
     static async enable_move(step, context, process, item) {
         const moveQuery = await crs.process.getValue(step.args.move_query, context, process, item);
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -196,6 +204,9 @@ export class DomInteractiveActions {
         new module.MoveManager(element, moveQuery);
     }
 
+    /**
+     * Disable the movement of fixed position items.
+     */
     static async disable_move(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.__moveManager?.dispose();
