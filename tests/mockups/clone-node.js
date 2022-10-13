@@ -21,7 +21,9 @@ export function cloneElementMock(mock) {
 }
 
 function copyClasses(source, target) {
-    target.classList.add(source.values);
+    for (let cls of source.classList.values) {
+        target.classList.add(cls);
+    }
 }
 
 const styles = [
@@ -416,6 +418,6 @@ const styles = [
 
 function copyStyles(source, target) {
     for (let style of styles) {
-        target[style] = source[style];
+        target.style[style] = source.style[style];
     }
 }

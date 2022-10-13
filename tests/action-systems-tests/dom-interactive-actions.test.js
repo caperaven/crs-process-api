@@ -52,3 +52,31 @@ Deno.test("highlight", async () => {
     assertEquals(style.width, "100px");
     assertEquals(style.height, "100px");
 })
+
+Deno.test("clone_for_movement", async () => {
+    const element = document.createElement("div");
+    element.setAttribute("test", "test");
+    element.style.background = "red";
+    element.classList.add("italic");
+
+    const clone = await crs.call("dom_interactive", "clone_for_movement", {
+        element: element,
+        parent: document.body,
+        attributes: {
+            test2: "test2"
+        },
+        styles: {
+            color: "white"
+        },
+        classes: ["test"]
+    })
+
+    assert(clone != null);
+    assertEquals(clone.parentElement, document.body);
+    assertEquals(clone.getAttribute("test"), "test");
+    assertEquals(clone.getAttribute("test2"), "test2");
+    assertEquals(clone.style.background, "red");
+    assertEquals(clone.style.color, "white");
+    assertEquals(clone.classList.contains("italic"), true);
+    assertEquals(clone.classList.contains("test"), true);
+})
