@@ -7,6 +7,10 @@ export class ComponentActions {
         await this[step.action](step, context, process, item);
     }
 
+    /**
+     * Used in components, observe properties and when all the properties have values, perform the callback.
+     * @returns {Promise<*|number>}
+     */
     static async observe(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
@@ -36,6 +40,9 @@ export class ComponentActions {
         return id;
     }
 
+    /**
+     * Disable previously created observation of properties on a component
+     */
     static async unobserve(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const ids = await crs.process.getValue(step.args.ids, context, process, item);
@@ -52,6 +59,9 @@ export class ComponentActions {
         }
     }
 
+    /**
+     * Notify that the component is ready for interacting with
+     */
     static async notify_ready(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.dataset.ready = "true";

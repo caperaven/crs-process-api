@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/component-actions.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/mockups/custom-event.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/init.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/action-systems/component-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/component-actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/component-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/component-actions.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +45,7 @@
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: colors-actions.test.js">
+  <component name="RunManager" selected="Deno.Deno: component-actions.test.js">
     <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -88,9 +85,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Deno.Deno: component-actions.test.js" />
         <item itemvalue="npm.test" />
         <item itemvalue="Deno.Deno: colors-actions.test.js" />
-        <item itemvalue="Deno.Deno: component-actions.test.js" />
         <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
       </list>
@@ -107,7 +104,7 @@
       <workItem from="1665562751680" duration="7373000" />
       <workItem from="1665575347981" duration="14079000" />
       <workItem from="1665644643005" duration="1125000" />
-      <workItem from="1665649933088" duration="6101000" />
+      <workItem from="1665649933088" duration="8239000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -193,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665655432766</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add dom tests">
+      <created>1665657589204</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1665657589204</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
