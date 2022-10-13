@@ -47,6 +47,7 @@ export function mockElement(instance, tag, id) {
     instance.dispatchEvent = dispatchEvent.bind(instance);
     instance.performEvent = performEvent.bind(instance);
     instance.attachShadow = attachShadow.bind(instance);
+    instance.getBoundingClientRect = getBoundingClientRect.bind(instance);
 
     Object.defineProperty(instance, "firstElementChild", {
         get() {
@@ -210,4 +211,11 @@ function performEvent(event, target, options) {
 
 function attachShadow(args) {
     this.shadowRoot = new ElementMock("shadow-root");
+}
+
+function getBoundingClientRect() {
+    if (this.bounds == null) {
+        throw new Error("bounds on element mock must be set");
+    }
+    return this.bounds;
 }

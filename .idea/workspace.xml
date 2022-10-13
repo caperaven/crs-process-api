@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/mockups/screen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/init.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/init.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,15 +30,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "F:/caperaven projects/crs-process-api/tests",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-process-api/tests&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\tests" />
@@ -43,18 +46,18 @@
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: dom-actions.test.js">
+  <component name="RunManager" selected="Deno.Deno: fixed-layout-actions.test.js">
     <configuration name="Deno: condition-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: css-grid-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/css-grid-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+    <configuration name="Deno: dom-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: dom-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+    <configuration name="Deno: fixed-layout-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -75,19 +78,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
       <item itemvalue="Deno.Deno: dom-actions.test.js" />
       <item itemvalue="Deno.Deno: styles-actions.test.js" />
       <item itemvalue="Deno.Deno: condition-actions.test.js" />
-      <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
       <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
         <item itemvalue="Deno.Deno: styles-actions.test.js" />
         <item itemvalue="npm.test" />
         <item itemvalue="Deno.Deno: condition-actions.test.js" />
-        <item itemvalue="Deno.Deno: css-grid-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -100,7 +103,9 @@
       <option name="presentableId" value="Default" />
       <updated>1665562750025</updated>
       <workItem from="1665562751680" duration="7373000" />
-      <workItem from="1665575347981" duration="13886000" />
+      <workItem from="1665575347981" duration="14079000" />
+      <workItem from="1665644643005" duration="1125000" />
+      <workItem from="1665649933088" duration="1909000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -165,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665594158786</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add dom tests">
+      <created>1665594385729</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1665594385729</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
