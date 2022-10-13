@@ -54,6 +54,22 @@ export class ColorsActions {
         return ["#", decimalToHex(r), decimalToHex(g), decimalToHex(b), decimalToHex(a)].join("");
     }
 
+    static async rgb_text_to_hex(step, context, process, item) {
+        let value = await crs.process.getValue(step.args.value, context, process, item);
+        value = value.replace("rgba(", "");
+        value = value.replace("rgb(", "");
+        value = value.replace(")", "");
+        const parts = value.split(",");
+
+        return await this.rgb_to_hex({
+            args: {
+                r: Number(parts[0].trim()),
+                g: Number(parts[1].trim()),
+                b: Number(parts[2].trim())
+            }
+        }, context, process, item);
+    }
+
     static async css_to_hex(step, context, process, item) {
         const results = await processVariables(step, context, process, item, async (value) => {
             if (value.indexOf("#") != -1) {
