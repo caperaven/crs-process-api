@@ -114,7 +114,7 @@ function setAttribute(attr, value) {
 }
 
 function removeAttribute (attr) {
-    const attrObj = this.getAttribute(attr);
+    const attrObj = this.attributes.find(item => item.name == attr);
 
     if (attrObj != null) {
         const index = this.attributes.indexOf(attrObj);

@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-collection.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/dom-interactive-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-interactive-actions.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/clone-node.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/clone-node.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: dom-interactive-actions.test.js">
+  <component name="RunManager" selected="Deno.Deno: dom-collection.test.js">
     <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -56,12 +56,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: dom-interactive-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-interactive-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+    <configuration name="Deno: dom-collection.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-collection.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Deno: fixed-layout-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+    <configuration name="Deno: dom-interactive-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-interactive-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -77,19 +77,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Deno.Deno: dom-collection.test.js" />
       <item itemvalue="Deno.Deno: dom-interactive-actions.test.js" />
       <item itemvalue="Deno.Deno: colors-actions.test.js" />
       <item itemvalue="Deno.Deno: component-actions.test.js" />
-      <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
       <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Deno.Deno: dom-interactive-actions.test.js" />
         <item itemvalue="npm.test" />
+        <item itemvalue="Deno.Deno: dom-collection.test.js" />
+        <item itemvalue="Deno.Deno: dom-interactive-actions.test.js" />
         <item itemvalue="Deno.Deno: component-actions.test.js" />
         <item itemvalue="Deno.Deno: colors-actions.test.js" />
-        <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -104,7 +104,7 @@
       <workItem from="1665562751680" duration="7373000" />
       <workItem from="1665575347981" duration="14079000" />
       <workItem from="1665644643005" duration="1125000" />
-      <workItem from="1665649933088" duration="11882000" />
+      <workItem from="1665649933088" duration="13282000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -218,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665662581483</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="dom interactive tests">
+      <created>1665664144620</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1665664144620</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
