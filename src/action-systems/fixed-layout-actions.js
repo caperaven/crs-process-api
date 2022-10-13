@@ -10,6 +10,14 @@ export class FixedLayoutActions {
         await this[step.action]?.(step, context, process, item);
     }
 
+    /**
+     * position a element based on a target element.
+     * you can place the element at the top, right, bottom or left of the target.
+     * you can also anchor the element based on it's position.
+     * for example if you place a element left of target you can anchor it to the top of bottom of the target.
+     * if you place it at the top you can anchor it on the left or right.
+     * ...
+     */
     static async set(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const target = await crs.dom.get_element(step.args.target, context, process, item);
