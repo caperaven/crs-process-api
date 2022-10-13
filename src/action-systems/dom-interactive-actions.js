@@ -8,7 +8,7 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Create a animation layer for elements to move and animate on.
+     * Create an animation layer for elements to move and animate on.
      */
     static async get_animation_layer(step, context, process, item) {
         const layer = document.querySelector("#animation-layer");

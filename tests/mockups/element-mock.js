@@ -24,7 +24,6 @@ export function mockElement(instance, tag, id) {
 
     instance.textContent = "";
     instance.innerText = "";
-    instance.innerHTML = "";
     instance.attributes = [];
     instance.children = [];
     instance.dataset = {};
@@ -67,6 +66,19 @@ export function mockElement(instance, tag, id) {
         get() {
             const index = this.parentElement.children.indexOf(this);
             return this.parentElement.children[index - 1];
+        }
+    })
+
+    Object.defineProperty(instance, "innerHTML", {
+        get() {
+            return this._innerHTML || "";
+        },
+
+        set(newValue) {
+            this._innerHTML = newValue;
+            if (newValue.trim().length == 0) {
+                this.children.length = 0;
+            }
         }
     })
 
