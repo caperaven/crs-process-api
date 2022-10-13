@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-collection.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/dom-utils-actions.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,12 +44,7 @@
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: dom-collection.test.js">
-    <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Deno.Deno: dom-utils-actions.test.js">
     <configuration name="Deno: component-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/component-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -66,6 +60,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Deno: dom-utils-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/dom-utils-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -77,19 +76,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Deno.Deno: dom-utils-actions.test.js" />
       <item itemvalue="Deno.Deno: dom-collection.test.js" />
       <item itemvalue="Deno.Deno: dom-interactive-actions.test.js" />
-      <item itemvalue="Deno.Deno: colors-actions.test.js" />
       <item itemvalue="Deno.Deno: component-actions.test.js" />
       <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="npm.test" />
+        <item itemvalue="Deno.Deno: dom-utils-actions.test.js" />
         <item itemvalue="Deno.Deno: dom-collection.test.js" />
         <item itemvalue="Deno.Deno: dom-interactive-actions.test.js" />
         <item itemvalue="Deno.Deno: component-actions.test.js" />
-        <item itemvalue="Deno.Deno: colors-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -104,7 +103,7 @@
       <workItem from="1665562751680" duration="7373000" />
       <workItem from="1665575347981" duration="14079000" />
       <workItem from="1665644643005" duration="1125000" />
-      <workItem from="1665649933088" duration="13282000" />
+      <workItem from="1665649933088" duration="15775000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -225,7 +224,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665664144620</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="dom interactive tests">
+      <created>1665665649651</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1665665649651</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
