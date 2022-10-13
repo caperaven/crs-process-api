@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ede4db75-9ee0-4c22-bd0a-ceb66b3e643d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/action-systems-tests/component-actions.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/mockups/custom-event.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action-systems/fixed-layout-actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/action-systems/fixed-layout-actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/element-mock.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/element-mock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mockups/init.js" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mockups/init.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,15 +31,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/caperaven projects/crs-process-api/tests&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "F:/caperaven projects/crs-process-api/tests",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\Johan\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\222.3739.54\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\caperaven projects\crs-process-api\tests" />
@@ -44,8 +48,13 @@
       <recent name="F:\caperaven projects\crs-process-api\app\styles" />
     </key>
   </component>
-  <component name="RunManager" selected="Deno.Deno: fixed-layout-actions.test.js">
-    <configuration name="Deno: condition-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/condition-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+  <component name="RunManager" selected="Deno.Deno: colors-actions.test.js">
+    <configuration name="Deno: colors-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/colors-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Deno: component-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/component-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -56,11 +65,6 @@
       </method>
     </configuration>
     <configuration name="Deno: fixed-layout-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/fixed-layout-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Deno: styles-actions.test.js" type="DenoConfigurationType" temporary="true" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/action-systems-tests/styles-actions.test.js" programParameters="test --allow-all" workingDirectory="$PROJECT_DIR$/tests/action-systems-tests">
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -76,19 +80,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Deno.Deno: colors-actions.test.js" />
+      <item itemvalue="Deno.Deno: component-actions.test.js" />
       <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
       <item itemvalue="Deno.Deno: dom-actions.test.js" />
-      <item itemvalue="Deno.Deno: styles-actions.test.js" />
-      <item itemvalue="Deno.Deno: condition-actions.test.js" />
       <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.test" />
+        <item itemvalue="Deno.Deno: colors-actions.test.js" />
+        <item itemvalue="Deno.Deno: component-actions.test.js" />
         <item itemvalue="Deno.Deno: fixed-layout-actions.test.js" />
         <item itemvalue="Deno.Deno: dom-actions.test.js" />
-        <item itemvalue="Deno.Deno: styles-actions.test.js" />
-        <item itemvalue="npm.test" />
-        <item itemvalue="Deno.Deno: condition-actions.test.js" />
       </list>
     </recent_temporary>
   </component>
@@ -103,7 +107,7 @@
       <workItem from="1665562751680" duration="7373000" />
       <workItem from="1665575347981" duration="14079000" />
       <workItem from="1665644643005" duration="1125000" />
-      <workItem from="1665649933088" duration="3970000" />
+      <workItem from="1665649933088" duration="6101000" />
     </task>
     <task id="LOCAL-00001" summary="refactor resize manager and add move manger starting blocks">
       <created>1665566198422</created>
@@ -182,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665652389305</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add dom tests">
+      <created>1665655432766</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1665655432766</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

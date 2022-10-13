@@ -8,6 +8,7 @@ import "./custom-elements.js";
 import "./document-mock.js";
 import "./computed-style.js";
 import "./screen.js";
+import "./custom-event.js";
 
 export async function init() {
     const packages = await getPackagesFolder()

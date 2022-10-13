@@ -67,11 +67,10 @@ Deno.test("colors - hex_to_normalised", async () => {
 
 Deno.test("colors - css_to_hex", async () => {
     const element = new ElementMock();
-    element.variables = {
-        "--color-hex": "#ff0000",
-        "--color-rgb": "rgb(255, 0, 0)",
-        "--color-rgba": "rgb(255, 0, 0, 125)"
-    };
+
+    element.style["--color-hex"] = "#ff0000";
+    element.style["--color-rgb"] = "rgb(255, 0, 0)";
+    element.style["--color-rgba"] = "rgb(255, 0, 0, 125)";
 
     const result = await crs.call("colors", "css_to_hex", {
         element: element,
@@ -85,11 +84,10 @@ Deno.test("colors - css_to_hex", async () => {
 
 Deno.test("colors - css_to_normalized", async () => {
     const element = new ElementMock();
-    element.variables = {
-        "--color-hex": "#ff0000",
-        "--color-rgb": "rgb(255, 0, 0)",
-        "--color-rgba": "rgb(255, 0, 0, 125)"
-    };
+
+    element.style["--color-hex"] = "#ff0000";
+    element.style["--color-rgb"] = "rgb(255, 0, 0)";
+    element.style["--color-rgba"] = "rgb(255, 0, 0, 125)";
 
     const result = await crs.call("colors", "css_to_normalized", {
         element: element,

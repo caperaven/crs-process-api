@@ -194,7 +194,10 @@ function replaceChild(node, child) {
 }
 
 function dispatchEvent(event, args) {
-    const events = this.__events.filter(item => item.event == event) || [];
+    const events = this.__events.filter(item => {
+        event = typeof item.event == "object" ? item.event.event : item.event
+        return item.event == event
+    }) || [];
     for (let eventItem of events) {
         eventItem.callback(args);
     }
