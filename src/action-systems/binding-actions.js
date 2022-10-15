@@ -93,8 +93,8 @@ export class BindingActions {
      * Set a single globals value
      */
     static async set_global(step, context, process, item) {
-        const property = await crsbinding.process.getValue(step.args.property, context, process, item);
-        const value = await crsbinding.process.getValue(step.args.value, context, process, item);
+        const property = await crs.process.getValue(step.args.property, context, process, item);
+        const value = await crs.process.getValue(step.args.value, context, process, item);
         crsbinding.data.setProperty(crsbinding.$globals, property, value);
     }
 
@@ -102,7 +102,7 @@ export class BindingActions {
      * Set multiple globas values.
      */
     static async set_globals(step, context, process, item) {
-        const values = await crsbinding.process.getValue(step.args.values, context, process, item);
+        const values = await crs.process.getValue(step.args.values, context, process, item);
         const keys = Object.keys(values);
 
         for (let key of keys) {
@@ -111,7 +111,7 @@ export class BindingActions {
     }
 
     static async get_global(step, context, process, item) {
-        const property = await crsbinding.process.getValue(step.args.property, context, process, item);
+        const property = await crs.process.getValue(step.args.property, context, process, item);
         const value = crsbinding.data.getProperty(crsbinding.$globals, property);
 
         if (step.args.target != null) {
@@ -122,7 +122,7 @@ export class BindingActions {
     }
 
     static async get_globals(step, context, process, item) {
-        const values = await crsbinding.process.getValue(step.args.values, context, process, item);
+        const values = await crs.process.getValue(step.args.values, context, process, item);
         const keys = Object.keys(values);
 
         for (let key of keys) {
