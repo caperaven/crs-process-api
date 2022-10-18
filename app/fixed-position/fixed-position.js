@@ -1,4 +1,9 @@
 export default class FixedPositionVM extends crsbinding.classes.ViewBase {
+    get middle() {
+        const isMiddle = this.getProperty("middle");
+        return isMiddle == true ? "middle" : null;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
 
@@ -16,7 +21,7 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
             target: this.target,
             element: this.move,
             at: "left",
-            anchor: "top",
+            anchor: this.middle || "top",
             margin: 10
         })
     }
@@ -26,7 +31,7 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
             target: this.target,
             element: this.move,
             at: "right",
-            anchor: "bottom"
+            anchor: this.middle || "bottom"
         })
     }
 
@@ -35,7 +40,7 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
             target: this.target,
             element: this.move,
             at: "top",
-            anchor: "left"
+            anchor: this.middle || "left"
         })
     }
 
@@ -44,16 +49,18 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
             target: this.target,
             element: this.move,
             at: "bottom",
-            anchor: "right"
+            anchor: this.middle || "right"
         })
     }
 
     async click(event) {
-        await crs.call("fixed_layout", "set", {
-            element: this.move,
-            point: {x: event.clientX, y: event.clientY},
-            at: "bottom",
-            anchor: "left"
-        })
+        if (event.target == this.container) {
+            await crs.call("fixed_layout", "set", {
+                element: this.move,
+                point: {x: event.clientX, y: event.clientY},
+                at: "bottom",
+                anchor: this.middle || "left"
+            })
+        }
     }
 }

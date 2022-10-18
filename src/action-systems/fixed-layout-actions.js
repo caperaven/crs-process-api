@@ -66,27 +66,27 @@ export class FixedLayoutActions {
     static #left(elementBounds, targetBounds, margin, anchor) {
         return {
             x: targetBounds.left - elementBounds.width - margin,
-            y: anchor == "bottom" ? targetBounds.bottom - elementBounds.height : targetBounds.top
+            y: verticalAnchor(anchor, targetBounds, elementBounds)
         }
     }
 
     static #right(elementBounds, targetBounds, margin, anchor) {
         return {
             x: targetBounds.left + targetBounds.width + margin,
-            y: anchor == "bottom" ? targetBounds.bottom - elementBounds.height : targetBounds.top
+            y: verticalAnchor(anchor, targetBounds, elementBounds)
         }
     }
 
     static #top(elementBounds, targetBounds, margin, anchor) {
         return {
-            x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
+            x: horizontalAnchor(anchor, targetBounds, elementBounds),
             y: targetBounds.top - elementBounds.height - margin
         }
     }
 
     static #bottom(elementBounds, targetBounds, margin, anchor) {
         return {
-            x: anchor == "right" ? targetBounds.right - elementBounds.width : targetBounds.left,
+            x: horizontalAnchor(anchor, targetBounds, elementBounds),
             y: targetBounds.top + targetBounds.height + margin
         }
     }
@@ -109,6 +109,40 @@ export class FixedLayoutActions {
         }
 
         return position;
+    }
+}
+
+function verticalAnchor(anchor, targetBounds, elementBounds) {
+    switch(anchor) {
+        case "middle": {
+            return (targetBounds.top + targetBounds.height / 2) - (elementBounds.height / 2);
+            break;
+        }
+        case "bottom": {
+            return targetBounds.bottom - elementBounds.height;
+            break;
+        }
+        case "top": {
+            return targetBounds.top;
+            break;
+        }
+    }
+}
+
+function horizontalAnchor(anchor, targetBounds, elementBounds) {
+    switch(anchor) {
+        case "middle": {
+            return (targetBounds.left + targetBounds.width / 2) - (elementBounds.width / 2);
+            break;
+        }
+        case "left": {
+            return targetBounds.left;
+            break;
+        }
+        case "right": {
+            return targetBounds.right - elementBounds.width;
+            break;
+        }
     }
 }
 

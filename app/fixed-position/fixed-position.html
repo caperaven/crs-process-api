@@ -24,16 +24,15 @@
 </style>
 
 <label>
-    <div>Padding</div>
-    <input type="number" value.bind="value">
-    <input type="range" min="0" max="50" value.bind="value">
+    <span>Middel</span>
+    <input type="checkbox" checked.bind="middle" />
 </label>
 <button click.call="left">Left</button>
 <button click.call="right">Right</button>
 <button click.call="top">Top</button>
 <button click.call="bottom">Bottom</button>
 
-<div class="container">
+<div class="container" ref="container">
     <div class="center" ref="target">center</div>
     <div class="moved" ref="move">moved</div>
 </div>
