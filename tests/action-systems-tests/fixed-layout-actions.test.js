@@ -47,6 +47,18 @@ describe("fixed layout tests", () => {
         assertEquals(element.style.translate, "50px 40px")
     })
 
+    it("top - middle", async () => {
+        await crs.call("fixed_layout", "set", {
+            element: element,
+            target: target,
+            at: "top",
+            anchor: "middle"
+        });
+
+        assertEquals(element.style.position, "fixed");
+        assertEquals(element.style.translate, "125px 50px")
+    })
+
     it("bottom - left", async () => {
         await crs.call("fixed_layout", "set", {
             element: element,
@@ -97,6 +109,18 @@ describe("fixed layout tests", () => {
 
         assertEquals(element.style.position, "fixed");
         assertEquals(element.style.translate, "40px 50px");
+    })
+
+    it ("left - middle", async () => {
+        await crs.call("fixed_layout", "set", {
+            element: element,
+            target: target,
+            at: "left",
+            anchor: "middle"
+        });
+
+        assertEquals(element.style.position, "fixed");
+        assertEquals(element.style.translate, "50px 125px");
     })
 
     it ("right - top", async () => {
@@ -172,4 +196,5 @@ describe("fixed layout tests", () => {
         assertEquals(element.style.position, "fixed");
         assertEquals(element.style.translate, "51px 50px");
     })
+
 })
