@@ -19,6 +19,7 @@ headless: true
   - [Dom]({{< relref "/docs/systems/dom.md" >}})
   - [Files]({{< relref "/docs/systems/files.md" >}})
   - [File System]({{< relref "/docs/systems/fs.md" >}})
+  - [Fixed Layout]({{< relref "/docs/systems/fixed-layout.md" >}})
   - [Loop]({{< relref "/docs/systems/loop.md" >}})
   - [Math]({{< relref "/docs/systems/math.md" >}})
   - [Object]({{< relref "/docs/systems/object.md" >}})
