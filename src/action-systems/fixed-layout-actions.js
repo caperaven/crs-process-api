@@ -19,8 +19,16 @@ export class FixedLayoutActions {
      * ...
      */
     static async set(step, context, process, item) {
+        /**
+         * JHR:
+         * 1. todo. add point location
+         * 2. anchor middle
+         */
+
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const target = await crs.dom.get_element(step.args.target, context, process, item);
+        const point = await crs.process.getValue(step.args.point, context, process, item);
+
         const at = await crs.process.getValue(step.args.at || "bottom", context, process, item);
         const anchor = await crs.process.getValue(step.args.anchor, context, process, item);
         const margin = await crs.process.getValue(step.args.margin || 0, context, process, item);
@@ -30,11 +38,29 @@ export class FixedLayoutActions {
         element.style.top = 0;
 
         const elementBounds = element.getBoundingClientRect();
-        const targetBounds = target.getBoundingClientRect();
+
+        let targetBounds;
+
+        if (target != null) {
+            targetBounds = target.getBoundingClientRect();
+        }
+        else {
+            targetBounds = {
+                x: point.x,
+                left: point.x,
+                y: point.y,
+                top: point.y,
+                width: 1,
+                height: 1,
+                right: point.x + 1,
+                bottom: point.y + 1
+            }
+        }
 
         let position = this.#actions[at](elementBounds, targetBounds, margin, anchor);
         position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height);
         element.style.translate = `${position.x}px ${position.y}px`;
+        element.removeAttribute("hidden");
     }
 
     static #left(elementBounds, targetBounds, margin, anchor) {

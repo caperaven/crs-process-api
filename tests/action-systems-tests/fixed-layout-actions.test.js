@@ -124,4 +124,52 @@ describe("fixed layout tests", () => {
         assertEquals(element.style.position, "fixed");
         assertEquals(element.style.translate, "210px 50px");
     })
+
+    it ("below - point - left", async() => {
+        await crs.call("fixed_layout", "set", {
+            element: element,
+            point: {x: 100, y:100},
+            at: "bottom",
+            anchor: "left"
+        })
+
+        assertEquals(element.style.position, "fixed");
+        assertEquals(element.style.translate, "100px 101px");
+    })
+
+    it ("below - point - right", async() => {
+        await crs.call("fixed_layout", "set", {
+            element: element,
+            point: {x: 100, y:100},
+            at: "bottom",
+            anchor: "right"
+        })
+
+        assertEquals(element.style.position, "fixed");
+        assertEquals(element.style.translate, "51px 101px");
+    })
+
+    it ("top - point - left", async() => {
+        await crs.call("fixed_layout", "set", {
+            element: element,
+            point: {x: 100, y:100},
+            at: "top",
+            anchor: "left"
+        })
+
+        assertEquals(element.style.position, "fixed");
+        assertEquals(element.style.translate, "100px 50px");
+    })
+
+    it ("top - point - right", async() => {
+        await crs.call("fixed_layout", "set", {
+            element: element,
+            point: {x: 100, y:100},
+            at: "top",
+            anchor: "right"
+        })
+
+        assertEquals(element.style.position, "fixed");
+        assertEquals(element.style.translate, "51px 50px");
+    })
 })

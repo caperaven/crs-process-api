@@ -236,17 +236,9 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async applyFilter() {
-        await crsbinding.events.emitter.emit("run-process", {
-            context: this,
-            step: {
-                action: "filter",
-                args: {
-                    schema: "filter",
-                }
-            },
-            parameters: {
-                bId: this._dataId
-            }
+        await crs.call("dom_collection", "filter_children", {
+            element: "#lstFilter",
+            filter: this.getProperty("filter")
         })
     }
 

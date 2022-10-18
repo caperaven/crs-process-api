@@ -19,6 +19,7 @@ export class DragDropManager {
         }
 
         this._element.addEventListener("mousedown", this._mouseDownHandler);
+        this._element.__dragDropManager = this;
     }
 
     dispose() {

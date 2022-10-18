@@ -1,6 +1,14 @@
 export default class FixedPositionVM extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
+
+        this.clickHandler = this.click.bind(this);
+        this._element.addEventListener("click", this.clickHandler);
+    }
+
+    async disconnectedCallback() {
+        this._element.removeEventListener("click", this.clickHandler);
+        this.clickHandler = null;
     }
 
     async left(event) {
@@ -37,6 +45,15 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
             element: this.move,
             at: "bottom",
             anchor: "right"
+        })
+    }
+
+    async click(event) {
+        await crs.call("fixed_layout", "set", {
+            element: this.move,
+            point: {x: event.clientX, y: event.clientY},
+            at: "bottom",
+            anchor: "left"
         })
     }
 }
