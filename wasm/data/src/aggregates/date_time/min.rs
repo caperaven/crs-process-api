@@ -1,4 +1,4 @@
-use chrono::{naive, NaiveDateTime};
+use chrono::NaiveDateTime;
 use serde_json::Value;
 use crate::traits::Aggregate;
 
@@ -9,7 +9,7 @@ pub struct Min {
 impl Min {
     pub fn new() -> Min {
         Min {
-            value: naive::MAX_DATETIME
+            value: NaiveDateTime::MAX
         }
     }
 }

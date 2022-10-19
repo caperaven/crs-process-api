@@ -2,6 +2,7 @@
 
 use wasm_bindgen::prelude::*;
 use serde_json::{Value};
+use crate::date_time::date_diff_str;
 use crate::evaluators::evaluate_object;
 
 mod evaluators;
@@ -12,6 +13,7 @@ mod duration;
 mod enums;
 mod aggregates;
 mod traits;
+mod date_time;
 
 use crate::duration::{iso8601_to_duration_str, iso8601_to_duration_str_batch};
 use crate::processors::get_unique;
@@ -139,4 +141,12 @@ pub fn build_perspective(intent: String, data: String, rows: Vec<usize>) -> Stri
 
     let result = processors::build_perspective(&intent_obj, &data_array, &rows);
     return result;
+}
+
+#[wasm_bindgen]
+pub fn date_difference_str(date1: String, date2: String) -> String {
+    match date_diff_str(&date1, &date2) {
+        Ok(s) => s,
+        Err(es) => es
+    }
 }
