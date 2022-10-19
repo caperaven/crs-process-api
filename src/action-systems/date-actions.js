@@ -13,8 +13,8 @@ export class DatesActions {
         const currentMonthDateString = new Date(year, month);
         let previousMonthDates = await getPreviousMonthDates(year, month);
         let currentType, currentDay;
-        let nextDate = 1;
         let dates = [];
+        let endLoop = false;
 
         onlyCurrent == true ? previousMonthDates = []:"";
         for(let i = 0; i < 6; i++){
@@ -27,9 +27,6 @@ export class DatesActions {
 
                     if(currentDay !== currentMonthLastDate && currentMonthDateString.getMonth() === nextMonthDateString.getMonth()){
                         currentType = false;
-                        currentMonthDateString.setDate((nextDate));
-                        currentDay = currentMonthDateString.getDate();
-                        nextDate++;
                     }
                 }else {
                     currentType = false;
@@ -40,7 +37,10 @@ export class DatesActions {
                     number: currentDay, current: currentType, day: weekdays[j]
                 }
                 dates.push(days);
+                if(currentDay === currentMonthLastDate && previousMonthDates.length == 0 && onlyCurrent == true)
+                { endLoop = true; break;}
             }
+           if(endLoop == true) break;
         }
         if(step.args.target != null){
             await crs.process.setValue(step.args.target, dates, context, process, item);
