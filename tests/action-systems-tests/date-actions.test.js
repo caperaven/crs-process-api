@@ -9,7 +9,7 @@ Deno.test("date_diff_test_one_second", async () => {
        date2: "2022-02-01T00:00:01.000Z"
    });
 
-   assertEquals(res, "0:0:0:1:0");
+   assertEquals(res, "0:0:0:1");
 });
 
 Deno.test("date_diff_test_large_swapped", async () => {
@@ -18,5 +18,5 @@ Deno.test("date_diff_test_large_swapped", async () => {
         date2: "2022-02-01T00:00:00.000Z"
     });
 
-    assertEquals(res, "31:8:2:10:15");
+    assertEquals(res, "31:8:2:10");
 });
