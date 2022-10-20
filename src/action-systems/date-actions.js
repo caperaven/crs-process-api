@@ -17,9 +17,9 @@ export class DatesActions {
         let endLoop = false;
 
         onlyCurrent === true ? previousMonthDates = []:"";
-        for(let i = 0; i < 6; i++){
+        for (let i = 0; i < 6; i++) {
             let days = {};
-            for(let j = 0; j < 7; j++){
+            for (let j = 0; j < 7; j++) {
                 tempDay = j;
                 if (previousMonthDates.length === 0) {
                     currentType = true;
@@ -27,9 +27,8 @@ export class DatesActions {
                     currentDay = currentMonthDateString.getDate();
                     currentMonthDateString.setDate((currentDay + 1));
 
-                    if (currentDay !== currentMonthLastDate && currentMonthDateString.getMonth() === nextMonthDateString.getMonth()) {
-                        currentType = false;
-                    }
+                    if (currentDay !== currentMonthLastDate && currentMonthDateString.getMonth() === nextMonthDateString.getMonth())
+                    { currentType = false; }
                 }
                 else {
                     currentType = false;
@@ -48,16 +47,17 @@ export class DatesActions {
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, dates, context, process, item);
         }
+
         return dates;
     }
 }
-async function getPreviousMonthDates(year,month){
+async function getPreviousMonthDates(year,month) {
     const dateString = new Date(year, month,0);
     const lastDay = dateString.getDay();
     const lastDate = dateString.getDate();
     let previousDays =[];
 
-    for (let i = lastDay; i >= 0; i--){
+    for (let i = lastDay; i >= 0; i--) {
         previousDays.push(lastDate - i);
     }
     return previousDays;
