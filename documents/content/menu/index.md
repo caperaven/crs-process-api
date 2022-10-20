@@ -11,6 +11,7 @@ headless: true
   - [Array]({{< relref "/docs/systems/array.md" >}})
   - [Binding]({{< relref "/docs/systems/binding.md" >}})
   - [Color]({{< relref "/docs/systems/colors.md" >}})
+  - [Compile]({{< relref "/docs/systems/compile.md" >}})
   - [Condition]({{< relref "/docs/systems/condition.md" >}})
   - [Console]({{< relref "/docs/systems/console.md" >}})
   - [CSS Grid]({{< relref "/docs/systems/css-grid.md" >}})
