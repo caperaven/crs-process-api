@@ -9,9 +9,9 @@ export class CompileActions {
         let exp = await crs.process.getValue(step.args.exp, context, process, item);
         exp = await crsbinding.expression.sanitize(exp).expression;
 
-        const parts = exp.split("?")
-        const left = parts[0].trim();
-        const right = parts[1].trim();
+        const parts = exp.split("?").map(item => item.trim());
+        const left = parts[0];
+        const right = parts[1];
         const rightParts = right.split(":");
 
         code.push(`if (${left}) {`);
