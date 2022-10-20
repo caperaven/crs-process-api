@@ -7,60 +7,31 @@ export class DatesActions {
         const month = await crs.process.getValue(step.args.month, context, process, item);
         const year = await crs.process.getValue(step.args.year, context, process, item);
         const onlyCurrent = await crs.process.getValue(step.args.only_current,context,process, item);
-        const currentMonthLastDate = new Date(year, month + 1, 0).getDate();
-        const weekdays = ["sun","mon","tue","wed","thu","fri","sat"];
-        const nextMonthDateString = new Date(year,month + 1);
-        const currentMonthDateString = new Date(year, month);
-        let previousMonthDates = await getPreviousMonthDates(year, month);
-        let currentType, currentDay, tempDay;
-        let dates = [];
-        let endLoop = false;
+        const startingDate = new Date(year, month, -(new Date(year, month, 1).getDay())+1);
+        const currentMonthEndDate = new Date(year,month + 1, 0).getDate();
+        const currentMonthStartDate = new Date(year,month, 1);
+        let week = {}, dates = [], endLoop = 42, startingDays = startingDate, currentType;
 
-        onlyCurrent === true ? previousMonthDates = []:"";
-        for (let i = 0; i < 6; i++) {
-            let days = {};
-            for (let j = 0; j < 7; j++) {
-                tempDay = j;
-                if (previousMonthDates.length === 0) {
-                    currentType = true;
-                    onlyCurrent === true ? tempDay = currentMonthDateString.getDay():"";
-                    currentDay = currentMonthDateString.getDate();
-                    currentMonthDateString.setDate((currentDay + 1));
+        onlyCurrent === true ? (endLoop = currentMonthEndDate,  startingDays = currentMonthStartDate): null;
+        for (let i = 0; i < endLoop; i++) {
+            const dayOfTheWeek = (startingDays).toLocaleString('en-us', {weekday:'short'});
 
-                    if (currentDay !== currentMonthLastDate && currentMonthDateString.getMonth() === nextMonthDateString.getMonth())
-                    { currentType = false; }
-                }
-                else {
-                    currentType = false;
-                    currentDay = previousMonthDates.shift();
-                }
+            onlyCurrent === false && currentMonthStartDate.getMonth() !== startingDate.getMonth() ?
+            currentType = false: currentType = true;
 
-                days = { number: currentDay, current: currentType, day: weekdays[tempDay] }
-                dates.push(days);
+            week = { number: startingDays.getDate(), current: currentType, day: dayOfTheWeek }
+            dates.push(week);
 
-                if (currentDay === currentMonthLastDate && previousMonthDates.length === 0 && onlyCurrent === true)
-                { endLoop = true; break; }
-            }
-           if (endLoop === true) break;
+            startingDays.setDate(startingDays.getDate() + 1);
         }
 
         if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, dates, context, process, item);
+            await crs.process.setValue(step.args.table, dates, context, process, item);
         }
 
         return dates;
     }
 }
-async function getPreviousMonthDates(year,month) {
-    const dateString = new Date(year, month,0);
-    const lastDay = dateString.getDay();
-    const lastDate = dateString.getDate();
-    let previousDays =[];
 
-    for (let i = lastDay; i >= 0; i--) {
-        previousDays.push(lastDate - i);
-    }
-    return previousDays;
-}
 
 crs.intent.dates = DatesActions;
