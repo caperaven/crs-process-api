@@ -6,23 +6,40 @@ export class DatesActions {
     static async get_days(step, context, process, item) {
         const month = await crs.process.getValue(step.args.month, context, process, item);
         const year = await crs.process.getValue(step.args.year, context, process, item);
-        const onlyCurrent = await crs.process.getValue(step.args.only_current,context,process, item);
-        const startingDate = new Date(year, month, -(new Date(year, month, 1).getDay())+1);
-        const currentMonthEndDate = new Date(year,month + 1, 0).getDate();
-        const currentMonthStartDate = new Date(year,month, 1);
-        let week = {}, dates = [], endLoop = 42, startingDays = startingDate, currentType;
+        const onlyCurrent = await crs.process.getValue(step.args.only_current, context, process, item);
+        const currentMonthStartDate = new Date(year, month, 1);
+        const currentMonth = currentMonthStartDate.getMonth();
+        let dates = [];
+        let dayCount;
+        let startingDate;
+        let currentType;
 
-        onlyCurrent === true ? (endLoop = currentMonthEndDate,  startingDays = currentMonthStartDate): null;
-        for (let i = 0; i < endLoop; i++) {
-            const dayOfTheWeek = (startingDays).toLocaleString('en-us', {weekday:'short'});
+        if (onlyCurrent === true) {
+            startingDate = currentMonthStartDate;
+            dayCount = new Date(year, month + 1, 0).getDate();
+        } else {
+            startingDate = new Date(year, month, -(currentMonthStartDate.getDay()) + 1);
+            dayCount = 42;
+        }
 
-            onlyCurrent === false && currentMonthStartDate.getMonth() !== startingDate.getMonth() ?
-            currentType = false: currentType = true;
+        for (let i = 0; i < dayCount; i++) {
+            const dayOfTheWeek = startingDate.toLocaleString('en-us', {weekday: 'short'});
 
-            week = { number: startingDays.getDate(), current: currentType, day: dayOfTheWeek }
-            dates.push(week);
+            if (onlyCurrent === false && currentMonth !== startingDate.getMonth()) {
+                currentType = false
+            } else {
+                currentType = true;
+            }
 
-            startingDays.setDate(startingDays.getDate() + 1);
+            const day = {
+                number: startingDate.getDate(),
+                current: currentType,
+                day: dayOfTheWeek,
+                date: new Date(startingDate.getTime())
+            }
+
+            dates.push(day);
+            startingDate.setDate(startingDate.getDate() + 1);
         }
 
         if (step.args.target != null) {
