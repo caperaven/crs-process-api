@@ -12,3 +12,14 @@ Deno.test("compile actions - if", async () => {
     assertEquals(trueValue, true);
     assertEquals(falseValue, false);
 })
+
+Deno.test("compile - case_value", async () => {
+    const result = await crs.call("compile", "case_value", {exp: "value < 10: 'yes', value < 20: 'ok', default: 'no'"});
+    const value1 = result({value: 5});
+    const value2 = result({value: 15});
+    const value3 = result({value: 25})
+
+    assertEquals(value1, 'yes');
+    assertEquals(value2, 'ok');
+    assertEquals(value3, 'no');
+})
