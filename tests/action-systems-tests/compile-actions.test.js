@@ -5,7 +5,7 @@ import {init} from "./../mockups/init.js";
 await init();
 
 Deno.test("compile actions - if", async () => {
-    const result = await crs.call("compile", "if_value", {exp: "model.value == 10 ? true : false"});
+    const result = await crs.call("compile", "if_value", {exp: "value == 10 ? true : false"});
     const trueValue = result({value: 10});
     const falseValue = result({value: 20});
 

@@ -6,7 +6,9 @@ export class CompileActions {
     static async if_value(step, context, process, item) {
         // "model.value == 10 ? true : false"
         const code = [];
-        const exp = await crs.process.getValue(step.args.exp, context, process, item);
+        let exp = await crs.process.getValue(step.args.exp, context, process, item);
+        exp = await crsbinding.expression.sanitize(exp).expression;
+
         const parts = exp.split("?")
         const left = parts[0].trim();
         const right = parts[1].trim();
@@ -22,7 +24,7 @@ export class CompileActions {
             code.push("}");
         }
 
-        const fn = new Function("model", code.join("\n"));
+        const fn = new Function("context", code.join("\n"));
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, fn, context, process, item);
