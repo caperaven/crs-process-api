@@ -186,4 +186,4 @@ async function filedrop_handler(handler, event) {
     handler.call(this, results);
 }
 
-crs.intent.file = FileActions;
+crs.intent.files = FileActions;
