@@ -1,4 +1,4 @@
-export class FileActions {
+export class FilesActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
     }
@@ -186,4 +186,4 @@ async function filedrop_handler(handler, event) {
     handler.call(this, results);
 }
 
-crs.intent.file = FileActions;
+crs.intent.files = FilesActions;
