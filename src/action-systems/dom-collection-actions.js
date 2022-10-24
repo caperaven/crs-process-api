@@ -20,6 +20,12 @@ async function filter(element, filter) {
 
     for (let child of element.children) {
         child.removeAttribute("aria-hidden");
+
+        if (child.tagName == "HR") {
+            child.setAttribute("aria-hidden", "true");
+            continue;
+        }
+
         if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
             child.setAttribute("aria-hidden", "true");
         }
