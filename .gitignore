@@ -6,5 +6,6 @@ yarn-error.log
 /coverage/
 /wasm/data/target/
 wasm/data/Cargo.lock
+dist/
 
 /wasm/random_data/target/
