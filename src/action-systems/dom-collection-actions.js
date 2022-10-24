@@ -19,9 +19,9 @@ async function filter(element, filter) {
     const hasFilter = filter.length > 0;
 
     for (let child of element.children) {
-        child.removeAttribute("hidden");
+        child.removeAttribute("aria-hidden");
         if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
-            child.setAttribute("hidden", "hidden");
+            child.setAttribute("aria-hidden", "true");
         }
     }
 }
