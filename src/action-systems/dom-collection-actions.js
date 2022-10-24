@@ -21,7 +21,7 @@ async function filter(element, filter) {
     for (let child of element.children) {
         child.removeAttribute("aria-hidden");
 
-        if (child.tagName == "HR") {
+        if (child.tagName == "HR" && hasFilter) {
             child.setAttribute("aria-hidden", "true");
             continue;
         }
