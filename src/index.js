@@ -39,6 +39,7 @@ export async function initialize(root) {
     await crs.modules.add("colors", `${root}/action-systems/colors-actions.js`);
     await crs.modules.add("styles", `${root}/action-systems/styles-actions.js`);
     await crs.modules.add("compile", `${root}/action-systems/compile-actions.js`);
+    await crs.modules.add("date", `${root}/action-systems/date-actions.js`);
 
     crs.dom = (await crs.modules.get("dom")).DomActions;
 }

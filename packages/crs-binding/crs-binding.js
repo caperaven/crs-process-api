@@ -540,6 +540,44 @@ function setContext(element, property, context) {
   }
 }
 
+// src/lib/converter-parts.js
+function getConverterParts(exp) {
+  const result = {
+    path: exp.trim()
+  };
+  clean(result);
+  parseConverter(result);
+  parseParameter(result);
+  return result;
+}
+function clean(result) {
+  if (result.path[0] == "$" && result.path[1] == "{") {
+    result.path = result.path.substring(2, result.path.length - 1);
+  }
+}
+function parseConverter(result) {
+  const parts = subDivide(result.path, ":");
+  result.path = parts[0];
+  result.converter = parts[1];
+}
+function parseParameter(result) {
+  const index1 = result.converter.indexOf("(");
+  const index2 = result.converter.indexOf(")");
+  const parameter = result.converter.substring(index1 + 1, index2).split("'").join('"');
+  const converter = result.converter.substring(0, index1);
+  const postExp = result.converter.substring(index2 + 1, result.converter.length);
+  result.converter = converter;
+  result.parameter = parameter.length == 0 ? null : JSON.parse(parameter);
+  result.postExp = postExp;
+}
+function subDivide(str, sep) {
+  const index = str.indexOf(sep);
+  const result = [];
+  result.push(str.substring(0, index));
+  result.push(str.substring(index + 1, str.length));
+  return result;
+}
+
 // src/binding/providers/one-way-provider.js
 var OneWayProvider = class extends ProviderBase {
   dispose() {
@@ -553,21 +591,31 @@ var OneWayProvider = class extends ProviderBase {
     }
     this._exp = null;
     this._eventHandler = null;
+    this._converter = null;
+    this._getConvertFn = null;
     super.dispose();
   }
   async initialize() {
     if (this._value == "$context" || this._value == this._ctxName) {
       return setContext(this._element, this._property, this._context);
     }
+    if (this._value.indexOf(":") != -1) {
+      this._converter = getConverterParts(this._value);
+      const code = `return crsbinding.valueConvertersManager.convert(value, "${this._converter.converter}", "get", params)${this._converter.postExp}`;
+      this._getConvertFn = new Function("value", "params", code);
+    }
     this._eventHandler = this.propertyChanged.bind(this);
     this._exp = getExpForProvider(this);
     this._expObj = crsbinding.expression.compile(this._exp, ["element", "value"], { sanitize: false, ctxName: this._ctxName });
-    let path2 = this._value;
+    let path2 = this._converter == null ? this._value : this._converter.path;
     if (this._isNamedContext == true) {
       path2 = this._value.split(`${this._ctxName}.`).join("");
     }
     this.listenOnPath(path2, this._eventHandler);
-    const value = crsbinding.data.getValue(this._context, path2);
+    let value = crsbinding.data.getValue(this._context, path2);
+    if (this._getConvertFn != null) {
+      value = this._getConvertFn(value, this._converter.parameter);
+    }
     if (value != null) {
       this.propertyChanged(path2, value);
     }
@@ -578,6 +626,9 @@ var OneWayProvider = class extends ProviderBase {
     if (this._isLinked != true && this._element._dataId != null) {
       crsbinding.data.link(this._context, prop, this._element._dataId, this._property, value);
       this._isLinked = true;
+    }
+    if (this._getConvertFn != null) {
+      value = this._getConvertFn(value, this._converter.parameter);
     }
     crsbinding.idleTaskManager.add(this._expObj.function(this.data, this._element, value));
   }
@@ -609,8 +660,13 @@ var BindProvider = class extends OneWayProvider {
     if (this[typeFn] != null) {
       value = this[typeFn](value, event.target);
     }
+    if (this._converter != null) {
+      const converter = crsbinding.valueConvertersManager.get(this._converter.converter);
+      value = converter.set(value, this._converter.parameter);
+    }
+    const path2 = this._converter == null ? this._value : this._converter.path;
     const oldValue = crsbinding.data.getValue(this._context, this._value);
-    crsbinding.data._setContextProperty(this._context, this._value, value, { oldValue, ctxName: this._ctxName, dataType: type == "text" ? "string" : type });
+    crsbinding.data._setContextProperty(this._context, path2, value, { oldValue, ctxName: this._ctxName, dataType: type == "text" ? "string" : type });
     event.stopPropagation();
   }
   _number(value) {
@@ -1183,62 +1239,107 @@ var PostProvider = class extends EmitProvider {
 // src/binding/providers/setvalue-provider.js
 var SetValueProvider = class extends CallProvider {
   async initialize() {
-    const src = this._createSource();
-    this._fn = new Function("context", "event", "setProperty", src);
+    this.setPropertyHandler = setProperty2.bind(this);
+    const src = createSource.call(this);
+    this._fn = new Function("context", "event", "element", "setProperty", src);
   }
-  _createSource() {
-    if (this._value.trim()[0] != "[") {
-      return this._createSourceFrom(this._value);
-    }
-    const result = [];
-    const exps = this._value.substr(1, this._value.length - 2);
-    const parts = exps.split(";");
-    for (let part of parts) {
-      result.push(this._createSourceFrom(part.trim()));
-    }
-    return result.join("\n");
-  }
-  _createSourceFrom(exp) {
-    const parts = exp.split("=");
-    const value = this._processRightPart(parts[1].trim());
-    const src = this._processLeftPart(parts[0].trim(), value);
-    return src;
-  }
-  _processRightPart(part) {
-    return crsbinding.expression.sanitize(part, this._ctxName, true).expression;
-  }
-  _processLeftPart(part, value) {
-    if (part.indexOf("$globals") != -1) {
-      return this._getGlobalSetter(part, value);
-    } else {
-      return this._getContextSetter(part, value);
-    }
-  }
-  _getGlobalSetter(part, value) {
-    const path2 = part.replace("$globals.", "");
-    return `crsbinding.data.setProperty({_dataId: crsbinding.$globals}, "${path2}", ${value});`;
-  }
-  _getContextSetter(part, value) {
-    part = part.replace("$context.", "");
-    if (value.indexOf("context.") != -1) {
-      const parts = value.split("context.");
-      const property = parts[parts.length - 1];
-      let prefix = parts[0] == "!" ? "!" : "";
-      value = `${prefix}crsbinding.data.getValue({_dataId: ${this._context}}, "${property}")`;
-    }
-    return `crsbinding.data.setProperty({_dataId: ${this._context}}, "${part}", ${value});`;
+  dispose() {
+    this.setPropertyHandler = null;
+    super.dispose();
   }
   event(event) {
     const context = crsbinding.data.getContext(this._context);
-    crsbinding.idleTaskManager.add(this._fn(context, event, this._setProperty));
+    crsbinding.idleTaskManager.add(this._fn(context, event, this._element, this.setPropertyHandler));
     event.stopPropagation();
   }
-  _setProperty(obj, property, value) {
-    if (value !== void 0) {
-      crsbinding.data.setProperty(this, property, value);
-    }
-  }
 };
+function createSource() {
+  if (this._value.trim()[0] != "[") {
+    return createSourceFrom.call(this, this._value);
+  }
+  const result = [];
+  const exps = this._value.substr(1, this._value.length - 2);
+  const parts = exps.split(";");
+  for (let part of parts) {
+    result.push(createSourceFrom.call(this, part.trim()));
+  }
+  return result.join("\n");
+}
+function createSourceFrom(exp) {
+  const parts = exp.split("=");
+  const value = processRightPart.call(this, parts[1].trim());
+  const src = processLeftPart.call(this, parts[0].trim(), value);
+  return src;
+}
+function processRightPart(part) {
+  if (part.indexOf("attribute(") != -1) {
+    return processAttr.call(this, part);
+  }
+  if (part.indexOf("property(") != -1) {
+    return processProp.call(this, part);
+  }
+  return crsbinding.expression.sanitize(part, this._ctxName, true).expression;
+}
+function processAttr(part) {
+  const parts = part.replace("attribute(", "").replace(")", "").split(",");
+  const left = parts[0].trim();
+  const attr = parts[1].trim();
+  if (left == "this") {
+    return `element.getAttribute(${attr})`;
+  }
+  if (left.indexOf("$event") != -1) {
+    return `${left.replace("$", "")}.getAttribute(${attr})`;
+  }
+  return `${parts.length == 2 ? "element" : "document"}.querySelector(${left}).getAttribute(${attr})`;
+}
+function processProp(part) {
+  const parts = part.replace("property(", "").replace(")", "").split(",");
+  const left = parts[0].trim();
+  let path2 = parts[1].trim();
+  let pathExp = `[${path2}]`;
+  if (path2.indexOf(".") != -1) {
+    path2 = path2.split("'").join("").split('"').join("");
+    const pathParts = path2.split(".");
+    const pathCollection = [];
+    for (const pathPart of pathParts) {
+      pathCollection.push(`["${pathPart}"]`);
+    }
+    pathExp = pathCollection.join("");
+  }
+  if (left == "this") {
+    return `element${pathExp}`;
+  }
+  if (left.indexOf("$event") != -1) {
+    return `${left.replace("$", "")}${pathExp}`;
+  }
+  return `${parts.length == 2 ? "element" : "document"}.querySelector(${left})${pathExp}`;
+}
+function processLeftPart(part, value) {
+  if (part.indexOf("$globals") != -1) {
+    return getGlobalSetter.call(this, part, value);
+  } else {
+    return getContextSetter.call(this, part, value);
+  }
+}
+function getGlobalSetter(part, value) {
+  const path2 = part.replace("$globals.", "");
+  return `crsbinding.data.setProperty({_dataId: crsbinding.$globals}, "${path2}", ${value});`;
+}
+function getContextSetter(part, value) {
+  part = part.replace("$context.", "");
+  if (value.indexOf("context.") != -1) {
+    const parts = value.split("context.");
+    const property = parts[parts.length - 1];
+    let prefix = parts[0] == "!" ? "!" : "";
+    value = `${prefix}crsbinding.data.getValue({_dataId: ${this._context}}, "${property}")`;
+  }
+  return `crsbinding.data.setProperty({_dataId: ${this._context}}, "${part}", ${value});`;
+}
+function setProperty2(obj, property, value) {
+  if (value !== void 0) {
+    crsbinding.data.setProperty(this, property, value);
+  }
+}
 
 // src/binding/providers/process-provider.js
 var ProcessProvider = class extends ProviderBase {
@@ -1336,7 +1437,9 @@ var DatasetProvider = class extends ProviderBase {
   dispose() {
     this.clear();
     this._element.removeEventListener("change", this._changeHandler);
+    this._element.removeEventListener("click", this._clickHandler);
     this._changeHandler = null;
+    this._clickHandler = null;
     this._eventHandler = null;
     if (this._perspectiveElement != null) {
       this._perspectiveElement.removeEventListener("view-loaded", this.viewLoadedHandler);
@@ -1347,7 +1450,9 @@ var DatasetProvider = class extends ProviderBase {
   }
   async initialize() {
     this._changeHandler = this._change.bind(this);
+    this._clickHandler = this._click.bind(this);
     this._element.addEventListener("change", this._changeHandler);
+    this._element.addEventListener("click", this._clickHandler);
     this._eventHandler = this.propertyChanged.bind(this);
     this._perspectiveElement = this._element.querySelector("perspective-element");
     if (this._perspectiveElement != null) {
@@ -1360,27 +1465,53 @@ var DatasetProvider = class extends ProviderBase {
     this.clear();
     await this._initFields(this._perspectiveElement);
   }
-  _change(event) {
-    const field = event.target.dataset.field;
+  async _change(event) {
+    let field = event.target.dataset.field;
     if (field == null)
       return;
+    let value = event.target.value;
+    if (event.target._converter != null) {
+      field = event.target._converter.path;
+      const converter = crsbinding.valueConvertersManager.get(event.target._converter.converter);
+      value = converter.set(value, event.target._converter.parameter);
+    }
     const type = event.target.type || "text";
     const oldValue = crsbinding.data.getValue(this._context, field);
-    crsbinding.data._setContextProperty(this._context, field, event.target.value, { oldValue, ctxName: this._ctxName, dataType: type == "text" ? "string" : type });
+    crsbinding.data._setContextProperty(this._context, field, value, { oldValue, ctxName: this._ctxName, dataType: type == "text" ? "string" : type });
     event.stopPropagation();
+  }
+  async _click(event) {
+    if (event.target.dataset.action != null) {
+      const context = crsbinding.data.getContext(this._context);
+      await context[event.target.dataset.action]?.(event);
+    }
   }
   async _initFields(element) {
     this.inputs = this.inputs || {};
     const inputs = element.querySelectorAll("[data-field]");
     for (const input of inputs) {
-      this.inputs[input.dataset.field] = input;
-      this.listenOnPath(input.dataset.field, this._eventHandler);
-      await crsbinding.data.updateUI(this._context, input.dataset.field);
+      let field = input.dataset.field;
+      if (input.dataset.field.indexOf(":") != -1) {
+        input._converter = getConverterParts(input.dataset.field);
+        field = input._converter.path;
+        let paramCode = "null";
+        if (input._converter.parameter != null) {
+          paramCode = `JSON.parse('${JSON.stringify(input._converter.parameter)}')`;
+        }
+        const code = `return crsbinding.valueConvertersManager.convert(value, "${input._converter.converter}", "get", ${paramCode})${input._converter.postExp}`;
+        input._converter.fn = new Function("value", code);
+      }
+      this.inputs[field] = input;
+      this.listenOnPath(field, this._eventHandler);
+      await crsbinding.data.updateUI(this._context, field);
     }
   }
   propertyChanged(prop, value) {
     const element = this.inputs[prop];
     if (element != null && element.value != value) {
+      if (element._converter != null) {
+        value = element._converter.fn(value);
+      }
       element.value = value == null ? "" : value;
     }
   }
@@ -1388,12 +1519,15 @@ var DatasetProvider = class extends ProviderBase {
     const keys = Object.keys(this.inputs);
     for (const key of keys) {
       this.removeCallback(key);
-      this.inputs[key] = null;
     }
     this.inputs = null;
   }
   removeCallback(path2) {
     crsbinding.data.removeCallback(this._context, path2, this._eventHandler);
+    if (this.inputs[path2]._converter != null) {
+      this.inputs[path2]._converter.fn = null;
+      this.inputs[path2]._converter = null;
+    }
     delete this.inputs[path2];
     const cleanEvent = this._cleanEvents.filter((item) => item.path == path2);
     if (cleanEvent != null) {
@@ -1800,7 +1934,7 @@ var ForRadioProvider = class extends ProviderBase {
     const singular = parts[0].trim();
     const plural = parts[1].trim();
     const key = `for-group-${singular}`;
-    crsbinding.inflationManager.register(key, this._element, singular);
+    await crsbinding.inflationManager.register(key, this._element, singular);
     const data = crsbinding.data.getValue(this._context, plural);
     const elements = crsbinding.inflationManager.get(key, data);
     crsbinding.inflationManager.unregister(key);
@@ -1889,7 +2023,7 @@ var ProviderManager = class {
     this._nextId += 1;
   }
   async releaseElement(element) {
-    if (element.nodeName.toLowerCase() == "svg") {
+    if (element.nodeName?.toLowerCase() == "svg") {
       crsbinding.svgCustomElements.release(element);
     }
     for (let property of element.__cleanup || []) {
@@ -2273,7 +2407,7 @@ var InflationCodeGenerator = class {
   async _processTextContent(element) {
     if (element.children == null || element.children.length > 0 || element.textContent.indexOf("${") == -1 && element.textContent.indexOf("&{") == -1)
       return;
-    const text = (element.innerHTML || "").trim();
+    const text = (element.textContent || element.innerHTML || "").trim();
     let target = "textContent";
     let exp = text;
     if (exp.indexOf("&amp;{") != -1) {
@@ -2285,35 +2419,49 @@ var InflationCodeGenerator = class {
         this.inflateSrc.push(`${this.path}.textContent = "${value}"`);
       }
     } else {
-      const san = crsbinding.expression.sanitize(exp, this._ctxName);
+      let converter = null;
+      if (exp.indexOf(":") != -1) {
+        converter = getConverterParts(exp);
+      }
+      const san = crsbinding.expression.sanitize(converter?.path || exp, this._ctxName);
       exp = san.expression;
       if (san.isHTML == true) {
         target = "innerHTML";
       }
-      this.inflateSrc.push([`${this.path}.${target} = \`` + exp + "`"].join(" "));
+      if (converter != null) {
+        let paramCode = "null";
+        if (converter.parameter != null) {
+          paramCode = `JSON.parse('${JSON.stringify(converter.parameter)}')`;
+        }
+        exp = `crsbinding.valueConvertersManager.convert(${san.expression}, "${converter.converter}", "get", ${paramCode})${converter.postExp}`;
+        this.inflateSrc.push(`${this.path}.${target} = ${exp}`);
+      } else {
+        this.inflateSrc.push([`${this.path}.${target} = \`` + exp + "`"].join(" "));
+      }
     }
     this.deflateSrc.push(`${this.path}.${target} = "";`);
   }
   async _processAttributes(element) {
-    const attributes = Array.from(element.attributes).filter(
-      (attr) => attr.value.indexOf("${") != -1 || attr.value.indexOf("&{") != -1 || attr.name.indexOf(".if") != -1 || attr.name.indexOf(".attr") != -1 || attr.name.indexOf("style.") != -1 || attr.name.indexOf("classlist." != -1)
-    );
-    for (let attr of attributes) {
+    for (const attr of Array.from(element.attributes)) {
       if (attr.name.indexOf(".attr") != -1) {
         this._processAttr(attr);
       } else if (attr.value.indexOf("${") != -1) {
         this._processAttrValue(attr);
       } else if (attr.value.indexOf("&{") != -1) {
         await this._processTranslationValue(attr);
-      } else {
+      } else if (attr.value.indexOf(".if") != -1) {
         this._processAttrCondition(attr);
+      } else if (attr.name.indexOf(".case") != -1) {
+        this._processCaseCondition(attr);
+      } else {
+        this.inflateSrc.push(`${this.path}.setAttribute("${attr.name}", "${attr.value}")`);
       }
     }
   }
   _clearAttributes(element) {
     this.inflateSrc.push(`while(${this.path}.attributes.length > 0) { ${this.path}.removeAttribute(${this.path}.attributes[0].name) };`);
     const classes = element.getAttribute("class");
-    this.inflateSrc.push(`${this.path}.setAttribute("class", "${classes}");`);
+    this.inflateSrc.push(`${this.path}.removeAttribute("class");`);
   }
   _processAttr(attr) {
     const attrName = attr.name.replace(".attr", "");
@@ -2399,6 +2547,47 @@ var InflationCodeGenerator = class {
     this.inflateSrc.push(code.join(""));
     this.deflateSrc.push(`${this.path}.removeAttribute("${attrName}")`);
     attr.ownerElement.removeAttribute(attr.name);
+  }
+  _processCaseCondition(attr) {
+    const statements = attr.value.split(",");
+    if (attr.name.indexOf("classlist.") != -1) {
+      return this._processCaseParts(attr, statements, this._processCaseClassList);
+    }
+    if (attr.name.indexOf("style.") != -1) {
+      return this._processCaseParts(attr, statements, this._processCaseStyle);
+    }
+    return this._processCaseParts(attr, statements, this._processCaseAttr);
+  }
+  _processCaseParts(attr, parts, callback) {
+    let count = 0;
+    for (const part of parts) {
+      const values = part.split(":");
+      const exp = crsbinding.expression.sanitize(values[0].trim(), this._ctxName).expression;
+      const value = values[1].trim();
+      if (count == 0) {
+        this.inflateSrc.push(`if (${exp}) {`);
+      } else {
+        if (exp == "context.default") {
+          this.inflateSrc.push(`else {`);
+        } else {
+          this.inflateSrc.push(`else if (${exp}) {`);
+        }
+      }
+      callback.call(this, attr, value);
+      this.inflateSrc.push(`}`);
+      count += 1;
+    }
+  }
+  _processCaseClassList(attr, value) {
+    this.inflateSrc.push(`  ${this.path}.classList.add(${value})`);
+  }
+  _processCaseStyle(attr, value) {
+    const parts = attr.name.split(".");
+    this.inflateSrc.push(`  ${this.path}.style.${parts[1]} = ${value}`);
+  }
+  _processCaseAttr(attr, value) {
+    const attrName = attr.name.replace(".case", "");
+    this.inflateSrc.push(`  ${this.path}.setAttribute('${attrName}', ${value})`);
   }
 };
 
@@ -3181,13 +3370,28 @@ var EventEmitter = class {
   }
 };
 
+// src/binding/html-loader.js
+function getHtmlPath(obj) {
+  const mobiPath = obj.mobi;
+  if (mobiPath != null && /Mobi/.test(navigator.userAgent)) {
+    return mobiPath;
+  }
+  return obj.html;
+}
+
 // src/binding/bindable-element.js
 var BindableElement = class extends HTMLElement {
+  get shadowDom() {
+    return false;
+  }
   get hasOwnContext() {
     return true;
   }
   constructor() {
     super();
+    if (this.shadowDom == true) {
+      this.attachShadow({ mode: "open" });
+    }
     if (this.hasOwnContext == true) {
       this._dataId = crsbinding.data.addObject(this.constructor.name);
       crsbinding.data.addContext(this._dataId, this);
@@ -3201,7 +3405,10 @@ var BindableElement = class extends HTMLElement {
     crsbinding.dom.disableEvents(this);
     const properties = Object.getOwnPropertyNames(this);
     for (let property of properties) {
-      delete this[property];
+      const descriptor = Object.getOwnPropertyDescriptor(this, property);
+      if (descriptor.configurable == true) {
+        delete this[property];
+      }
     }
   }
   async connectedCallback() {
@@ -3215,9 +3422,20 @@ var BindableElement = class extends HTMLElement {
       await this.preLoad(setPropertyCallback);
     }
     if (this.html != null) {
-      this.innerHTML = await crsbinding.templates.get(this.constructor.name, this.html);
+      const html = await crsbinding.templates.get(this.constructor.name, getHtmlPath(this));
+      if (this.shadowRoot != null) {
+        this.shadowRoot.innerHTML = html;
+      } else {
+        this.innerHTML = html;
+      }
+      if (this.onHTML != null) {
+        await this.onHTML();
+      }
       const path2 = crsbinding.utils.getPathOfFile(this.html);
       await crsbinding.parsers.parseElements(this.children, this._dataId, path2 ? { folder: path2 } : null);
+      if (this.shadowRoot != null) {
+        await crsbinding.parsers.parseElements(this.shadowRoot.children, this._dataId, path2 ? { folder: path2 } : null);
+      }
     }
     requestAnimationFrame(() => {
       const name = this.getAttribute("name");
@@ -3491,11 +3709,11 @@ var ValueConvertersManager = class {
   remove(key) {
     this._converters.delete(key);
   }
-  convert(value, key, direction) {
+  convert(value, key, direction, args) {
     const converter = this._converters.get(key);
     if (converter == null)
       return null;
-    return converter[direction](value);
+    return converter[direction](value, args);
   }
 };
 
@@ -3804,6 +4022,125 @@ var TranslationsManager = class {
   }
 };
 
+// src/managers/static-inflation-manager.js
+var StaticInflationManager = class {
+  async inflateElements(elements, context) {
+    for (const element of elements) {
+      await this.inflateElement(element, context);
+    }
+  }
+  async inflateElement(element, context) {
+    await this.#parseTextContent(element, context);
+    await this.#parseAttributes(element, context);
+    await this.inflateElements(element.children, context);
+  }
+  async #parseTextContent(element, context) {
+    if (element.textContent.indexOf("&{") != -1) {
+      return element.textContent = await crsbinding.translations.get_with_markup(element.textContent);
+    }
+    if (element.textContent.indexOf("${") != -1) {
+      const code = crsbinding.expression.sanitize(element.textContent).expression;
+      const fn = new Function("context", ["return ", "`", code, "`"].join(""));
+      element.textContent = fn(context);
+    }
+  }
+  async #parseAttributes(element, context) {
+    for (const attribute of element.attributes) {
+      this.#parseAttribute(attribute, context);
+    }
+  }
+  async #parseAttribute(attribute, context) {
+    if (attribute.name.indexOf(".attr") != -1) {
+      return this.#attributeAttr(attribute, context);
+    }
+    let fn;
+    if (attribute.name.indexOf(".if") != -1) {
+      fn = await crsbinding.expression.ifFunction(attribute.value);
+    } else if (attribute.name.indexOf(".case") != -1) {
+      fn = await crsbinding.expression.caseFunction(attribute.value);
+    }
+    if (fn != null) {
+      const value = fn(context);
+      if (attribute.name.indexOf("classlist.") != -1) {
+        return await this.#attrClassList(attribute, value);
+      }
+      if (attribute.name.indexOf("style.") != -1) {
+        return await this.#attrStyle(attribute, value);
+      }
+      await this.#attrIf(attribute, value);
+      attribute.ownerElement.removeAttribute(attribute.name);
+    }
+  }
+  async #attrIf(attribute, value) {
+    const attr = attribute.name.replace(".if", "").replace(".case", "");
+    if (attribute.value.indexOf("?") == -1) {
+      if (value) {
+        attribute.ownerElement.setAttribute(attr, value);
+      } else {
+        attribute.ownerElement.removeAttribute(attr);
+      }
+      return;
+    }
+    if (value == void 0) {
+      attribute.ownerElement.removeAttribute(attr);
+    } else {
+      attribute.ownerElement.setAttribute(attr, value);
+    }
+  }
+  async #attrStyle(attribute, value) {
+    const prop = attribute.name.split(".")[1];
+    attribute.ownerElement.style[prop] = value || "";
+  }
+  async #attrClassList(attribute, value) {
+    attribute.ownerElement.classList.add(value);
+  }
+  async #attributeAttr(attribute, context) {
+    const name = attribute.name.replace(".attr", "");
+    const code = crsbinding.expression.sanitize(attribute.value).expression;
+    const fn = new Function("context", ["return ", "`", code, "`"].join(""));
+    const value = fn(context);
+    attribute.ownerElement.setAttribute(name, value);
+  }
+};
+
+// src/expressions/exp-functions.js
+async function ifFunction(exp) {
+  const code = [];
+  exp = await crsbinding.expression.sanitize(exp).expression.replaceAll("context.[", "[");
+  if (exp.indexOf("?") == -1) {
+    return new Function("context", `return ${exp}`);
+  }
+  const parts = exp.split("?").map((item) => item.trim());
+  const left = parts[0];
+  const right = parts[1];
+  const rightParts = right.split(":");
+  code.push(`if (${left}) {`);
+  code.push(`    return ${rightParts[0].trim()};`);
+  code.push("}");
+  if (rightParts.length > 1) {
+    code.push("else {");
+    code.push(`    return ${rightParts[1].trim()};`);
+    code.push("}");
+  }
+  return new Function("context", code.join("\n"));
+}
+async function caseFunction(exp) {
+  const code = [];
+  exp = await crsbinding.expression.sanitize(exp).expression;
+  const parts = exp.split(",");
+  for (let part of parts) {
+    const expParts = part.split(":").map((item) => item.trim());
+    if (expParts[0] == "context.default") {
+      code.push(`return ${expParts[1]};`);
+    } else {
+      code.push(`if (${expParts[0]}) {`);
+      code.push(`    return ${expParts[1]};`);
+      code.push("}");
+    }
+  }
+  return new Function("context", code.join("\n"));
+}
+
 // src/index.js
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -3825,6 +4162,7 @@ var crsbinding2 = {
   idleTaskManager: new IdleTaskManager(),
   providerManager: new ProviderManager(),
   inflationManager: new InflationManager(),
+  staticInflationManager: new StaticInflationManager(),
   elementStoreManager: new ElementStoreManager(),
   svgCustomElements: new SvgElementsManager(),
   valueConvertersManager: new ValueConvertersManager(),
@@ -3832,7 +4170,9 @@ var crsbinding2 = {
   expression: {
     sanitize: sanitizeExp,
     compile: compileExp,
-    release: releaseExp
+    release: releaseExp,
+    ifFunction,
+    caseFunction
   },
   observation: {
     releaseBinding,
@@ -3871,7 +4211,8 @@ var crsbinding2 = {
     relativePathFrom,
     getPathOfFile,
     getValueOnPath,
-    flattenPropertyPath
+    flattenPropertyPath,
+    getConverterParts
   },
   templates: {
     data: {},
