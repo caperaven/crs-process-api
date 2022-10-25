@@ -24,16 +24,16 @@ Deno.test("filter", async () => {
         filter: "a"
     })
 
-    assertEquals(li1.getAttribute("hidden"), undefined);
-    assertEquals(li2.getAttribute("hidden"), "hidden");
-    assertEquals(li3.getAttribute("hidden"), "hidden");
+    assertEquals(li1.getAttribute("aria-hidden"), undefined);
+    assertEquals(li2.getAttribute("aria-hidden"), "true");
+    assertEquals(li3.getAttribute("aria-hidden"), "true");
 
     await crs.call("dom_collection", "filter_children", {
         element: ul,
         filter: "b"
     })
 
-    assertEquals(li1.getAttribute("hidden"), "hidden");
-    assertEquals(li2.getAttribute("hidden"), undefined);
-    assertEquals(li3.getAttribute("hidden"), "hidden");
+    assertEquals(li1.getAttribute("aria-hidden"), "true");
+    assertEquals(li2.getAttribute("aria-hidden"), undefined);
+    assertEquals(li3.getAttribute("aria-hidden"), "true");
 })
