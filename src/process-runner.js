@@ -269,7 +269,7 @@ async function validateParameters(context, process,item) {
     }
 }
 
-function populatePrefixes(prefixes, process) {
+export function populatePrefixes(prefixes, process) {
     process.prefixes = process.prefixes || {};
 
     if (prefixes != null) {

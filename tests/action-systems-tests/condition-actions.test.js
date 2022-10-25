@@ -1,5 +1,5 @@
-import { beforeAll} from "https://deno.land/std@0.157.0/testing/bdd.ts";
-import { assertEquals, assertNotEquals } from "https://deno.land/std@0.147.0/testing/asserts.ts";
+import { beforeAll, beforeEach, describe, it } from "https://deno.land/std@0.157.0/testing/bdd.ts";
+import { assertEquals, assertNotEquals} from "https://deno.land/std@0.147.0/testing/asserts.ts";
 import {init} from "./../mockups/init.js";
 
 await init();
@@ -9,88 +9,149 @@ beforeAll(async () => {
 })
 
 const logs = {
-    log: null
+    log: null,
+    error: null
 }
 
 globalThis.console = {
-    log: (msg) => logs.log = msg
+    log: (msg) => logs.log = msg,
+    error: (msg) => logs.error = msg
 }
 
-Deno.test("ConditionActions - condition on context - pass step executed", async () => {
-    await crs.intent.condition.perform({args: {condition: "$context.isValid == true"}, pass_step: {type: "console", action: "log", args: {message: "pass"}}}, {isValid: true})
-    assertEquals(logs.log, "pass");
-})
+describe("condition tests", async () => {
+    async function performCondition(exp, context, process, item, passStep, failStep) {
+        return await crs.intent.condition.perform({
+            args: {
+                condition: exp,
+                target: "$context.result"
+            },
+            pass_step: passStep,
+            fail_step: failStep
+        }, context, process, item);
+    }
 
-Deno.test("ConditionActions - condition on context - fail", async () => {
-    await crs.intent.condition.perform({args: {condition: "$context.isValid == true"}, fail_step: {type: "console", action: "log", args: {message: "fail"}}}, {isValid: false})
-    assertEquals(logs.log, "fail");
-})
+    let process;
+    let context;
+    let item;
+    let passStep;
+    let failStep;
 
-Deno.test("ConditionActions - condition on process - pass step executed", async () => {
-    await crs.intent.condition.perform({args: {condition: "$process.isValid == true"}, pass_step: {type: "console", action: "log", args: {message: "pass"}}}, null, {isValid: true});
-    assertEquals(logs.log, "pass");
-})
+    beforeEach(async () => {
+        logs.log = null;
+        logs.error = null;
 
-Deno.test("ConditionActions - condition on process - fail", async () => {
-    await crs.intent.condition.perform({args: {condition: "$process.isValid == true"}, fail_step: {type: "console", action: "log", args: {message: "fail"}}}, null, {isValid: false})
-    assertEquals(logs.log, "fail");
-})
+        context = {isValid: true};
 
-Deno.test("ConditionActions - condition on item - pass step executed", async () => {
-    await crs.intent.condition.perform({args: {condition: "$item.isValid == true"}, pass_step: {type: "console", action: "log", args: {message: "pass"}}}, null, null, {isValid: true})
-    assertEquals(logs.log, "pass");
-})
-
-Deno.test("ConditionActions - condition on item - fail", async () => {
-    await crs.intent.condition.perform({args: {condition: "$item.isValid == true"}, fail_step: {type: "console", action: "log", args: {message: "fail"}}}, null, null, {isValid: false})
-    assertEquals(logs.log, "fail");
-})
-
-Deno.test("ConditionActions - pass_step string", async () => {
-    const process = {
-        steps: {
-            log_success: {
-                type: "console",
-                action: "log",
-                args: {
-                    message: "pass"
-                }
+        process = {
+            prefixes: {
+                "$text": "$process.text",
+                "$data": "$process.data",
+                "$parameters": "$process.parameters",
+                "$bId": "$process.parameters.bId",
+                "$global": "globalThis"
             }
         }
-    }
 
-    await crs.intent.condition.perform({args: {condition: "$context.isValid == true"}, pass_step: "log_success"}, {isValid: true}, process)
-    assertEquals(logs.log, "pass");
-})
+        item = {value: 10};
 
-Deno.test("ConditionActions - fail_step string", async () => {
-    const process = {
-        steps: {
-            log_failure: {
-                type: "console",
-                action: "log",
-                args: {
-                    message: "fail"
-                }
+        passStep = {
+            type: "console",
+            action: "log",
+            args: {
+                message: "pass"
             }
         }
-    }
 
-    await crs.intent.condition.perform({args: {condition: "$context.isValid == true"}, fail_step: "log_failure"}, {isValid: false}, process)
-    assertEquals(logs.log, "fail");
-})
-
-Deno.test("ConditionActions - binding expression", async () => {
-    const bId = crsbinding.data.addObject("test");
-    crsbinding.data.setProperty(bId, "value", 100);
-
-    const process = {
-        parameters: {
-            bId: bId
+        failStep = {
+            type: "console",
+            action: "error",
+            args: {
+                message: "fail"
+            }
         }
-    }
+    })
 
-    const success = await crs.intent.condition.perform({args: {condition: "$binding.value == 100"}}, null, process);
-    assertEquals(success, true);
-    crsbinding.data.removeObject(bId);
+    it("$context - simple check", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        let result = await performCondition("$context.isValid == true", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        context.isValid = false;
+        result = await performCondition("$context.isValid == true", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
+
+    it ("$process - simple check", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        process.data = {value: 10};
+        let result = await performCondition("$process.data.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        process.data = {value: 20};
+        result = await performCondition("$process.data.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
+
+    it ("$item - simple check", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        let result = await performCondition("$item.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        item.value = 20;
+        result = await performCondition("$item.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
+
+    it ("$binding - simple check", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        const bId = crsbinding.data.addObject("test");
+        crsbinding.data.setProperty(bId, "value", 10);
+        process.parameters ||= {bId: bId};
+
+        let result = await performCondition("$binding('value') == 10", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        result = await performCondition("$binding('value') == 20", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
+
+    it ("mixed context", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        let result = await performCondition("$context.isValid == true && $item.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        item.value = 20;
+        result = await performCondition("$context.isValid == true && $item.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
 })

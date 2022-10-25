@@ -1,34 +1,8 @@
 export class ConditionActions {
     static async perform(step, context, process, item) {
-        let ctx;
-        let exp;
-        let expf;
+        const fn = compileExpression(step.args.condition, process);
 
-        if (step.args.condition.indexOf("$context") != -1) {
-            ctx = context;
-            exp = step.args.condition.split("$context").join("$context");
-        }
-        else if (step.args.condition.indexOf("$process") != -1) {
-            ctx = process;
-            exp = step.args.condition.split("$process").join("$context");
-        }
-        else if (step.args.condition.indexOf("$item") != -1) {
-            ctx = item;
-            exp = step.args.condition.split("$item").join("$context");
-        }
-        else if (step.args.condition.indexOf("$binding") != -1) {
-            // todo: Gerhard, give binding expression.
-            const bId = process.parameters.bId;
-            const parts = step.args.condition.replace("$binding.", "").split(" ");
-            const property = parts[0];
-            parts.splice(0, 1);
-
-            exp = `return crsbinding.data.getProperty(${bId}, "${property}") ${parts.join(" ")}`;
-            expf = crsbinding.expression.compile(exp, null, {sanitize: false});
-        }
-
-        expf = expf || crsbinding.expression.compile(exp);
-        const success = expf.function(ctx) == true;
+        const success = fn(context, process, item);
 
         if (success && step.pass_step != null) {
             const nextStep = await crs.getNextStep(process, step.pass_step);
@@ -39,8 +13,29 @@ export class ConditionActions {
             await crs.process.runStep(nextStep, context, process, item);
         }
 
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, success, context, process, item);
+        }
+
         return success;
     }
+}
+
+function compileExpression(condition, process) {
+    let exp = condition;
+
+    for (const key of Object.keys(process.prefixes)) {
+        exp = exp.split(key).join(process.prefixes[key]);
+    }
+
+    if (exp.indexOf("$binding") != -1) {
+        exp = exp.split("$binding(").join(`crsbinding.data.getProperty(${process.parameters.bId},`);
+    }
+
+    exp = exp.split("$").join("");
+
+    const code = `return ${exp}`;
+    return new Function("context", "process", "item", code);
 }
 
 crs.intent.condition = ConditionActions;

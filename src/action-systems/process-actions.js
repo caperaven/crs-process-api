@@ -14,7 +14,7 @@ export class ProcessActions {
             context: context,
             process: process,
             item: item,
-            parameters: parameters
+            parameters: parameters,
         });
     }
 }
