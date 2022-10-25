@@ -1,5 +1,3 @@
-import {DomActions} from "./dom-actions";
-
 /**
  * This contains functions for dom actions using crs-binding.
  * This includes events, inflation, parsing ...
