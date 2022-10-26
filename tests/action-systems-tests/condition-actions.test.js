@@ -128,12 +128,52 @@ describe("condition tests", async () => {
         crsbinding.data.setProperty(bId, "value", 10);
         process.parameters ||= {bId: bId};
 
-        let result = await performCondition("$binding('value') == 10", context, process, item, passStep, failStep);
+        let result = await performCondition("$binding.value == 10", context, process, item, passStep, failStep);
         assertEquals(result, true);
         assertEquals(logs.log, "pass");
         assertEquals(context.result, true);
 
-        result = await performCondition("$binding('value') == 20", context, process, item, passStep, failStep);
+        result = await performCondition("$binding.value == 20", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
+
+    it ("$binding - complex check", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        const bId = crsbinding.data.addObject("test");
+        crsbinding.data.setProperty(bId, "value", {property: [10]});
+        process.parameters ||= {bId: bId};
+
+        let result = await performCondition("$binding.value.property.length == 1 && $context.isValid == true", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        result = await performCondition("$binding.value.property.length == 2 && $context.isValid == true", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
+
+    it ("$binding - complex check with multiple binding", async () => {
+        assertEquals(logs.log, null);
+        assertEquals(logs.error, null);
+
+        const bId = crsbinding.data.addObject("test");
+        crsbinding.data.setProperty(bId, "value", {property: [10]});
+        crsbinding.data.setProperty(bId, "active", true);
+
+        process.parameters ||= {bId: bId};
+
+        let result = await performCondition("$binding.value.property.length == 1 && $binding.active == true && $context.isValid == true", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        result = await performCondition("$binding.value.property.length == 2 && $binding.active == true && $context.isValid == true", context, process, item, passStep, failStep);
         assertEquals(result, false);
         assertEquals(logs.error, "fail");
         assertEquals(context.result, false);
