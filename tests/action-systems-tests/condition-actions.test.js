@@ -154,4 +154,17 @@ describe("condition tests", async () => {
         assertEquals(logs.error, "fail");
         assertEquals(context.result, false);
     })
+
+    it ("prefix context", async () => {
+        process.data = {value: 10}
+        let result = await performCondition("$data.value == 10", context, process, item, passStep, failStep);
+        assertEquals(result, true);
+        assertEquals(logs.log, "pass");
+        assertEquals(context.result, true);
+
+        result = await performCondition("$data.value == 20", context, process, item, passStep, failStep);
+        assertEquals(result, false);
+        assertEquals(logs.error, "fail");
+        assertEquals(context.result, false);
+    })
 })
