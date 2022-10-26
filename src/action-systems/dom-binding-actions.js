@@ -81,7 +81,7 @@ export class DomBindingActions {
             }
         }
 
-        crsbinding.inflationManager.register(id, template, ctxName || "context");
+        await crsbinding.inflationManager.register(id, template, ctxName || "context");
     }
 
     /**
