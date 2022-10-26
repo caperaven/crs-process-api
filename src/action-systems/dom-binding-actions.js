@@ -166,7 +166,7 @@ async function load_template(template, id, context) {
         templateElement = document.querySelector(template);
     }
 
-    crsbinding.inflationManager.register(id, templateElement);
+    await crsbinding.inflationManager.register(id, templateElement);
 }
 
 crs.intent.dom_binding = DomBindingActions;
