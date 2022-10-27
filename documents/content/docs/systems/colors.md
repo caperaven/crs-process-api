@@ -7,9 +7,10 @@ Color conversion actions.
 2. [hex_to_normalised](#hex_to_normalised)
 3. [rgb_to_hex](#rgb_to_hex)
 4. [rgba_to_hex](#rgba_to_hex)
-5. [css_to_hex](#css_to_hex)
-6. [css_to_normalized](#css_to_normalized)
-7. [](#)
+5. [rgb_text_to_hex](#rgb_text_to_hex)
+6. [css_to_hex](#css_to_hex)
+7. [css_to_normalized](#css_to_normalized)
+8. [](#)
 
 ## hex_to_rgb
 This action will convert a hexidecimal color/value to a rgb color/value.
@@ -22,11 +23,11 @@ This action will convert a hexidecimal color/value to a rgb color/value.
 
 {{< highlight js >}}
 "step": {
-"type" : "colors",
-"action" : "hex_to_rgb",
-"args" : {
-"hex" : #hex_value (#000000)
-}
+    "type" : "colors",
+    "action" : "hex_to_rgb",
+    "args" : {
+        "hex" : "#000000"
+    }
 }
 {{< / highlight >}}
 
@@ -35,7 +36,7 @@ This action will convert a hexidecimal color/value to a rgb color/value.
 
 {{< highlight js >}}
 crs.call("colors", "hex_to_rgb", {
-hex : this.hexValue
+    hex : "#000000"
 })
 {{< / highlight >}}
 
@@ -53,11 +54,11 @@ This action will convert a Hexidecimal value to a Normalised Value.
 
 {{< highlight js >}}
 "step": {
-"type" : "colors",
-"action" : "hex_to_normalised",
-"args" : {
-
-}
+    "type" : "colors",
+    "action" : "hex_to_normalised",
+    "args" : {
+        "hex": "#000000"
+    }
 }
 {{< / highlight >}}
 
@@ -65,7 +66,7 @@ This action will convert a Hexidecimal value to a Normalised Value.
 
 {{< highlight js >}}
 crs.call("colors", "hex_to_normalised",{
-
+    hex: "#000000"
 })
 {{< / highlight >}}
 
@@ -74,21 +75,23 @@ crs.call("colors", "hex_to_normalised",{
 ## rgb_to_hex
 This action will convert an RGB color-value to a Hexidecimal value
 
-| property | description      | required |
-|:---------|:-----------------| :--------: |
-| hex      | hex string value | true |
+| property | description           | required |
+|:---------|:----------------------|:--------:|
+| r        | value between 0 & 255 |  false   |
+| g        | value between 0 & 255 |  false   |
+| b        | value between 0 & 255 |  false   |
 
 **json**
 
 {{< highlight js >}}
 "step": {
-"type" : "colors",
-"action" : "rgb_to_hex",
-"args" : {
-r: "",
-g: "",
-b: ""
-}
+    "type" : "colors",
+    "action" : "rgb_to_hex",
+    "args" : {
+        "r": "255",
+        "g": "255",
+        "b": "255"
+    }
 }
 {{< / highlight >}}
 
@@ -97,32 +100,35 @@ b: ""
 
 {{< highlight js >}}
 crs.call("colors", "rgb_to_hex",{
-r: "",
-g: "",
-b: ""
-})
+    r: "255",
+    g: "255",
+    b: "255"
+    })
 {{< / highlight >}}
 
 
 ## rgba_to_hex
 This action will convert an RGBA color-value to a Hexidecimal value
 
-| property | description      | required |
-|:---------|:-----------------| :--------: |
-| hex      | hex string value | true |
+| property | description             | required |
+|:---------|:------------------------| :--------: |
+| r        | value between 0 & 255   |  false   |
+| g        | value between 0 & 255   |  false   |
+| b        | value between 0 & 255   |  false   |
+| a        | value between 0.0 & 1.0 |  false   |
 
 **json**
 
 {{< highlight js >}}
 "step":{
-"type": "colors",
-"action": "rgba_to_hex",
-"args": {
-r: "",
-g: "",
-b: "",
-a: ""
-}
+    "type": "colors",
+    "action": "rgba_to_hex",
+    "args": {
+        "r": "255",
+        "g": "0",
+        "b": "255",
+        "a": "0.5"
+    }
 }
 {{< / highlight >}}
 
@@ -131,30 +137,31 @@ a: ""
 
 {{< highlight js >}}
 crs.call("colors", "rgba_to_hex", {
-r: "",
-g: "",
-b: "",
-a: ""
+    r: "255",
+    g: "100",
+    b: "255",
+    a: "0.5"
 })
 {{< / highlight >}}
 
 
-## css_to_hex
-This action will take an existing CSS color-value and convert it to a Hexidecimal value.
+## rgb_text_to_hex
+This action will take an RGB text value and convert it to a Hexidecimal value.
 
-| property | description      | required |
-|:---------|:-----------------| :--------: |
-| hex      | hex string value | true |
+
+| property | description    | required |
+|:---------|:---------------| :--------: |
+| value    | RGB text value | true |
 
 **json**
 
 {{< highlight js >}}
-"step":{
-"type": "colors",
-"action": "css_to_hex",
-"args": {
-
-}
+"step": {
+    "type" : "colors",
+    "action" : "rgb_text_to_hex",
+    "args" : {
+        "value" : "rgb(255, 255, 255)" 
+    }
 }
 {{< / highlight >}}
 
@@ -162,25 +169,65 @@ This action will take an existing CSS color-value and convert it to a Hexidecima
 **javascript**
 
 {{< highlight js >}}
+crs.call("colors", "rgb_text_to_hex", {
+    value : "rgb(255, 255, 255)"
+})
+{{< / highlight >}}
 
+
+
+
+## css_to_hex
+This action will take an existing CSS color-value and convert it to a Hexidecimal value.
+
+| property | description | required |
+|:---------|:------------| :--------: |
+|       |             |  |
+
+**json**
+
+{{< highlight js >}}
+"step":{
+    "type": "colors",
+    "action": "css_to_hex",
+    "args": {
+        
+    }
+}
+{{< / highlight >}}
+
+
+**javascript**
+
+{{< highlight js >}}
+crs.call("colors", "css_to_hex",{
+    
+})
 {{< / highlight >}}
 
 ## css_to_normalized
 This action will take an existing CSS color-value and convert it to a Normalized Value.
 
 | property | description      | required |
-|:---------|:-----------------| :--------: |
-| hex      | hex string value | true |
+|:---------|:-----------------|:--------:|
+|          |  |          |
 
 **json**
 
 {{< highlight js >}}
+"step":{
+    "type": "colors",
+    "action": "css_to_normalized",
+    "args": {
 
+    }
 {{< / highlight >}}
 
 
 **javascript**
 
 {{< highlight js >}}
+crs.call("colors", "css_to_hex",{
 
+})
 {{< / highlight >}}
