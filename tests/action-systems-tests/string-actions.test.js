@@ -208,3 +208,27 @@ Deno.test("get_query_string - nested url with empty parameters", async () => {
     await crs.call("string", "get_query_string", {source: "https://localhost:1100/System/Admin/#dashboard/Admin/?parameters=", target: "$context.result"}, context);
     assertEquals(context.result, undefined);
 })
+
+Deno.test("inflate string", async () => {
+    const template = "${code}: ${description}";
+    let result = await crs.call("string", "inflate", {
+        template: template,
+        parameters: {
+            code: "A11",
+            description: "This is a description"
+        }
+    });
+
+    assertEquals(result, "A11: This is a description");
+
+
+    result = await crs.call("string", "inflate", {
+        template: "<icon>gear</icon> <bold>[${code}]</bold> ${description}",
+        parameters: {
+            code: "A11",
+            description: "Desc"
+        }
+    });
+
+    assertEquals(result, "<icon>gear</icon> <bold>[A11]</bold> Desc");
+})
