@@ -1,6 +1,3 @@
-import {DomActions} from "./dom-actions.js";
-import {DomInteractiveActions} from "./dom-interactive-actions.js";
-
 export class DomWidgetsActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
@@ -116,13 +113,12 @@ function createWidgetLayer(step) {
 }
 
 async function setWidgetContent(id, html, url, context, process, item) {
-    await DomActions.set_widget({
-        args: {
+    await crs.call("dom_binding", "set_widget",
+        {
             element : `#${id}`,
             html  : html,
             url   : url
-        }
-    }, context, process, item);
+        }, context, process, item);
 
     const element = document.querySelector(`#${id} [autofocus]`);
     if (element != null) {
