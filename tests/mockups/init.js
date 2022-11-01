@@ -22,12 +22,12 @@ export async function init() {
     const crs_modules = path.join(packages, "crs-modules/crs-modules.js");
     const crs_process = path.join(packages, "./..", "src/index.js");
 
-    await import(crs_binding);
-    await import(crs_modules);
+    await import("./../../packages/crs-binding/crs-binding.js");
+    await import("./../../packages/crs-modules/crs-modules.js");
 
-    const processModule = await import(crs_process);
+    const processModule = await import("./../../src/index.js");
     const folder = crs_process.replace("\\index.js", "");
-    processModule.initialize(folder);
+    processModule.initialize("./../../src");
 }
 
 async function getPackagesFolder() {
