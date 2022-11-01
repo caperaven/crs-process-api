@@ -35,7 +35,7 @@ export class DomBindingActions {
             html: ""
         });
 
-        if (process.bindable == true) {
+        if (process?.bindable == true) {
             let bc = crsbinding.data.getContext(process.parameters.bId);
             delete bc.pass;
             delete bc.fail;

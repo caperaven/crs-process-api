@@ -153,26 +153,18 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async setWidget() {
-        await crsbinding.events.emitter.emit("run-process", {
-            context: this,
-            step: {
-                action: "set_widget",
-                args: { schema: "crs-widget-example" }
-            },
-            parameters: {
-                bId: this._dataId
-            }
-        })
+        await crs.call("dom_binding", "set_widget", {
+            element: "#widget",
+            html: "$template.dom-summary",
+            url: "/app/dom/template.html",
+            context: this
+        });
     }
 
     async clearWidget() {
-        await crsbinding.events.emitter.emit("run-process", {
-            context: this,
-            step: {
-                action: "clear_widget",
-                args: { schema: "crs-widget-example" }
-            }
-        })
+        await crs.call("dom_binding", "clear_widget", {
+            element: "#widget"
+        });
     }
 
     async moveToList() {
