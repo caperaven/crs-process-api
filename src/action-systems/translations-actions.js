@@ -43,8 +43,7 @@ export class TranslationsActions {
      * @returns {Promise<void>}
      */
     static async translate_elements(step, context, process, item) {
-        let element = await crs.process.getValue(step.args.element, context, process, item);
-        element = await crs.dom.get_element(element);
+        const element = await crs.dom.get_element(step.args.element);
         await crsbinding.translations.parseElement(element);
     }
 
