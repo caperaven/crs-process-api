@@ -9,7 +9,6 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add((await (import("./schemas/attributes.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/styles.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/text-content.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./schemas/crs-widget.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/move-element.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/filter.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/tabs.js"))).schema);
