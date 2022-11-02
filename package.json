@@ -8,6 +8,7 @@
     },
     "scripts": {
         "build-documents": "cd documents & hugo -d \"./../publish/documents\"",
+        "run-hugo": "cd documents & hugo serve",
         "test": "deno test tests --allow-all",
         "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
         "build-bundle": "deno run --allow-read --allow-write --allow-env --allow-run ./build/package.js",
