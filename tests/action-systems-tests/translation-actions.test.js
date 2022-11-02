@@ -5,6 +5,14 @@ import {init} from "./../mockups/init.js";
 
 await init();
 
+const logs = {
+    log: null,
+}
+
+globalThis.console = {
+    log: (msg) => logs.log = msg
+}
+
 beforeAll(async () => {
     await import("./../../src/action-systems/translations-actions.js");
 
@@ -35,8 +43,8 @@ describe("translation tests", async () => {
         assertEquals(element.textContent, "Hello World");
     })
 
-    it("format", async () => {
-        const result = await crs.call("translations", "format", {
+    it("inflate", async () => {
+        const result = await crs.call("translations", "inflate", {
             key: "myprocess.formatted",
             parameters: {
                 code: "A11"
@@ -44,5 +52,10 @@ describe("translation tests", async () => {
         })
 
         assertEquals(result, "A11 is valid");
+    })
+
+    it("$translation expression", async () => {
+        await crs.call("console", "log", { messages: ["$translation.myprocess.message"] });
+        assertEquals(logs.log, "Hello World");
     })
 })

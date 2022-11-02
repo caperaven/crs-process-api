@@ -52,7 +52,7 @@ export class TranslationsActions {
      * For example "${code} is valid" -> "A11 is valid" provided the parameters has a property called code and with the value "A11"
      * @returns {Promise<void>}
      */
-    static async format(step, context, process, item) {
+    static async inflate(step, context, process, item) {
         const key = await crs.process.getValue(step.args.key, context, process, item);
         const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
         let string = await crsbinding.translations.get(key);
