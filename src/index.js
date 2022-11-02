@@ -1,5 +1,5 @@
 import {SchemaRegistry} from "./process-registry.js";
-import {ProcessRunner} from "./process-runner.js";
+import {ProcessRunner, populatePrefixes} from "./process-runner.js";
 
 export async function initialize(root) {
     await crs.modules.add("action", `${root}/action-systems/action-actions.js`);
@@ -50,9 +50,18 @@ globalThis.crs.processSchemaRegistry = new SchemaRegistry();
 globalThis.crs.process = ProcessRunner;
 globalThis.crs.AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-globalThis.crs.call = async (system, fn, args, context, process, item) => {
+globalThis.crs.call = async (system, fn, args, context, process, item, prefixes = null) => {
     if (crs.intent[system] == null) {
         await crs.modules.get(system);
+    }
+
+    if (process == null) {
+        process = {
+            expCache: {},
+            functions: {}
+        };
+
+        populatePrefixes(prefixes, process);
     }
 
     const module = crs.intent[system];

@@ -98,6 +98,11 @@
       "title": "styles",
       "hash": "#styles",
       "view": "styles"
+    },
+    {
+      "title": "Translations",
+      "hash": "#translations",
+      "view": "translations"
     }
   ]
 }

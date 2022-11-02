@@ -281,6 +281,7 @@ export function populatePrefixes(prefixes, process) {
     process.prefixes["$parameters"] = "$process.parameters";
     process.prefixes["$bId"]        = "$process.parameters.bId";
     process.prefixes["$global"]     = "globalThis";
+    process.prefixes["$translation"]= 'crsbinding.translations.get("$0")';
 }
 
 function getFromCache(expr, process) {
@@ -291,10 +292,21 @@ function getFromCache(expr, process) {
     }
 
     const prop = expr;
-    const exp = expr.split(".")[0];
+    const parts = expr.split(".");
+    const exp = parts[0];
     if (process?.prefixes[exp] == null) return expr;
 
-    expr = expr.split(exp).join(process.prefixes[exp]);
+    parts.splice(0, 1);
+    const value = process.prefixes[exp];
+
+    if (value.indexOf("$0") != -1) {
+        const path = parts.join(".");
+        expr = value.replace("$0", path);
+    }
+    else {
+        expr = expr.split(exp).join(value);
+    }
+
     process.expCache[prop] = expr;
     return expr;
 }

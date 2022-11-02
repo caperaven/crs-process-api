@@ -13,6 +13,10 @@ export class ConsoleActions {
             message = [message];
         }
 
+        for (let i = 0; i < message.length; i++) {
+            message[i] = await crs.process.getValue(message[i], context, process, item);
+        }
+
         console.log(...message);
     }
 

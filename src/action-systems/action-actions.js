@@ -2,14 +2,11 @@ export class ActionActions {
     static async perform(step, context, process, item) {
         let expr = `return await ${step.action.replace("$", "")}(...(args||[]))`;
 
-        let fn = process?.functions[expr];
+        let fn = process.functions?.[expr];
 
         if (fn == null) {
             fn = new globalThis.crs.AsyncFunction("context", "process", "item", "args", expr);
-
-            if (process != null) {
-                process.functions[expr] = fn;
-            }
+            process.functions[expr] = fn;
         }
 
         let parameters = await getParameters(step, context, process, item);
