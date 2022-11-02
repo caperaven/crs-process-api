@@ -1,7 +1,3 @@
-import init, {date_difference_str} from "./../../packages/crs-data-processing/data_processing_date_time.js";
-
-await init();
-
 export class DateActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
@@ -51,19 +47,6 @@ export class DateActions {
         }
 
         return dates;
-    }
-
-    static async date_diff(step, context, process, item) {
-        const date1 = await crs.process.getValue(step.args.date1);
-        const date2 = await crs.process.getValue(step.args.date2);
-
-        const res = date_difference_str(date1, date2);
-
-        if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, res);
-        }
-
-        return res;
     }
 }
 
