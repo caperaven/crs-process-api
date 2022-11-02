@@ -4,13 +4,14 @@ Color conversion actions.
 
 ## Actions
 1. [hex_to_rgb](#hex_to_rgb)
-2. [hex_to_normalised](#hex_to_normalised)
-3. [rgb_to_hex](#rgb_to_hex)
-4. [rgba_to_hex](#rgba_to_hex)
-5. [rgb_text_to_hex](#rgb_text_to_hex)
-6. [css_to_hex](#css_to_hex)
-7. [css_to_normalized](#css_to_normalized)
-8. [](#)
+2. [hex_to_rgba](#hex_to_rgba)
+3. [hex_to_normalised](#hex_to_normalised)
+4. [rgb_to_hex](#rgb_to_hex)
+5. [rgba_to_hex](#rgba_to_hex)
+6. [rgb_text_to_hex](#rgb_text_to_hex)
+7. [css_to_hex](#css_to_hex)
+8. [css_to_normalized](#css_to_normalized)
+9. [](#)
 
 ## hex_to_rgb
 This action will convert a hexidecimal color/value to a rgb color/value.
@@ -37,6 +38,35 @@ This action will convert a hexidecimal color/value to a rgb color/value.
 {{< highlight js >}}
 crs.call("colors", "hex_to_rgb", {
     hex : "#000000"
+})
+{{< / highlight >}}
+
+
+## hex_to_rgba
+This action will convert a hexidecimal color/value to a rgba color/value.
+
+| property | description      | required |
+|:---------|:-----------------| :--------: |
+| hex      | hex string value | true |
+
+**json**
+
+{{< highlight js >}}
+"step": {
+"type" : "colors",
+"action" : "hex_to_rgb",
+"args" : {
+"hex" : "#000000"
+}
+}
+{{< / highlight >}}
+
+
+**javascript**
+
+{{< highlight js >}}
+crs.call("colors", "hex_to_rgb", {
+hex : "#000000"
 })
 {{< / highlight >}}
 
