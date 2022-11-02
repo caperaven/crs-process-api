@@ -9,7 +9,6 @@ export default class Dom extends crsbinding.classes.ViewBase {
         crs.processSchemaRegistry.add((await (import("./schemas/attributes.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/styles.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/text-content.js"))).schema);
-        crs.processSchemaRegistry.add((await (import("./schemas/crs-widget.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/move-element.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/filter.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/tabs.js"))).schema);
@@ -153,26 +152,18 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async setWidget() {
-        await crsbinding.events.emitter.emit("run-process", {
-            context: this,
-            step: {
-                action: "set_widget",
-                args: { schema: "crs-widget-example" }
-            },
-            parameters: {
-                bId: this._dataId
-            }
-        })
+        await crs.call("dom_binding", "set_widget", {
+            element: "#widget",
+            html: "$template.dom-summary",
+            url: "/app/dom/template.html",
+            context: this
+        });
     }
 
     async clearWidget() {
-        await crsbinding.events.emitter.emit("run-process", {
-            context: this,
-            step: {
-                action: "clear_widget",
-                args: { schema: "crs-widget-example" }
-            }
-        })
+        await crs.call("dom_binding", "clear_widget", {
+            element: "#widget"
+        });
     }
 
     async moveToList() {

@@ -13,7 +13,8 @@
         "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
         "build-bundle": "deno run --allow-read --allow-write --allow-env --allow-run ./build/package.js",
         "bundel-to-version": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js",
-        "bundel-to-version-beta": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js --beta"
+        "bundel-to-version-beta": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js --beta",
+        "run": "caddy run"
     },
     "keywords": [],
     "author": "",
