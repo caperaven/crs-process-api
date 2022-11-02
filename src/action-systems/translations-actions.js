@@ -49,6 +49,7 @@ export class TranslationsActions {
 
     /**
      * use a translation string and format it using properties
+     * For example "${code} is valid" -> "A11 is valid" provided the parameters has a property called code and with the value "A11"
      * @returns {Promise<void>}
      */
     static async format(step, context, process, item) {
