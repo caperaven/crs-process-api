@@ -34,7 +34,7 @@ class DragClone {
 
         const result =  template.content.cloneNode(true).children[0];
         result._bounds = dragElement._bounds;
-        result._dragElement = dragElement;
+        result.dragElement = dragElement;
         return result;
         // JHR: todo, enable inflation on templates
     }
@@ -47,28 +47,28 @@ class DragClone {
  * @returns {Promise<void>}
  */
 export async function updateDrag(frameTime) {
-    if (this._updateDragHandler == null) return;
+    if (this.updateDragHandler == null) return;
 
-    const x = this._dragElement._bounds.x + (this._movePoint.x - this._startPoint.x);
-    const y = this._dragElement._bounds.y + (this._movePoint.y - this._startPoint.y);
+    const x = this.dragElement._bounds.x + (this.movePoint.x - this.startPoint.x);
+    const y = this.dragElement._bounds.y + (this.movePoint.y - this.startPoint.y);
 
-    this._dragElement.style.translate = `${x}px ${y}px`;
+    this.dragElement.style.translate = `${x}px ${y}px`;
 
-    if (this._scrollAreas != null) {
-        if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.left)) {
+    if (this.scrollAreas != null) {
+        if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.left)) {
             await scrollX.call(this, frameTime, -1);
         }
-        else if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.right)) {
+        else if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.right)) {
             await scrollX.call(this, frameTime, 1);
         }
-        else if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.top)) {
+        else if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.top)) {
             await scrollX.call(this, frameTime, -1);
         }
-        else if (inArea(this._movePoint.x, this._movePoint.y, this._scrollAreas.bottom)) {
+        else if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.bottom)) {
             await scrollX.call(this, frameTime, 1);
         }
     }
 
-    requestAnimationFrame(this._updateDragHandler);
+    requestAnimationFrame(this.updateDragHandler);
 }
 

@@ -5,80 +5,123 @@ import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
 import {getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
 
 export class DragDropManager {
-    constructor(element, options) {
-        this._element = element;
-        this._options = ensureOptions(options);
+    #element;
+    #options;
+    #mouseDownHandler;
+    #mouseMoveHandler;
+    #mouseUpHandler;
+    #mouseOverHandler;
+    #scrollAreas;
+    #startPoint;
+    #movePoint;
+    #placeholder;
+    #dragElement;
+    #isBusy;
+    #updateDragHandler;
+    #target;
 
-        this._mouseDownHandler = this.mouseDown.bind(this);
-        this._mouseMoveHandler = this.mouseMove.bind(this);
-        this._mouseUpHandler = this.mouseUp.bind(this);
-        this._mouseOverHandler = this.mouseOver.bind(this);
+    get updateDragHandler() {
+        return this.#updateDragHandler;
+    }
+
+    get dragElement() {
+        return this.#dragElement;
+    }
+
+    get movePoint() {
+        return this.#movePoint;
+    }
+
+    get startPoint() {
+        return this.#startPoint;
+    }
+
+    get scrollAreas() {
+        return this.#scrollAreas;
+    }
+
+    constructor(element, options) {
+        this.#element = element;
+        this.#options = ensureOptions(options);
+
+        this.#mouseDownHandler = this.#mouseDown.bind(this);
+        this.#mouseMoveHandler = this.#mouseMove.bind(this);
+        this.#mouseUpHandler = this.#mouseUp.bind(this);
+        this.#mouseOverHandler = this.#mouseOver.bind(this);
 
         if (options.autoScroll != null) {
-            this._scrollAreas = getScrollAreas(this._element, options.autoScroll);
+            this.#scrollAreas = getScrollAreas(this.#element, options.autoScroll);
         }
 
-        this._element.addEventListener("mousedown", this._mouseDownHandler);
-        this._element.__dragDropManager = this;
+        (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).addEventListener("mousedown", this.#mouseDownHandler);
+        this.#element.__dragDropManager = this;
     }
 
     dispose() {
-        this._element.removeEventListener("mousedown", this._mouseDownHandler);
+        (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).removeEventListener("mousedown", this.#mouseDownHandler);
 
-        this._scrollAreas = null;
-        this._mouseDownHandler = null;
-        this._mouseMoveHandler = null;
-        this._mouseUpHandler = null;
-        this._mouseOverHandler = null;
+        this.#element = null;
+        this.#options = null;
+        this.#mouseDownHandler = null;
+        this.#mouseMoveHandler = null;
+        this.#mouseUpHandler = null;
+        this.#mouseOverHandler = null;
+        this.#scrollAreas = null;
+        this.#startPoint = null;
+        this.#movePoint = null;
+        this.#placeholder = null;
+        this.#dragElement = null;
+        this.#isBusy = null;
+        this.#updateDragHandler = null;
     }
 
-    async mouseDown(event) {
+    async #mouseDown(event) {
         event.preventDefault();
 
-        if (this._isBusy == true) return;
+        if (this.#isBusy == true) return;
 
-        this._startPoint = {x: event.clientX, y: event.clientY};
-        this._movePoint = {x: event.clientX, y: event.clientY};
+        this.#startPoint = {x: event.clientX, y: event.clientY};
+        this.#movePoint = {x: event.clientX, y: event.clientY};
 
-        const element = getDraggable(event, this._options);
+        const element = getDraggable(event, this.#options);
         if (element == null) return;
 
-        this._placeholder = await applyPlaceholder(element, this._options);
-        this._dragElement = await startDrag(element, this._options);
+        this.#placeholder = await applyPlaceholder(element, this.#options);
+        this.#dragElement = await startDrag(element, this.#options);
 
-        document.addEventListener("mousemove", this._mouseMoveHandler);
-        document.addEventListener("mouseup", this._mouseUpHandler);
+        document.addEventListener("mousemove", this.#mouseMoveHandler);
+        document.addEventListener("mouseup", this.#mouseUpHandler);
 
-        this._updateDragHandler = updateDrag.bind(this);
-        this._updateDragHandler();
+        this.#updateDragHandler = updateDrag.bind(this);
+        this.#updateDragHandler();
     }
 
-    async mouseMove(event) {
+    async #mouseMove(event) {
         event.preventDefault();
-        this._movePoint.x = event.clientX;
-        this._movePoint.y = event.clientY;
-        this._target = event.target;
+        this.#movePoint.x = event.clientX;
+        this.#movePoint.y = event.clientY;
+        this.#target = event.target;
     }
 
-    async mouseUp(event) {
-        this._isBusy = true;
+    async #mouseUp(event) {
+        this.#isBusy = true;
         event.preventDefault();
-        this._updateDragHandler = null;
-        this._movePoint = null;
-        this._startPoint = null;
+        this.#updateDragHandler = null;
+        this.#movePoint = null;
+        this.#startPoint = null;
 
-        document.removeEventListener("mousemove", this._mouseMoveHandler);
-        document.removeEventListener("mouseup", this._mouseUpHandler);
+        document.removeEventListener("mousemove", this.#mouseMoveHandler);
+        document.removeEventListener("mouseup", this.#mouseUpHandler);
 
-        await drop(event, this._dragElement, this._placeholder, this._options);
+        await drop(event, this.#dragElement, this.#placeholder, this.#options);
 
-        delete this._dragElement;
-        delete this._placeholder;
-        delete this._target;
-        this._isBusy = false;
+        this.#dragElement = null;
+        this.#placeholder = null;
+        this.#target = null;
+        this.#isBusy = false;
     }
 
-    async mouseOver(event) {
+    async #mouseOver(event) {
 
     }
 }
