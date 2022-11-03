@@ -17,7 +17,10 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
             element: "#divStartOpacity",
             options: {
                 drag: {
-                    placeholderType: "opacity"
+                    placeholderType: "opacity",
+                },
+                drop: {
+                    action: "copy"
                 }
             }
         })
@@ -39,7 +42,8 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                     clone: "template"
                 },
                 drop: {
-                    clone: "template"
+                    clone: "template",
+                    action: "copy"
                 }
             }
         })

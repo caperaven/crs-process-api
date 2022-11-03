@@ -6,7 +6,6 @@
 export function ensureOptions(options) {
     options.dragQuery = options.dragQuery || "[draggable='true']";
     options.rotation = options.rotate || 0;
-    options.dropEffect = options.dropEffect || "move";
     options.insertBetween = options.insertBetween || true;
 
     options.drag = ensureDragOptions(options.drag);
@@ -27,9 +26,10 @@ function ensureDragOptions(drag) {
 }
 
 function ensureDropOptions(drop) {
-    drop = drop || {};
+    drop ||= {};
 
-    drop.allowDrop = drop.allowDrop || "[aria-dropeffect]"
+    drop.allowDrop ||= "[aria-dropeffect]";
+    drop.action ||= "move";
 
     return drop;
 }

@@ -12,9 +12,10 @@ export async function drop(event, dragElement, placeholder, options) {
         await gotoOrigin(dragElement, placeholder);
     }
     else {
-        await gotoTarget(event, dragElement, target, options);
+        await gotoTarget(event, dragElement, target, options, placeholder);
     }
-    cleanElements(dragElement, placeholder);
+
+    cleanElements(dragElement, placeholder, options);
 }
 
 /**
@@ -35,9 +36,15 @@ async function gotoOrigin(dragElement, placeholder) {
     placeholder.parentElement.replaceChild(dragElement, placeholder);
 }
 
-async function gotoTarget(event, dragElement, target, options) {
-    dragElement.parentElement.removeChild(dragElement);
+async function gotoTarget(event, dragElement, target, options, placeholder) {
     target.appendChild(dragElement);
+
+    switch (options.drop.action) {
+        case "move": {
+            placeholder.parentElement.removeChild(placeholder);
+            break;
+        }
+    }
 }
 
 /**
@@ -66,7 +73,7 @@ function gotoBounds(element, bounds) {
  * @param dragElement
  * @param placeholder
  */
-function cleanElements(dragElement, placeholder) {
+function cleanElements(dragElement, placeholder, options) {
     delete dragElement._bounds;
     dragElement.style.width = "";
     dragElement.style.height = "";
@@ -74,6 +81,10 @@ function cleanElements(dragElement, placeholder) {
     dragElement.style.translate = "";
     dragElement.style.transition = "";
     dragElement.style.filter = "";
+
+    if (options.drag?.placeholderType == "opacity" && options.drop?.action == "copy") {
+        placeholder.style.opacity = 1;
+    }
 
     delete placeholder._bounds;
 }
@@ -90,12 +101,14 @@ async function allowDrop(event, dragElement, options) {
 
 class AllowDrop {
     static async string(event, options) {
-        if (event.target.matches(options.drop.allowDrop)) {
-            return event.target;
+        const target = event.path[0];
+
+        if (target.matches(options.drop.allowDrop)) {
+            return target;
         }
 
-        if (event.target.parentElement?.matches(options.drop.allowDrop)) {
-            return event.target.parentElement;
+        if (target.parentElement?.matches(options.drop.allowDrop)) {
+            return target.parentElement;
         }
 
         return false;
