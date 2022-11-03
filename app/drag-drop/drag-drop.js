@@ -8,8 +8,7 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 drag: {
                     placeholderType: "standard",
                 },
-                autoScroll: "hv",
-                hover: (dragElement, target, frameTime) => console.log(frameTime)
+                autoScroll: "hv"
             }
         })
 
@@ -20,7 +19,12 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                     placeholderType: "opacity",
                 },
                 drop: {
-                    action: "copy"
+                    allowCallback: (dragElement, target) => {
+                        console.log(dragElement, target);
+                        return true;
+                    },
+                    action: "copy",
+                    callback: (element, target) => { console.log(element, target) }
                 }
             }
         })

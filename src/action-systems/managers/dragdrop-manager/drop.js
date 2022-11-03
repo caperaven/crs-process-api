@@ -8,7 +8,12 @@
 export async function drop(event, dragElement, placeholder, options) {
     const target = await allowDrop(event, dragElement, options);
 
-    if (target == false) {
+    let allow = true;
+    if (options.drop.allowCallback) {
+        allow = options.drop.allowCallback(dragElement, target) == true;
+    }
+
+    if (target == false || allow == false) {
         await gotoOrigin(dragElement, placeholder, options);
     }
     else {
@@ -16,6 +21,10 @@ export async function drop(event, dragElement, placeholder, options) {
     }
 
     cleanElements(dragElement, placeholder, options);
+
+    if (allow && options.drop.callback) {
+        options.drop.callback(dragElement, target);
+    }
 }
 
 /**
