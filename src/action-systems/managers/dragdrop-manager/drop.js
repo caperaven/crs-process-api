@@ -9,7 +9,7 @@ export async function drop(event, dragElement, placeholder, options) {
     const target = await allowDrop(event, dragElement, options);
 
     if (target == false) {
-        await gotoOrigin(dragElement, placeholder);
+        await gotoOrigin(dragElement, placeholder, options);
     }
     else {
         await gotoTarget(event, dragElement, target, options, placeholder);
@@ -24,7 +24,7 @@ export async function drop(event, dragElement, placeholder, options) {
  * @param placeholder
  * @returns {Promise<void>}
  */
-async function gotoOrigin(dragElement, placeholder) {
+async function gotoOrigin(dragElement, placeholder, options) {
     await gotoBounds(dragElement, placeholder._bounds);
 
     if (dragElement._dragElement != null) {
@@ -33,7 +33,9 @@ async function gotoOrigin(dragElement, placeholder) {
         dragElement = element;
     }
 
-    placeholder.parentElement.replaceChild(dragElement, placeholder);
+    if (options.drag.clone == "element") {
+        placeholder.parentElement.replaceChild(dragElement, placeholder);
+    }
 }
 
 async function gotoTarget(event, dragElement, target, options, placeholder) {
