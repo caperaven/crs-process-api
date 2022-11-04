@@ -1,6 +1,11 @@
+import {schema} from "./schema.js";
+
 export default class DragDrop extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
+        crs.processSchemaRegistry.add(schema);
+
+        const context = {};
 
         await crs.call("dom_interactive", "enable_dragdrop", {
             element: "#divStartStandard",
@@ -8,9 +13,18 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 drag: {
                     placeholderType: "standard",
                 },
+                drop: {
+                    allowCallback: {
+                        type: "process",
+                        action: "main",
+                        args: {
+                            schema: "drag-drop",
+                        }
+                    },
+                },
                 autoScroll: "hv"
             }
-        })
+        }, context)
 
         await crs.call("dom_interactive", "enable_dragdrop", {
             element: "#divStartOpacity",
@@ -19,8 +33,15 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                     placeholderType: "opacity",
                 },
                 drop: {
+                    allowProcess2: {
+                        type: "console",
+                        action: "log",
+                        args: {
+
+                        }
+                    },
+
                     allowCallback: (dragElement, target) => {
-                        console.log(dragElement, target);
                         return true;
                     },
                     action: "copy",

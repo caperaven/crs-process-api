@@ -19,6 +19,7 @@ export class DragDropManager {
     #isBusy;
     #updateDragHandler;
     #target;
+    #context;
 
     get updateDragHandler() {
         return this.#updateDragHandler;
@@ -40,8 +41,9 @@ export class DragDropManager {
         return this.#scrollAreas;
     }
 
-    constructor(element, options) {
+    constructor(element, options, context) {
         this.#element = element;
+        this.#context = context;
         this.#options = ensureOptions(options);
 
         this.#mouseDownHandler = this.#mouseDown.bind(this);
@@ -61,6 +63,7 @@ export class DragDropManager {
         (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).removeEventListener("mousedown", this.#mouseDownHandler);
 
         this.#element = null;
+        this.#context = null;
         this.#options = null;
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
@@ -113,7 +116,7 @@ export class DragDropManager {
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
         document.removeEventListener("mouseup", this.#mouseUpHandler);
 
-        await drop(event, this.#dragElement, this.#placeholder, this.#options);
+        await drop(event, this.#dragElement, this.#placeholder, this.#options, this.#context);
 
         this.#dragElement = null;
         this.#placeholder = null;

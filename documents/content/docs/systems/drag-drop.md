@@ -74,3 +74,24 @@ Both of them have two parameters.
 "allowCallback" is called before the drop is made.
 You can override if the drop is allowed in this callback.
 Set the result too false to prevent the drop and true to allow the drop.
+
+## Example
+
+{{< highlight html >}}
+await crs.call("dom_interactive", "enable_dragdrop", {
+    element: "#divStartOpacity",
+    options: {
+        drag: {
+            placeholderType: "opacity",
+        },
+        drop: {
+            allowCallback: (dragElement, target) => {
+                console.log(dragElement, target);
+                return true;
+            },
+            action: "copy",
+            callback: (element, target) => { console.log(element, target) }
+        }
+    }
+})
+{{< / highlight >}}

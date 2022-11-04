@@ -5,12 +5,18 @@
  * @param options
  * @returns {Promise<void>}
  */
-export async function drop(event, dragElement, placeholder, options) {
+export async function drop(event, dragElement, placeholder, options, context) {
     const target = await allowDrop(event, dragElement, options);
 
     let allow = true;
     if (options.drop.allowCallback) {
-        allow = options.drop.allowCallback(dragElement, target) == true;
+        if (typeof options.drop.allowCallback == "object") {
+            const step = options.drop.allowCallback;
+            allow = await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
+        }
+        else {
+            allow = options.drop.allowCallback(dragElement, target) == true;
+        }
     }
 
     if (target == false || allow == false) {
@@ -23,7 +29,13 @@ export async function drop(event, dragElement, placeholder, options) {
     cleanElements(dragElement, placeholder, options);
 
     if (allow && options.drop.callback) {
-        options.drop.callback(dragElement, target);
+        if (typeof options.drop.callback == "object") {
+            const step = options.drop.callback;
+            await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
+        }
+        else {
+            options.drop.callback(dragElement, target);
+        }
     }
 }
 
