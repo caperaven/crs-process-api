@@ -181,6 +181,7 @@ export class DomActions {
         const styles = Object.keys(step.args.styles || {});
         const classes = step.args.classes || [];
         const dataset = Object.keys(step.args.dataset || {});
+        const variables = Object.keys(step.args.variables || {});
 
         element.id = await crs.process.getValue(step.args.id, context, process, item);
 
@@ -198,6 +199,11 @@ export class DomActions {
 
         for (let key of dataset) {
             element.dataset[key] = await crs.process.getValue(step.args.dataset[key], context, process, item);
+        }
+
+        for (let key of variables) {
+            const value = await crs.process.getValue(step.args.variables[key], context, process, item);
+            element.style.setProperty(key, value);
         }
 
         if (step.args.text_content != null) {

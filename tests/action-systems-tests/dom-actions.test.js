@@ -127,7 +127,10 @@ Deno.test("create_element", async () => {
             {
                 tag_name: "input"
             }
-        ]
+        ],
+        variables: {
+            "--cl-color": "blue"
+        }
     });
 
     assert(element != null);
@@ -140,6 +143,7 @@ Deno.test("create_element", async () => {
     assertEquals(element.textContent, "First Name");
     assertEquals(element.children.length, 1);
     assertEquals(element.children[0].nodeName, "INPUT");
+    assertEquals(element.style.getPropertyValue("--cl-color"), "blue");
 })
 
 Deno.test("remove_element", async () => {
