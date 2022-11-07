@@ -20,3 +20,5 @@ export async function init() {
     const processModule = await import("./../../src/index.js");
     await processModule.initialize("./../../src");
 }
+
+await init();

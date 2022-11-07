@@ -15,7 +15,7 @@ export async function drop(event, dragElement, placeholder, options, context) {
             allow = await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
         }
         else {
-            allow = options.drop.allowCallback(dragElement, target) == true;
+            allow = await options.drop.allowCallback(dragElement, target) == true;
         }
     }
 
@@ -34,7 +34,7 @@ export async function drop(event, dragElement, placeholder, options, context) {
             await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
         }
         else {
-            options.drop.callback(dragElement, target);
+            await options.drop.callback(dragElement, target);
         }
     }
 }
