@@ -57,13 +57,15 @@ async function bundle(file, output, minify = true) {
 
 await createFolderStructure();
 
+const minified = true;
+
 await packageDirectory({
     dir: ["./src/action-systems"],
     replace: {
         "./src": ""
     },
     target: "./dist"
-}, "js", "esm", true);
+}, "js", "esm", minified);
 
 await packageDirectory({
     dir: ["./src/action-systems/managers"],
@@ -71,7 +73,7 @@ await packageDirectory({
         "./src": ""
     },
     target: "./dist"
-}, "js", "esm", true);
+}, "js", "esm", minified);
 
 await packageDirectory({
     dir: ["./src/action-systems/managers/dragdrop-manager"],
@@ -79,7 +81,7 @@ await packageDirectory({
         "./src": ""
     },
     target: "./dist"
-}, "js", "esm", true);
+}, "js", "esm", minified);
 
-await bundle("./src/index.js", "./dist/crs-process-api.js", false);
+await bundle("./src/index.js", "./dist/crs-process-api.js", minified);
 Deno.exit(0);

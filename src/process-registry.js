@@ -43,7 +43,7 @@ export class SchemaRegistry {
                 await crs.process.setValue(resultPath, result, args.context, args.process, args.item);
             }
 
-            resolve();
+            resolve(result);
         })
     }
 
