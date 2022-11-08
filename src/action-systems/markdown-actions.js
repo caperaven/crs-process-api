@@ -8,7 +8,9 @@ export class MarkdownActions {
     }
 
     static async to_html(step, context, process, item) {
-        const markdown = await crs.process.getValue(step.args.markdown, context, process, item);
+        let markdown = await crs.process.getValue(step.args.markdown, context, process, item);
+        markdown = markdown.split("$template").join("");
+
         const html = markdown_to_html(markdown);
 
         if (step.args.target != null) {
