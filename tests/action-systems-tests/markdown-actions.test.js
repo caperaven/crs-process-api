@@ -1,7 +1,6 @@
-import { beforeAll, describe, it, beforeEach } from "https://deno.land/std@0.157.0/testing/bdd.ts";
-import {ElementMock} from "../mockups/element-mock.js";
-import { assertEquals, assertNotEquals, assert } from "https://deno.land/std@0.147.0/testing/asserts.ts";
-import {init} from "./../mockups/init.js";
+import { beforeAll } from "https://deno.land/std@0.157.0/testing/bdd.ts";
+import { assertEquals } from "https://deno.land/std@0.147.0/testing/asserts.ts";
+import { init } from "./../mockups/init.js";
 
 await init();
 
