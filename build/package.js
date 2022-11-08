@@ -4,6 +4,7 @@ import * as esbuild from 'https://deno.land/x/esbuild@v0.14.50/mod.js'
 async function createFolderStructure() {
     await ensureDir("./dist");
     await emptyDir("./dist");
+    await ensureDir("./dist/bin");
     await ensureDir("./dist/action-systems");
     await ensureDir("./dist/action-systems/managers");
     await ensureDir("./dist/action-systems/managers/dragdrop-manager");
@@ -54,6 +55,19 @@ async function bundle(file, output, minify = true) {
     console.log(result);
 }
 
+export async function copyDirectory(source, target) {
+    await ensureDir(target);
+
+    for await (const dirEntry of Deno.readDir(source)) {
+        if (dirEntry.isDirectory == true) {
+            await ensureDir(`${target}/${dirEntry.name}`);
+            await copyDirectory(`${source}/${dirEntry.name}`, `${target}/${dirEntry.name}`);
+            continue;
+        }
+
+        await Deno.copyFile(`${source}/${dirEntry.name}`, `${target}/${dirEntry.name}`);
+    }
+}
 
 await createFolderStructure();
 
@@ -84,4 +98,7 @@ await packageDirectory({
 }, "js", "esm", minified);
 
 await bundle("./src/index.js", "./dist/crs-process-api.js", minified);
+
+await copyDirectory("./src/bin", "./dist/bin");
+
 Deno.exit(0);
