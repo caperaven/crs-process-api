@@ -9,7 +9,23 @@ export class MarkdownActions {
 
     static async to_html(step, context, process, item) {
         let markdown = await crs.process.getValue(step.args.markdown, context, process, item);
-        markdown = markdown.split("$template").join("");
+        const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
+
+        if (parameters != null || markdown.indexOf("&{") != -1) {
+            const parts = [];
+            const lines = markdown.split("\n");
+
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].indexOf("$template") != -1) continue;
+
+                parts.push(await crs.call("string", "inflate", {
+                    template: lines[i],
+                    parameters
+                }));
+            }
+
+            markdown = parts.join("\n");
+        }
 
         const html = markdown_to_html(markdown);
 

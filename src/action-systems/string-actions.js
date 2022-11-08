@@ -19,6 +19,26 @@ export class StringActions {
 
         let result = await inflate_string(template, parameters, context, process, item);
 
+        if (result.indexOf("&{") != -1) {
+            result = translate_string(result);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async translate(step, context, process, item) {
+        const template = await crs.process.getValue(step.args.template, context, process, item);
+
+        let result = template;
+
+        if (result.indexOf("&{") != -1) {
+            result = translate_string(result);
+        }
+
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }
@@ -122,6 +142,20 @@ async function sanitise_parameters(parameters, context, process, item) {
     }
 
     return parameters
+}
+
+async function translate_string(value) {
+    const si = value.indexOf("&{");
+    const ei = value.indexOf("}", si + 1);
+    const key = value.substring(si + 2, ei);
+    const trans = await crsbinding.translations.get(key);
+    value = value.split(`&{${key}}`).join(trans);
+
+    if (value.indexOf("&{") != -1) {
+        return translate_string(value);
+    }
+
+    return value;
 }
 
 crs.intent.string = StringActions;

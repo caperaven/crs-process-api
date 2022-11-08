@@ -232,3 +232,17 @@ Deno.test("inflate string", async () => {
 
     assertEquals(result, "<icon>gear</icon> <bold>[A11]</bold> Desc");
 })
+
+Deno.test("translate string", async () => {
+    await crsbinding.translations.add({
+        "hello": "Hello",
+        "world": "World"
+    }, "md")
+
+    const template = "say &{md.hello} to the &{md.world}."
+    const result = await crs.call("string", "translate", { template })
+
+    assertEquals(result, "say Hello to the World.")
+
+    await crsbinding.translations.delete("md");
+})

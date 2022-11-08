@@ -29,3 +29,34 @@ Deno.test("markdown tables", async () => {
 
     assert(result.indexOf("<table>") != -1);
 })
+
+Deno.test("markdown inflation", async () => {
+    await crsbinding.translations.add({
+        "title": "Hello World"
+    }, "md")
+
+    const markdown = [
+        "$template",
+        "# &{md.title}",
+        "**Summary**",
+        "Work order: \"${code}\" has asset \"${assetCode}\"."
+    ].join("\n")
+
+    const parameters = {
+        code: "WRK0001",
+        assetCode: "ASSET12"
+    }
+
+    const result = await crs.call("markdown", "to_html", {
+        markdown,
+        parameters
+    })
+
+    const parts = result.split("\n");
+
+    assert(parts[0].indexOf("<h1>Hello World</h1>") != -1);
+    assert(parts[1].indexOf("<strong>Summary</strong>") != -1);
+    assert(parts[2].indexOf('Work order: “WRK0001” has asset “ASSET12”') != -1);
+
+    await crsbinding.translations.delete("md");
+})
