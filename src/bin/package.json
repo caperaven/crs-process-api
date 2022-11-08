@@ -1,0 +1,12 @@
+{
+  "name": "data",
+  "version": "0.1.0",
+  "files": [
+    "data_bg.wasm",
+    "data.js",
+    "data.d.ts"
+  ],
+  "module": "data.js",
+  "types": "data.d.ts",
+  "sideEffects": false
+}
