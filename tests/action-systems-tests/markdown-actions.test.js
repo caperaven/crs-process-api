@@ -10,9 +10,9 @@ beforeAll(async () => {
 })
 
 Deno.test("markdown to html", async () => {
-    const result = crs.call("markdown", "to_html", {
-        markdown: "* heading 1"
+    const result = await crs.call("markdown", "to_html", {
+        markdown: "# heading 1"
     })
 
-    assert(result, "Hello World");
+    assertEquals(result, `<h1>heading 1</h1>\n`);
 })

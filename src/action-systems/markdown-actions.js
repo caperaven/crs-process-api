@@ -8,8 +8,8 @@ export class MarkdownActions {
     }
 
     static async to_html(step, context, process, item) {
-        const markdown = crs.process.getValue(step.args.markdown, context, process, item);
-        const html = markdown_to_html();
+        const markdown = await crs.process.getValue(step.args.markdown, context, process, item);
+        const html = markdown_to_html(markdown);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, html, context, process, item);

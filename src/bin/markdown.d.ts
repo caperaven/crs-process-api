@@ -1,15 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+* @param {string} markdown_input
 * @returns {any}
 */
-export function markdown_to_html(): any;
+export function markdown_to_html(markdown_input: string): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly markdown_to_html: () => number;
+  readonly markdown_to_html: (a: number, b: number) => number;
+  readonly __wbindgen_malloc: (a: number) => number;
+  readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
