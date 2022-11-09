@@ -22,6 +22,10 @@ export class HtmlActions {
         if (step.args.function != null) {
             return await this.#from_function(step, context, process, item);
         }
+
+        if (step.args.markdown != null) {
+            return await crs.call("markdown", "to_html", step.args, context, process, item);
+        }
     }
 
     static async #from_file(step, context, process, item) {
@@ -36,7 +40,8 @@ export class HtmlActions {
     }
 
     static async #from_schema(step, context, process, item) {
-
+        const json = await crs.process.getValue(step.args.schema, context, process, item);
+        return schema?.parser?.parse(json);
     }
 
     static async #from_process(step, context, process, item) {
