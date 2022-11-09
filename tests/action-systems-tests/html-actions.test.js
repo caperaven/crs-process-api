@@ -50,6 +50,15 @@ Deno.test("html - from schema", async () => {
     assertEquals(result, "<div  >Hello World</div>");
 })
 
+Deno.test("html - from schema from file", async () => {
+    assert(schema.parser != null);
+    const result = await crs.call("html", "get", {
+        schema: import.meta.url.replace("action-systems-tests/html-actions.test.js", "schema.json")
+    })
+
+    assertEquals(result, "<div  >Hello World</div>");
+})
+
 Deno.test("html - from process", async () => {
 
 })

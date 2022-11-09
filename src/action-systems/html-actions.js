@@ -40,7 +40,12 @@ export class HtmlActions {
     }
 
     static async #from_schema(step, context, process, item) {
-        const json = await crs.process.getValue(step.args.schema, context, process, item);
+        let json = await crs.process.getValue(step.args.schema, context, process, item);
+
+        if (typeof json == "string") {
+            json = await fetch(json).then(result => result.json());
+        }
+
         return schema?.parser?.parse(json);
     }
 
