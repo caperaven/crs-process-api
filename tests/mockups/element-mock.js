@@ -86,7 +86,7 @@ export function mockElement(instance, tag, id) {
         get() {
             const clone = cloneElementMock(this);
             clone.id = "document-fragment";
-            clone.nodeName = "DOCUMENT_FRAGMENT";
+            clone.nodeName = "DOCUMENT-FRAGMENT";
             return clone;
         },
 
