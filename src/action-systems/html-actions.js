@@ -15,10 +15,6 @@ export class HtmlActions {
             return await this.#from_schema(step, context, process, item);
         }
 
-        if (step.args.process != null) {
-            return await this.#from_process(step, context, process, item);
-        }
-
         if (step.args.function != null) {
             return await this.#from_function(step, context, process, item);
         }
@@ -47,10 +43,6 @@ export class HtmlActions {
         }
 
         return schema?.parser?.parse(json);
-    }
-
-    static async #from_process(step, context, process, item) {
-
     }
 
     static async #from_function(step, context, process, item) {

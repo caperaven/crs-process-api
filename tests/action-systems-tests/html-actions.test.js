@@ -59,10 +59,6 @@ Deno.test("html - from schema from file", async () => {
     assertEquals(result, "<div  >Hello World</div>");
 })
 
-Deno.test("html - from process", async () => {
-
-})
-
 Deno.test("html - from function", async () => {
     const result = await crs.call("html", "get", {function: () => "<h1>test</h2>"});
     assertEquals(result, "<h1>test</h2>");
