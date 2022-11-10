@@ -24,6 +24,20 @@ export class HtmlActions {
         }
     }
 
+    /**
+     * Create a element and inflate it using the provided ctx object.
+     * This returns a HTMLElement based on the html string provided
+     */
+    static async create(step, context, process, item) {
+        const html = await crs.process.getValue(step.args.html, context, process, item);
+        const ctx = await crs.process.getValue(step.args.ctx, context, process, item);
+
+        // 1. inflate html string using crs.call("string", "inflate")
+        // 2. create template set innerHTML
+        // 3. create clone // template.content.cloneNode(true)
+        // 4. return new instance from clone operation
+    }
+
     static async #from_file(step, context, process, item) {
         const url = await crs.process.getValue(step.args.url, context, process, item);
         return await fetch(url).then(result => result.text());
