@@ -1,10 +1,19 @@
 <style>
-    div {
+    .setup, .container {
         display: flex;
+        flex-direction: column;
     }
 </style>
-<label>
-    Amount
-    <input ref="amount" value="1" type="number">
-</label>
-<button click.call="create">Create</button>
+<div class="setup">
+    <textarea rows="8" ref="html"></textarea>
+    <textarea rows="8" ref="context"></textarea>
+    <label>
+        Amount
+        <input ref="amount" value="5" type="number">
+    </label>
+    <button click.call="create">Create</button>
+</div>
+
+<div ref="container" class="container">
+
+</div>
