@@ -103,6 +103,11 @@
       "title": "Translations",
       "hash": "#translations",
       "view": "translations"
+    },
+    {
+      "title": "Html",
+      "hash": "#html",
+      "view": "html"
     }
   ]
 }
