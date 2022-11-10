@@ -80,7 +80,19 @@ export function mockElement(instance, tag, id) {
                 this.children.length = 0;
             }
         }
-    })
+    });
+
+    Object.defineProperty(instance, "content", {
+        get() {
+            if (instance.nodeName !== "TEMPLATE") return;
+            const clone = cloneElementMock(this);
+            clone.id = "document-fragment";
+            clone.nodeName = "DOCUMENT-FRAGMENT";
+            return clone;
+        },
+
+        set(newValue) {}
+    });
 
     return instance;
 }

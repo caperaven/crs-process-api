@@ -29,13 +29,24 @@ export class HtmlActions {
      * This returns a HTMLElement based on the html string provided
      */
     static async create(step, context, process, item) {
-        const html = await crs.process.getValue(step.args.html, context, process, item);
+        const html = step.args.html.indexOf("<") == -1 ?
+            await crs.process.getValue(step.args.html, context, process, item) : step.args.html;
         const ctx = await crs.process.getValue(step.args.ctx, context, process, item);
 
-        // 1. inflate html string using crs.call("string", "inflate")
-        // 2. create template set innerHTML
-        // 3. create clone // template.content.cloneNode(true)
-        // 4. return new instance from clone operation
+        const inflated = await crs.call("string", "inflate", {
+            parameters: ctx,
+            template: html
+        }, context, process, item);
+
+        const template = document.createElement("template");
+        template.innerHTML = inflated;
+        const result = template.content;
+
+        if (step.args.target != null) {
+            await crs.process.setValue(args.target, result, context, process, item);
+        }
+
+        return result;
     }
 
     static async #from_file(step, context, process, item) {
