@@ -140,7 +140,7 @@ export class DomActions {
     static async get_element(step, context, process, item) {
         if (step == null) return null;
 
-        if (step instanceof HTMLElement || step instanceof SVGElement) {
+        if (step instanceof Element) {
             return step;
         }
 
