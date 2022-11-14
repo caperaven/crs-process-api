@@ -27,9 +27,17 @@
         import "./packages/crs-binding/crs-binding.js";
         import "./packages/crs-router/crs-router.js";
         import "./packages/crs-modules/crs-modules.js";
+
+        import {HTMLParser} from "./packages/crs-schema/html/crs-html-parser.js";
         import {initialize} from "./src/index.js";
 
-        await initialize("/src")
+        await initialize("/src");
+
+        await crs.call("schema", "register", {
+            id: "html",
+            parser: HTMLParser,
+            providers: []
+        })
 
         const trans = {
             buttons: {

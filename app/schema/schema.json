@@ -1,0 +1,15 @@
+{
+	"variables": {
+		"translations": {
+			"button": "My Button"
+		}
+	},
+	"body": {
+		"elements": [
+			{
+				"element": "button",
+				"caption": "@translations.button"
+			}
+		]
+	}
+}
