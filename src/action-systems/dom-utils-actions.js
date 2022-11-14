@@ -82,10 +82,13 @@ export class DomUtilsActions {
     static async find_parent_of_type(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const stopAtNodeName = await crs.process.getValue(step.args.stopAtNodeName, context, process, item);
+        const stopAtNodeQuery = await crs.process.getValue(step.args.stopAtNodeQuery, context, process, item);
         const nodeName = await crs.process.getValue(step.args.nodeName, context, process, item);
-        if (element == null || nodeName == null) return;
+        const nodeQuery = await crs.process.getValue(step.args.nodeQuery, context, process, item);
 
-        const result = await this.#findParentOfType(element, nodeName, stopAtNodeName);
+        if (element == null || (nodeName == null && nodeQuery == null)) return;
+
+        const result = await this.#findParentOfType(element, nodeName, nodeQuery, stopAtNodeName, stopAtNodeQuery);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -102,15 +105,20 @@ export class DomUtilsActions {
      * @param {string} stopAtNodeName
      * @returns {Promise<undefined|Element>}
      */
-    static async #findParentOfType(element, nodeName, stopAtNodeName) {
-        const currentNodeName = element.nodeName.toLowerCase();
+    static async #findParentOfType(element, nodeName, nodeQuery, stopAtNodeName, stopAtNodeQuery) {
+        const currentNodeName = nodeName != null || stopAtNodeName != null ? element.nodeName.toLowerCase() : null;
         if (stopAtNodeName != null && currentNodeName === stopAtNodeName) return;
+        if (stopAtNodeQuery != null && element.matches(stopAtNodeQuery)) return;
 
-        if (currentNodeName === nodeName.toLowerCase()) {
+        if (nodeName != null && currentNodeName === nodeName.toLowerCase()) {
             return element;
         }
 
-        return await this.#findParentOfType(element.parentElement, nodeName, stopAtNodeName);
+        if (nodeQuery != null && element.matches(nodeQuery)) {
+            return element;
+        }
+
+        return await this.#findParentOfType(element.parentElement, nodeName, nodeQuery, stopAtNodeName, stopAtNodeQuery);
     }
 }
 

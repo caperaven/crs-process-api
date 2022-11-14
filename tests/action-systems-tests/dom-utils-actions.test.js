@@ -32,7 +32,7 @@ Deno.test("call_on_element", async () => {
     assertEquals(calledArgs2, "arg2");
 });
 
-Deno.test("find_parent_of_type - finds specified ancestor li", async () => {
+Deno.test("find_parent_of_type - finds specified ancestor li tagname", async () => {
     // Arrange
     const element = document.createElement("span");
     element.parentElement = document.createElement("div");
@@ -46,7 +46,7 @@ Deno.test("find_parent_of_type - finds specified ancestor li", async () => {
     assertEquals(result.nodeName, "LI");
 });
 
-Deno.test("find_parent_of_type - stops at div", async () => {
+Deno.test("find_parent_of_type - stops at div tagname", async () => {
     // Arrange
     const element = document.createElement("span");
     element.parentElement = document.createElement("div");
@@ -56,6 +56,43 @@ Deno.test("find_parent_of_type - stops at div", async () => {
         element,
         nodeName: "li",
         stopAtNodeName: "div"
+    });
+    // Assert
+    assertEquals(result, undefined);
+});
+
+Deno.test("find_parent_of_type - finds specified ancestor li matches", async () => {
+    // Arrange
+    const element = document.createElement("span");
+    element.parentElement = document.createElement("div");
+    element.parentElement.parentElement = document.createElement("li");
+    element.parentElement.parentElement.setAttribute("data-id", "overHere");
+    element.parentElement.parentElement.queryResults["[data-id='overHere']"] = element.parentElement.parentElement;
+
+    // Act
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
+        element,
+        nodeQuery: "[data-id='overHere']"
+    });
+    // Assert
+    assertEquals(result.nodeName, "LI");
+});
+
+Deno.test("find_parent_of_type - stops at stopAtNodeQuery", async () => {
+    // Arrange
+    const element = document.createElement("span");
+    element.parentElement = document.createElement("div");
+    element.parentElement.setAttribute("data-id", "stop");
+    element.parentElement.queryResults["[data-id='stop']"] = element.parentElement;
+    element.parentElement.parentElement = document.createElement("li");
+    element.parentElement.parentElement.setAttribute("data-id", "overHere");
+    element.parentElement.parentElement.queryResults["[data-id='overHere']"] = element.parentElement.parentElement;
+
+    // Act
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
+        element,
+        nodeQuery: "[data-id='overHere']",
+        stopAtNodeQuery: "[data-id='stop']"
     });
     // Assert
     assertEquals(result, undefined);

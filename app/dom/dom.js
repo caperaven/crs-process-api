@@ -449,10 +449,10 @@ export default class Dom extends crsbinding.classes.ViewBase {
         return result;
     }
 
-    async findParentByType(event) {
+    async findParentByType(event, type) {
         const result = await crs.call("dom_utils", "find_parent_of_type", {
            element: event.target,
-           nodeName: "section"
+           nodeQuery: type === "matches" ? "[data-id='findMe']" : "section"
         });
 
         await crs.call("dom_interactive", "highlight", {
