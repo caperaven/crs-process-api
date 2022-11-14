@@ -118,6 +118,8 @@ export class DomUtilsActions {
             return element;
         }
 
+        if (element.parentElement == null) return;
+
         return await this.#findParentOfType(element.parentElement, nodeName, nodeQuery, stopAtNodeName, stopAtNodeQuery);
     }
 }

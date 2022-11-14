@@ -11,6 +11,7 @@ import "./custom-event.js";
 export async function init() {
     globalThis.DocumentFragment = ElementMock;
     globalThis.HTMLElement = ElementMock;
+    globalThis.SVGElement = ElementMock;
     globalThis.HTMLInputElement = ElementMock;
     globalThis.requestAnimationFrame = (callback) => callback();
 
