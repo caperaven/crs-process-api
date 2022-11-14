@@ -1,5 +1,4 @@
 import {callFunctionOnPath} from "./action-actions.js";
-import {DomInteractiveActions} from "./dom-interactive-actions.js";
 
 /**
  * This contains functions for utility
@@ -75,6 +74,44 @@ export class DomUtilsActions {
         return bounds;
     }
 
+    /**
+     * Recursively finds a parent or ancestor that matches a specific tagName,
+     * optionally stopping at a specified node for performance.
+     * @returns {Promise<Element|undefined>}
+     */
+    static async find_parent_of_type(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const stopAtNodeName = await crs.process.getValue(step.args.stopAtNodeName, context, process, item);
+        const nodeName = await crs.process.getValue(step.args.nodeName, context, process, item);
+        if (element == null || nodeName == null) return;
+
+        const result = await this.#findParentOfType(element, nodeName, stopAtNodeName);
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * Recursively finds a parent or ancestor that matches a specific tagName,
+     * optionally stopping at a specified node for performance.
+     * @param {Element} element
+     * @param {string} nodeName
+     * @param {string} stopAtNodeName
+     * @returns {Promise<undefined|Element>}
+     */
+    static async #findParentOfType(element, nodeName, stopAtNodeName) {
+        const currentNodeName = element.nodeName.toLowerCase();
+        if (stopAtNodeName != null && currentNodeName === stopAtNodeName) return;
+
+        if (currentNodeName === nodeName.toLowerCase()) {
+            return element;
+        }
+
+        return await this.#findParentOfType(element.parentElement, nodeName, stopAtNodeName);
+    }
 }
 
 crs.intent.dom_utils = DomUtilsActions;

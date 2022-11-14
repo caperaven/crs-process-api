@@ -448,4 +448,17 @@ export default class Dom extends crsbinding.classes.ViewBase {
         })
         return result;
     }
+
+    async findParentByType(event) {
+        const result = await crs.call("dom_utils", "find_parent_of_type", {
+           element: event.target,
+           nodeName: "section"
+        });
+
+        await crs.call("dom_interactive", "highlight", {
+            target: result,
+            duration: 500,
+            classes: ["highlight"]
+        })
+    }
 }
