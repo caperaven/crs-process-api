@@ -43,6 +43,14 @@
 
 {{< /highlight>}}
 
+## Register schema
+Before you can use this schema you need to be able to register it with the schema registry.
+
+{{<highlight>}}
+crs.processSchemaRegistry.add(schema);
+{{< /highlight>}}
+
+
 ## Schema Parts
 
 A schema can have more than one process.  
