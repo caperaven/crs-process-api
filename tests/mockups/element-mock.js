@@ -36,6 +36,7 @@ export function mockElement(instance, tag, id) {
     instance.querySelector = querySelector.bind(instance);
     instance.getElementsByTagName = getElementsByTagName.bind(instance);
     instance.querySelectorAll = querySelectorAll.bind(instance);
+    instance.matches = matches.bind(instance);
     instance.cloneNode = cloneNode.bind(instance);
     instance.appendChild = appendChild.bind(instance);
     instance.removeChild = removeChild.bind(instance);
@@ -80,7 +81,19 @@ export function mockElement(instance, tag, id) {
                 this.children.length = 0;
             }
         }
-    })
+    });
+
+    Object.defineProperty(instance, "content", {
+        get() {
+            if (instance.nodeName !== "TEMPLATE") return;
+            const clone = cloneElementMock(this);
+            clone.id = "document-fragment";
+            clone.nodeName = "DOCUMENT-FRAGMENT";
+            return clone;
+        },
+
+        set(newValue) {}
+    });
 
     return instance;
 }
@@ -152,6 +165,10 @@ function querySelectorAll(selector) {
     const result = [];
     findAll(this, callback, result);
     return result;
+}
+
+function matches(selector) {
+    return querySelector.call(this, selector);
 }
 
 function cloneNode() {

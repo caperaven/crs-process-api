@@ -108,6 +108,11 @@
       "title": "Schema",
       "hash": "#schema",
       "view": "schema"
+    },
+    {
+      "title": "Html",
+      "hash": "#html",
+      "view": "html"
     }
   ]
 }

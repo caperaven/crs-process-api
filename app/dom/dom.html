@@ -46,14 +46,14 @@
         background: #0055bb22;
         color: #0055bb;
         border: solid 1px #0055bb;
-        display :flex;
+        display: flex;
         align-items: center;
         justify-content: center;
     }
 
     h2#css-properties {
-        --mybackground : hotpink;
-        --mycolor : white;
+        --mybackground: hotpink;
+        --mycolor: white;
         background-color: var(--mybackground);
         color: var(--mycolor);
     }
@@ -93,18 +93,18 @@
     </div>
 </section>
 
-<hr />
+<hr/>
 
 <section>
     <div class="toolbar">
         <h2>Attributes</h2>
         <button id="btnGetAttribute" click.call="getAttribute">Get Attributes</button>
     </div>
-    <input id="edtAttr" data-value="Hello World" value.bind="attributeValue" />
+    <input id="edtAttr" data-value="Hello World" value.bind="attributeValue"/>
     <button id="btnSetAttribute" click.call="setAttribute">Set Attribute</button>
 </section>
 
-<hr />
+<hr/>
 
 <section>
     <div class="toolbar">
@@ -134,11 +134,11 @@
         <button id="btnGetText" click.call="getText">Get Text</button>
     </div>
     <div id="divText">Content Element</div>
-    <input id="edtText" value.bind="textValue" />
+    <input id="edtText" value.bind="textValue"/>
     <button id="btnSetText" click.call="setText">Set Text</button>
 </section>
 
-<hr />
+<hr/>
 
 <section>
     <div class="toolbar">
@@ -150,7 +150,7 @@
     <crs-widget id="widget"></crs-widget>
 </section>
 
-<hr />
+<hr/>
 
 <section>
     <div class="toolbar">
@@ -179,7 +179,7 @@
 <section>
     <div class="toolbar">
         <h2>Filter Element</h2>
-        <input value.bind="filter" />
+        <input value.bind="filter"/>
         <button id="btnApplyFilter" click.call="applyFilter">Apply Filter</button>
         <button id="btnClearFilter" click.call="clearFilter">Clear Filter</button>
     </div>
@@ -217,6 +217,16 @@
     </div>
 
     <ul id="tpl_simple-parent" class="card"></ul>
+</section>
+
+<section>
+    <h2>Find Parent By Type</h2>
+    <div data-id="findMe">
+        <div>
+            <button click.call="findParentByType($event)">Find my parent section using tagName</button>
+            <button click.call="findParentByType($event, 'matches')">Find my parent div[dat-id='findMe'] using matches</button>
+        </div>
+    </div>
 </section>
 
 
