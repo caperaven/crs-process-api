@@ -7,5 +7,11 @@ export default class Schema extends crsbinding.classes.ViewBase {
             id: "html",
             schema: json
         });
+
+        await crsbinding.parsers.parseElements(this.target.children, this._dataId);
+    }
+
+    async greeting() {
+        console.log("Hello World");
     }
 }

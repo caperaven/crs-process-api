@@ -8,7 +8,10 @@
 		"elements": [
 			{
 				"element": "button",
-				"caption": "@translations.button"
+				"caption": "@translations.button",
+				"attributes": {
+					"click.call": "greeting"
+				}
 			}
 		]
 	}
