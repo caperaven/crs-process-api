@@ -97,3 +97,18 @@ Deno.test("find_parent_of_type - stops at stopAtNodeQuery", async () => {
     // Assert
     assertEquals(result, undefined);
 });
+
+Deno.test("find_parent_of_type - element not found", async () => {
+    // Arrange
+    const element = document.createElement("span");
+    element.parentElement = document.createElement("div");
+    element.parentElement.parentElement = document.createElement("li");
+
+    // Act
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
+        element,
+        nodeName: "section"
+    });
+    // Assert
+    assertEquals(result, undefined);
+});
