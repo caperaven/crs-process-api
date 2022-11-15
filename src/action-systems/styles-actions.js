@@ -15,6 +15,8 @@ export class StylesActions {
         link.type = "text/css";
         link.href = file;
         document.getElementsByTagName("head")[0].appendChild(link)
+
+        return link;
     }
 
     static async unload_file(step, context, process, item) {
