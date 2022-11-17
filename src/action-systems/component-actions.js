@@ -67,6 +67,26 @@ export class ComponentActions {
         element.dataset.ready = "true";
         element.dispatchEvent(new CustomEvent("ready", {bubbles:false}));
     }
+
+    /**
+     * Get notified when the component is ready
+     */
+    static async on_ready(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const callback = await crs.process.getValue(step.args.callback, context, process, item);
+        const caller = await crs.process.getValue(step.args.caller, context, process, item);
+
+        if (element.dataset.ready == "true") {
+            return await callback.call(caller);
+        }
+
+        const fn = async () => {
+            element.removeEventListener("ready", fn);
+            await callback.call(caller);
+        }
+
+        element.addEventListener("ready", fn);
+    }
 }
 
 function getNextId(element) {
