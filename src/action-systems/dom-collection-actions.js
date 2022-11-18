@@ -12,6 +12,17 @@ export class DomCollectionActions {
         const filterString = await crs.process.getValue(step.args.filter, context, process, item);
         await filter(step.args.element, filterString);
     }
+
+    static async toggle_selection(step, context, process, item) {
+        const target = await crs.dom.get_element(step.args.target, context, process, item);
+        const selectedElement = target.parentElement.querySelector("[aria-selected='true']");
+
+        if(selectedElement != null) {
+            selectedElement.removeAttribute("aria-selected");
+        }
+
+        target.setAttribute("aria-selected", true);
+    }
 }
 
 async function filter(element, filter) {
