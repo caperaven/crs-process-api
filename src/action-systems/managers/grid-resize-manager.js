@@ -1,3 +1,8 @@
+/**
+ * Options
+ *      columns, define this array of indexes if you only want to resize certain columns
+ */
+
 export class CSSGridResizeManager {
     #element;
     #sizes;
@@ -47,12 +52,34 @@ export class CSSGridResizeManager {
         this.#rowCount = await crs.call("cssgrid", "row_count", {element: this.#element});
         this.#columnCount = await crs.call("cssgrid", "column_count", {element: this.#element});
 
-        for (let column of this.#options.columns || []) {
-            const size = this.#sizes[column];
-            this.#columnModifiers.push(await createColumnModifier(column, size, this.#rowCount, this.#element));
-        }
+        await this.#setColumnsInPx();
+        await this.#createModifiers();
 
         this.#element.addEventListener("mousedown", this.#mouseDownHandler);
+    }
+
+    async #setColumnsInPx() {
+        const element = this.#element;
+
+        let columns = this.#sizes.map(item => `${item}px`);
+        columns[columns.length - 1] = "1fr";
+        columns = columns.join(" ");
+
+        await crs.call("cssgrid", "set_columns", { element, columns });
+    }
+
+    async #createModifiers() {
+        if (this.#options.columns == null) {
+            this.#options.columns = [];
+            for (let i = 0; i < this.#rowCount; i++) {
+                this.#options.columns.push(i);
+            }
+        }
+
+        for (let column of this.#options.columns) {
+            const size = getColumnX(column, this.#sizes);
+            this.#columnModifiers.push(await createColumnModifier(column, size, this.#rowCount, this.#element));
+        }
     }
 
     async #mouseDown(event) {
@@ -81,7 +108,7 @@ export class CSSGridResizeManager {
         const difference = { x: event.clientX - this.#startPos.x, y: event.clientY - this.#startPos.y };
         const column = Number(this.#dragElement.dataset.column);
 
-        this.#dragElement.style.background = "transparent";
+        this.#dragElement.style.background = "blue";
 
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
         document.removeEventListener("mouseup", this.#mouseUpHandler);
@@ -104,7 +131,7 @@ export class CSSGridResizeManager {
     }
 
     async #resize(column, difference) {
-        const newSize = this.#sizes[column] + difference.x + 4;
+        let newSize = this.#sizes[column] + difference.x + 4;
         this.#sizes[column] = newSize;
 
         await crs.call("cssgrid", "set_column_width", {
@@ -112,6 +139,17 @@ export class CSSGridResizeManager {
             position: column,
             width: `${newSize}px`
         })
+
+        await this.#updateModifiers();
+    }
+
+    async #updateModifiers() {
+        const elements = this.#element.querySelectorAll('[data-type="resize-column"]');
+        for (const element of elements) {
+            const index = Number(element.dataset.column);
+            const x = getColumnX(index, this.#sizes);
+            element.style.translate = `${x}px`;
+        }
     }
 }
 
@@ -124,7 +162,7 @@ async function createColumnModifier(column, x, rowSpan, parent) {
             bottom: 0,
             left: 0,
             width: "8px",
-            background: "transparent",
+            background: "blue",
             translate: `${x - 4}px 0`,
             cursor: 'col-resize'
         },
@@ -137,4 +175,14 @@ async function createColumnModifier(column, x, rowSpan, parent) {
     parent.appendChild(element);
 
     return element;
+}
+
+function getColumnX(column, sizes) {
+    let size = 0;
+
+    for (let i = 0; i <= column; i++) {
+        size += sizes[i];
+    }
+
+    return size - 4;
 }

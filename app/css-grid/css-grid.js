@@ -19,7 +19,7 @@ export default class CssGrid extends crsbinding.classes.ViewBase {
             await crs.call("cssgrid", "enable_resize", {
                 element: this.element,
                 options: {
-                    columns: [0]
+                    // columns: [0]
                 }
             })
         })
