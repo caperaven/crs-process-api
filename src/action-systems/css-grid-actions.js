@@ -11,6 +11,20 @@ export class CssGridActions {
         element.style.display = "grid";
     }
 
+    static async enable_resize(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const options = await crs.process.getValue(step.args.options, context, process, item);
+
+        const module = await import("./managers/grid-resize-manager.js");
+        const instance = new module.CSSGridResizeManager(element, options);
+        await instance.initialize();
+    }
+
+    static async disable_resize(step, context, process, item) {
+        const element = await crs.dom.getElement(step.args.element, context, process, item);
+        element.__cssGridResizeMananger?.dispose();
+    }
+
     /**
      * a function that will automatically fill/create a grid according to the number of columns and rows.
      * @param step
@@ -54,7 +68,6 @@ export class CssGridActions {
 
         }
     }
-
 
     /**
      * Set the columns of a grid
@@ -157,7 +170,6 @@ export class CssGridActions {
         }
     }
 
-
     /**
      * Remove elements that occupy a defined region
      * @returns {Promise<void>}
@@ -189,6 +201,17 @@ export class CssGridActions {
         const result = getRowCount(element);
         return result;
     }
+
+    static async get_column_sizes(step) {
+        const element = await crs.dom.get_element(step.args.element);
+        const sizes = getComputedStyle(element).gridTemplateColumns.split("px").join("").split(" ");
+
+        for (let i = 0; i < sizes.length; i++) {
+            sizes[i] = Number(sizes[i]);
+        }
+
+        return sizes;
+    }
 }
 
 function populateAreaIntent(collection, area) {
@@ -206,7 +229,6 @@ function getColumnCount(element) {
 function getRowCount(element) {
     return element.style.gridTemplateRows.split(" ").length;
 }
-
 
 async function areasToArray(element) {
     const colCount = getColumnCount(element);
