@@ -28,7 +28,7 @@ export class CSSGridResizeManager {
     }
 
     dispose() {
-        this.#element.removeEventListener("mousedown", this.#mouseDownHandler);
+        (this.#element.shadowRoot || this.#element).removeEventListener("mousedown", this.#mouseDownHandler);
 
         this.#element.__cssGridResizeMananger = null;
         this.#element = null;
@@ -58,7 +58,7 @@ export class CSSGridResizeManager {
         await this.#setColumnsInPx();
         await this.#createModifiers();
 
-        this.#element.addEventListener("mousedown", this.#mouseDownHandler);
+        (this.#element.shadowRoot || this.#element).addEventListener("mousedown", this.#mouseDownHandler);
     }
 
     async #setColumnsInPx() {
@@ -81,7 +81,7 @@ export class CSSGridResizeManager {
 
         for (let column of this.#options.columns) {
             const size = getColumnX(column, this.#sizes);
-            this.#columnModifiers.push(await createColumnModifier(column, size, this.#rowCount, this.#element));
+            this.#columnModifiers.push(await createColumnModifier(column, size, this.#rowCount, (this.#element.shadowRoot || this.#element)));
         }
     }
 
