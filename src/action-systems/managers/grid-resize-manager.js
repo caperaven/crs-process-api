@@ -5,6 +5,7 @@
 
 export class CSSGridResizeManager {
     #element;
+    #bounds;
     #sizes;
     #options;
     #rowCount = 1;
@@ -21,6 +22,7 @@ export class CSSGridResizeManager {
 
     constructor(element, options) {
         this.#element = element;
+        this.#bounds = element.getBoundingClientRect();
         this.#element.__cssGridResizeMananger = this;
         this.#options = options;
     }
@@ -43,6 +45,7 @@ export class CSSGridResizeManager {
         this.#startPos = null;
         this.#movePos = null;
         this.#dragElement = null;
+        this.#bounds = null;
     }
 
     async initialize() {
@@ -85,8 +88,8 @@ export class CSSGridResizeManager {
     async #mouseDown(event) {
         if (event.target.dataset.type != "resize-column") return;
 
-        this.#startPos = {x: event.clientX, y: event.clientY};
-        this.#movePos = {x: event.clientX, y: event.clientY};
+        this.#startPos = {x: event.clientX - this.#bounds.x, y: event.clientY - this.#bounds.y};
+        this.#movePos = {x: event.clientX - this.#bounds.x, y: event.clientY - this.#bounds.y};
         this.#dragElement = event.target;
 
         event.target.style.background = "silver";
@@ -99,16 +102,16 @@ export class CSSGridResizeManager {
     }
 
     async #mouseMove(event) {
-        this.#movePos.x = event.clientX;
-        this.#movePos.y = event.clientY;
+        this.#movePos.x = event.clientX - this.#bounds.x - 4;
+        this.#movePos.y = event.clientY - this.#bounds.y - 4;
         event.preventDefault();
     }
 
     async #mouseUp(event) {
-        const difference = { x: event.clientX - this.#startPos.x, y: event.clientY - this.#startPos.y };
+        const difference = { x: event.clientX - this.#startPos.x - this.#bounds.x - 4, y: event.clientY - this.#startPos.y - this.#bounds.y - 4 };
         const column = Number(this.#dragElement.dataset.column);
 
-        this.#dragElement.style.background = "blue";
+        this.#dragElement.style.background = "transparent";
 
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
         document.removeEventListener("mouseup", this.#mouseUpHandler);
@@ -162,7 +165,7 @@ async function createColumnModifier(column, x, rowSpan, parent) {
             bottom: 0,
             left: 0,
             width: "8px",
-            background: "blue",
+            background: "transparent",
             translate: `${x - 4}px 0`,
             cursor: 'col-resize'
         },
