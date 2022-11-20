@@ -21,7 +21,7 @@ export class CssGridActions {
     }
 
     static async disable_resize(step, context, process, item) {
-        const element = await crs.dom.getElement(step.args.element, context, process, item);
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.__cssGridResizeMananger?.dispose();
     }
 
