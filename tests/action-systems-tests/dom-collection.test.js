@@ -36,4 +36,32 @@ Deno.test("filter", async () => {
     assertEquals(li1.getAttribute("aria-hidden"), "true");
     assertEquals(li2.getAttribute("aria-hidden"), undefined);
     assertEquals(li3.getAttribute("aria-hidden"), "true");
-})
+});
+
+Deno.test("toggle_selection", async () => {
+    const divElementParent = document.createElement("div");
+
+    const childElement1 = await crs.call("dom", "create_element", {"parent": divElementParent, "tag_name": "div", "attributes":{"aria-selected": "true"}});
+    const childElement2 = await crs.call("dom", "create_element", {"parent": divElementParent, "tag_name": "div"});
+    const childElement3 = await crs.call("dom", "create_element", {"parent": divElementParent, "tag_name": "div"});
+
+    assertEquals(childElement1.getAttribute("aria-selected"), "true");
+    assertEquals(childElement2.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement3.getAttribute("aria-selected"), undefined);
+
+    await crs.call("dom_collection", "toggle_selection", {
+        target: childElement2
+    });
+
+    assertEquals(childElement1.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement2.getAttribute("aria-selected"), "true");
+    assertEquals(childElement3.getAttribute("aria-selected"), undefined);
+
+    await crs.call("dom_collection", "toggle_selection", {
+        target: childElement3
+    });
+
+    assertEquals(childElement1.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement2.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement3.getAttribute("aria-selected"), "true");
+});
