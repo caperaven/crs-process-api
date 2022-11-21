@@ -21,7 +21,7 @@ export class DomCollectionActions {
             selectedElement.removeAttribute("aria-selected");
         }
 
-        target.setAttribute("aria-selected", true);
+        target.setAttribute("aria-selected", "true");
     }
 }
 
