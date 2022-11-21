@@ -26,16 +26,15 @@ This can be called from both the schema and javascript.
 20. [move_element](#move_element)
 21. [move_element_down](#move_element_down)
 22. [move_element_up](#move_element_up)
-23. [filter_children](#filter_children)
-24. [open_tab](#open_tab)
-25. [clone_for_movement](#clone_for_movement)
-26. [elements_from_template](#elements_from_template)
-27. [create_inflation_template](#create_inflation_template)
-28. [get_element](#get_element)
-29. [get_animation_layer](get_animation_layer)
-30. [clear_animation_layer](clear_animation_layer)
-31. [remove_animation_layer](remove_animation_layer)
-32. [highlight](highlight)
+23. [open_tab](#open_tab)
+24. [clone_for_movement](#clone_for_movement)
+25. [elements_from_template](#elements_from_template)
+26. [create_inflation_template](#create_inflation_template)
+27. [get_element](#get_element)
+28. [get_animation_layer](get_animation_layer)
+29. [clear_animation_layer](clear_animation_layer)
+30. [remove_animation_layer](remove_animation_layer)
+31. [highlight](highlight)
 
 
 ## call_on_element
@@ -786,43 +785,6 @@ Move an element above its previous sibling.
 {{< highlight js >}}
 crs.call("dom", "move_element_up", {
     "element": "#element"
-});
-{{< / highlight >}}
-
-## filter_children
-
-Perform a dom filter a a given element's children.
-
-| property | description | required |
-| :------- | :---------- | :--------: |
-| element  | element or query selector | true |
-| filter   | string to filter on | true |
-
-The children must have a data-tags attribute.  
-The data-tags attribute will be used for the text comparison.  
-If the tags are not a match the element will be set as hidden.
-
-To clear the filter set the filter string to "".
-
-**json**
-
-{{< highlight js >}}
-"step": {
-    "type": "dom",
-    "action": "filter_children",
-    "args": {
-        "element" : "#element",
-        "filter"  : "$binding.filter"
-    }
-}
-{{< / highlight >}}
-
-**javascript**
-
-{{< highlight js >}}
-crs.call("dom", "filter_children", {
-    "element": "#element",
-    "filter" : ""
 });
 {{< / highlight >}}
 
