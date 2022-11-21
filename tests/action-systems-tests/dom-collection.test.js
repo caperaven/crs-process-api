@@ -47,20 +47,21 @@ Deno.test("toggle_selection", async () => {
 
     assertEquals(childElement1.getAttribute("aria-selected"), "true");
     assertEquals(childElement2.getAttribute("aria-selected"), undefined);
-
-    await crs.call("dom_collection", "toggle_selection", {
-        target: childElement3
-    });
-
-    assertEquals(childElement3.getAttribute("aria-selected"), "true");
-    assertEquals(childElement1.getAttribute("aria-selected"), undefined);
-    assertEquals(childElement2.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement3.getAttribute("aria-selected"), undefined);
 
     await crs.call("dom_collection", "toggle_selection", {
         target: childElement2
     });
 
-    assertEquals(childElement2.getAttribute("aria-selected"), "true");
     assertEquals(childElement1.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement2.getAttribute("aria-selected"), "true");
     assertEquals(childElement3.getAttribute("aria-selected"), undefined);
+
+    await crs.call("dom_collection", "toggle_selection", {
+        target: childElement3
+    });
+
+    assertEquals(childElement1.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement2.getAttribute("aria-selected"), undefined);
+    assertEquals(childElement3.getAttribute("aria-selected"), "true");
 });
