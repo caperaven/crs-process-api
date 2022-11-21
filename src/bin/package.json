@@ -1,12 +1,12 @@
 {
-  "name": "markdown",
+  "name": "data",
   "version": "0.1.0",
   "files": [
-    "markdown_bg.wasm",
-    "markdown.js",
-    "markdown.d.ts"
+    "data_bg.wasm",
+    "data.js",
+    "data.d.ts"
   ],
-  "module": "markdown.js",
-  "types": "markdown.d.ts",
+  "module": "data.js",
+  "types": "data.d.ts",
   "sideEffects": false
 }

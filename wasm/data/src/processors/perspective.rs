@@ -28,7 +28,7 @@ pub fn build_perspective(perspective: &Value, data: &[Value], rows: &Vec<usize>)
         None => {}
         Some(def) => {
             let group_def = def.as_array().unwrap().iter().map(|value| value.as_str().unwrap()).collect();
-            let grouping = processors::group(&group_def, data, Some(rows));
+            let grouping = processors::group(&group_def, data, Some(rows), aggregates);
             return grouping.to_string();
         }
     }
@@ -284,5 +284,22 @@ mod test {
 
         assert_eq!(collection[2]["agg"], String::from("min"));
         assert_eq!(collection[2]["value"].to_string(), String::from("5.0"));
+    }
+
+    #[test]
+    fn sum_aggregate() {
+        let data = get_data();
+
+        let intent = json!({
+            "case_sensitive": false,
+            "group": ["isActive"],
+            "aggregates": {
+                "sum": "value"
+            }
+        });
+
+        let result = build_perspective(&intent, &data, &vec![]);
+        let expected = "{\"root\":{\"child_count\":2,\"children\":{\"false\":{\"aggregates\":[{\"agg\":\"sum\",\"field\":\"value\",\"value\":15.0}],\"child_count\":2,\"field\":\"isActive\",\"row_count\":2,\"rows\":[1,4]},\"true\":{\"aggregates\":[{\"agg\":\"sum\",\"field\":\"value\",\"value\":50.0}],\"child_count\":3,\"field\":\"isActive\",\"row_count\":3,\"rows\":[0,2,3]}},\"field\":\"root\",\"row_count\":5}}";
+        assert_eq!(expected, result.as_str());
     }
 }
