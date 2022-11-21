@@ -2,6 +2,7 @@ import {getDraggable} from "./dragdrop-manager/drag-utils.js";
 
 export class ResizeElementManager {
     #element;
+    #region;
     #resizeQuery;
     #options;
     #mouseDownHandler;
@@ -13,6 +14,7 @@ export class ResizeElementManager {
 
     constructor(element, resizeQuery, options) {
         this.#element = element;
+        this.#region = element.getBoundingClientRect();
         this.#resizeQuery = resizeQuery;
         this.#options = options;
 
@@ -34,6 +36,7 @@ export class ResizeElementManager {
         this.#element = null;
         this.#resizeQuery = null;
         this.#options = null;
+        this.#region = null;
     }
 
     #mouseDown(event) {
@@ -68,8 +71,8 @@ export class ResizeElementManager {
             offsetX = 0;
         }
 
-        let width = this.#bounds.width + offsetX;
-        let height = this.#bounds.height + offsetY;
+        let width = this.#bounds.width + offsetX - this.#bounds.x - 4;
+        let height = this.#bounds.height + offsetY - this.#bounds.y - 4;
 
         width = width < this.#options.min.width ? this.#options.min.width : width > this.#options.max.width ? this.#options.max.width : width;
         height = height < this.#options.min.height ? this.#options.min.height : height > this.#options.max.height ? this.#options.max.height : height;

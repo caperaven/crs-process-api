@@ -183,7 +183,11 @@ export class DomActions {
         const dataset = Object.keys(step.args.dataset || {});
         const variables = Object.keys(step.args.variables || {});
 
-        element.id = await crs.process.getValue(step.args.id, context, process, item);
+        const id = await crs.process.getValue(step.args.id, context, process, item);
+
+        if (id != null) {
+            this.id = id;
+        }
 
         for (let attr of attributes) {
             element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
