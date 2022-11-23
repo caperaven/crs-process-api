@@ -1,0 +1,22 @@
+<style>
+    crs-router {
+        display: grid;
+        grid-template-rows: auto 1fr;
+    }
+
+    ul {
+        overflow: auto;
+    }
+
+    li {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+    }
+
+    li[aria-hidden] {
+        display: none;
+    }
+</style>
+
+<input keyup.call="filter"/>
+<ul ref="collection"></ul>
