@@ -1,0 +1,33 @@
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+div {
+    padding: 0.5rem;
+}
+
+[type="header"] {
+    background: silver;
+}
+
+[type="person"] {
+    background: #dedede;
+}
+
+[type="cell"] {
+    border-bottom: #dedede solid 1px;
+    border-right: #dedede solid 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+[hidden] {
+    display: none;
+}

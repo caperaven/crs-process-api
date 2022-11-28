@@ -15,13 +15,33 @@ export class DomCollectionActions {
 
     static async toggle_selection(step, context, process, item) {
         const target = await crs.dom.get_element(step.args.target, context, process, item);
-        const selectedElement = target.parentElement.querySelector("[aria-selected='true']");
+        const multiple = await crs.process.getValue(step.args.multiple || false, context, process, item);
+        const attr = "aria-selected";
 
-        if(selectedElement != null) {
-            selectedElement.removeAttribute("aria-selected");
+        if (multiple !== true) {
+            const selectedElement = target.parentElement.querySelector("[aria-selected='true']");
+
+            if (selectedElement === target) return;
+
+            if (selectedElement != null) {
+                selectedElement.removeAttribute(attr);
+            }
+            target.setAttribute(attr, true);
+        }
+        else {
+            target.hasAttribute(attr) ? target.removeAttribute(attr) :  target.setAttribute(attr, true);
+        }
+    }
+
+    static async get_selected_state(step, context, process, item) {
+        const target = await crs.dom.get_element(step.args.target, context, process, item);
+
+        const result = {};
+        for (const child of target.children) {
+            result[child.dataset.value] = child.getAttribute("aria-selected") == "true";
         }
 
-        target.setAttribute("aria-selected", "true");
+        return result
     }
 }
 
