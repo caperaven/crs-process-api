@@ -259,3 +259,43 @@ Deno.test("template string", async () => {
 
     assertEquals(result, "<li> <div>${title}</div> <svg><use href='#chevron'></use></svg></li>");
 })
+
+Deno.test("string slice - simple", async () => {
+    const result = await crs.call("string", "slice", {
+        value : "Hello World",
+        length: 5
+    })
+
+    assertEquals(result, "Hello");
+})
+
+Deno.test("string slice - with index", async () => {
+    const result = await crs.call("string", "slice", {
+        value : "Hello World",
+        index: 6,
+        length: 5
+    })
+
+    assertEquals(result, "World");
+})
+
+Deno.test("string slice - with ellipsis", async () => {
+    const result = await crs.call("string", "slice", {
+        value : "Hello World",
+        length: 5,
+        overflow: "ellipsis"
+    })
+
+    assertEquals(result, "He...");
+})
+
+Deno.test("string slice - complete", async () => {
+    const result = await crs.call("string", "slice", {
+        value : "Test is completed for string slice function",
+        index : 5,
+        length: 16,
+        overflow: "ellipsis"
+    })
+
+    assertEquals(result, "is completed ...");
+})

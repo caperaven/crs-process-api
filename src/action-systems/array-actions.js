@@ -18,6 +18,27 @@ export class ArrayActions {
         }
     }
 
+    static async remove(step, context, process, item) {
+        const target = await crs.process.getValue(step.args.target, context, process, item);
+        const value = await crs.process.getValue(step.args.value, context, process, item);
+
+        const index = target?.indexOf(value);
+        if (target != null && value != null && index !== -1) {
+            target.splice(index, 1);
+        } else {
+            console.error(`can't remove from array - array is null:${target == null}, value is null:${value == null}, value is not contained within target`);
+        }
+    }
+
+    static async transfer(step, context, process, item) {
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const target = await crs.process.getValue(step.args.target, context, process, item);
+        const value = await crs.process.getValue(step.args.value, context, process, item);
+
+        await this.add({args: {target: target, value: value}}, context, process, item);
+        await this.remove({args: {target: source, value: value}}, context, process, item)
+    }
+
     /**
      * This function takes an array of objects and exports csv text
      * @returns {Promise<void>}
