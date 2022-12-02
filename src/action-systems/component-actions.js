@@ -70,6 +70,9 @@ export class ComponentActions {
 
     /**
      * Get notified when the component is ready
+     * @param element: who am I waiting for?
+     * @param callback: function to execute when ready.
+     * @param caller: who is "this" on the callback.
      */
     static async on_ready(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
