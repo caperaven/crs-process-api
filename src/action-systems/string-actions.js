@@ -121,6 +121,21 @@ export class StringActions {
         return result;
     }
 
+    static async template(step, context, process, item) {
+        let template = await crs.process.getValue(step.args.template, context, process, item);
+        const options = await crs.process.getValue(step.args.options, context, process, item);
+
+        for (const key of Object.keys(options)) {
+            template = template.replaceAll(`__${key}__`, options[key]);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, template, context, process, item);
+        }
+
+        return template;
+    }
+
     static async slice(step, context, process, item) {
         const value = await crs.process.getValue(step.args.value, context, process, item);
         const index = await crs.process.getValue(step.args.index || 0, context, process, item);
