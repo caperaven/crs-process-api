@@ -62,7 +62,6 @@ Deno.test("toggle_selection on three children first child selected", async () =>
     assertEquals( divElement.children[0].getAttribute("aria-selected"), "true");
     assertEquals( divElement.children[1].getAttribute("aria-selected"), undefined);
     assertEquals( divElement.children[2].getAttribute("aria-selected"), undefined);
-
 });
 
 Deno.test("toggle_selection on three children second child selected", async () => {
@@ -116,3 +115,24 @@ Deno.test("toggle_selection on three children third child selected", async () =>
     assertEquals(divElement.children[1].getAttribute("aria-selected"), undefined);
     assertEquals(divElement.children[2].getAttribute("aria-selected"), "true");
 });
+
+Deno.test("get_selected_state", async () => {
+
+    // Arrange
+    const divElement = await crs.call("dom", "create_element", {
+        children: [
+            { "tag_name": "div", },
+            { "tage_name": "div" },
+            { "tag_name": "div" }
+        ]
+    });
+
+    // Act
+    const result = await crs.call("dom_collection", "get_selected_state", {
+            target: divElement
+    });
+
+    // Assert
+    assertEquals(result, "false");
+});
+
