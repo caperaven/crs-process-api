@@ -120,6 +120,43 @@ export class StringActions {
 
         return result;
     }
+
+    static async template(step, context, process, item) {
+        let template = await crs.process.getValue(step.args.template, context, process, item);
+        const options = await crs.process.getValue(step.args.options, context, process, item);
+
+        for (const key of Object.keys(options)) {
+            template = template.replaceAll(`__${key}__`, options[key]);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, template, context, process, item);
+        }
+
+        return template;
+    }
+
+    static async slice(step, context, process, item) {
+        const value = await crs.process.getValue(step.args.value, context, process, item);
+        const index = await crs.process.getValue(step.args.index || 0, context, process, item);
+        const length = await crs.process.getValue(step.args.length, context, process, item );
+        const overflow = await crs.process.getValue(step.args.overflow || null, context, process, item);
+
+        const endIndex = index + length;
+        let result = value.substring(index, endIndex);
+
+        if(overflow === "ellipsis") {
+            if(value.length > result.length) {
+                result = `${result.substring(0, length-3)}...`
+            }
+        }
+
+        if(step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item)
+        }
+
+        return result;
+    }
 }
 
 async function inflate_string(string, parameters, context, process, item) {

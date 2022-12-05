@@ -26,10 +26,10 @@ export class DomCollectionActions {
             if (selectedElement != null) {
                 selectedElement.removeAttribute(attr);
             }
-            target.setAttribute(attr, true);
+            target.setAttribute(attr, "true");
         }
         else {
-            target.hasAttribute(attr) ? target.removeAttribute(attr) :  target.setAttribute(attr, true);
+            target.hasAttribute(attr) && target.getAttribute(attr) === "true" ? target.removeAttribute(attr) : target.setAttribute(attr, "true");
         }
     }
 
