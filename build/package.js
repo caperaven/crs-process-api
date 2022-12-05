@@ -71,7 +71,7 @@ export async function copyDirectory(source, target) {
 
 await createFolderStructure();
 
-const minified = false;
+const minified = true;
 
 await packageDirectory({
     dir: ["./src/action-systems"],
