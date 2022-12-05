@@ -39,8 +39,7 @@ Deno.test("filter", async () => {
 });
 
 
-Deno.test("toggle_selection on one child selected: multiple = false", async () => {
-
+Deno.test("toggle_selection set selected state on one child element: multiple = false", async () => {
     // Arrange
     const divElement = await crs.call("dom", "create_element", {
         children: [
@@ -60,28 +59,19 @@ Deno.test("toggle_selection on one child selected: multiple = false", async () =
     assertEquals(divElement.children[0].getAttribute("aria-selected"), "true");
     assertEquals(divElement.children[1].getAttribute("aria-selected"), undefined);
     assertEquals(divElement.children[2].getAttribute("aria-selected"), undefined);
-
 });
 
-Deno.test("toggle_selection remove selected state from target child selected: multiple = true", async () => {
+Deno.test("toggle_selection remove selected state from target child: multiple = true", async () => {
     // Arrange
     const divElement = await crs.call("dom", "create_element", {
         children: [
-            {"tag_name": "div"},
+            {"tag_name": "div", "attributes":{"aria-selected": "true"}},
             {"tag_name": "div"},
             {"tag_name": "div"}
         ]
     });
 
-    // Act
-    await crs.call("dom_collection", "toggle_selection", {
-        target: divElement.children[0],
-        multiple: false
-    });
-
-    // Assert
-    assertEquals(divElement.children[0].getAttribute("aria-selected"), "true");
-
+    //Act
     await crs.call("dom_collection", "toggle_selection", {
         target: divElement.children[0],
         multiple: true
@@ -91,11 +81,9 @@ Deno.test("toggle_selection remove selected state from target child selected: mu
     assertEquals(divElement.children[0].getAttribute("aria-selected"), undefined);
     assertEquals(divElement.children[1].getAttribute("aria-selected"), undefined);
     assertEquals(divElement.children[2].getAttribute("aria-selected"), undefined);
-
-
 });
 
-Deno.test("toggle_selection add selected state to multiple target children selected: multiple = true", async () => {
+Deno.test("toggle_selection add selected state to multiple children: multiple = true", async () => {
     // Arrange
     const divElement = await crs.call("dom", "create_element", {
         children: [
@@ -122,14 +110,24 @@ Deno.test("toggle_selection add selected state to multiple target children selec
     assertEquals(divElement.children[2].getAttribute("aria-selected"), "true");
 });
 
-Deno.test("get_selected_state", async () => {
+Deno.test("get_selected_state testing the selected states of one child element given the parent element", async () => {
 
     // Arrange
     const divElement = await crs.call("dom", "create_element", {
         children: [
-            {"tag_name": "div", "attributes": {"aria-selected": true}},
-            {"tage_name": "div"},
-            {"tag_name": "div"}
+            {
+                "tag_name": "div",
+                "attributes": { "aria-selected": "true" },
+                "dataset": { "value": "0" }
+            },
+            {
+                "tage_name": "div",
+                "dataset": { "value": "1" }
+            },
+            {
+                "tag_name": "div",
+                "dataset": { "value": "2" }
+            }
         ]
     });
 
@@ -139,6 +137,41 @@ Deno.test("get_selected_state", async () => {
     });
 
     // Assert
-    assertEquals(result, {});
+    assertEquals(result["0"], true);
+    assertEquals(result["1"], false);
+    assertEquals(result["2"], false);
+});
+
+Deno.test("get_selected_state testing the selected states of two child elements given the parent element", async () => {
+
+    // Arrange
+    const divElement = await crs.call("dom", "create_element", {
+        children: [
+            {
+                "tag_name": "div",
+                "attributes": { "aria-selected": "true" },
+                "dataset": { "value": "0" }
+            },
+            {
+                "tage_name": "div",
+                "attributes": { "aria-selected": "true" },
+                "dataset": { "value": "1" }
+            },
+            {
+                "tag_name": "div",
+                "dataset": { "value": "2" }
+            }
+        ]
+    });
+
+    // Act
+    const result = await crs.call("dom_collection", "get_selected_state", {
+        target: divElement
+    });
+
+    // Assert
+    assertEquals(result["0"], true);
+    assertEquals(result["1"], true);
+    assertEquals(result["2"], false);
 });
 
