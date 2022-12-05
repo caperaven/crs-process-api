@@ -32,6 +32,7 @@ export function mockElement(instance, tag, id) {
 
     instance.getAttribute = getAttribute.bind(instance);
     instance.setAttribute = setAttribute.bind(instance);
+    instance.hasAttribute = hasAttribute.bind(instance);
     instance.removeAttribute = removeAttribute.bind(instance);
     instance.querySelector = querySelector.bind(instance);
     instance.getElementsByTagName = getElementsByTagName.bind(instance);
@@ -124,6 +125,11 @@ function setAttribute(attr, value) {
     if (this["attributeChangedCallback"] != null) {
         this["attributeChangedCallback"](attr, old.value, value);
     }
+}
+
+function hasAttribute(attr) {
+    const result = this.getAttribute(attr);
+    return result != null;
 }
 
 function removeAttribute (attr) {
