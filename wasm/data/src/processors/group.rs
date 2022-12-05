@@ -104,11 +104,16 @@ impl Field {
 }
 
 /// Given a group intent, group the data based on their values
-pub fn group(intent: &Vec<&str>, data: &[Value], rows: Option<Vec<usize>>) -> Value {
+pub fn group(intent: &Vec<&str>, data: &[Value], rows: Option<Vec<usize>>, aggregates: Option<&Value>) -> Value {
     let root = build_field_structure(&data, &intent, rows);
     let mut result = Value::Object(Default::default());
 
     root.to_json(&mut result);
+    if aggregates.is_some() {
+        let root = result.get_mut("root").unwrap();
+        aggregate_group_children(root, aggregates.unwrap(), &data.to_vec());
+    }
+
     return result;
 }
 
@@ -147,7 +152,8 @@ fn aggregate_group(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<
 }
 
 fn aggregate_group_children(group_data: &mut Value, aggregate_intent: &Value, data: &Vec<Value>) {
-    match group_data.get_mut("children") {
+    let children = group_data.get_mut("children");
+    match children {
         None => {}
         Some(children) => {
             for (_key, child) in children.as_object_mut().unwrap().iter_mut() {
@@ -241,7 +247,7 @@ mod test {
     fn group_test() {
         let data = get_data();
         let intent = Vec::from(["value", "isActive"]);
-        let result = group(&intent, &data, None);
+        let result = group(&intent, &data, None, None);
 
         let group_5 = result.get("root")
             .and_then(|value| value.get("children"))
@@ -320,7 +326,7 @@ mod test {
     fn get_group_rows_test() {
         let data = get_data();
         let intent = Vec::from(["value", "isActive"]);
-        let group = group(&intent, &data, None);
+        let group = group(&intent, &data, None, None);
         let result = get_group_rows(&group);
         assert_eq!(result.len(), 5);
 
@@ -333,7 +339,7 @@ mod test {
     fn aggregate_group_test() {
         let data = get_data();
         let group_intent = Vec::from(["value", "isActive"]);
-        let mut group = group(&group_intent, &data, None);
+        let mut group = group(&group_intent, &data, None, None);
         let ag_intent = json!({
             "min": "value",
             "max": "value",
@@ -357,7 +363,7 @@ mod test {
     fn aggregate_children_test() {
         let data = get_data();
         let group_intent = Vec::from(["value", "isActive"]);
-        let mut group = group(&group_intent, &data, None);
+        let mut group = group(&group_intent, &data, None, None);
         let ag_intent = json!({
             "min": "value",
             "max": "value",
@@ -403,7 +409,7 @@ mod test {
     fn aggregate_subset_test() {
         let data = get_data();
         let group_intent = Vec::from(["value"]);
-        let group = group(&group_intent, &data, Some(vec![0, 1, 2]));
+        let group = group(&group_intent, &data, Some(vec![0, 1, 2]), None);
 
         assert_eq!(group["root"]["child_count"], 2);
         assert_eq!(group["root"]["children"]["10"]["child_count"], 2);

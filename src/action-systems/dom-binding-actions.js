@@ -62,7 +62,7 @@ export class DomBindingActions {
         let parent = template;
 
         if (wrapper != null) {
-            const wrapperElement = await this.create_element({ args: wrapper }, context, process, item);
+            const wrapperElement = await crs.call("dom","create_element", wrapper, context, process, item);
             template.content.appendChild(wrapperElement);
             parent = wrapperElement;
         }
@@ -70,7 +70,7 @@ export class DomBindingActions {
         for (let key of keys) {
             let args = obj[key];
             args.tag_name = tag_name;
-            let child = await this.create_element({ args: args}, context, process, item);
+            let child = await crs.call("dom","create_element", args, context, process, item);
             child.textContent = ["${", key, "}"].join("");
 
             if (parent.content != null) {
