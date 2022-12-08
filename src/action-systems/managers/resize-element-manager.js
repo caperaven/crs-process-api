@@ -71,8 +71,8 @@ export class ResizeElementManager {
             offsetX = 0;
         }
 
-        let width = this.#bounds.width + offsetX - this.#bounds.x - 4;
-        let height = this.#bounds.height + offsetY - this.#bounds.y - 4;
+        let width = this.#bounds.width + offsetX - 4;
+        let height = this.#bounds.height + offsetY - 4;
 
         width = width < this.#options.min.width ? this.#options.min.width : width > this.#options.max.width ? this.#options.max.width : width;
         height = height < this.#options.min.height ? this.#options.min.height : height > this.#options.max.height ? this.#options.max.height : height;
