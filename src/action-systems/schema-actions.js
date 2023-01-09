@@ -20,6 +20,7 @@ class SchemaParserManager {
 
     async unregister(id) {
         this.#parsers[id]?.dispose();
+        this.#queue[id] = null;
         delete this.#parsers[id];
     }
 
