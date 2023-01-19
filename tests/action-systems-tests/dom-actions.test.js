@@ -24,10 +24,10 @@ Deno.test("set_attributes", async () => {
     await crs.call("dom", "set_attributes", {
         element: element,
         attributes: {
-            attr1: "one",
+            attr1: "$process.data.test",
             attr2: "two"
         }
-    });
+    }, {}, {data: {test: "one"}});
 
     const attr1 = element.getAttribute("attr1");
     assertEquals(attr1, "one");
