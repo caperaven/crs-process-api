@@ -56,7 +56,7 @@ export class FsActions {
      * @returns {Promise<void>}
      */
     static async save_file(step, context, process, item) {
-        const fileHandle = await crs.process.getValue(step.args.file_handle, context, process, item);
+        const fileHandle = await crs.process.getValue(step.args.handle, context, process, item);
         const content = await crs.process.getValue(step.args.content, context, process, item);
         await writeFile(fileHandle, content);
     }
