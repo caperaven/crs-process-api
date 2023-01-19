@@ -112,6 +112,10 @@ export class FsActions {
 }
 
 async function writeFile(fileHandle, contents) {
+    if (typeof contents == "object") {
+        contents = JSON.stringify(contents, null, 4);
+    }
+
     const writable = await fileHandle.createWritable();
     await writable.write(contents);
     await writable.close();
