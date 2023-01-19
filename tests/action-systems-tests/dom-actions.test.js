@@ -19,6 +19,22 @@ Deno.test("set_attribute", async () => {
     assertEquals(attr, "hello world");
 })
 
+Deno.test("set_attributes", async () => {
+    const element = new ElementMock("div");
+    await crs.call("dom", "set_attributes", {
+        element: element,
+        attributes: {
+            attr1: "one",
+            attr2: "two"
+        }
+    });
+
+    const attr1 = element.getAttribute("attr1");
+    assertEquals(attr1, "one");
+    const attr2 = element.getAttribute("attr2");
+    assertEquals(attr2, "two");
+})
+
 Deno.test("get_attribute", async () => {
     const element = new ElementMock("div");
     element.setAttribute("test", "hello world");
