@@ -36,6 +36,17 @@ export class DomActions {
     }
 
     /**
+     * Set multiple attributes on an element
+     * @returns {Promise<void>}
+     */
+    static async set_attributes(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        for (let attr of Object.keys(step.args.attributes)) {
+            element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
+        }
+    }
+
+    /**
      * Get a element's attribute value
      * @returns {Promise<*>}
      */
