@@ -1,3 +1,19 @@
+/**
+ * This is a static class that contains the actions for manipulating arrays
+ *
+ * Actions support are:
+ * - add - add an item to an array
+ * - remove - remove an item from an array
+ * - transfer - transfer an item from one array to another
+ * - field_to_csv - convert an array of objects to a csv string
+ * - concat - concat two arrays
+ * - change_values - change the values of an array
+ * - get_value - get the value of an array at a given index
+ * - map_objects - map an array of objects to an array of values
+ * - get_records - get the records from an array of objects, given the page size and page number to return
+ * - get_range - get a range (min and max) of values from an array
+ * - calculate_paging - for the given array and how big a page size is, how many pages fit in the array
+ */
 export class ArrayActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
@@ -5,6 +21,14 @@ export class ArrayActions {
 
     /**
      * This function adds an value to an defined array
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.target - target array to add to
+     * @param step.args.value - value to add to the array
+     *
      * @returns {Promise<void>}
      */
     static async add(step, context, process, item) {
@@ -18,6 +42,18 @@ export class ArrayActions {
         }
     }
 
+    /**
+     * This function removes an value from an defined array
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.target - target array to remove from
+     * @param step.args.value - value to remove from the array
+     *
+     * @returns {Promise<void>}
+     */
     static async remove(step, context, process, item) {
         const target = await crs.process.getValue(step.args.target, context, process, item);
         const value = await crs.process.getValue(step.args.value, context, process, item);
@@ -30,6 +66,19 @@ export class ArrayActions {
         }
     }
 
+    /**
+     * This function transfers an value from one array to another
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to remove from
+     * @param step.args.target - target array to add to
+     * @param step.args.value - value to transfer from the source to the target
+     *
+     * @returns {Promise<void>}
+     */
     static async transfer(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const target = await crs.process.getValue(step.args.target, context, process, item);
@@ -41,6 +90,18 @@ export class ArrayActions {
 
     /**
      * This function takes an array of objects and exports csv text
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to convert
+     * @param step.args.target - target array to add to
+     * @param step.args.field - field to convert to csv
+     * @param step.args.fields - fields to convert to csv
+     * @param step.args.delimiter - delimiter to use in the csv
+     *
      * @returns {Promise<void>}
      */
     static async field_to_csv(step, context, process, item) {
@@ -69,6 +130,15 @@ export class ArrayActions {
 
     /**
      * Create a new array that contains the content of the defined source arrays.
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.sources - array of source arrays
+     * @param step.args.target - target array to add to
+     *
      * @returns {Promise<*[]>}
      */
     static async concat(step, context, process, item) {
@@ -89,6 +159,15 @@ export class ArrayActions {
 
     /**
      * Change the values of fields in a object array
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to change
+     * @param step.args.changes - object of changes to make
+     *
      * @returns {Promise<void>}
      */
     static async change_values(step, context, process, item) {
@@ -109,6 +188,16 @@ export class ArrayActions {
 
     /**
      * For a given record at index provided, get the value of defined property
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to change
+     * @param step.args.index - index of the record to get the value from
+     * @param step.args.property - property to get the value from
+     *
      * @returns {Promise<*>}
      */
     static async get_value(step, context, process, item) {
@@ -124,6 +213,16 @@ export class ArrayActions {
 
     /**
      * For an array of objects map an object field/s to a flat array of values
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to change
+     * @param step.args.fields - fields to map
+     * @param step.args.target - target array to add to
+     *
      * @returns {Promise<*[]>}
      */
     static async map_objects(step, context, process, item) {
@@ -145,6 +244,18 @@ export class ArrayActions {
 
     /**
      * Get records starting at a page number for a particular batch size
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to change
+     * @param step.args.page_number - page number to start from
+     * @param step.args.page_size - page size to get
+     * @param step.args.fields - fields to get
+     *
+     * @returns {Promise<*>}
      */
     static async get_records(step, context, process, item) {
         const result = [];
@@ -180,6 +291,17 @@ export class ArrayActions {
 
     /**
      * get the min and max values of the data for a given field.
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to change
+     * @param step.args.field - field to get the min and max values from
+     * @param step.args.target - target array to add to
+     *
+     * @returns {Promise<*>}
      */
     static async get_range(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
@@ -205,6 +327,24 @@ export class ArrayActions {
 
     /**
      * Calculate the number of pages of an array for a given batch size
+     *
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.source - source array to change
+     * @param step.args.page_size - page size to get
+     * @param step.args.target - target array to add to
+     *
+     * @returns {Promise<*>}
+     *
+     * result = crs.call("array", "calculate_paging", {
+     *     source: data,
+     *     page_size: 10
+     *     target: "$process.paging"
+     *  }, context, process, item);
+     *
      */
     static async calculate_paging(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
@@ -224,11 +364,29 @@ export class ArrayActions {
     }
 }
 
+/**
+ * Convert an array of objects to a csv string
+ * @param array - array of objects
+ * @param field - field to get
+ * @param delimiter - delimiter to use
+ * @returns {Promise<*>}
+ *
+ * result = await field_to_csv(data, "name", ",");
+ */
 async function field_to_csv(array, field, delimiter) {
     const map = array.map(item => item[field]);
     return map.join(delimiter || ",");
 }
 
+/**
+ * Convert an array of objects to a csv string
+ * @param array - array of objects
+ * @param fields - fields to get
+ * @param delimiter - delimiter to use
+ * @returns {Promise<*[]>}
+ *
+ * result = await fields_to_csv(data, ["name", "age"], ",");
+ */
 async function fields_to_csv(array, fields, delimiter) {
     let result = [];
 

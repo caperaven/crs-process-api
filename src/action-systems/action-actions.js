@@ -1,4 +1,25 @@
+/**
+ * This is a static class that contains the actions for the action system
+ *
+ * Actions support are:
+ * - perform - perform an action on a component or element
+ *
+ * crs.call("action", "perform", { action: "doSomething", parameters: [1, 2, 3], target: "@process.result" })
+ */
 export class ActionActions {
+    /**
+     * perform an action on a component or element
+     * @param step - step to perform
+     * @param context - context of the process
+     * @param process - process to perform
+     * @param item - item to perform the action on
+     *
+     * @param step.args.action - action to perform
+     * @param step.args.parameters - parameters to pass to the action
+     * @param step.args.target - target to set the result of the action to
+     *
+     * @returns {Promise<*>}
+     **/
     static async perform(step, context, process, item) {
         let expr = `return await ${step.action.replace("$", "")}(...(args||[]))`;
 
@@ -21,6 +42,17 @@ export class ActionActions {
     }
 }
 
+/**
+ * get the parameters for the action
+ * @param step - step to perform
+ * @param context - context of the process
+ * @param process - process to perform
+ * @param item - item to perform the action on
+ *
+ * @param step.args.parameters - parameters to pass to the action
+ *
+ * @returns {Promise<*[]>}
+ */
 export async function getParameters(step, context, process, item) {
     const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
 
@@ -36,6 +68,20 @@ export async function getParameters(step, context, process, item) {
     return result;
 }
 
+/**
+ * utility function to call a function on a path of an object
+ * @param source - object to call the function on
+ * @param step - step to perform
+ * @param context - context of the process
+ * @param process - process to perform
+ * @param item - item to perform the action on
+ *
+ * @param step.args.action - action to perform
+ * @param step.args.parameters - parameters to pass to the action
+ * @param step.args.target - target to set the result of the action to
+ *
+ * @returns {Promise<*>}
+ */
 export async function callFunctionOnPath(source, step, context, process, item) {
     const action = await crs.process.getValue(step.args.action, context, process, item);
 

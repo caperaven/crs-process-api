@@ -28,7 +28,13 @@ export class FixedPositionActions {
      * @param {string} step.args.position - position to set the element to
      * @param {number} step.args.margin - margin to apply to the element
      *
-     * * @returns {Promise<void>}
+     * @returns {Promise<void>}
+     *
+     * const result = crs.call("fixed_position", "set", {
+     *     element: element,
+     *     position: "top-left",
+     *     margin: 10
+     * }, context, process, item);
      */
     static async set(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
