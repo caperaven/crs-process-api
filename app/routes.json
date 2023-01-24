@@ -85,6 +85,11 @@
       "view": "observer"
     },
     {
+      "title": "fixed-layout",
+      "hash": "#fixed-layout",
+      "view": "fixed-layout"
+    },
+    {
       "title": "fixed-position",
       "hash": "#fixed-position",
       "view": "fixed-position"

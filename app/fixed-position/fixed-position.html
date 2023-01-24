@@ -1,38 +1,14 @@
 <style>
     .container  {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .center, .moved {
         width: 100px;
-        height: 100px;
-        background: silver;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .moved {
-        width: 50px;
         height: 50px;
         background: #ff6666;
     }
 </style>
 
-<label>
-    <span>Middel</span>
-    <input type="checkbox" checked.bind="middle" />
-</label>
-<button click.call="left">Left</button>
-<button click.call="right">Right</button>
-<button click.call="top">Top</button>
-<button click.call="bottom">Bottom</button>
-
-<div class="container" ref="container">
-    <div class="center" ref="target">center</div>
-    <div class="moved" ref="move">moved</div>
-</div>
+<div class="container" data-position="top-left"></div>
+<div class="container" data-position="top-center"></div>
+<div class="container" data-position="top-right"></div>
+<div class="container" data-position="bottom-left"></div>
+<div class="container" data-position="bottom-center"></div>
+<div class="container" data-position="bottom-right"></div>
