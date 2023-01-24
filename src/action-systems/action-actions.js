@@ -4,7 +4,6 @@
  * Actions support are:
  * - perform - perform an action on a component or element
  *
- * crs.call("action", "perform", { action: "doSomething", parameters: [1, 2, 3], target: "@process.result" })
  */
 export class ActionActions {
     /**
@@ -19,6 +18,23 @@ export class ActionActions {
      * @param step.args.target - target to set the result of the action to
      *
      * @returns {Promise<*>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("action", "perform", {
+     *    action: "myAction",
+     *    parameters: ["param1", "param2"],
+     *    target: "@process.result"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *   "type": "action",
+     *   "action": "perform",
+     *   "args": {
+     *      "action": "myAction",
+     *      "parameters": ["param1", "param2"],
+     *      "target": "@process.result"
+     *   }, context, process, item);
      **/
     static async perform(step, context, process, item) {
         let expr = `return await ${step.action.replace("$", "")}(...(args||[]))`;

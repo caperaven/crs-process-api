@@ -30,6 +30,28 @@ export class ArrayActions {
      * @param step.args.value - value to add to the array
      *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "add", {
+     *    target: array,
+     *    value: "value"
+     * }, context, process, item);
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "add", {
+     *   target: array,
+     *   value: "value"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "add",
+     *     "args": {
+     *         "target": "@process.array",
+     *         "value": "value"
+     *     }
+     * }
      */
     static async add(step, context, process, item) {
         const target = await crs.process.getValue(step.args.target, context, process, item);
@@ -53,6 +75,22 @@ export class ArrayActions {
      * @param step.args.value - value to remove from the array
      *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "remove", {
+     *   target: array,
+     *   value: "value"
+     *   }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "array",
+     *    "action": "remove",
+     *    "args": {
+     *        "target": "@process.array",
+     *        "value": "value"
+     *    }
+     * }
      */
     static async remove(step, context, process, item) {
         const target = await crs.process.getValue(step.args.target, context, process, item);
@@ -78,6 +116,24 @@ export class ArrayActions {
      * @param step.args.value - value to transfer from the source to the target
      *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "transfer", {
+     *     source: array1,
+     *     target: array2,
+     *     value: "value"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *   "type": "array",
+     *   "action": "transfer",
+     *   "args": {
+     *        "source": "@process.array1",
+     *        "target": "@process.array2",
+     *        "value": "value"
+     *    }
+     * }
      */
     static async transfer(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
@@ -103,6 +159,24 @@ export class ArrayActions {
      * @param step.args.delimiter - delimiter to use in the csv
      *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "field_to_csv", {
+     *    source: array,
+     *    target: "@process.csv",
+     *    field: "field"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "field_to_csv",
+     *     "args": {
+     *         "source": "@process.array",
+     *         "target": "@process.csv",
+     *         "field": "field"
+     *     }
+     * }
      */
     static async field_to_csv(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
@@ -140,6 +214,22 @@ export class ArrayActions {
      * @param step.args.target - target array to add to
      *
      * @returns {Promise<*[]>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "concat", {
+     *    sources: [array1, array2],
+     *    target: "@process.array"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "concat",
+     *     "args": {
+     *         "sources": ["@process.array1", "@process.array2"],
+     *         "target": "@process.array"
+     *     }
+     * }
      */
     static async concat(step, context, process, item) {
         let result = [];
@@ -169,6 +259,27 @@ export class ArrayActions {
      * @param step.args.changes - object of changes to make
      *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "change_values", {
+     *     source: array,
+     *     changes: {
+     *       field1: "new value",
+     *       field2: "@process.field"
+     *     }
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "change_values",
+     *     "args": {
+     *         "source": "@process.array",
+     *         "changes": {
+     *         "field1": "new value",
+     *         "field2": "@process.field"
+     *     }
+     * }
      */
     static async change_values(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item);
@@ -199,6 +310,26 @@ export class ArrayActions {
      * @param step.args.property - property to get the value from
      *
      * @returns {Promise<*>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "get_value", {
+     *     source: array,
+     *     index: 0,
+     *     property: "field"
+     *     target: "@process.field"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "get_value",
+     *     "args": {
+     *         "source": "@process.array",
+     *         "index": 0,
+     *         "property": "field"
+     *         "target": "@process.field"
+     *     }
+     * }
      */
     static async get_value(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item);
@@ -224,6 +355,24 @@ export class ArrayActions {
      * @param step.args.target - target array to add to
      *
      * @returns {Promise<*[]>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "map_objects", {
+     *    source: array,
+     *    fields: ["field1", "field2"],
+     *    target: "@process.array"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "map_objects",
+     *     "args": {
+     *         "source": "@process.array",
+     *         "fields": ["field1", "field2"],
+     *         "target": "@process.array"
+     *     }
+     * }
      */
     static async map_objects(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item) ?? [];
@@ -256,6 +405,28 @@ export class ArrayActions {
      * @param step.args.fields - fields to get
      *
      * @returns {Promise<*>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "get_records", {
+     *    source: array,
+     *    page_number: 0,
+     *    page_size: 10,
+     *    fields: ["field1", "field2"],
+     *    target: "@process.array"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "array",
+     *    "action": "get_records",
+     *    "args": {
+     *       "source": "@process.array",
+     *       "page_number": 0,
+     *       "page_size": 10,
+     *       "fields": ["field1", "field2"],
+     *       "target": "@process.array"
+     *    }
+     * }
      */
     static async get_records(step, context, process, item) {
         const result = [];
@@ -302,6 +473,24 @@ export class ArrayActions {
      * @param step.args.target - target array to add to
      *
      * @returns {Promise<*>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "get_range", {
+     *   source: array,
+     *   field: "field1",
+     *   target: "@process.array"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "get_range",
+     *     "args": {
+     *         "source": "@process.array",
+     *         "field": "field1",
+     *         "target": "@process.array"
+     *     }
+     * }
      */
     static async get_range(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
@@ -339,12 +528,23 @@ export class ArrayActions {
      *
      * @returns {Promise<*>}
      *
-     * result = crs.call("array", "calculate_paging", {
-     *     source: data,
-     *     page_size: 10
-     *     target: "$process.paging"
-     *  }, context, process, item);
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("array", "calculate_paging", {
+     *    source: data,
+     *    page_size: 10
+     *    target: "$process.paging"
+     * }, context, process, item);
      *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "array",
+     *     "action": "calculate_paging",
+     *     "args": {
+     *         "source": "@process.array",
+     *         "page_size": 10,
+     *         "target": "@process.array"
+     *     }
+     * }
      */
     static async calculate_paging(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
