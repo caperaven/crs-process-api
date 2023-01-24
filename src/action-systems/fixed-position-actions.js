@@ -30,11 +30,23 @@ export class FixedPositionActions {
      *
      * @returns {Promise<void>}
      *
+     * @example <caption>javascript example</caption>
      * const result = crs.call("fixed_position", "set", {
      *     element: element,
      *     position: "top-left",
      *     margin: 10
      * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "fixed_position",
+     *    "action": "set",
+     *    "args": {
+     *      "element": "@process.element",
+     *      "position": "top-left",
+     *      "margin": 10
+     *    }
+     * }
      */
     static async set(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -64,6 +76,7 @@ export class FixedPositionActions {
  * @param {number} margin - margin to use
  * @param {DOMRect} elementBounds - bounds of the element
  * @returns {void}
+ * @private
  */
 class Positioning {
     /**
