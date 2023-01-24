@@ -20,6 +20,11 @@ export class FixedPositionActions {
      * @param context - context of the action
      * @param process - process that is performing the action
      * @param item - item that is performing the action
+     *
+     * @param {string} step.args.element - element to position
+     * @param {string} step.args.position - position to set the element to
+     * @param {number} step.args.margin - margin to apply to the element
+     *
      * * @returns {Promise<void>}
      */
     static async set(step, context, process, item) {
