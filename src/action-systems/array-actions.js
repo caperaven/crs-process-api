@@ -37,12 +37,6 @@ export class ArrayActions {
      *    value: "value"
      * }, context, process, item);
      *
-     * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "add", {
-     *   target: array,
-     *   value: "value"
-     * }, context, process, item);
-     *
      * @example <caption>json example</caption>
      * {
      *     "type": "array",
