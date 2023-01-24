@@ -570,7 +570,9 @@ export class ArrayActions {
  * @param field - field to get
  * @param delimiter - delimiter to use
  * @returns {Promise<*>}
+ * @private
  *
+ * @example
  * result = await field_to_csv(data, "name", ",");
  */
 async function field_to_csv(array, field, delimiter) {
@@ -584,7 +586,9 @@ async function field_to_csv(array, field, delimiter) {
  * @param fields - fields to get
  * @param delimiter - delimiter to use
  * @returns {Promise<*[]>}
+ * @private
  *
+ * @example
  * result = await fields_to_csv(data, ["name", "age"], ",");
  */
 async function fields_to_csv(array, fields, delimiter) {
