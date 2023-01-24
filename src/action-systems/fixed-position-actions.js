@@ -31,7 +31,7 @@ export class FixedPositionActions {
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("fixed_position", "set", {
+     * const result = await crs.call("fixed_position", "set", {
      *     element: element,
      *     position: "top-left",
      *     margin: 10

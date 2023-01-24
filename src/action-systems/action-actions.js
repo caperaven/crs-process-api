@@ -20,7 +20,7 @@ export class ActionActions {
      * @returns {Promise<*>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("action", "perform", {
+     * const result = await crs.call("action", "perform", {
      *    action: "myAction",
      *    parameters: ["param1", "param2"],
      *    target: "@process.result"

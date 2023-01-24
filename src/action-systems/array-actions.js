@@ -20,7 +20,7 @@ export class ArrayActions {
     }
 
     /**
-     * This function adds an value to an defined array
+     * This function adds a value to a defined array
      * @param step - step to perform
      * @param context - context of the process
      * @param process - process to perform
@@ -32,7 +32,7 @@ export class ArrayActions {
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "add", {
+     * const result = await crs.call("array", "add", {
      *    target: array,
      *    value: "value"
      * }, context, process, item);
@@ -71,7 +71,7 @@ export class ArrayActions {
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "remove", {
+     * const result = await crs.call("array", "remove", {
      *   target: array,
      *   value: "value"
      *   }, context, process, item);
@@ -112,7 +112,7 @@ export class ArrayActions {
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "transfer", {
+     * const result = await crs.call("array", "transfer", {
      *     source: array1,
      *     target: array2,
      *     value: "value"
@@ -155,7 +155,7 @@ export class ArrayActions {
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "field_to_csv", {
+     * const result = await crs.call("array", "field_to_csv", {
      *    source: array,
      *    target: "@process.csv",
      *    field: "field"
@@ -210,7 +210,7 @@ export class ArrayActions {
      * @returns {Promise<*[]>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "concat", {
+     * const result = await crs.call("array", "concat", {
      *    sources: [array1, array2],
      *    target: "@process.array"
      * }, context, process, item);
@@ -255,7 +255,7 @@ export class ArrayActions {
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "change_values", {
+     * const result = await crs.call("array", "change_values", {
      *     source: array,
      *     changes: {
      *       field1: "new value",
@@ -306,7 +306,7 @@ export class ArrayActions {
      * @returns {Promise<*>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "get_value", {
+     * const result = await crs.call("array", "get_value", {
      *     source: array,
      *     index: 0,
      *     property: "field"
@@ -351,7 +351,7 @@ export class ArrayActions {
      * @returns {Promise<*[]>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "map_objects", {
+     * const result = await crs.call("array", "map_objects", {
      *    source: array,
      *    fields: ["field1", "field2"],
      *    target: "@process.array"
@@ -401,7 +401,7 @@ export class ArrayActions {
      * @returns {Promise<*>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "get_records", {
+     * const result = await crs.call("array", "get_records", {
      *    source: array,
      *    page_number: 0,
      *    page_size: 10,
@@ -469,7 +469,7 @@ export class ArrayActions {
      * @returns {Promise<*>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "get_range", {
+     * const result = await crs.call("array", "get_range", {
      *   source: array,
      *   field: "field1",
      *   target: "@process.array"
@@ -523,7 +523,7 @@ export class ArrayActions {
      * @returns {Promise<*>}
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("array", "calculate_paging", {
+     * const result = await crs.call("array", "calculate_paging", {
      *    source: data,
      *    page_size: 10
      *    target: "$process.paging"

@@ -4,9 +4,30 @@ export class BindingActions {
     }
 
     /**
-     * Create a binding context to get and set data on
+     * Create a new context object and return the id of the new context
      * You are responsible to clear the context once done using "free_context"
-     * @returns {Promise<void>}
+     * @param step - The current step in the process.
+     * @param context - The context object that is passed to the step.
+     * @param process - The process object that is being executed.
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.context_id - The name of the context object.
+     *
+     * @returns The bId is being returned.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("binding", "create_context", {
+     *   context_id: "my_context"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "create_context",
+     *     "args": {
+     *         "context_id": "my_context"
+     *      }
+     * }
      */
     static async create_context(step, context, process, item) {
         const name = process.id || step?.args?.context_id || "process_context";
@@ -23,8 +44,21 @@ export class BindingActions {
     }
 
     /**
-     * Free binding context, once you are done with it in this process
-     * @returns {Promise<void>}
+     * Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
+     * @param step - The step object that is being executed.
+     * @param context - The context object that was passed to the process.
+     * @param process - The process object that is being executed.
+     * @param item - The item that is being processed.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("binding", "free_context", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "binding",
+     *    "action": "free_context"
+     *    "args": {}
+     * }
      */
     static async free_context(step, context, process, item) {
         if (process.parameters.bId != null) {
@@ -34,8 +68,33 @@ export class BindingActions {
     }
 
     /**
-     * crs-binding.getProperty
-     * @returns {Promise<void>}
+     * Get the value of a property from the current item
+     * @param step - The step object from the process.
+     * @param context - The context object that is passed to the process.
+     * @param process - The current process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.property - The property to get the value from.
+     * @param step.args.target - The target to set the value to.
+     *
+     * @returns The value of the property.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = crs.call("binding", "get_property", {
+     *     property: "name"
+     *     target: "my_name"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "binding",
+     *    "action": "get_property",
+     *    "args": {
+     *       "property": "name",
+     *       "target": "@process.target"
+     *    }
+     * }
+     *
      */
     static async get_property(step, context, process, item) {
         const property = step.args.property;
@@ -49,8 +108,11 @@ export class BindingActions {
     }
 
     /**
-     * crs-binding.setProperty
-     * @returns {Promise<void>}
+     * Set the value of a property on the current item
+     * @param step - The step object from the process definition.
+     * @param context - The context of the current process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
      */
     static async set_property(step, context, process, item) {
         const property = step.args.property;
@@ -59,8 +121,11 @@ export class BindingActions {
     }
 
     /**
-     * Get the data object of the binding context
-     * @returns {Promise<void>}
+     * Get the data from the binding and set it to the target
+     * @param step - The step object
+     * @param context - The context of the current process.
+     * @param process - The current process
+     * @param item - The item that is being processed.
      */
     static async get_data(step, context, process, item) {
         const data = crsbinding.data._data[process.parameters.bId];
@@ -71,9 +136,12 @@ export class BindingActions {
     }
 
     /**
-     * Set errors on a given error store.
+     * Set the errors in the error store
      * Default store is "errors" if you don't provide a store.
-     * @returns {Promise<void>}
+     * @param step - The step object
+     * @param context - The context of the current step.
+     * @param process - The current process
+     * @param item - The current item in the loop
      */
     static async set_errors(step, context, process, item) {
         const store = step.args.error_store || "errors";
@@ -90,7 +158,11 @@ export class BindingActions {
     }
 
     /**
-     * Set a single globals value
+     * Set a global property to a value
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The current item being processed.
      */
     static async set_global(step, context, process, item) {
         const property = await crs.process.getValue(step.args.property, context, process, item);
@@ -99,7 +171,11 @@ export class BindingActions {
     }
 
     /**
-     * Set multiple globas values.
+     * Set the values of the global variables
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The current item being processed.
      */
     static async set_globals(step, context, process, item) {
         const values = await crs.process.getValue(step.args.values, context, process, item);
@@ -110,6 +186,14 @@ export class BindingActions {
         }
     }
 
+    /**
+     * Get the value of a global property
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The current item being processed.
+     * @returns The value of the property.
+     */
     static async get_global(step, context, process, item) {
         const property = await crs.process.getValue(step.args.property, context, process, item);
         const value = crsbinding.data.getProperty(crsbinding.$globals, property);
@@ -121,6 +205,14 @@ export class BindingActions {
         return value;
     }
 
+    /**
+     * Get the values of the specified global variables
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     * @returns The values of the global variables.
+     */
     static async get_globals(step, context, process, item) {
         const values = await crs.process.getValue(step.args.values, context, process, item);
         const keys = Object.keys(values);
