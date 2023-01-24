@@ -1,5 +1,8 @@
 /**
  * This is a static class that contains the actions for the fixed position action system.
+ *
+ * Actions supported are:
+ * - set - set the element to a fixed position
  */
 export class FixedPositionActions {
     /**
