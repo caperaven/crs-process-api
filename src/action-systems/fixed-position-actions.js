@@ -46,40 +46,75 @@ export class FixedPositionActions {
  * - bottom-left
  * - bottom-center
  * - bottom-right
- * @param {HTMLElement} element
- * @param {number} margin
- * @param {DOMRect} elementBounds
+ * @param {HTMLElement} element - element to position
+ * @param {number} margin - margin to use
+ * @param {DOMRect} elementBounds - bounds of the element
  * @returns {void}
  */
 class Positioning {
+    /**
+     * Position the element at the top left
+     * @param element - element to position
+     * @param margin - margin to use
+     */
     static "top-left"(element, margin) {
         element.style.translate = `${margin}px ${margin}px`;
     }
 
+    /**
+     * Position the element at the top center
+     * @param element - element to position
+     * @param margin - margin to use
+     * @param elementBounds - bounds of the element
+     */
     static "top-center"(element, margin, elementBounds) {
         const x = (window.innerWidth / 2) - (elementBounds.width / 2);
         const y = margin;
         element.style.translate = `${x}px ${y}px`;
     }
 
+    /**
+     * Position the element at the top right
+     * @param element - element to position
+     * @param margin - margin to use
+     * @param elementBounds - bounds of the element
+     */
     static "top-right"(element, margin, elementBounds) {
         const x = window.innerWidth - elementBounds.width - margin;
         const y = margin;
         element.style.translate = `${x}px ${y}px`;
     }
 
+    /**
+     * Position the element at the bottom left
+     * @param element - element to position
+     * @param margin - margin to use
+     * @param elementBounds - bounds of the element
+     */
     static "bottom-left"(element, margin, elementBounds) {
         const x = margin;
         const y = window.innerHeight - elementBounds.height - margin;
         element.style.translate = `${x}px ${y}px`;
     }
 
+    /**
+     * Position the element at the bottom center
+     * @param element - element to position
+     * @param margin - margin to use
+     * @param elementBounds - bounds of the element
+     */
     static "bottom-center"(element, margin, elementBounds) {
         const x = (window.innerWidth / 2) - (elementBounds.width / 2);
         const y = window.innerHeight - elementBounds.height - margin;
         element.style.translate = `${x}px ${y}px`;
     }
 
+    /**
+     * Position the element at the bottom right
+     * @param element - element to position
+     * @param margin - margin to use
+     * @param elementBounds - bounds of the element
+     */
     static "bottom-right"(element, margin, elementBounds) {
         const x = window.innerWidth - elementBounds.width - margin;
         const y = window.innerHeight - elementBounds.height - margin;
