@@ -4,26 +4,6 @@
 			{
 				"element": "div",
 				"content": "Hello World"
-			},
-			{
-				"element": "input",
-				"caption": "First Name",
-				"field": "model.firstName"
-			},
-			{
-				"element": "input",
-				"caption": "Last Name",
-				"field": "model.lastName"
-			},
-			{
-				"element": "input",
-				"caption": "age",
-				"field": "model.age",
-				"type": "number",
-				"attributes": {
-					"min": 0,
-					"max": 100
-				}
 			}
 		]
 	}

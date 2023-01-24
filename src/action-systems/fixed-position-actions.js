@@ -1,17 +1,27 @@
+/**
+ * This is a static class that contains the actions for the fixed position action system.
+ */
 export class FixedPositionActions {
-    static #positions = Object.freeze({
-        "top-left": 0,
-        "top-center": 1,
-        "top-right": 2,
-        "bottom-left": 3,
-        "bottom-center": 4,
-        "bottom-right": 5
-    })
-
+    /**
+     * Perform the action
+     * @param step - step to perform
+     * @param context - context of the action
+     * @param process - process that is performing the action
+     * @param item - item that is performing the action
+     * @returns {Promise<void>}
+     */
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
+    /**
+     * Set the element to a fixed position
+     * @param step - step to perform
+     * @param context - context of the action
+     * @param process - process that is performing the action
+     * @param item - item that is performing the action
+     * * @returns {Promise<void>}
+     */
     static async set(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const position = await crs.process.getValue(step.args.position, context, process, item);
@@ -27,6 +37,20 @@ export class FixedPositionActions {
     }
 }
 
+/**
+ * This is a static class that contains the positioning functions for the fixed position action.
+ * Positions supported are:
+ * - top-left
+ * - top-center
+ * - top-right
+ * - bottom-left
+ * - bottom-center
+ * - bottom-right
+ * @param {HTMLElement} element
+ * @param {number} margin
+ * @param {DOMRect} elementBounds
+ * @returns {void}
+ */
 class Positioning {
     static "top-left"(element, margin) {
         element.style.translate = `${margin}px ${margin}px`;
