@@ -96,16 +96,16 @@ export class FixedLayoutActions {
             position.x = 1;
         }
 
-        if (position.x + width > screen.width) {
-            position.x = screen.width - width - 1;
+        if (position.x + width > window.innerWidth) {
+            position.x = window.innerWidth - width - 1;
         }
 
         if (position.y < 0) {
             position.y = 1;
         }
 
-        if (position.y + height > screen.height) {
-            position.y = screen.height - height - 1;
+        if (position.y + height > window.innerHeight) {
+            position.y = window.innerHeight - height - 1;
         }
 
         return position;
