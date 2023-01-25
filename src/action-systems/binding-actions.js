@@ -16,7 +16,7 @@ export class BindingActions {
      * @returns The bId is being returned.
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("binding", "create_context", {
+     * const result = await crs.call("binding", "create_context", {
      *   context_id: "my_context"
      * }, context, process, item);
      *
@@ -50,8 +50,10 @@ export class BindingActions {
      * @param process - The process object that is being executed.
      * @param item - The item that is being processed.
      *
+     * @requires process.parameters.bId - The bId of the context object.
+     *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("binding", "free_context", {}, context, process, item);
+     * const result = await crs.call("binding", "free_context", {}, context, process, item);
      *
      * @example <caption>json example</caption>
      * {
@@ -80,7 +82,7 @@ export class BindingActions {
      * @returns The value of the property.
      *
      * @example <caption>javascript example</caption>
-     * const result = crs.call("binding", "get_property", {
+     * const result = await crs.call("binding", "get_property", {
      *     property: "name"
      *     target: "my_name"
      * }, context, process, item);
@@ -113,6 +115,25 @@ export class BindingActions {
      * @param context - The context of the current process.
      * @param process - The process object
      * @param item - The item that is being processed.
+     *
+     * @param step.args.property - The property to set the value to.
+     * @param step.args.value - The value to set the property to.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "set_property", {
+     *    property: "name",
+     *    value: "my_name"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "set_property",
+     *     "args": {
+     *         "property": "name",
+     *         "value": "my_name"
+     *     }
+     * }
      */
     static async set_property(step, context, process, item) {
         const property = step.args.property;
@@ -126,6 +147,23 @@ export class BindingActions {
      * @param context - The context of the current process.
      * @param process - The current process
      * @param item - The item that is being processed.
+     *
+     * @param step.args.target - The target to set the value to.
+     * @requires process.parameters.bId - The binding id
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "get_data", {
+     *    target: "my_data"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "get_data",
+     *     "args": {
+     *         "target": "my_data"
+     *     }
+     * }
      */
     static async get_data(step, context, process, item) {
         const data = crsbinding.data._data[process.parameters.bId];
@@ -142,6 +180,27 @@ export class BindingActions {
      * @param context - The context of the current step.
      * @param process - The current process
      * @param item - The current item in the loop
+     *
+     * @param step.args.errors - The errors to set
+     * @param step.args.error_store - The store to set the errors to.
+     *
+     * @requires process.parameters.bId - The binding id
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "set_errors", {
+     *   errors: ["error1", "error2"]
+     *   error_store: "my_errors"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "set_errors",
+     *     "args": {
+     *         "errors": ["error1", "error2"],
+     *         "error_store": "my_errors"
+     *     }
+     * }
      */
     static async set_errors(step, context, process, item) {
         const store = step.args.error_store || "errors";
@@ -159,10 +218,29 @@ export class BindingActions {
 
     /**
      * Set a global property to a value
-     * @param step - The step object from the process definition.
+     * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The current item being processed.
+     *
+     * @param step.args.property - The property to set the value to.
+     * @param step.args.value - The value to set the property to.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "set_global", {
+     *   property: "name",
+     *   value: "my_name"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "set_global",
+     *     "args": {
+     *         "property": "name",
+     *         "value": "my_name"
+     *     }
+     * }
      */
     static async set_global(step, context, process, item) {
         const property = await crs.process.getValue(step.args.property, context, process, item);
@@ -176,6 +254,27 @@ export class BindingActions {
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The current item being processed.
+     *
+     * @param step.args.values - The values to set the global variables to.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "set_globals", {
+     *     values: {
+     *         name: "my_name",
+     *         age: 30
+     *     }
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "set_globals",
+     *     "args": {
+     *         "values": {
+     *         "name": "my_name",
+     *         "age": 30
+     *     }
+     * }
      */
     static async set_globals(step, context, process, item) {
         const values = await crs.process.getValue(step.args.values, context, process, item);
@@ -187,12 +286,32 @@ export class BindingActions {
     }
 
     /**
-     * Get the value of a global property
+     * Get the value of a global property and optionally store it in a variable
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The current item being processed.
+     *
+     * @param step.args.property - The property to get the value of.
+     * @param step.args.target - The variable to store the value in.
+     *
      * @returns The value of the property.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "get_global", {
+     *     property: "name"
+     *     target: "my_name"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "get_global",
+     *     "args": {
+     *         "property": "name",
+     *         "target": "my_name"
+     *     }
+     * }
      */
     static async get_global(step, context, process, item) {
         const property = await crs.process.getValue(step.args.property, context, process, item);
@@ -206,12 +325,32 @@ export class BindingActions {
     }
 
     /**
-     * Get the values of the specified global variables
+     * Get the values of the global variables specified in the `values` argument and store them in the `target` argument
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param item - The current item being processed.
+     *
+     * @param step.args.values - The global variables to get
+     * @param step.args.target - The target to store the values in.
+     *
      * @returns The values of the global variables.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("binding", "get_globals", {
+     *    values: ["global1", "global2"],
+     *    target: "my_globals"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "binding",
+     *     "action": "get_globals",
+     *     "args": {
+     *         "values": ["global1", "global2"],
+     *         "target": "my_globals"
+     *     }
+     * }
      */
     static async get_globals(step, context, process, item) {
         const values = await crs.process.getValue(step.args.values, context, process, item);

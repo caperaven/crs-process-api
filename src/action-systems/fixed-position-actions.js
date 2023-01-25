@@ -26,7 +26,7 @@ export class FixedPositionActions {
      *
      * @param {string} step.args.element - element to position
      * @param {string} step.args.position - position to set the element to
-     * @param {number} step.args.margin - margin to apply to the element
+     * @param {number} [step.args.margin=0] - margin to apply to the element
      *
      * @returns {Promise<void>}
      *
