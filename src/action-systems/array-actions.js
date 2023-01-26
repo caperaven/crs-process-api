@@ -558,6 +558,7 @@ export class ArrayActions {
 
     /**
      * Map an array of objects to a new array of objects and optionally add new properties to each object
+     *
      * @param step {object} - step to perform
      * @param context {object} - context of the process
      * @param process {object} - process to perform
@@ -566,6 +567,36 @@ export class ArrayActions {
      * @param step.args.mappings {object} - mappings to perform
      * @param step.args.properties {object} - properties to add
      * @param step.args.target {string|[]} - target to save new array of objects to
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("array", "map_assign_data", {
+     *   source: data,
+     *   mappings: {
+     *       "field1": "field1",
+     *       "field2": "field2"
+     *   },
+     *   properties: {
+     *     "field3": "value3"
+     *   },
+     *   target: "$process.result"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *   "type": "array",
+     *   "action": "map_assign_data",
+     *   "args": {
+     *     "source": "@process.array",
+     *     "mappings": {
+     *       "field1": "field1",
+     *       "field2": "field2"
+     *     },
+     *     "properties": {
+     *       "field3": "value3"
+     *     },
+     *     "target": "@process.array"
+     *   }
+     * }
      *
      * @returns {Array[{object}]} - array of objects
      */
