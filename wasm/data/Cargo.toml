@@ -16,7 +16,7 @@ hashbrown = "0.12.0"
 console_error_panic_hook = "0.1.7"
 
 
-random_data = { path = "./../random_data", version = "0.1.0" }
+#random_data = { path = "./../random_data", version = "0.1.0" }
 
 #
 #[dependencies.web-sys]

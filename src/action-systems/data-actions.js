@@ -19,7 +19,6 @@ import init, {
 
 
 await init();
-init_panic_hook();
 
 export class DataActions {
     static async perform(step, context, process, item) {
