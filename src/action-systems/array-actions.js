@@ -437,8 +437,7 @@ export class ArrayActions {
 
             if (fields == null) {
                 result.push(data[i]);
-            }
-            else {
+            } else {
                 let obj = {};
                 for (let field of fields) {
                     obj[field] = data[i][field];
@@ -550,6 +549,76 @@ export class ArrayActions {
             page_count: pageCount
         }
 
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * Map an array of objects to a new array of objects and optionally add new properties to each object
+     *
+     * @param step {object} - step to perform
+     * @param context {object} - context of the process
+     * @param process {object} - process to perform
+     * @param item {object} - item to perform the action on
+     *
+     * @param step.args.mappings {object} - mappings to perform
+     * @param step.args.properties {object} - properties to add
+     * @param step.args.target {string|[]} - target to save new array of objects to
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("array", "map_assign_data", {
+     *   source: data,
+     *   mappings: {
+     *       "field1": "field1",
+     *       "field2": "field2"
+     *   },
+     *   properties: {
+     *     "field3": "value3"
+     *   },
+     *   target: "$process.result"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *   "type": "array",
+     *   "action": "map_assign_data",
+     *   "args": {
+     *     "source": "@process.array",
+     *     "mappings": {
+     *       "field1": "field1",
+     *       "field2": "field2"
+     *     },
+     *     "properties": {
+     *       "field3": "value3"
+     *     },
+     *     "target": "@process.array"
+     *   }
+     * }
+     *
+     * @returns {Array[{object}]} - array of objects
+     */
+    static async map_assign_data(step, context, process, item) {
+        // Get data, mappings and properties
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const mappings = await crs.process.getValue(step.args.mappings, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+
+        let result = [];
+
+        // Iterate over data and create new objects
+        for (let row of data) {
+            let obj = {};
+            for (const [key, value] of Object.entries(mappings)) {
+                obj[value] = row[key];
+            }
+            Object.assign(obj, properties);
+            result.push(obj);
+        }
+
+        // Save result to target if on is provided
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
         }

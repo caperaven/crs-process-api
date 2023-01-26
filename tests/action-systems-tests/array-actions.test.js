@@ -238,3 +238,65 @@ Deno.test("ArrayActins - calculate_paging", async () => {
     assertEquals(result.row_count, 3);
     assertEquals(result.page_count, 3);
 })
+
+Deno.test("map_assign_data: change 2 properties and add one", async () => {
+    // Arrange
+    const testData = [
+        { a: 1, b: 2, c: 3 },
+        { a: 4, b: 5, c: 6 }
+    ];
+    const mappings = { a: "A", b: "B" };
+    const properties = { d: "Test" };
+
+    const step = { source: testData, mappings, properties, target: "$context.result" };
+    const context = {};
+    const process = {};
+    const item = {};
+
+    // Act
+    const result = await crs.call("array","map_assign_data", step, context, process, item);
+
+    // Assert
+    const expected = [
+        { A: 1, B: 2, d: "Test" },
+        { A: 4, B: 5, d: "Test" }
+    ];
+    assertEquals(result, expected);
+    assertEquals(context.result, expected);
+});
+
+// Edge case test: empty input
+Deno.test("map_assign_data: empty input", async () => {
+    const step = {
+            source: [],
+            mappings: {},
+            properties: {},
+            target: null
+    };
+    const result = await crs.call("array","map_assign_data", step);
+    assertEquals(result, []);
+});
+
+// Edge case test: no mappings
+Deno.test("map_assign_data: no mappings", async () => {
+    const step = {
+            source: [{a: 1, b: 2}],
+            mappings: {},
+            properties: {c: 3},
+            target: null
+    };
+    const result = await crs.call("array","map_assign_data", step);
+    assertEquals(result, [{c: 3}]);
+});
+
+// Edge case test: no properties
+Deno.test("map_assign_data: no properties", async () => {
+    const step = {
+            source: [{a: 1, b: 2}],
+            mappings: {a: "x", b: "y"},
+            properties: {},
+            target: null
+    };
+    const result = await crs.call("array","map_assign_data", step);
+    assertEquals(result, [{x: 1, y: 2}]);
+});
