@@ -245,12 +245,15 @@ Deno.test("map_assign_data: change 2 properties and add one", async () => {
         { a: 1, b: 2, c: 3 },
         { a: 4, b: 5, c: 6 }
     ];
-    const mappings = { a: "A", b: "B" };
-    const properties = { d: "Test" };
+    const mappings = { a: "A", b: "$process.data.propertyMap" };
+    const properties = { d: "$process.data.testValue2" };
 
     const step = { source: testData, mappings, properties, target: "$context.result" };
     const context = {};
-    const process = {};
+    const process = {data: {
+        propertyMap: "B",
+        testValue2: "Test"
+    }};
     const item = {};
 
     // Act

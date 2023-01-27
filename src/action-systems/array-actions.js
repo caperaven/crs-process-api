@@ -564,6 +564,7 @@ export class ArrayActions {
      * @param process {object} - process to perform
      * @param item {object} - item to perform the action on
      *
+     * @param step.args.source {string|[]} - source array to map and assign data to
      * @param step.args.mappings {object} - mappings to perform
      * @param step.args.properties {object} - properties to add
      * @param step.args.target {string|[]} - target to save new array of objects to
@@ -572,8 +573,8 @@ export class ArrayActions {
      * const result = await crs.call("array", "map_assign_data", {
      *   source: data,
      *   mappings: {
-     *       "field1": "field1",
-     *       "field2": "field2"
+     *       "field1": "field5",
+     *       "field2": "field6"
      *   },
      *   properties: {
      *     "field3": "value3"
@@ -588,8 +589,8 @@ export class ArrayActions {
      *   "args": {
      *     "source": "@process.array",
      *     "mappings": {
-     *       "field1": "field1",
-     *       "field2": "field2"
+     *       "field1": "field5",
+     *       "field2": "field6"
      *     },
      *     "properties": {
      *       "field3": "value3"
@@ -606,15 +607,20 @@ export class ArrayActions {
         const mappings = await crs.process.getValue(step.args.mappings, context, process, item);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
+
         let result = [];
 
         // Iterate over data and create new objects
         for (let row of data) {
             let obj = {};
             for (const [key, value] of Object.entries(mappings)) {
-                obj[value] = row[key];
+                obj[await crs.process.getValue(value, context, process, item)] = row[await crs.process.getValue(key, context, process, item)];
             }
-            Object.assign(obj, properties);
+
+            for (const [key, value] of Object.entries(properties)) {
+                obj[await crs.process.getValue(key, context, process, item)] = await crs.process.getValue(value, context, process, item);
+            }
+
             result.push(obj);
         }
 
