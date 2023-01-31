@@ -7,23 +7,29 @@ export class FsActions {
         await this[step.action](step, context, process, item);
     }
 
-    /**
-     * select folder and return handle
-     * @returns {Promise<void>}
-     */
+
     static async select_folder(step, context, process, item) {
     }
 
     /**
-     * read the content of a file
-     * @returns {Promise<void>}
+     * > Create a folder in the target location
+     * @param step - The step number of the current step in the process.
+     * @param context - The context object that is passed to the step.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
      */
     static async create_folder(step, context, process, item) {
     }
 
     /**
-     * using the file picker select a file, read it's content and pass it back
-     * @returns {Promise<void>}
+     * > The function `select_file` is an asynchronous function that returns a file handle
+     * @param step - The step object that is being executed.
+     * @param context - The context of the step.
+     * @param process - The process object that is being run.
+     * @param item - The item that is being processed.
+     *
+     * @returns The fileHandle is being returned.
      */
     static async select_file(step, context, process, item) {
         let fileHandle;
@@ -32,8 +38,31 @@ export class FsActions {
     }
 
     /**
-     * read the content of a file
-     * @returns {Promise<void>}
+     * It reads the contents of a file
+     * @param step - The step object from the process definition.
+     * @param context - The current context of the process.
+     * @param process - The process that is running the step.
+     * @param item - The item that is being processed.
+     *
+     * @param handle {string} - The handle of the file to read.
+     *
+     * @returns {Promise<void>} - The contents of the file.
+     *
+     * @example <caption>javascript example</caption>
+     * const text = await crs.call("fs", "read_file",{
+     *     handle: "fileHandle"
+     *
+     * },context, process, item);
+     *
+     *
+     * @example <caption>json example</caption>
+     * "step":{
+     *     "type": "fs",
+     *     "action": "read_file",
+     *     "args": {
+     *         "handle": "fileHandle"
+     *     }
+     * }
      */
     static async read_file(step, context, process, item) {
         const handle = await crs.process.getValue(step.args?.handle, context, process, item);
@@ -43,8 +72,22 @@ export class FsActions {
     }
 
     /**
-     * read the content of a file and convert it to json
-     * @returns {Promise<void>}
+     * It reads a file and returns the contents as a JSON object
+     * @param step - the step object
+     * @param context - The context object that is passed to the function.
+     * @param process - the process object
+     * @param item - The item that is being processed.
+     *
+     * @returns The JSON.parse(text) is being returned.
+     *
+     * @example <content>javascript example</caption>
+     * const json = await crs.call("fs", "read_json",{},context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * "const json = "step":{
+     *     "type": "fs",
+     *     "action": "read_json"
+     * }
      */
     static async read_json(step, context, process, item) {
         const text = await this.read_file(step, context, process, item);
@@ -52,8 +95,30 @@ export class FsActions {
     }
 
     /**
-     * save a existing file
-     * @returns {Promise<void>}
+     * It takes a file handle and a content string, and writes the content to the file
+     * @param step - The step object that is being executed.
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     * @param item - The item that is being processed.
+     *
+     * @param handle {string} - The handle of the file to write to.
+     * @param content {string} - The content to write to the file.
+     *
+     * @example <caption>javascript example </caption>
+     * await crs.call("fs", "save_file", {
+     *     fileHandle: "fileHandle",
+     *     content: "content"
+     * },context, process, item);
+     *
+     * @example <caption>json example </caption>
+     * "step": {
+     *     "type": "fs",
+     *     "action": "save_file",
+     *     "args": {
+     *          "fileHandle": "fileHandle",
+     *          "content": "content"
+     *      }
+     * }
      */
     static async save_file(step, context, process, item) {
         const fileHandle = await crs.process.getValue(step.args.handle, context, process, item);
@@ -62,8 +127,36 @@ export class FsActions {
     }
 
     /**
-     * save text as utf8 in a file
+     * > Saves text as utf8 in a file
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     * @param item - The item that is being processed.
+     *
+     * @param fileTypes {string} - The file types that are allowed to be selected.
+     * @param defaultName {string} - The default name of the file.
+     * @param content {string} - The content to write to the file.
+     *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("fs", "write_new_file", {
+     *     file_types: "file_types",
+     *     default_name: "default_name",
+     *     content: "content"
+     *
+     * },context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * "step": {
+     *     "type": "fs",
+     *      "action": "write_new_file",
+     *      "args": {
+     *          "file_types": "file_types",
+     *          "default_name": "default_name",
+     *          "content": "content"
+     *       }
+     * }
      */
     static async write_new_file(step, context, process, item) {
         const fileTypes = await crs.process.getValue(step.args.file_types, context, process, item);
@@ -75,7 +168,28 @@ export class FsActions {
 
     /**
      * save a json file to a utf8 file with a json extension
+     * @param step - the step object from the process
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     * @param item - The current item being processed.
+     *
+     * @param json {object} - The json object to write to the file.
+     *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     *  await crs.call("fs", "write_new_json", {
+     *      "json": {}
+     *  },context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * "step": {
+     *    "type": "fs",
+     *    "action": "write_new_json",
+     *    "args": {
+     *      "json": {}
+     *    }
+     *  }
      */
     static async write_new_json(step, context, process, item) {
         const json = await crs.process.getValue(step.args.content, context, process, item);
@@ -92,9 +206,31 @@ export class FsActions {
         await writeFile(fileHandle, JSON.stringify(json, null, '\t'));
     }
 
+
     /**
-     * Get a list of files in a selected folder
-     * @returns {Promise<void>}
+     * It opens a folder and returns a list of files in the folder.
+     * @param step - The step object from the workflow.
+     * @param context - The context of the current process.
+     * @param process - The current process
+     * @param item - The item that is being processed.
+     *
+     * @param handle {string} - The handle of the folder to open.
+     *
+     * @returns An array of file entries.
+     *
+     * @example <caption>javascript example</caption>
+     * const results = await crs.call("fs", "open_folder", {
+     *     handle: "handle"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * "step": {
+     *    "type": "fs",
+     *    "action": "open_folder",
+     *    "args": {
+     *      "handle": "handle"
+     *    }
+     * }
      */
     static async open_folder(step, context, process, item) {
         const handle = await crs.process.getValue(step.args?.handle, context, process, item);

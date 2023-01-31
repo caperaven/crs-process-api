@@ -11,6 +11,37 @@ export class ObjectActions {
      * @param item
      * @returns {Promise<void>}
      */
+
+
+    /**
+     * It takes a list of properties and values, and sets the properties to the values
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.properties - The list of properties to set.
+     * @param step.args.values - The list of values to set the properties to.
+     * @param step.args.target - The target object to set the properties on.
+     *
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("object", "set", {
+     *      properties: ["$process.name", "$process.age"],
+     *      values: ["John", 30]
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "action": "object",
+     *     "method": "set",
+     *     "args": {
+     *          "properties": ["$process.name", "$process.age"],
+     *          "values": ["John", 30]
+     *     }
+     * }
+     */
     static async set(step, context, process, item) {
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
 
@@ -29,6 +60,18 @@ export class ObjectActions {
      * @param process
      * @param item
      * @returns {Promise<string|*>}
+     */
+
+
+    /**
+     * It takes a list of properties, gets the value of each property,
+     * and returns the list of values
+     * @param step - The step object that is being executed.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @returns The value of the property.
      */
     static async get(step, context, process, item) {
         const properties = await crs.process.getValue(step.args.properties, context, process, item);

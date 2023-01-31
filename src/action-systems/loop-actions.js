@@ -1,6 +1,19 @@
 const BATCH_SIZE = 500;
 
 export class LoopActions {
+
+
+    /**
+     * > It takes a batch of items from the source array, and for each item,
+     *  it runs the steps in the `steps` array
+     * @param step - the current step in the process
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     *
+     * @param source {string} - The path to the source array
+     *
+     * @returns The result of the last step in the steps array
+     */
     static async perform(step, context, process) {
         const source = await crs.process.getValue(step.args.source, context, process);
 
@@ -38,6 +51,17 @@ export class LoopActions {
     }
 }
 
+/**
+ * It takes a collection of items, and for each item, it runs a set of steps
+ * @param step - The step object
+ * @param stepKeys - The keys of the steps to run.
+ * @param collection - The collection to process.
+ * @param target - The target object to set the value of.
+ * @param context - The context object that is passed to the process.
+ * @param process - The process object
+ * @param start - The index of the first item in the batch
+ * @param end - The index of the last item in the batch.
+ */
 async function processBatch(step, stepKeys, collection, target, context, process, start, end) {
     for (let i = start; i < end; i++) {
         const item = collection[i];
