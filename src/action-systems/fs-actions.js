@@ -164,6 +164,7 @@ export class FsActions {
         const fileHandle = await getSaveHandle(fileTypes, defaultName);
         const content = await crs.process.getValue(step.args.content, context, process, item);
         await writeFile(fileHandle, content);
+        return fileHandle;
     }
 
     /**
@@ -204,6 +205,7 @@ export class FsActions {
         ]
         const fileHandle = await getSaveHandle(fileTypes, defaultName);
         await writeFile(fileHandle, JSON.stringify(json, null, '\t'));
+        return fileHandle;
     }
 
 
