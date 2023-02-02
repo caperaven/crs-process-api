@@ -57,6 +57,12 @@
         background-color: var(--mybackground);
         color: var(--mycolor);
     }
+
+    #resize-container {
+        width: 100px;
+        height: 100px;
+        background: hotpink;
+     }
 </style>
 <h2>Dom Example</h2>
 
@@ -229,6 +235,14 @@
     </div>
 </section>
 
+<section>
+    <h2>Resize Observer for element</h2>
+    <div id="resize-container" ref="resizeContainer"></div>
+    <div ref="resizeObserverText"></div>
+    <button click.call="addResizeObserver">Add observer size</button>
+    <button click.call="updateResizeContainer">Update size</button>
+    <button click.call="removeResizeObserver">Remove observer size</button>
+</section>
 
 
 
