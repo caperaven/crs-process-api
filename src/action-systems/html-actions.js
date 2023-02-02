@@ -13,7 +13,23 @@ export class HtmlActions {
      * @param process - the process object
      * @param item - the item being processed
      *
+     * @param url {string} - The URL to fetch the template from.
+     *
      * @returns The result of the function call.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("html", "get", {
+     *     url: "url"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "html",
+     *    "action": "get",
+     *    "args": {
+     *        "url": "url"
+     *     }
+     * }
      */
     static async get(step, context, process, item) {
         if (step.args.url != null) {
@@ -96,20 +112,6 @@ export class HtmlActions {
      * @param url {string} - The URL to fetch
      *
      * @returns The text of the file.
-     *
-     * @example <caption>javascript example</caption>
-     * const results = await crs.call("html", "from_file",{
-     *     url: "url"
-     * },context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *    "type": "html",
-     *    "action": "from_file",
-     *    "args": {
-     *        "url": "url"
-     *    }
-     * }
      */
     static async #from_file(step, context, process, item) {
         const url = await crs.process.getValue(step.args.url, context, process, item);
@@ -127,22 +129,6 @@ export class HtmlActions {
      * @param url {string} - The URL to fetch the template from.
      *
      * @returns The template is being returned.
-     *
-     * @example <caption>javascript example</caption>
-     * const results = await crs.call("html", "from_template",{
-     *    template: "template",
-     *    url: "url"
-     * },context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "html",
-     *   "action": "from_template",
-     *   "args": {
-     *          "template": "template",
-     *          "url": "url"
-     *    }
-     * }
      */
     static async #from_template(step, context, process, item) {
         const template = await crs.process.getValue(step.args.template, context, process, item);
@@ -160,20 +146,6 @@ export class HtmlActions {
      * @param json {string} - The schema to parse
      *
      * @returns A schema object.
-     *
-     * @example <caption>javascript example</caption>
-     * const results = await crs.call("html", "from_schema",{
-     *    json: "{schema}"
-     *  },context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *      "type": "html",
-     *      "action": "from_schema",
-     *      "args": {
-     *           "json": "{schema}"
-     *      }
-     * }
      */
     static async #from_schema(step, context, process, item) {
         let json = await crs.process.getValue(step.args.schema, context, process, item);
@@ -196,22 +168,6 @@ export class HtmlActions {
      * @param parameters {array} - The parameters to pass to the function
      *
      * @returns The result of the function call.
-     *
-     * @example <caption>javascript example</caption>
-     * const results = await crs.call("html", "from_function",{
-     *     function: "fn",
-     *     parameters: ["param1", "param2"]
-     * },context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *      "type": "html",
-     *      "action": "from_function",
-     *      "args": {
-     *          "function": "fn",
-     *          "parameters": ["param1", "param2"]
-     *      }
-     *}
      */
     static async #from_function(step, context, process, item) {
         const fn = await crs.process.getValue(step.args.function, context, process, item);

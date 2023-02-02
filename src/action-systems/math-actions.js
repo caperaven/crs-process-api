@@ -51,6 +51,7 @@ export class MathActions {
      *
      * @param step.args.value1 - The first value to subtract from
      * @param step.args.value2 - The second value to subtract
+     * @param step.args.target - The target to store the result in
      *
      * @returns The result of the math operation.
      *
@@ -67,6 +68,7 @@ export class MathActions {
      *     "args": {
      *          "value1": 5,
      *          "value2": 2
+     *          "target": "$context.result"
      *     }
      * }
      */
@@ -84,6 +86,7 @@ export class MathActions {
      *
      * @param step.args.value1 - The first value to multiply
      * @param step.args.value2 - The second value to multiply
+     * @param step.args.target - The target to store the result in
      *
      * @returns The result of the math operation.
      *
@@ -100,6 +103,7 @@ export class MathActions {
      *    "args": {
      *          "value1": 2,
      *          "value2": 3
+     *          "target": "$context.result"
      *    }
      * }
      */
@@ -116,6 +120,7 @@ export class MathActions {
      *
      * @param step.args.value1 - The first value to divide
      * @param step.args.value2 - The second value to divide by
+     * @param step.args.target - The target to store the result in
      *
      * @returns The result of the do_math function.
      *
@@ -132,6 +137,7 @@ export class MathActions {
      *   "args": {
      *          "value1": 6,
      *          "value2": 2
+     *          "target": "$context.result"
      *    }
      * }
      */
@@ -149,9 +155,9 @@ export class MathActions {
      *
      * @param step.args.value1 - The first value to perform the math operation on
      * @param step.args.value2 - The second value to perform the math operation on
+     * @param step.args.target - The target to store the result in
      *
      * @returns The result of the math operation.
-     *
      */
     static async do_math(step, context, process, item, fn) {
         const value1 = await crs.process.getValue(step.args.value1, context, process, item);
@@ -206,6 +212,7 @@ export class MathActions {
      * @param step.args.value - The value to perform the math operation on
      * @param step.args.min - The minimum value to return
      * @param step.args.max - The maximum value to return
+     * @param step.args.target - The target to store the result in
      *
      * @returns The normalized value.
      *
@@ -224,6 +231,7 @@ export class MathActions {
      *        "value": 10,
      *        "min": 0,
      *        "max": 100
+     *        "target": "$context.result"
      *     }
      * }
      *

@@ -15,13 +15,14 @@ export class MarkdownActions {
      * @param item - The item that is being processed.
      *
      * @param markdown {string} - The markdown to convert
+     * @param parameters {object} - The parameters to pass to the markdown processor
      *
      * @return {Promise<any>} - The html
      *
      * @example <caption>javascript example</caption>
      * const html = await crs.call("markdown", "to_html", {
      *     markdown: "# Hello World"
-     *     parameters: {name: "John"}
+     *     parameters: parameters
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -30,9 +31,7 @@ export class MarkdownActions {
      *    "action": "to_html",
      *    "args": {
      *       "markdown": "# Hello $name",
-     *       "parameters": {
-     *            "name": "John"
-     *        }
+     *       "parameters": parameters
      *    }
      * }
      */

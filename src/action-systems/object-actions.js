@@ -50,9 +50,7 @@ export class ObjectActions {
      * @param item - The item that is being processed.
      *
      * @param step.args.properties - The list of properties to get the values from.
-     * @param step.args.target - The target object to set the properties on.
-     * @param step.args.result - The property to set the result to.
-     *
+     * @param step.args.target - The target object to set the properties on.*
      *
      * @returns {Promise<Array>} - The list of values.
      *
@@ -66,7 +64,7 @@ export class ObjectActions {
      *       "type": "object",
      *       "action": "get",
      *       "args": {
-     *            "properties": ["$process.name", "$process.age"]
+     *            "properties": ["$process.name", "$process.age"],
      *            "target": "$context.values"
      *        }
      *  }
@@ -96,7 +94,6 @@ export class ObjectActions {
      * @param item - The item that is being processed.
      *
      * @param step.args.properties - The list of properties to delete.
-     * @param step.args.target - The target object to delete the properties
      *
      * @returns {Promise<void>}
      *
@@ -111,7 +108,6 @@ export class ObjectActions {
      *     "action": "delete",
      *     "args": {
      *         "properties": ["$process.name", "$process.age"]
-     *         "target": "$context.values"
      *      }
      * }
      */
@@ -150,8 +146,8 @@ export class ObjectActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("object", "copy_on_path", {
-     *    source: "$process",
-     *    target: "$item",
+     *    source: "$context.obj1",
+     *    target: "$context.obj2",
      *    properties: ["name", "age"]
      * }, context, process, item);
      *
@@ -160,8 +156,8 @@ export class ObjectActions {
      *       "type": "object",
      *       "action": "copy_on_path",
      *       "args": {
-     *           "source": "$process",
-     *           "target": "$context.item",
+     *           "source":  "$context.obj1",
+     *           "target":  "$context.obj2",
      *           "properties": ["name", "age"]
      *        }
      * }
@@ -190,7 +186,7 @@ export class ObjectActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("object", "create", {
-     *    target: "$item",
+     *    target: "$context.item",
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -198,7 +194,7 @@ export class ObjectActions {
      *      "type": "object",
      *      "action": "create",
      *      "args": {
-     *           "target": "$item",
+     *           "target": "$context.item",
      *       }
      * }
      */
@@ -222,8 +218,7 @@ export class ObjectActions {
      *
      * @example <caption>javascript example</caption>
      *  const obj = await crs.call("object", "assign", {
-     *     source: "$process",
-     *     target: "$item"
+     *     source: "$context.obj1",
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -231,8 +226,8 @@ export class ObjectActions {
      *      "type": "object",
      *      "action": "assign",
      *      "args": {
-     *          "source": "$process",
-     *          "target": "$item"
+     *          "source": "$context.obj1",
+     *          "target": "$context.obj2"
      *      }
      * }
      */
@@ -251,12 +246,13 @@ export class ObjectActions {
      *
      * @param step.args.source - The source object to clone.
      * @param step.args.properties - The properties to clone.
+     * @param step.args.target - The target object to copy the properties to.
      *
      * @returns The result of the clone operation.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("object", "clone", {
-     *    source: "$process",
+     *    source: "$context.obj1",
      *    properties: ["name", "age"]
      * }, context, process, item);
      *
@@ -265,8 +261,9 @@ export class ObjectActions {
      *    "type": "object",
      *    "action": "clone",
      *    "args": {
-     *        "source": "$process",
-     *        "properties": ["name", "age"]
+     *        "source": "$context.obj1",
+     *        "properties": ["name", "age"],
+     *        "target": "$context.result"
      *     }
      * }
      */
@@ -310,7 +307,7 @@ export class ObjectActions {
      *
      * @example <caption>javascript example</caption>
      * const newValue =  await crs.call("object", "clone", {
-     *     source: "$process"
+     *     source: "$context.obj1",
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -318,7 +315,8 @@ export class ObjectActions {
      *    "type": "object",
      *    "action": "clone",
      *     "args": {
-     *         "source": "$process"
+     *         "source": "$context.obj1",
+     *         "target": "$context.result"
      *     }
      * }
      */
@@ -343,14 +341,15 @@ export class ObjectActions {
      * @param item - The item that is being processed.
      *
      * @param step.args.source - The source object to clone.
-     * @param step.args.paths - The list of property paths to check.
+     * @param step.args.properties - The properties to check.
+     * @param step.args.target - The target object to store the result.
      *
      * @returns A boolean value.
      *
      * @example <caption>javascript example</caption>
      * const isValid = await crs.call("object", "assert", {
-     *    source: "$process",
-     *    paths: ["path", "path"]
+     *    source: "$context.obj1",
+     *    properties: ["path", "path"]
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -358,8 +357,9 @@ export class ObjectActions {
      *     "type": "object",
      *     "action": "assert",
      *     "args": {
-     *         "source": "$process",
-     *         "paths": ["path", "path"]
+     *         "source": "$context.obj1",
+     *         "properties": ["path", "path"],
+     *         "target": "$context.result"
      *      }
      * }
      */
@@ -389,6 +389,11 @@ export class ObjectActions {
     }
 }
 
+/**
+ * It takes a property name and returns a JavaScript expression that evaluates to the value of that property
+ * @param property - The property to be formatted.
+ * @returns a string that is the property name with the $context. prefix added.
+ */
 function formatProperty(property) {
     if (property.indexOf("$") == -1) {
         property = `$context.${property}`
@@ -396,6 +401,12 @@ function formatProperty(property) {
     return property.split("/").join(".");
 }
 
+/**
+ * It takes an object, a path, and a value, and sets the value on the object at the path
+ * @param obj - The object to set the value on.
+ * @param path - The path to the property you want to set.
+ * @param value - The value to set on the path.
+ */
 async function setValueOnPath(obj, path, value) {
     const parts = path.split(".").join("/").split("/");
     const property = parts[parts.length - 1];
@@ -420,6 +431,12 @@ async function setValueOnPath(obj, path, value) {
     target[property] = value;
 }
 
+/**
+ * It takes an object and a path, and returns the value at the end of the path
+ * @param obj - The object to get the value from.
+ * @param path - The path to the property you want to get.
+ * @returns The value of the property at the end of the path.
+ */
 async function getValueOnPath(obj, path) {
     const parts = path.split(".").join("/").split("/");
     const property = parts[parts.length - 1];
@@ -443,6 +460,12 @@ async function getValueOnPath(obj, path) {
     return target[property];
 }
 
+/**
+ * It takes an object and a path, and deletes the property at the end of the path
+ * @param obj - The object to delete the property from.
+ * @param path - The path to the property to delete.
+ * @returns the value of the property at the end of the path.
+ */
 async function deleteOnPath(obj, path) {
     if (obj == null) return;
     const parts = path.split("$context.").join("").split(".").join("/").split("/");
@@ -470,6 +493,13 @@ async function deleteOnPath(obj, path) {
     }
 }
 
+/**
+ * It copies the value of a path from one object to another
+ * @param source - The source object to copy from
+ * @param target - The target object to copy the value to.
+ * @param path - The path to the value you want to copy.
+ * @returns A function that takes three arguments: source, target, and path.
+ */
 async function copyPath(source, target, path) {
     const value = await getValueOnPath(source, path);
 

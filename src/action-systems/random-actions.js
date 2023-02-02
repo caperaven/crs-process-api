@@ -29,6 +29,7 @@ export class RandomActions {
      *       "args": {
      *           "min": 1,
      *           "max": 10
+     *           "target": "$context.result"
      *       }
      * }
      */
@@ -67,7 +68,8 @@ export class RandomActions {
      *      "action": "float",
      *      "args": {
      *          "min": 1,
-     *          "max": 10
+     *          "max": 10,
+     *          "target": "$context.result"
      *      }
      * }
      */

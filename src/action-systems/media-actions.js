@@ -11,21 +11,27 @@ export class MediaActions {
      * @param process - The current process
      * @param item - the item that is being processed
      *
-     * @param constraints {object} - The constraints to use for the video stream.
      * @param canvas {object} - The canvas element to display the video stream on.
+     * @param constraints {object} - The constraints to use when getting the video stream.
      *
      * @returns {Promise<void>}
+     *
      * @example <caption>javascript example</caption>
      * await crs.call("media", "render_camera", {
-     *     constraints: {
-     *        video: {
-     *            width: 1280,
-     *            height: 720
-     *        }
-     *     },
      *     canvas: document.getElementById("canvas")
+     *     constraints: {constraints}
+     *
      * }, context, process, item);
      *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "media",
+     *      "action": "render_camera",
+     *      "args": {
+     *          "canvas": document.getElementById("canvas")
+     *          "constraints": {constraints}
+     *      }
+     * }
      */
     static async render_camera(step, context, process, item) {
         const canvas = await crs.dom.get_element(step, context, process, item);
@@ -58,8 +64,8 @@ export class MediaActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("media", "capture_image", {
-     *     video: element,
-     *     canvas: element
+     *     canvas: this.element.querySelector("video")
+     *     video: this.element.querySelector("canvas")
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -67,8 +73,8 @@ export class MediaActions {
      *    "type": "media",
      *    "action": "capture_image",
      *    "args": {
-     *          "video": element,
-     *          "canvas": element
+     *          "canvas": this.element.querySelector("video")
+     *          "video": this.element.querySelector("video")
      *     }
      * }
      */

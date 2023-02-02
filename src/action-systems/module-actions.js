@@ -23,9 +23,7 @@ export class ModuleActions {
      * const result = await crs.call("module", "call", {
      *     module: "module",
      *     function: "function",
-     *     parameters: {
-     *       parameter: "value"
-     *     }
+     *    "parameters": {parameters}
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -35,9 +33,7 @@ export class ModuleActions {
      *    "args": {
      *        "module": "module",
      *        "function": "function",
-     *        "parameters": {
-     *              "parameter": "value"
-     *          }
+     *        "parameters": {parameters}
      *    }
      * }
      *
@@ -56,15 +52,14 @@ export class ModuleActions {
      *
      * @param module {string} - The name of the module that contains the class.
      * @param parameters {object} - The parameters to pass to the constructor.
+     * @param target {string} - The target to store the instance in.
      *
      * @returns The instance of the class.
      *
      * @example <caption>javascript example</caption>
      * const instance = await crs.call("module", "create_class", {
      *     module: "module",
-     *     parameters: {
-     *          parameter: "value"
-     *     }
+     *     parameters: {parameters},
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -73,9 +68,8 @@ export class ModuleActions {
      *   "action": "create_class",
      *   "args": {
      *      "module": "module",
-     *      "parameters": {
-     *          "parameter": "value"
-     *      }
+     *      "parameters": {parameters}
+     *      "target": "$context.result"
      *    }
      * }
      *
@@ -94,6 +88,7 @@ export class ModuleActions {
      *
      * @param module {string} - The name of the module that contains the constant.
      * @param name {string} - The name of the constant.
+     * @param target {string} - The target to store the constant in.
      *
      * @returns The constant value of the module and name.
      *
@@ -110,6 +105,7 @@ export class ModuleActions {
      *      "args": {
      *          "module": "module",
      *          "name": "constant"
+     *          "target": "$context.result"
      *      }
      * }
      */

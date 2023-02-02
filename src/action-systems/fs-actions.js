@@ -45,22 +45,23 @@ export class FsActions {
      * @param item - The item that is being processed.
      *
      * @param handle {string} - The handle of the file to read.
+     * @param fileHandle {string} - The file handle of the file to read.
      *
      * @returns {Promise<void>} - The contents of the file.
      *
      * @example <caption>javascript example</caption>
      * const text = await crs.call("fs", "read_file",{
      *     handle: "fileHandle"
-     *
      * },context, process, item);
      *
      *
      * @example <caption>json example</caption>
-     * "step":{
+     * {
      *     "type": "fs",
      *     "action": "read_file",
      *     "args": {
      *         "handle": "fileHandle"
+     *
      *     }
      * }
      */
@@ -78,13 +79,15 @@ export class FsActions {
      * @param process - the process object
      * @param item - The item that is being processed.
      *
+     * @param text {string} - The text to parse as JSON.
+     *
      * @returns The JSON.parse(text) is being returned.
      *
      * @example <content>javascript example</caption>
-     * const json = await crs.call("fs", "read_json",{},context, process, item);
+     * const json = await crs.call("fs", "read_json");
      *
      * @example <caption>json example</caption>
-     * "const json = "step":{
+     * {
      *     "type": "fs",
      *     "action": "read_json"
      * }
@@ -106,16 +109,16 @@ export class FsActions {
      *
      * @example <caption>javascript example </caption>
      * await crs.call("fs", "save_file", {
-     *     fileHandle: "fileHandle",
+     *     fileHandle: "this.handle",
      *     content: "content"
      * },context, process, item);
      *
      * @example <caption>json example </caption>
-     * "step": {
+     * {
      *     "type": "fs",
      *     "action": "save_file",
      *     "args": {
-     *          "fileHandle": "fileHandle",
+     *          "fileHandle": "this.handle",
      *          "content": "content"
      *      }
      * }
@@ -141,19 +144,14 @@ export class FsActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("fs", "write_new_file", {
-     *     file_types: "file_types",
-     *     default_name: "default_name",
      *     content: "content"
-     *
      * },context, process, item);
      *
      * @example <caption>json example</caption>
-     * "step": {
+     * {
      *     "type": "fs",
      *      "action": "write_new_file",
      *      "args": {
-     *          "file_types": "file_types",
-     *          "default_name": "default_name",
      *          "content": "content"
      *       }
      * }
@@ -184,7 +182,7 @@ export class FsActions {
      *  },context, process, item);
      *
      * @example <caption>json example</caption>
-     * "step": {
+     * {
      *    "type": "fs",
      *    "action": "write_new_json",
      *    "args": {
@@ -249,6 +247,12 @@ export class FsActions {
     }
 }
 
+/**
+ * It takes a file handle and some contents, and writes the contents to the file
+ * @param fileHandle - The file handle that you want to write to.
+ * @param contents - The contents of the file. This can be a string or an object. If it's an object, it will be converted
+ * to a JSON string.
+ */
 async function writeFile(fileHandle, contents) {
     if (typeof contents == "object") {
         contents = JSON.stringify(contents, null, 4);
@@ -259,6 +263,12 @@ async function writeFile(fileHandle, contents) {
     await writable.close();
 }
 
+/**
+ * It shows a save file picker dialog and returns a handle to the file that the user selected
+ * @param types - An array of strings that specify the types of files that can be saved.
+ * @param defaultName - The default name of the file.
+ * @returns A Promise that resolves to a FileSystemWritableFileStream.
+ */
 async function getSaveHandle(types, defaultName) {
     const options = {
         suggestedName: defaultName || 'Untitled.txt',
@@ -268,6 +278,13 @@ async function getSaveHandle(types, defaultName) {
     return await window.showSaveFilePicker(options);
 }
 
+/**
+ * It checks if the user has granted permission to read or
+ * write to the file, and if not, it requests permission
+ * @param fileHandle - The file handle to verify permissions for.
+ * @param readWrite - A boolean value that indicates whether the file should be opened for reading and writing.
+ * @returns A boolean value.
+ */
 async function verifyPermission(fileHandle, readWrite) {
     const options = {};
 

@@ -17,8 +17,8 @@ export class LocalStorageAction {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("local_storage", "set_value", {
-     *    key: "key",
-     *    value: "value"
+     *      key: "key",
+     *      value: "value"
      *  },context, process, item);
      *
      *  @example <caption>json example</caption>
@@ -88,8 +88,8 @@ export class LocalStorageAction {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("local_storage", "set_object", {
-     *        key: "key",
-     *        value: {a: 1, b: 2}
+     *        key: "name",
+     *        value: "John Doe"
      * },context, process, item);
      *
      * @example <caption>json example</caption>
@@ -97,8 +97,8 @@ export class LocalStorageAction {
      *    "type": "local_storage",
      *    "action": "set_object",
      *    "args": {
-     *          "key": "key",
-     *          "value": {a: 1, b: 2}
+     *          "key": "name",
+     *          "value": "John Doe"
      *     }
      * }
      */
@@ -122,7 +122,7 @@ export class LocalStorageAction {
      *
      * @example <caption>javascript example</caption>
      * const value = await crs.call("local_storage", "get_object", {
-     *     key: "key"
+     *     key: "name"
      * },context, process, item);
      *
      *  @example <caption>json example</caption>
@@ -130,7 +130,7 @@ export class LocalStorageAction {
      *    "type": "local_storage",
      *    "action": "get_object",
      *    "args": {
-     *           "key": "key"
+     *           "key": "name"
      *     }
      *  }
      */
@@ -159,7 +159,7 @@ export class LocalStorageAction {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("local_storage", "remove", {
-     *        key: "key"
+     *        key: "name"
      * },context, process, item);
      *
      * @example <caption>json example</caption>
@@ -167,7 +167,7 @@ export class LocalStorageAction {
      *   "type": "local_storage",
      *   "action": "remove",
      *   "args": {
-     *       "key": "key"
+     *       "key": "name"
      *    }
      * }
      */
