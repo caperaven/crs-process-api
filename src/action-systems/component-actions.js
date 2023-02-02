@@ -2,6 +2,14 @@
  * Helper functions for working with custom components
  */
 
+
+
+/** "Observe properties on a component and when all the properties have values, perform the callback."
+
+The first method, `perform`, is a static method that is called by the process engine.  It is the entry point for the
+class.  The process engine will pass in the step, context, process, and item.  The step is the step that is being
+executed.  The context is the context of the process.  The process is the process that is being executed.  The item is
+the item that is being processed */
 export class ComponentActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
@@ -10,6 +18,35 @@ export class ComponentActions {
     /**
      * Used in components, observe properties and when all the properties have values, perform the callback.
      * @returns {Promise<*|number>}
+     *
+     * @param step - The step object from the process.
+     * @param context  - The context object that is passed to the process.
+     * @param process - The process object that is being run.
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.element - The element that is being observed.
+     * @param step.args.properties - The properties that are being observed.
+     * @param step.args.callback - The callback that is being executed when all the properties have values.
+     *
+     * @returns {Promise<*>} - The id of the observation.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("component", "observe", {
+     *     element: "my-element",
+     *     properties: ["value1", "value2"],
+     *     callback: "myCallback"
+     *     };
+     * }
+     *
+     * @example <caption>json</caption>
+     *    {
+     *     "type": "component",
+     *     "action": "observe",
+     *     "args": {
+     *        "element": "my-element",
+     *        "properties": ["value1", "value2"],
+     *        "callback": "myCallback"
+     *    }
      */
     static async observe(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -40,8 +77,35 @@ export class ComponentActions {
         return id;
     }
 
+
     /**
      * Disable previously created observation of properties on a component
+     * It removes a callback from the element's data object
+     * @param step - The step object from the process definition.
+     * @param context - The context of the current process.
+     * @param process - The process that is running.
+     * @param item - The current item being processed.
+     *
+     * @param step.args.element - The element that is being observed.
+     * @param step.args.ids - The ids of the observations to remove.
+     *
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("component", "unobserve", {
+     *    element: "my-element",
+     *    ids: [1, 2]
+     *    };
+     *
+     * @example <caption>json</caption>
+     * {
+     *     "type": "component",
+     *     "action": "unobserve",
+     *     "args": {
+     *     "element": "my-element",
+     *     "ids": [1, 2]
+     *     }
+     * }
      */
     static async unobserve(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -59,8 +123,35 @@ export class ComponentActions {
         }
     }
 
+
     /**
+     * It sets the `ready` attribute on the element specified in the `element` argument, and then dispatches a `ready`
+     * event on the element
+     *
      * Notify that the component is ready for interacting with
+     *
+     * @param step - The step object from the process.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object that is running the script.
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.element - The element that is being observed.
+     *
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("component", "notify_ready", {
+     *    element: "my-element"
+     *    };
+     *
+     * @example <caption>json</caption>
+     *    {
+     *       "type": "component",
+     *       "action": "notify_ready",
+     *       "args": {
+     *        "element": "my-element"
+     *       }
+     *    }
      */
     static async notify_ready(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -69,10 +160,43 @@ export class ComponentActions {
     }
 
     /**
-     * Get notified when the component is ready
      * @param element: who am I waiting for?
      * @param callback: function to execute when ready.
      * @param caller: who is "this" on the callback.
+     */
+
+
+    /**
+     * Get notified when the component is ready
+     * It waits for an element to be ready, then calls a callback function
+     * @param step - The step object.
+     * @param context - The context of the process.
+     * @param process - The process that is currently running.
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.element - The element that is being observed.
+     * @param step.args.callback - The callback function to execute when the element is ready.
+     * @param step.args.caller - The caller of the callback function.
+     *
+     * @returns The return value of the callback function.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("component", "on_ready", {
+     *   element: "my-element",
+     *   callback: function(),
+     *   caller: this
+     *   };
+     *
+     * @example <caption>json</caption>
+     * {
+     *     "type": "component",
+     *     "action": "on_ready",
+     *     "args": {
+     *      "element": "my-element",
+     *      "callback": function(),
+     *      "caller": this
+     *     }
+     * }
      */
     static async on_ready(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -92,12 +216,27 @@ export class ComponentActions {
     }
 }
 
+
+
+/**
+ * It returns a unique ID for each element
+ * @param element - The element that the process observer is attached to.
+ * @returns The next id in the sequence.
+ */
 function getNextId(element) {
     const id = element._processObserver.nextId;
     element._processObserver.nextId = id + 1;
     return id;
 }
 
+/**
+ * > Create a function that will evaluate the properties of the data object and call the callback function if all the
+ * properties are not null
+ * @param context - The context of the function.
+ * @param properties - The list of properties that are being observed.
+ * @param id - The id of the observer.
+ * @returns A function that will be called when the properties are available.
+ */
 function createPropertiesEvaluation(context, properties, id) {
     let script = ["if ( "];
     for (const property of properties) {
