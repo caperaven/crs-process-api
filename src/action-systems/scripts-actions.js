@@ -3,8 +3,35 @@ export class ScriptsActions {
         await this[step.action]?.(step, context, process, item);
     }
 
+
     /**
      * Dynamically load a javascript file from file as a script tag.
+     * @param step - The step object from the process.
+     * @param context - The context of the current process.
+     * @param process - The current process
+     * @param item - The current item being processed.
+     *
+     * @param step.args.id - The id of the script tag.
+     * @param step.args.file - The file to load.
+     *
+     * @returns A promise that resolves to the script element.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("scripts", "load_file", {
+     *     id: "my-script",
+     *     file: "my-script.js"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "scripts",
+     *     "action": "load_file",
+     *     "args": {
+     *          "id": "my-script",
+     *          "file": "my-script.js"
+     *          "target": "$context.myTarget"
+     *     }
+     * }
      */
     static async load_file(step, context, process, item) {
         const id = await crs.process.getValue(step.args.id, context, process, item);
@@ -28,6 +55,26 @@ export class ScriptsActions {
 
     /**
      * Remove a script file based on id from the dom.
+     * @param step - The step object from the process.
+     * @param context - The context of the current step.
+     * @param process - The process object that is running the step.
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.id - The id of the script tag.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("scripts", "unload_file", {
+     *     id: "my-script"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "scripts",
+     *      "action": "unload_file",
+     *      "args": {
+     *           "id": "my-script"
+     *       }
+     * }
      */
     static async unload_file(step, context, process, item) {
         const id = await crs.process.getValue(step.args.id);
