@@ -1,10 +1,22 @@
+/**
+ * @class ColorsActions - This class contains the actions that are available to the colors action system.
+ *
+ * Features:
+ * - hex_to_rgb - Converts a hex color to rgb.
+ * - hex_to_rgba - Converts a hex color to rgba.
+ * - hex_to_normalised - Converts a hex color to a normalised rgba color.
+ * - rgb_to_hex - Converts a rgb color to hex.
+ * - rgb_text_to_hex - Converts a rgb text color to hex.
+ * - css_to_hex - Converts a css color to hex.
+ * - css_to_normalized - Converts a css color to a normalised rgba color.
+ */
 export class ColorsActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * It takes a hex value, and returns an object with the red, green, and blue values
+     * @method - It takes a hex value, and returns an object with the red, green, and blue values
      * @param step - The step object from the process.
      * @param context  - The context object that is passed to the process.
      * @param process - The process object that is being run.
@@ -115,7 +127,7 @@ export class ColorsActions {
     }
 
     /**
-     * It takes three numbers (red, green, and blue) and returns a hexadecimal color code
+     * @method rgb_to_hex - It takes three numbers (red, green, and blue) and returns a hexadecimal color code
      * @param step - The step object that is being processed.
      * @param context - The current context of the process.
      * @param process - The process object
@@ -239,11 +251,6 @@ export class ColorsActions {
     }
 
     /**
-     * Get css variables and convert them to a hex string
-     */
-
-
-    /**
      * Get a css variable and convert it to a hex string
      * @param step - The step object
      * @param context - The context of the current process.
@@ -297,11 +304,6 @@ export class ColorsActions {
         });
         return results;
     }
-
-    /**
-     * Get a css variable and covert it to a normalized rgb
-     */
-
 
     /**
      * Gets a css variables from an element, converts it to a hex string, then converts that hex string to a normalized hex string
