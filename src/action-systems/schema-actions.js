@@ -23,6 +23,8 @@ class SchemaParserManager {
      * @example <caption>javascript example</caption>
      * const result = await crs.call("schema", "register", {
      *     id: "my-parser",
+     *     parser: MyParser,
+     *     providers: ["./my-provider.js"],
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -31,6 +33,8 @@ class SchemaParserManager {
      *     "action": "register",
      *     "args": {
      *         "id": "my-parser",
+     *         "parser": "MyParser",
+     *         "providers": ["./my-provider.js"]
      *      }
      * }
      */
@@ -66,6 +70,22 @@ class SchemaParserManager {
      * @params step.args.schema - The schema to parse.
      *
      * @returns A promise that resolves to the result of the parser.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("schema", "parse", {
+     *    id: "my-parser",
+     *    schema: {schema}
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "schema",
+     *     "action": "parse",
+     *     "args": {
+     *         "id": "my-parser",
+     *         "schema": {schema}
+     *     }
+     * }
      */
     async parse(id, schema, ctx) {
         return new Promise(async (resolve) => {
@@ -204,9 +224,8 @@ export class SchemaActions {
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("schema", "parse", {
-     *     id: "my-parser",
-     *     schema: {schema},
-     *     target: "my-result"
+     *    id: "my-parser",
+     *    schema: "json"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -214,10 +233,10 @@ export class SchemaActions {
      *     "type": "schema",
      *     "action": "parse",
      *     "args": {
-     *         "id": "my-parser",
-     *         "schema": {schema},
-     *         "target": "my-result"
-     *     }
+     *          "id": "my-parser",
+     *          "schema": "json"
+     *          "target": "$context.myTarget"
+     *      }
      * }
      */
     static async parse(step, context, process, item) {
