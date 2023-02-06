@@ -1,10 +1,25 @@
+/**
+ * @class BindingActions - This class contains all the actions that can be performed on a binding object.
+ *
+ * Features:
+ * create_context - Create a new context object and return the id of the new context
+ * free_context - Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
+ * get_property - Get the value of a property from the current item
+ * set_property - Set the value of a property on the current item
+ * get_data - Get the value of a property from the data store
+ * set_error - Set the error property on the current item
+ * set_global - Set the value of a property on the global object
+ * get_global - Get the value of a property from the global object
+ * set_globals - Set the value of a property on the global object
+ * get_globals - Get the value of a property from the global object
+ */
 export class BindingActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * Create a new context object and return the id of the new context
+     * @method - Create a new context object and return the id of the new context
      * You are responsible to clear the context once done using "free_context"
      * @param step - The current step in the process.
      * @param context - The context object that is passed to the step.
@@ -44,7 +59,7 @@ export class BindingActions {
     }
 
     /**
-     * Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
+     * @method - Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
      * @param step - The step object that is being executed.
      * @param context - The context object that was passed to the process.
      * @param process - The process object that is being executed.
@@ -70,7 +85,7 @@ export class BindingActions {
     }
 
     /**
-     * Get the value of a property from the current item
+     * @method - Get the value of a property from the current item
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - The current process object
@@ -110,7 +125,7 @@ export class BindingActions {
     }
 
     /**
-     * Set the value of a property on the current item
+     * @method - Set the value of a property on the current item
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
      * @param process - The process object
@@ -142,7 +157,7 @@ export class BindingActions {
     }
 
     /**
-     * Get the data from the binding and set it to the target
+     * @method - Get the data from the binding and set it to the target
      * @param step - The step object
      * @param context - The context of the current process.
      * @param process - The current process
@@ -174,7 +189,7 @@ export class BindingActions {
     }
 
     /**
-     * Set the errors in the error store
+     * @method - Set the errors in the error store
      * Default store is "errors" if you don't provide a store.
      * @param step - The step object
      * @param context - The context of the current step.
@@ -217,7 +232,7 @@ export class BindingActions {
     }
 
     /**
-     * Set a global property to a value
+     * @method - Set a global property to a value
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -249,7 +264,7 @@ export class BindingActions {
     }
 
     /**
-     * Set the values of the global variables
+     * @method - Set the values of the global variables
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -286,7 +301,7 @@ export class BindingActions {
     }
 
     /**
-     * Get the value of a global property and optionally store it in a variable
+     * @method - Get the value of a global property and optionally store it in a variable
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -325,7 +340,7 @@ export class BindingActions {
     }
 
     /**
-     * Get the values of the global variables specified in the `values` argument and store them in the `target` argument
+     * @method - Get the values of the global variables specified in the `values` argument and store them in the `target` argument
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object

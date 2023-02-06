@@ -1,7 +1,7 @@
 /**
- * This is a static class that contains the actions for manipulating arrays
+ * @class ArrayActions - This is a static class that contains the actions for manipulating arrays
  *
- * Actions support are:
+ * Features:
  * - add - add an item to an array
  * - remove - remove an item from an array
  * - transfer - transfer an item from one array to another
@@ -99,7 +99,7 @@ export class ArrayActions {
     }
 
     /**
-     * This function transfers an value from one array to another
+     * @method - This function transfers an value from one array to another
      * @param step - step to perform
      * @param context - context of the process
      * @param process - process to perform
@@ -139,7 +139,7 @@ export class ArrayActions {
     }
 
     /**
-     * This function takes an array of objects and exports csv text
+     * @method - This function takes an array of objects and exports csv text
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -197,7 +197,7 @@ export class ArrayActions {
     }
 
     /**
-     * Create a new array that contains the content of the defined source arrays.
+     * @method - Create a new array that contains the content of the defined source arrays.
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -242,7 +242,7 @@ export class ArrayActions {
     }
 
     /**
-     * Change the values of fields in a object array
+     * @method - Change the values of fields in a object array
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -292,7 +292,7 @@ export class ArrayActions {
     }
 
     /**
-     * For a given record at index provided, get the value of defined property
+     * @method - For a given record at index provided, get the value of defined property
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -337,7 +337,7 @@ export class ArrayActions {
     }
 
     /**
-     * For an array of objects map an object field/s to a flat array of values
+     * @method - For an array of objects map an object field/s to a flat array of values
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -386,7 +386,7 @@ export class ArrayActions {
     }
 
     /**
-     * Get records starting at a page number for a particular batch size
+     * @method - Get records starting at a page number for a particular batch size
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -454,7 +454,7 @@ export class ArrayActions {
     }
 
     /**
-     * get the min and max values of the data for a given field.
+     * @method - get the min and max values of the data for a given field.
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -508,7 +508,7 @@ export class ArrayActions {
     }
 
     /**
-     * Calculate the number of pages of an array for a given batch size
+     * @method - Calculate the number of pages of an array for a given batch size
      *
      * @param step - step to perform
      * @param context - context of the process
@@ -557,7 +557,7 @@ export class ArrayActions {
     }
 
     /**
-     * Map an array of objects to a new array of objects and optionally add new properties to each object
+     * @method - Map an array of objects to a new array of objects and optionally add new properties to each object
      *
      * @param step {object} - step to perform
      * @param context {object} - context of the process
@@ -634,7 +634,7 @@ export class ArrayActions {
 }
 
 /**
- * Convert an array of objects to a csv string
+ *  Convert an array of objects to a csv string
  * @param array - array of objects
  * @param field - field to get
  * @param delimiter - delimiter to use

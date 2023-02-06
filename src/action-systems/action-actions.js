@@ -1,13 +1,14 @@
 /**
- * This is a static class that contains the actions for the action system
+ * @class ActionActions - This is a static class that contains the actions for the action system
  *
- * Actions support are:
- * - perform - perform an action on a component or element
+ * Features:
+ * perform - perform an action on a component or element
+ *
  *
  */
 export class ActionActions {
     /**
-     * perform an action on a component or element
+     * @method - perform an action on a component or element
      * @param step - step to perform
      * @param context - context of the process
      * @param process - process to perform
