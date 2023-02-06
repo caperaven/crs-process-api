@@ -1,3 +1,11 @@
+/**
+ * @class ConditionActions - A class that contains the actions for the condition action system.
+ *
+ * Features:
+ * perform - The perform function is a static function that is called by the process function.
+ *
+ * If the condition is true, run the pass step, otherwise run the fail step.
+ */
 export class ConditionActions {
 
     /** "If the condition is true, run the pass step, otherwise run the fail step."
@@ -54,7 +62,7 @@ export class ConditionActions {
 }
 
 /**
- * It takes a condition and a process, and returns a function that takes a context, process, and item, and returns the
+ * @method - It takes a condition and a process, and returns a function that takes a context, process, and item, and returns the
  * result of evaluating the condition
  * @param condition - The condition to be evaluated.
  * @param process - the process object
@@ -79,7 +87,7 @@ function compileExpression(condition, process) {
 }
 
 /**
- * It takes an expression and replaces all instances of `$binding.property` with `crsbinding.data.getProperty(bindingId,
+ * @method - It takes an expression and replaces all instances of `$binding.property` with `crsbinding.data.getProperty(bindingId,
  * "property")`
  * @param exp - The expression to process
  * @param bId - The binding id of the element.

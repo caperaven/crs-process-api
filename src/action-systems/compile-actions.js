@@ -1,10 +1,15 @@
 /**
  * @class CompileActions - Actions that compile expressions
  * @memberof crs.intent
+ *
+ * Features:
+ * perform - The perform function is a static function that is called by the process function. It calls the action
+ * if_value - If the expression is true, return the value of the expression, otherwise return null
+ * case_value - Compiles a case statement and returns the value of the first expression that is true
  */
 export class CompileActions {
     /**
-     * > The `perform` function is a static function that is called by the `process` function. It calls the `action`
+     * @method - The `perform` function is a static function that is called by the `process` function. It calls the `action`
      * function that is passed in the `step` object
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
@@ -16,7 +21,8 @@ export class CompileActions {
     }
 
     /**
-     * > If the expression is true, return the value of the expression, otherwise return null
+     * @method -If the expression is true, return the value of the expression, otherwise return null
+     *
      * @param step - The step object
      * @param context - The context object that is passed to the process.
      * @param process - the process object
@@ -55,7 +61,7 @@ export class CompileActions {
     }
 
     /**
-     * > Compiles a case expression
+     * @method - Compiles a case expression
      * @param step
      * @param context
      * @param process

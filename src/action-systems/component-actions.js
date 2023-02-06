@@ -1,5 +1,12 @@
 /**
- * Helper functions for working with custom components
+ * @class ComponentActions - Helper functions for working with custom components
+ *
+ * Features:
+ *  perform - The entry point for the class.  This is called by the process engine.
+ *  observe - Used in components, observe properties and when all the properties have values, perform the callback.
+ *  unobserve - Used in components, unobserve properties.
+ *  notify_ready - Used in components, notify the process engine that the component is ready.
+ *  on_ready - Used in components, when the component is ready, perform the callback.
  */
 
 
@@ -16,7 +23,7 @@ export class ComponentActions {
     }
 
     /**
-     * Used in components, observe properties and when all the properties have values, perform the callback.
+     * @method -  Used in components, observe properties and when all the properties have values, perform the callback.
      * @returns {Promise<*|number>}
      *
      * @param step - The step object from the process.
@@ -79,7 +86,7 @@ export class ComponentActions {
 
 
     /**
-     * Disable previously created observation of properties on a component
+     * @method - Disable previously created observation of properties on a component
      * It removes a callback from the element's data object
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
@@ -125,7 +132,7 @@ export class ComponentActions {
 
 
     /**
-     * It sets the `ready` attribute on the element specified in the `element` argument, and then dispatches a `ready`
+     * @method - It sets the `ready` attribute on the element specified in the `element` argument, and then dispatches a `ready`
      * event on the element
      *
      * Notify that the component is ready for interacting with
@@ -159,15 +166,9 @@ export class ComponentActions {
         element.dispatchEvent(new CustomEvent("ready", {bubbles:false}));
     }
 
-    /**
-     * @param element: who am I waiting for?
-     * @param callback: function to execute when ready.
-     * @param caller: who is "this" on the callback.
-     */
-
 
     /**
-     * Get notified when the component is ready
+     * @method - Get notified when the component is ready
      * It waits for an element to be ready, then calls a callback function
      * @param step - The step object.
      * @param context - The context of the process.
@@ -219,7 +220,7 @@ export class ComponentActions {
 
 
 /**
- * It returns a unique ID for each element
+ * @method - It returns a unique ID for each element
  * @param element - The element that the process observer is attached to.
  * @returns The next id in the sequence.
  */
@@ -230,7 +231,7 @@ function getNextId(element) {
 }
 
 /**
- * > Create a function that will evaluate the properties of the data object and call the callback function if all the
+ * @method - Create a function that will evaluate the properties of the data object and call the callback function if all the
  * properties are not null
  * @param context - The context of the function.
  * @param properties - The list of properties that are being observed.

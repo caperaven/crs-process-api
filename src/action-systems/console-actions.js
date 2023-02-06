@@ -1,9 +1,15 @@
 /**
- * ConsoleActions provides access to the console.md with common features
+ *@class ConsoleActions - provides access to the console.md with common features
+ *
+ * Features:
+ * log - logs a message to the console
+ * warn - logs a warning message to the console
+ * error - logs an error message to the console
+ * table - logs a table to the console
  */
 export class ConsoleActions {
     /**
-     * > The `perform` function is a static function that is called by the `process` function. It takes the `step` object,
+     * @method - The `perform` function is a static function that is called by the `process` function. It takes the `step` object,
      * the `context` object, the `process` function, and the `item` object as arguments. It then calls the `step.action`
      * function, passing the `step`, `context`, `process`, and `item` objects as arguments
      * @param step - The step object from the process definition
@@ -48,7 +54,8 @@ export class ConsoleActions {
     }
 
     /**
-     * It takes a message, evaluates it, and logs it to the console
+     * @method - It takes a message, evaluates it, and logs it to the console
+     *
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -71,7 +78,8 @@ export class ConsoleActions {
     }
 
     /**
-     * > Prints the Error message to the console
+     * @method - Prints the Error message to the console.
+     *
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -85,7 +93,8 @@ export class ConsoleActions {
     }
 
     /**
-     * > This function takes a message and logs it to the console as a warning
+     * @method -This function takes a message and logs it to the console as a warning
+     *
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -99,7 +108,8 @@ export class ConsoleActions {
     }
 
     /**
-     * > This function takes a message and displays it in a table
+     * @method - This function takes a message and displays it in a table
+     *
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
      * @param process - The process object
