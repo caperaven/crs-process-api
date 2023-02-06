@@ -20,14 +20,14 @@ export class ArrayActions {
     }
 
     /**
-     * This function adds a value to a defined array
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @method add - add an item to an array
+     * @param step {object} - The step that contains the action to perform
+     * @param context {object} - The context of the process
+     * @param process {object} - The process
+     * @param item {object} - Current item in a process loop
      *
-     * @param step.args.target - target array to add to
-     * @param step.args.value - value to add to the array
+     * @param step.args.target {Array} - target array to add to
+     * @param step.args.value {*} - value to add to the array
      *
      * @returns {Promise<void>}
      *
@@ -59,14 +59,14 @@ export class ArrayActions {
     }
 
     /**
-     * This function removes an value from an defined array
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @method remove - removes a value from a defined array
+     * @param step {object} - The step that contains the action to perform
+     * @param context {object} - The context of the process
+     * @param process {object} - The process
+     * @param item {object} - Current item in a process loop
      *
-     * @param step.args.target - target array to remove from
-     * @param step.args.value - value to remove from the array
+     * @param step.args.target {Array} - target array to remove from
+     * @param step.args.value {*} - value to remove from the array
      *
      * @returns {Promise<void>}
      *
