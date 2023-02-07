@@ -1,18 +1,27 @@
+/**
+ * @class RandomActions - A collection of actions that generate random numbers.
+ * @description This class is used to generate random numbers.
+ *
+ * Features:
+ * perform - The main entry point for the class. This method is called by the action system.
+ * integer - Generate a random integer between the min and max values
+ * float - Generate a random float between the min and max values
+ */
 export class RandomActions {
     static async perform(step, context, process, item) {
         return await this[step.action](step, context, process, item);
     }
 
     /**
-     * > Generate a random integer between the min and max values
+     * @method Generate a random integer between the min and max values
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.min - The minimum value
-     * @param step.args.max - The maximum value
-     * @param step.args.target - The target variable to store the result in.
+     * @param step.args.min {integer} - The minimum value
+     * @param step.args.max {integer} - The maximum value
+     * @param step.args.target {string} - The target variable to store the result in.
      *
      * @returns The result of the random number generator.
      *
@@ -44,15 +53,15 @@ export class RandomActions {
     }
 
     /**
-     * > Generate a random float between the min and max values
+     * @method Generate a random float between the min and max values
      * @param step - The step object that is being executed.
      * @param context - The context object that was passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.min - The minimum value
-     * @param step.args.max - The maximum value
-     * @param step.args.target - The target variable to store the result in.
+     * @param step.args.min {float} - The minimum value
+     * @param step.args.max {float} - The maximum value
+     * @param step.args.target {string} - The target variable to store the result in.
      *
      * @returns A random number between the min and max values.
      *

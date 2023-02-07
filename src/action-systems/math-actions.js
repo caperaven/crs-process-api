@@ -1,3 +1,18 @@
+/**
+ * @class MathActions - This class contains all math actions that can be performed by the action system.
+ * @description  It takes a step, context, process, and item, and then it gets the value of each of the arguments, calls the appropriate
+ * Math function, and then sets the result to the target
+ *
+ * Features:
+ * perform - This function is called by the action system.
+ * add - This function adds two numbers together
+ * subtract - This function subtracts the value of the second input from the value of the first input
+ * multiply - This function multiplies two numbers together
+ * divide - This function divides the value of the first input by the value of the second input
+ * do_math -  It takes two values, performs a mathematical operation on them, and then stores the result in a variable and returns it.
+ * do_math_api - it gets the value of each of the arguments, calls the appropriate Math function, and then sets the result to the target
+ * normalize - This function normalizes a value between a min and max value
+ */
 export class MathActions {
     static async perform(step, context, process, item) {
         if (this[step.action] != null) {
@@ -10,15 +25,15 @@ export class MathActions {
 
 
     /**
-     * > This function adds two numbers together
+     * @method This function adds two numbers together
      * @param step - the step object
      * @param context - The context object that is passed to the step.
      * @param process - The process object that is currently running.
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 - The first value to add
-     * @param step.args.value2 - The second value to add
-     * @param step.args.target - The target to store the result in
+     * @param step.args.value1 {string} - The first value to add
+     * @param step.args.value2 {string} - The second value to add
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The result of the do_math function.
      *
@@ -43,15 +58,15 @@ export class MathActions {
     }
 
     /**
-     * > Subtracts the value of the second input from the value of the first input
+     * @method Subtracts the value of the second input from the value of the first input
      * @param step - The step object from the workflow definition
      * @param context - The context object that is passed to the function.
      * @param process - The process object
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 - The first value to subtract from
-     * @param step.args.value2 - The second value to subtract
-     * @param step.args.target - The target to store the result in
+     * @param step.args.value1 {string} - The first value to subtract from
+     * @param step.args.value2 {string} - The second value to subtract
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      *
@@ -78,15 +93,15 @@ export class MathActions {
 
 
     /**
-     * > This function takes two numbers, multiplies them, and returns the result
+     * @method This function takes two numbers, multiplies them, and returns the result
      * @param step - the step object
      * @param context - The context object that is passed to the step.
      * @param process - the process object
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 - The first value to multiply
-     * @param step.args.value2 - The second value to multiply
-     * @param step.args.target - The target to store the result in
+     * @param step.args.value1 {string} - The first value to multiply
+     * @param step.args.value2 {string} - The second value to multiply
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      *
@@ -112,15 +127,15 @@ export class MathActions {
     }
 
     /**
-     * > This function divides the first input by the second input and returns the result
+     * @method This function divides the first input by the second input and returns the result
      * @param step - the step object
      * @param context - The context object that is passed to the function.
      * @param process - The process object that is currently running.
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 - The first value to divide
-     * @param step.args.value2 - The second value to divide by
-     * @param step.args.target - The target to store the result in
+     * @param step.args.value1 {string} - The first value to divide
+     * @param step.args.value2 {string} - The second value to divide by
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The result of the do_math function.
      *
@@ -146,16 +161,16 @@ export class MathActions {
     }
 
     /**
-     * It takes two values, performs a mathematical operation on them,
-     * and then stores the result in a variable and returns it.
+     * @method It takes two values, performs a mathematical operation on them,and then stores the result in a variable
+     * and returns it.
      * @param step - The step object
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.value1 - The first value to perform the math operation on
-     * @param step.args.value2 - The second value to perform the math operation on
-     * @param step.args.target - The target to store the result in
+     * @param step.args.value1 {string} - The first value to perform the math operation on
+     * @param step.args.value2 {string} - The second value to perform the math operation on
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      */
@@ -172,15 +187,15 @@ export class MathActions {
     }
 
     /**
-     * It takes a step, context, process, and item, and
-     * then it gets the value of each of the arguments, calls the
+     * @method It takes a step, context, process, and item, and then it gets the value of each of the arguments, calls the
      * appropriate Math function, and then sets the result to the target
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.value - The value to perform the math operation on
+     * @param step.args.value {object} - The [value] to perform the math operation on
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      */
@@ -203,16 +218,16 @@ export class MathActions {
     }
 
     /**
-     * > This function takes a number and returns the absolute value of that number
+     * @method This function takes a number and returns the absolute value of that number
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.value - The value to perform the math operation on
-     * @param step.args.min - The minimum value to return
-     * @param step.args.max - The maximum value to return
-     * @param step.args.target - The target to store the result in
+     * @param step.args.value {string} - The value to perform the math operation on
+     * @param step.args.min {string} - The minimum value to return
+     * @param step.args.max {string} - The maximum value to return
+     * @param step.args.target {string} - The target to store the result in
      *
      * @returns The normalized value.
      *
@@ -234,7 +249,6 @@ export class MathActions {
      *        "target": "$context.result"
      *     }
      * }
-     *
      */
     static async normalize(step, context, process, item) {
         const value = await crs.process.getValue(step.args.value, context, process, item);

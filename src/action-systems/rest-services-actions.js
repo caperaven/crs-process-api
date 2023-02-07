@@ -9,21 +9,33 @@ const BASE_REQUEST = {
     }
 }
 
+/**
+ * @class RestServicesActions - A collection of actions that can be used to perform REST calls.
+ * @description This class contains functions that make requests to a REST API
+ *
+ * Features:
+ * perform - The main function that is called to perform the action.
+ * get - Performs a GET request to the specified URL.
+ * post - Performs a POST request to the specified URL.
+ * put - Performs a PUT request to the specified URL.
+ * delete - Performs a DELETE request to the specified URL.
+ * patch - Performs a PATCH request to the specified URL.
+ */
 export class RestServicesActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * > Perform a GET request to the specified URL.
+     * @method Perform a GET request to the specified URL.
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
      * @param process - The current process
      * @param item - The current item being processed.
      *
-     * @param step.args.request - The request object to use for the request.
-     * @param step.args.url - The URL to perform the GET request on.
-     * @param step.args.target - The target to set the result to.
+     * @param step.args.request {object} - The request object to use for the request.
+     * @param step.args.url {string} - The URL to perform the GET request on.
+     * @param step.args.target {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -57,17 +69,17 @@ export class RestServicesActions {
     }
 
     /**
-     * > Make a POST request to the given URL with the given body
-     * and request options, and set the result to the given target
+     * @method Make a POST request to the given URL with the given body and request options, and set the result to the
+     * given target
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
      * @param process - The current process
      * @param item - the current item being processed
      *
-     * @param step.args.url - The URL to perform the POST request on.
-     * @param step.args.body - The body to send with the request.
-     * @param step.args.request - The request object to use for the request.
-     * @param step.args.target - The target to set the result to.
+     * @param step.args.url {string} - The URL to perform the POST request on.
+     * @param step.args.body {object} - The body to send with the request.
+     * @param step.args.request {object} - The request object to use for the request.
+     * @param step.args.target {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -105,18 +117,17 @@ export class RestServicesActions {
     }
 
     /**
-     * > This function takes a step, context, process, and item,
-     * and returns a promise that resolves to the result of a PUT
-     * request to the url specified in the step's args
+     * @method This function takes a step, context, process, and item, and returns a promise that resolves to the result
+     * of a PUT request to the url specified in the step's args
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
      * @param process - The current process
      * @param item - The current item being processed.
      *
-     * @param step.args.url  - The URL to perform the PUT request on.
-     * @param step.args.body - The body to send with the request.
-     * @param step.args.request - The request object to use for the request.
-     * @param step.args.target - The target to set the result to.
+     * @param step.args.url {string} - The URL to perform the PUT request on.
+     * @param step.args.body {object} - The body to send with the request.
+     * @param step.args.request {object} - The request object to use for the request.
+     * @param step.args.target {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -154,17 +165,16 @@ export class RestServicesActions {
     }
 
     /**
-     * > This function takes the body, request, and url from the step,
+     * @method This function takes the body, request, and url from the step,
      * and then makes a PATCH request to the url with the body and request
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The current process object
      * @param item - The current item being processed.
      *
-     * @param step.args.url - The URL to perform the PATCH request on.
-     * @param step.args.body - The body to send with the request.
-     * @param step.args.request - The request object to use for the request.
-     * @param step.args.target - The target to set the result to.
+     * @param step.args.url {string} - The URL to perform the PATCH request on.
+     * @param step.args.body {object} - The body to send with the request.
+     * @param step.args.request {object} - The request object to use for the request.
      *
      * @returns The result of the fetch call.
      *
@@ -187,7 +197,6 @@ export class RestServicesActions {
      *              "name": "testing",
      *          },
      *          "request": {requests}
-     *          "target": "$context.result"
      *     }
      * }
      */
@@ -205,15 +214,14 @@ export class RestServicesActions {
     }
 
     /**
-     * > This function makes a DELETE request to the specified URL, and then sets the result to the specified target
+     * @method This function makes a DELETE request to the specified URL, and then sets the result to the specified target
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
      * @param process - The current process object
      * @param item - The current item being processed.
      *
-     * @param step.args.url - The URL to perform the DELETE request on.
-     * @param step.args.request - The request object to use for the request.
-     * @param step.args.target - The target to set the result to.
+     * @param step.args.url {string} - The URL to perform the DELETE request on.
+     * @param step.args.request {object} - The request object to use for the request.
      *
      * @returns The result of the fetch call.
      *
@@ -230,7 +238,6 @@ export class RestServicesActions {
      *     "args": {
      *         "url": "https://jsonplaceholder.typicode.com/todos/1",
      *         "request": {requests}
-     *         "target": "$context.result"
      *     }
      * }
      */
@@ -247,7 +254,7 @@ export class RestServicesActions {
 }
 
 /**
- * > Set the value of the target variable to the result of the function
+ * @method Set the value of the target variable to the result of the function
  * @param step - The step object
  * @param result - The result of the previous step.
  * @param context - The context object that is passed to the process.

@@ -1,18 +1,29 @@
 /**
- * https://web.dev/file-system-access/#transparency
+ * Also, check out {@link https://web.dev/file-system-access/#transparency}
+ * @class FsActions - This is a static class that contains the actions for the file system
+ *
+ * Features:
+ * perform - perform an action on a component or element
+ * select_folder - select a folder
+ * create_folder - create a folder in the target location
+ * select_file - the function `select_file` is an asynchronous function that returns a file handle
+ * read_file - It reads the contents of a file
+ * read_file_json - It reads a file and returns the contents as a JSON object
+ * save_file - It takes a file handle and a content string, and writes the content to the file
+ * write_new_file - Saves text as utf8 in a file
+ * write_new_json - save a json file to a utf8 file with a json extension
+ * open_folder - It opens a folder and returns a list of files in the folder.
  */
-
 export class FsActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
     }
 
-
     static async select_folder(step, context, process, item) {
     }
 
     /**
-     * > Create a folder in the target location
+     * @method Create a folder in the target location
      * @param step - The step number of the current step in the process.
      * @param context - The context object that is passed to the step.
      * @param process - The process object
@@ -23,7 +34,7 @@ export class FsActions {
     }
 
     /**
-     * > The function `select_file` is an asynchronous function that returns a file handle
+     * @method The function `select_file` is an asynchronous function that returns a file handle
      * @param step - The step object that is being executed.
      * @param context - The context of the step.
      * @param process - The process object that is being run.
@@ -38,20 +49,19 @@ export class FsActions {
     }
 
     /**
-     * It reads the contents of a file
+     * @method It reads the contents of a file
      * @param step - The step object from the process definition.
      * @param context - The current context of the process.
      * @param process - The process that is running the step.
      * @param item - The item that is being processed.
      *
      * @param handle {string} - The handle of the file to read.
-     * @param fileHandle {string} - The file handle of the file to read.
      *
      * @returns {Promise<void>} - The contents of the file.
      *
      * @example <caption>javascript example</caption>
-     * const text = await crs.call("fs", "read_file",{
-     *     handle: "fileHandle"
+     * const result = await crs.call("fs", "read_file",{
+     *     handle: "$context.value"
      * },context, process, item);
      *
      *
@@ -60,8 +70,7 @@ export class FsActions {
      *     "type": "fs",
      *     "action": "read_file",
      *     "args": {
-     *         "handle": "fileHandle"
-     *
+     *         "handle": "$context.value"
      *     }
      * }
      */
@@ -73,18 +82,16 @@ export class FsActions {
     }
 
     /**
-     * It reads a file and returns the contents as a JSON object
+     * @method It reads a file and returns the contents as a JSON object
      * @param step - the step object
      * @param context - The context object that is passed to the function.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param text {string} - The text to parse as JSON.
-     *
      * @returns The JSON.parse(text) is being returned.
      *
      * @example <content>javascript example</caption>
-     * const json = await crs.call("fs", "read_json");
+     * const result = await crs.call("fs", "read_json");
      *
      * @example <caption>json example</caption>
      * {
@@ -98,7 +105,7 @@ export class FsActions {
     }
 
     /**
-     * It takes a file handle and a content string, and writes the content to the file
+     * @method It takes a file handle and a content string, and writes the content to the file
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
@@ -109,7 +116,7 @@ export class FsActions {
      *
      * @example <caption>javascript example </caption>
      * await crs.call("fs", "save_file", {
-     *     fileHandle: "this.handle",
+     *     fileHandle: "$context.value",
      *     content: "content"
      * },context, process, item);
      *
@@ -118,7 +125,7 @@ export class FsActions {
      *     "type": "fs",
      *     "action": "save_file",
      *     "args": {
-     *          "fileHandle": "this.handle",
+     *          "fileHandle": "$context.value",
      *          "content": "content"
      *      }
      * }
@@ -130,7 +137,7 @@ export class FsActions {
     }
 
     /**
-     * > Saves text as utf8 in a file
+     * @method Saves text as utf8 in a file
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
@@ -144,6 +151,8 @@ export class FsActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("fs", "write_new_file", {
+     *     file_types: "$context.value,
+     *     default_name: "defaultName",
      *     content: "content"
      * },context, process, item);
      *
@@ -152,6 +161,8 @@ export class FsActions {
      *     "type": "fs",
      *      "action": "write_new_file",
      *      "args": {
+     *          "file_types": "$context.value,
+     *          "default_name": "defaultName",
      *          "content": "content"
      *       }
      * }
@@ -166,19 +177,19 @@ export class FsActions {
     }
 
     /**
-     * save a json file to a utf8 file with a json extension
+     * @method save a json file to a utf8 file with a json extension
      * @param step - the step object from the process
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The current item being processed.
      *
-     * @param json {object} - The json object to write to the file.
+     * @param content {object} - The json object to write to the file.
      *
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
      *  await crs.call("fs", "write_new_json", {
-     *      "json": {}
+     *      "content": {}
      *  },context, process, item);
      *
      * @example <caption>json example</caption>
@@ -186,7 +197,7 @@ export class FsActions {
      *    "type": "fs",
      *    "action": "write_new_json",
      *    "args": {
-     *      "json": {}
+     *      "content": {}
      *    }
      *  }
      */
@@ -206,9 +217,8 @@ export class FsActions {
         return fileHandle;
     }
 
-
     /**
-     * It opens a folder and returns a list of files in the folder.
+     * @method It opens a folder and returns a list of files in the folder.
      * @param step - The step object from the workflow.
      * @param context - The context of the current process.
      * @param process - The current process
@@ -220,15 +230,15 @@ export class FsActions {
      *
      * @example <caption>javascript example</caption>
      * const results = await crs.call("fs", "open_folder", {
-     *     handle: "handle"
+     *     handle: "$context.value"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
-     * "step": {
+     * {
      *    "type": "fs",
      *    "action": "open_folder",
      *    "args": {
-     *      "handle": "handle"
+     *      "handle": "$context.value"
      *    }
      * }
      */
@@ -248,7 +258,7 @@ export class FsActions {
 }
 
 /**
- * It takes a file handle and some contents, and writes the contents to the file
+ * @method It takes a file handle and some contents, and writes the contents to the file
  * @param fileHandle - The file handle that you want to write to.
  * @param contents - The contents of the file. This can be a string or an object. If it's an object, it will be converted
  * to a JSON string.
@@ -264,7 +274,7 @@ async function writeFile(fileHandle, contents) {
 }
 
 /**
- * It shows a save file picker dialog and returns a handle to the file that the user selected
+ * @method It shows a save file picker dialog and returns a handle to the file that the user selected
  * @param types - An array of strings that specify the types of files that can be saved.
  * @param defaultName - The default name of the file.
  * @returns A Promise that resolves to a FileSystemWritableFileStream.
@@ -279,7 +289,7 @@ async function getSaveHandle(types, defaultName) {
 }
 
 /**
- * It checks if the user has granted permission to read or
+ * @method It checks if the user has granted permission to read or
  * write to the file, and if not, it requests permission
  * @param fileHandle - The file handle to verify permissions for.
  * @param readWrite - A boolean value that indicates whether the file should be opened for reading and writing.

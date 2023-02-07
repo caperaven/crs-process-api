@@ -1,13 +1,64 @@
+/**
+ * @class StringActions - A collection of actions that can be performed on strings.
+ * @description This class contains a collection of actions that can be performed on strings.
+ *
+ * Features:
+ * perform - The main entry point for the class. This method will call the action method that is specified in the step.
+ * inflate - Inflate a string by replacing the string literal markers with the actual value.
+ * translate - Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
+ * to_array - Convert a string to an array.
+ * from_array - Convert an array to a string.
+ * replace - Replace all occurrences of a string with another string.
+ * get_query_string - Get the query string from a url.
+ * template - It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
+ * returns the resulting string.
+ * slice - Slice a string.
+ */
 export class StringActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
+
     /**
-     * Given this format, inflate a string and replace the string literal markers with the actual value.
-     * Examples.
+     * @method Given this format, inflate a string and replace the string literal markers with the actual value.
+     * @examples.
      *      "#input/${id}?type='tasks'&typeId='${typeId}'"
      *      "${firstName} ${lastName} = ${age} old"
+     *
+     * @param step - The step object
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.template {string} - The template to inflate.
+     * @param step.args.parameters {object} - The {parameters} to use to inflate the template.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The result of the inflate_string function.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "inflate", {
+     *      template: "<icon>gear</icon> <bold>[${code}]</bold> ${description}",
+     *      parameters: {
+     *          code: "A11",
+     *          description: "This is a description"
+     *      }
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "inflate",
+     *      "args": {
+     *            "template": "<icon>gear</icon> <bold>[${code}]</bold> ${description}",
+     *            "parameters": {
+     *                  "code": "A11",
+     *                  "description": "This is a description"
+     *            },
+     *            "target": "$context.result"
+     *       }
+     * }
      */
     static async inflate (step, context, process, item) {
         if (step.args.parameters == null) {
@@ -30,6 +81,33 @@ export class StringActions {
         return result;
     }
 
+    /**
+     * @method Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.template {string} - The template to translate.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The result of the translation.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "translate", {
+     *      template: "Hello &{firstName} &{lastName}"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "translate",
+     *      "args": {
+     *           "template": "Hello &{firstName} &{lastName}",
+     *           "target": "$context.myTarget"
+     *      }
+     * }
+     */
     static async translate(step, context, process, item) {
         const template = await crs.process.getValue(step.args.template, context, process, item);
 
@@ -46,6 +124,36 @@ export class StringActions {
         return result;
     }
 
+    /**
+     * @method Split a string into an array of strings using a regular expression
+     * @param step - The step object
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.source {string} - The string to split.
+     * @param step.args.pattern {string} - The regular expression to use to split the string.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The result of the split operation.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "to_array", {
+     *      source: "a,b,c,d,e",
+     *      pattern: ","
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "to_array",
+     *      "args": {
+     *           "source": "$context.value",
+     *           "pattern": ",",
+     *           "target": "$context.myTarget"
+     *      }
+     * }
+     */
     static async to_array(step, context, process, item) {
         let str = await crs.process.getValue(step.args.source, context, process, item);
         let result = str.split(step.args.pattern);
@@ -57,6 +165,36 @@ export class StringActions {
         return result;
     }
 
+    /**
+     * @method It takes an array, joins it together with a separator, and stores the result in a variable
+     * @param step - The step object
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.source {string} - The array to join.
+     * @param step.args.separator {string} - The separator to use to join the array.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The result of the join operation.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "from_array", {
+     *      source: "$context.value",
+     *      separator: ","
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "from_array",
+     *      "args": {
+     *          "source": "$context.value",
+     *          "separator": ",",
+     *          "target": "$context.myTarget"
+     *       }
+     * }
+     */
     static async from_array(step, context, process, item) {
         let array = await crs.process.getValue(step.args.source, context, process, item);
         let separator = step.args.separator || "";
@@ -69,6 +207,40 @@ export class StringActions {
         return result;
     }
 
+    /**
+     * @method It takes a string, splits it into an array of strings, joins the array of strings back together,
+     * and returns the result
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     *  @param step.args.source {string} - The string to split and join.
+     *  @param step.args.pattern {string} - The regular expression to use to split the string.
+     *  @param step.args.value {string} - The value to use to join the array.
+     *  @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The result of the replace function.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "replace", {
+     *     source: "$context.value",
+     *     pattern: "old",
+     *     value: "new"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "replace",
+     *      "args": {
+     *           "source": "$context.value",
+     *           "pattern": "old",
+     *           "value": "new",
+     *           "target": "$context.myTarget"
+     *      }
+     * }
+     */
     static async replace(step, context, process, item) {
         let str = await crs.process.getValue(step.args.source, context, process, item);
         const pattern = await crs.process.getValue(step.args.pattern, context, process, item);
@@ -83,8 +255,36 @@ export class StringActions {
     }
 
     /**
-     * Accepts a query string, or string of key value pairs i.e. 'param1=value1&param2=value2...' and converts the string
+     * @method It takes a URL query string and returns an object with the key/value pairs
+     * @description Accepts a query string, or string of key value pairs i.e. 'param1=value1&param2=value2...' and converts the string
      * into an equivalent object. Supports 2nd level nesting through optional complex_parameters array.
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.source {string} - The query string to convert to an object.
+     * @param step.args.complex_parameters {object} - An array of [parameters] that should be converted to an object.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The result of the query string.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "get_query_string", {
+     *       source: "https://www.example.com?param1=value1&param2=value2&param3=value3",
+     *       complex_parameters: ["param1", "param2"]
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "get_query_string",
+     *      "args": {
+     *           "source": "https://www.example.com?param1=value1&param2=value2&param3=value3",
+     *           "complex_parameters": ["param1", "param2"],
+     *           "target": "$context.result"
+     *       }
+     * }
      */
     static async get_query_string(step, context, process, item) {
         const str = await crs.process.getValue(step.args.source, context, process, item);
@@ -121,6 +321,45 @@ export class StringActions {
         return result;
     }
 
+    /**
+     * @method It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
+     * returns the result
+     * @param step - The step object
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.template {string} - The template string to replace the values in.
+     * @param step.args.options {object} - The {object} containing the values to replace in the template.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The template with the options replaced.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "template", {
+     *      template: ""<li>__button__ __property__ __chevron__</li>"",
+     *      options: {
+     *           button: "",
+     *           property: "<div>${title}</div>",
+     *           chevron: "<svg><use href='#chevron'></use></svg>"
+     *      }
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "string",
+     *      "action": "template",
+     *      "args": {
+     *           "template": ""<li>__button__ __property__ __chevron__</li>"",
+     *           "options": {
+     *                "button": "",
+     *                "property": "<div>${title}</div>",
+     *                "chevron": "<svg><use href='#chevron'></use></svg>"
+     *            },
+     *            "target": "$context.result"
+     *        }
+     * }
+     */
     static async template(step, context, process, item) {
         let template = await crs.process.getValue(step.args.template, context, process, item);
         const options = await crs.process.getValue(step.args.options, context, process, item);
@@ -136,6 +375,42 @@ export class StringActions {
         return template;
     }
 
+    /**
+     * @method Slice a string and return the result
+     * @param step - The step object that is being executed.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.value {string} - The string to slice.
+     * @param step.args.index {integer} - The index to start the slice at.
+     * @param step.args.length {integer} - The length of the slice.
+     * @param step.args.overflow {string} - The overflow behavior.If the length is greater than the string, then the overflow behavior will be used.
+     * @param step.args.target {string} - The target to store the result in.
+     *
+     * @returns The substring of the value from the index to the length.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("string", "slice", {
+     *      value: "Hello World",
+     *      index: 0,
+     *      length: 5,
+     *      overflow: "ellipsis"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *       "type": "string",
+     *       "action": "slice",
+     *       "args": {
+     *             "value": "Hello World",
+     *             "index": 0,
+     *             "length": 5,
+     *             "overflow": "ellipsis",
+     *             "target": "$context.result"
+     *       }
+     * }
+     */
     static async slice(step, context, process, item) {
         const value = await crs.process.getValue(step.args.value, context, process, item);
         const index = await crs.process.getValue(step.args.index || 0, context, process, item);
@@ -159,6 +434,17 @@ export class StringActions {
     }
 }
 
+/**
+ * @method It takes a string, replaces all instances of `${` with `${context.`, then creates a function that returns
+ * the string, and then calls that function with the parameters
+ * @param string - The string to inflate.
+ * @param parameters - The parameters passed to the function.
+ * @param context - The context object that contains all the variables that are available to the template.
+ * @param process - The process object
+ * @param item - The item that is being processed.
+ *
+ * @returns A string with the parameters replaced.
+ */
 async function inflate_string(string, parameters, context, process, item) {
     string = string.split("${").join("${context.");
     parameters = await sanitise_parameters(parameters, context, process, item);
@@ -169,7 +455,15 @@ async function inflate_string(string, parameters, context, process, item) {
     return result;
 }
 
-// Get the values for each property on the parameters.
+/**
+ * @method It takes a parameters object, and gets the value for each property on the object.
+ * @param parameters - The parameters object that was passed to the function.
+ * @param context - The context of the current process.
+ * @param process - The process that is being executed.
+ * @param item - The item that is being processed.
+ *
+ * @returns The parameters object with the values replaced.
+ */
 async function sanitise_parameters(parameters, context, process, item) {
     const keys = Object.keys(parameters);
 
@@ -181,6 +475,11 @@ async function sanitise_parameters(parameters, context, process, item) {
     return parameters
 }
 
+/**
+ * @method If the string contains a translation key, get the translation and replace the key with the translation
+ * @param value - The string to translate.
+ * @returns A promise that resolves to the translated string.
+ */
 async function translate_string(value) {
     const si = value.indexOf("&{");
     const ei = value.indexOf("}", si + 1);

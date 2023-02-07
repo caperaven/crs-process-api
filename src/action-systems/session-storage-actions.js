@@ -1,17 +1,29 @@
+/**
+ * @class SessionStorageAction - This class contains the actions that can be performed on the browser's session storage.
+ * @description It provides a set of functions that allow you to interact with the browser's session storage
+ *
+ * Features:
+ * perform - This is the main function that is called to perform the action.
+ * set_value - This function sets a value in the browser's session storage.
+ * get_value - This function gets a value from the browser's session storage.
+ * set_object - This function sets an object in the browser's session storage.
+ * get_object - This function gets an object from the browser's session storage.
+ * remove - This function removes a value from the browser's session storage.
+ */
 export class SessionStorageAction {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * > Set a value in the browser's session storage
+     * @method Set a value in the browser's session storage
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.key - The key to store the value under.
-     * @param step.args.value - The value to store.
+     * @param step.args.key {string} - The key to store the value under.
+     * @param step.args.value {string} - The value to store.
      *
      * @example <caption>javascript example</caption>
      * await crs.call("session_storage", "set_value", {
@@ -36,14 +48,14 @@ export class SessionStorageAction {
     }
 
     /**
-     * It gets the value of the key from the session storage and returns it
+     * @method It gets the value of the key from the session storage and returns it
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.key - The key to get the value for.
-     * @param step.args.target - The target to store the result in.
+     * @param step.args.key {string} - The key to get the value for.
+     * @param step.args.target {string} - The target to store the result in.
      *
      * @returns The value of the key in sessionStorage.
      *
@@ -58,7 +70,7 @@ export class SessionStorageAction {
      *     "action": "get_value",
      *     "args": {
      *          "key": "my-key"
-     *          "target": "my-target"
+     *          "target": "$context.result"
      *     }
      * }
      */
@@ -74,19 +86,19 @@ export class SessionStorageAction {
     }
 
     /**
-     * It takes a key and a value, converts the value to JSON, and stores it in the browser's session storage
+     * @method It takes a key and a value, converts the value to JSON, and stores it in the browser's session storage
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - the current item being processed
      *
-     * @param step.args.key - The key to store the value under.
-     * @param step.args.value - The value to store.
+     * @param step.args.key {string} - The key to store the value under.
+     * @param step.args.value {string} - The value to store.
      *
      * @example <caption>javascript example</caption>
      * await crs.call("session_storage", "set_object", {
      *     key: "my-key",
-     *     value: { my: "value" }
+     *     value: "$context.value"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -95,7 +107,7 @@ export class SessionStorageAction {
      *     "action": "set_object",
      *     "args": {
      *         "key": "my-key",
-     *         "value": { my: "value" }
+     *         "value": "$context.value"
      *      }
      * }
      */
@@ -107,15 +119,15 @@ export class SessionStorageAction {
     }
 
     /**
-     * It gets the value of the key argument, gets the value from session storage, parses it as JSON, and then sets the
+     * @method It gets the value of the key argument, gets the value from session storage, parses it as JSON, and then sets the
      * value of the target argument to the result
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The current item being processed.
      *
-     * @param step.args.key - The key to get the value for.
-     * @param step.args.target - The target to store the result in.
+     * @param step.args.key {string} - The key to get the value for.
+     * @param step.args.target {string} - The target to store the result in.
      *
      * @returns The value of the key in the session storage.
      *
@@ -130,7 +142,7 @@ export class SessionStorageAction {
      *     "action": "get_object",
      *     "args": {
      *          "key": "my-key"
-     *          "target": "my-target"
+     *          "target": "$context.result"
      *     }
      * }
      */
@@ -147,13 +159,13 @@ export class SessionStorageAction {
     }
 
     /**
-     * > Remove a value from the session storage
+     * @method Remove a value from the session storage
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.key - The key to remove the value for.
+     * @param step.args.key {string} - The key to remove the value for.
      *
      * @example <caption>javascript example</caption>
      * await crs.call("session_storage", "remove_value", {

@@ -1,11 +1,19 @@
+/**
+ * @class MediaActions - This class contains a set of actions that can be used to interact with the media devices on
+ * the computer.
+ *
+ * Features:
+ * perform - This method is called by the action system to execute the action.
+ * render_camera - This method takes a canvas element and a set of constraints, and then sets the canvas to display the
+ * capture_image - This method captures the current frame of the video element and draws it on the canvas element.
+ */
 export class MediaActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
     }
 
     /**
-     * It takes a canvas element and a set of constraints,
-     * and then sets the canvas to display the video stream from the camera
+     * @method It takes a canvas element and a set of constraints,and then sets the canvas to display.
      * @param step - The step object
      * @param context - The context of the current process.
      * @param process - The current process
@@ -18,9 +26,8 @@ export class MediaActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("media", "render_camera", {
-     *     canvas: document.getElementById("canvas")
+     *     canvas: {canvas}
      *     constraints: {constraints}
-     *
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -28,7 +35,7 @@ export class MediaActions {
      *      "type": "media",
      *      "action": "render_camera",
      *      "args": {
-     *          "canvas": document.getElementById("canvas")
+     *          "canvas": {canvas}
      *          "constraints": {constraints}
      *      }
      * }
@@ -49,8 +56,7 @@ export class MediaActions {
     }
 
     /**
-     * "Capture the current frame of the video element and draw it on the canvas element."
-     *
+     * @method "Capture the current frame of the video element and draw it on the canvas element."
      * The first line of the function is a comment. Comments are ignored by the interpreter
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
@@ -64,8 +70,8 @@ export class MediaActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("media", "capture_image", {
-     *     canvas: this.element.querySelector("video")
-     *     video: this.element.querySelector("canvas")
+     *     canvas: {canvas}
+     *     video: {video}
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -73,8 +79,8 @@ export class MediaActions {
      *    "type": "media",
      *    "action": "capture_image",
      *    "args": {
-     *          "canvas": this.element.querySelector("video")
-     *          "video": this.element.querySelector("video")
+     *          "canvas": {canvas}
+     *          "video": {video}
      *     }
      * }
      */

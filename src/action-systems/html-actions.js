@@ -1,10 +1,19 @@
+/**
+ * @class HTMLActions - This class contains the actions for the html action system.
+ * @description It provides a set of functions that allow you to interact with the html action system.
+ *
+ * Features:
+ * perform - This method is called by the action system to perform the action.
+ * get - performs a conversion and then returns the result.
+ * create - Create a element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided.
+ */
 export class HtmlActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * > If the step has a URL, then load the template from the URL and return the result. Otherwise, if the step has a
+     * @method If the step has a URL, then load the template from the URL and return the result. Otherwise, if the step has a
      * schema, then load the schema and return the result. Otherwise, if the step has a function, then call the function
      * and return the result. Otherwise, if the step has a markdown, then convert the markdown to HTML and return the
      * result
@@ -14,12 +23,18 @@ export class HtmlActions {
      * @param item - the item being processed
      *
      * @param url {string} - The URL to fetch the template from.
+     * @param template {string} - The name of the template to fetch.
+     * @param schema {string} - The name of the schema to fetch.
+     * @param function {string} - The name of the function to call.
+     * @param markdown {string} - The markdown to convert to HTML.
+     * @param args {object} - The arguments to pass to the function.
      *
      * @returns The result of the function call.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("html", "get", {
-     *     url: "url"
+     *     template: "example",
+     *     url: "import.meta.url.replace("example-systems-tests/example-actions.test.js", "example.html")"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -27,7 +42,8 @@ export class HtmlActions {
      *    "type": "html",
      *    "action": "get",
      *    "args": {
-     *        "url": "url"
+     *        "template": "example"
+     *        "url": "import.meta.url.replace("example-systems-tests/example-actions.test.js", "example.html")"
      *     }
      * }
      */
@@ -53,8 +69,7 @@ export class HtmlActions {
     }
 
     /**
-     * Create a element and inflate it using the provided ctx object.
-     * This returns a HTMLElement based on the html string provided
+     * @method Creates an element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided
      * @param step - The step object
      * @param context - The context of the current process.
      * @param process - The process object
@@ -62,6 +77,7 @@ export class HtmlActions {
      *
      * @param html {string} - The HTML to inflate
      * @param ctx {object} - The context to inflate the HTML with
+     * @param target {string} - The target to set the result to.
      *
      * @returns The result of the template.
      *
@@ -77,7 +93,8 @@ export class HtmlActions {
      *     "action": "create",
      *     "args": {
      *          "html": "<div>${codeId}</div>",
-     *          "ctx": { "code": "JC" }
+     *          "ctx": { "code": "JC" },
+     *          "target": "$context.result"
      *     }
      * }
      */
@@ -103,7 +120,7 @@ export class HtmlActions {
     }
 
     /**
-     * It takes a URL, fetches the contents of that URL, and returns the contents as a string
+     * @method It takes a URL, fetches the contents of that URL, and returns the contents as a string
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -119,7 +136,7 @@ export class HtmlActions {
     }
 
     /**
-     *
+     * @method It takes a template, and returns the result of the template
      * @param step - the step object
      * @param context - The context object that is passed to the process.
      * @param process - the process object
@@ -137,7 +154,7 @@ export class HtmlActions {
     }
 
     /**
-     * It takes a schema, and returns a parser
+     * @method It takes a schema, and returns a parser
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
      * @param process - The process object
@@ -158,7 +175,7 @@ export class HtmlActions {
     }
 
     /**
-     * It takes a function and a list of parameters, and calls the function with the parameters
+     * @method It takes a function and a list of parameters, and calls the function with the parameters
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object

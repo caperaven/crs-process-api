@@ -2,13 +2,21 @@ import init, {markdown_to_html} from  "./../bin/markdown.js"
 
 await init();
 
+/**
+ * @class MarkdownActions - The markdown action system
+ * @description It converts markdown to html
+ *
+ * Features:
+ * perform - The perform method is called by the action system to perform the action.
+ * to_html - Converts markdown to html
+ */
 export class MarkdownActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
     }
 
     /**
-     * > Convert markdown to html
+     * @method Convert markdown to html
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
@@ -22,7 +30,7 @@ export class MarkdownActions {
      * @example <caption>javascript example</caption>
      * const html = await crs.call("markdown", "to_html", {
      *     markdown: "# Hello World"
-     *     parameters: parameters
+     *     parameters: {"parameter1", "parameter2"}
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -31,7 +39,7 @@ export class MarkdownActions {
      *    "action": "to_html",
      *    "args": {
      *       "markdown": "# Hello $name",
-     *       "parameters": parameters
+     *       "parameters": {"parameter1", "parameter2"}
      *    }
      * }
      */

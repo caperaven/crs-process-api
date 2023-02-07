@@ -1,11 +1,46 @@
+/**
+ * @class SystemActions - The system actions are used to perform system functions.
+ * @description This class contains functions that are used to perform system actions.
+ *
+ * Features:
+ * perform - The perform function is used to call the action function.
+ * copy_to_clipboard - Copy the value of the source to the clipboard.
+ * sleep - Sleep function used for testing to emulate network traffic delay.
+ * pause - Pause the process for the specified duration.
+ * resume - Resume the process after a pause.
+ * abort - Abort the process.
+ * ismobile - Check if the current device is a mobile device.
+ * is_portrait - Check if the current device is in portrait mode.
+ * is_landscape - Check if the current device is in landscape mode.
+ */
 export class SystemActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * copy objects or values to clipboard
+     * @method Copy the value of the source to the clipboard
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - the process object
+     * @param item - The current item being processed.
+     *
+     * @param step.args.source {string} - The source value to copy to the clipboard.
+     *
      * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "copy_to_clipboard", {
+     *     source: "$context.value"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "action": "copy_to_clipboard",
+     *     "args": {
+     *         "source": "$context.value"
+     *      }
+     * }
      */
     static async copy_to_clipboard(step, context, process, item) {
         let value = await crs.process.getValue(step.args.source, context, process, item);
@@ -14,8 +49,31 @@ export class SystemActions {
     }
 
     /**
-     * Sleep function used for testing to emulate network traffic delay
-     * @returns {Promise<void>}
+     * @method Sleep function used for testing to emulate network traffic delay
+     * @description "Wait for the specified duration before continuing."
+     * @param step - The step object from the process definition
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     *  @param step.args.duration {integer} - The duration to wait in milliseconds.
+     *  @param step.args.target {string} - The target to copy the value to.
+     *
+     * @returns A promise that resolves after the duration has passed.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "sleep", {
+     *    duration: 1000
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "sleep",
+     *     "args": {
+     *         "duration": 1000
+     *     }
+     * }
      */
     static async sleep(step, context, process, item) {
         return new Promise(async resolve => {
@@ -28,8 +86,28 @@ export class SystemActions {
     }
 
     /**
-     * Wait here until I tell you to resume
-     * @returns {Promise<unknown>}
+     * @method The function pauses the process and waits for the user to resume the process
+     * @param step - the current step in the process.
+     * @param context - the context of the process.
+     * @param process - The process object that is being run.
+     *
+     * @param step.args.bId {string} - The binding context id to use for the resume function.
+     *
+     * @returns A promise.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "pause", {
+     *      bId: "myBindingContext"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "system",
+     *      "action": "pause",
+     *      "args": {
+     *          "bId": "myBindingContext"
+     *       }
+     * }
      */
     static async pause(step, context, process) {
         return new Promise(resolve => {
@@ -62,22 +140,98 @@ export class SystemActions {
     }
 
     /**
-     * If we are waiting then resume the process.
-     * @returns {Promise<void>}
+     * @method Resume the process if it is waiting.
+     * @param step - The step object that is being executed.
+     * @param context - The context object that was passed to the process when it was started.
+     * @param process - The process object that was created when the process was started.
+     * @param item - The item that is being processed.
+     *
+     * @returns A promise that resolves immediately.
      */
     static async resume(step, context, process, item) {
         process.resume?.();
     }
 
+    /**
+     * @method It throws an error
+     * @param step - The step object from the process definition.
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.error {string} - The message to display in the error.
+     *
+     * @returns A promise that is rejected.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "abort", {
+     *    error: "This is an error"
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "abort",
+     *     "args": {
+     *         "error": "This is an error"
+     *     }
+     * }
+     */
     static async abort(step, context, process, item) {
         const error = await crs.process.getValue(step.args.error, context, process, item);
         throw new Error(error);
     }
 
+    /**
+     * @method If the user agent string contains the word "Mobi", then return true
+     * @param step - The current step in the process
+     * @param context - The context object that is passed to the step.
+     * @param process - the process object
+     * @param item - the item that is being processed
+     *
+     * @param step.args.target {string} - The target to copy the value to.
+     *
+     * @returns A boolean value.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("system", "is_mobile", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "is_mobile",
+     *     "args": {
+     *         "target": "$context.result"
+     *     }
+     * }
+     */
     static async is_mobile(step, context, process, item) {
         return /Mobi/.test(navigator.userAgent);
     }
 
+    /**
+     * @method If the device is in portrait mode, return true, otherwise return false
+     * @param step - The step object
+     * @param context - The context of the current step.
+     * @param process - The process object
+     * @param item - The current item being processed.
+     *
+     * @param step.args.target {string} - The target to copy the value to.
+     *
+     * @returns The result of the matchMedia function.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("system", "is_portrait", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "is_portrait",
+     *     "args": {
+     *         "target": "$context.result"
+     *      }
+     * }
+     */
     static async is_portrait(step, context, process, item) {
         let result = window.matchMedia("(orientation: portrait)").matches;
 
@@ -88,6 +242,29 @@ export class SystemActions {
         return result;
     }
 
+    /**
+     * @method If the device is in landscape mode, return true, otherwise return false
+     * @param step - The step object
+     * @param context - The context of the current step.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.target {string} - The target to copy the value to.
+     *
+     * @returns The result of the matchMedia function.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("system", "is_landscape", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "system",
+     *      "action": "is_landscape",
+     *      "args": {
+     *          "target": "$context.result"
+     *      }
+     * }
+     */
     static async is_landscape(step, context, process, item) {
         let result = window.matchMedia("(orientation: landscape)").matches
 

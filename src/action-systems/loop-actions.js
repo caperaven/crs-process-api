@@ -1,16 +1,21 @@
 const BATCH_SIZE = 500;
-
+/**
+ * @class LoopActions - This class contains the actions that are used to loop over a collection of items.
+ * @description It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
+ *
+ * Features:
+ * perform - It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
+ */
 export class LoopActions {
-
-
     /**
-     * > It takes a batch of items from the source array, and for each item,
-     *  it runs the steps in the `steps` array
+     * @method It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
      * @param step - the current step in the process
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      *
      * @param source {string} - The path to the source array
+     * @param steps {object} - The steps to run for each item in the source array
+     * @param target {string} - The path to the target object to set the value of
      *
      * @returns The result of the last step in the steps array
      */
@@ -52,7 +57,7 @@ export class LoopActions {
 }
 
 /**
- * It takes a collection of items, and for each item, it runs a set of steps
+ * @method It takes a collection of items, and for each item, it runs a set of steps
  * @param step - The step object
  * @param stepKeys - The keys of the steps to run.
  * @param collection - The collection to process.
@@ -61,6 +66,8 @@ export class LoopActions {
  * @param process - The process object
  * @param start - The index of the first item in the batch
  * @param end - The index of the last item in the batch.
+ *
+ * @returns The result of the last step in the steps array
  */
 async function processBatch(step, stepKeys, collection, target, context, process, start, end) {
     for (let i = start; i < end; i++) {

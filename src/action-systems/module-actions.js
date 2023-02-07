@@ -1,3 +1,14 @@
+/**
+ * @class ModuleActions - The module action system.
+ * @description It provides a way to call a module function, create an instance of a module class, or get the value of
+ * a module constant
+ *
+ * Features:
+ * perform - The main entry point for the module action system.
+ * call - Call a module function.
+ * create_class - Create an instance of a module class.
+ * get_constant - Get the value of a module constant and returns it.
+ */
 export class ModuleActions {
     static async perform(step, context, process, item) {
         const ctx = step.args.context ? await crs.process.getValue(step.args.context, context, process, item) : context;
@@ -9,12 +20,11 @@ export class ModuleActions {
     }
 
     /**
-     * > Call a module function
+     * @method Call a module function
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the module.
      *
      * @param module {string} - The name of the module to call.
-     * @param function {string} - The name of the function to call.
      * @param parameters {object} - The parameters to pass to the function.
      *
      * @returns The result of the module call.
@@ -47,12 +57,11 @@ export class ModuleActions {
     }
 
     /**
-     * creates an instance of a module
+     * @method creates an instance of a module
      * @param step - The step object that is being executed.
-     *
      * @param module {string} - The name of the module that contains the class.
      * @param parameters {object} - The parameters to pass to the constructor.
-     * @param target {string} - The target to store the instance in.
+     * @param default {boolean} - If true, it will create an instance of the default class in the module.
      *
      * @returns The instance of the class.
      *
@@ -60,6 +69,7 @@ export class ModuleActions {
      * const instance = await crs.call("module", "create_class", {
      *     module: "module",
      *     parameters: {parameters},
+     *     default: false
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -69,10 +79,9 @@ export class ModuleActions {
      *   "args": {
      *      "module": "module",
      *      "parameters": {parameters}
-     *      "target": "$context.result"
-     *    }
+     *      "default": true
+     *   }
      * }
-     *
      */
     static async create_class(step) {
         if (step.args.default === true) {
@@ -83,12 +92,11 @@ export class ModuleActions {
     }
 
     /**
-     * It returns the value of a constant in a module
+     * @method It returns the value of a constant in a module
      * @param step - The step object that is being executed.
      *
      * @param module {string} - The name of the module that contains the constant.
      * @param name {string} - The name of the constant.
-     * @param target {string} - The target to store the constant in.
      *
      * @returns The constant value of the module and name.
      *
@@ -105,7 +113,6 @@ export class ModuleActions {
      *      "args": {
      *          "module": "module",
      *          "name": "constant"
-     *          "target": "$context.result"
      *      }
      * }
      */
