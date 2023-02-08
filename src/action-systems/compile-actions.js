@@ -66,6 +66,10 @@ export class CompileActions {
      * @param context
      * @param process
      * @param item
+     *
+     * @param {string} step.args.exp - The expression to evaluate
+     * @param {string} [step.args.target] - The target to set the result of the expression to
+     *
      * @returns {Promise<Function | Function>}
      *
      * @example <caption>javascript<example>

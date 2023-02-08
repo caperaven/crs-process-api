@@ -60,7 +60,7 @@ export class ActionActions {
 }
 
 /**
- * get the parameters for the action
+ * @function - get the parameters for the action
  * @param step - step to perform
  * @param context - context of the process
  * @param process - process to perform
@@ -86,7 +86,7 @@ export async function getParameters(step, context, process, item) {
 }
 
 /**
- * utility function to call a function on a path of an object
+ * @function - utility function to call a function on a path of an object
  * @param source - object to call the function on
  * @param step - step to perform
  * @param context - context of the process
