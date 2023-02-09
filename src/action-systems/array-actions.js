@@ -99,15 +99,15 @@ export class ArrayActions {
     }
 
     /**
-     * @method - This function transfers an value from one array to another
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @method transfer - This function transfers a value from one array to another
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object} - process to perform
+     * @param item{Object} - item to perform the action on
      *
-     * @param step.args.source - source array to remove from
-     * @param step.args.target - target array to add to
-     * @param step.args.value - value to transfer from the source to the target
+     * @param step.args.source {Array} - source array to remove from
+     * @param step.args.target {Array} - target array to add to
+     * @param step.args.value {*} - value to transfer from the source to the target
      *
      * @returns {Promise<void>}
      *
@@ -139,18 +139,18 @@ export class ArrayActions {
     }
 
     /**
-     * @method - This function takes an array of objects and exports csv text
+     * @method field_to_csv - This function takes an array of objects and exports csv text
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object} - process to perform
+     * @param item {Object} - item to perform the action on
      *
-     * @param step.args.source - source array to convert
-     * @param step.args.target - target array to add to
-     * @param step.args.field - field to convert to csv
-     * @param step.args.fields - fields to convert to csv
-     * @param step.args.delimiter - delimiter to use in the csv
+     * @param step.args.source {Array} - source array to convert
+     * @param step.args.target {Array} - target array to add to
+     * @param step.args.field {String} - field to convert to csv
+     * @param step.args.fields {[string]} - fields to convert to csv
+     * @param [step.args.delimiter = ' , '] {Symbol}  - delimiter to use in the csv
      *
      * @returns {Promise<void>}
      *
@@ -197,12 +197,12 @@ export class ArrayActions {
     }
 
     /**
-     * @method - Create a new array that contains the content of the defined source arrays.
+     * @method concat - Create a new array that contains the content of the defined source arrays.
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object} - process to perform
+     * @param item {Object} - item to perform the action on
      *
      * @param step.args.sources - array of source arrays
      * @param step.args.target - target array to add to

@@ -20,6 +20,15 @@ import init, {
 
 await init();
 
+
+/**
+ * @class DataActions - It provides a set of functions that can be used to manipulate data
+ * Features:
+ * filter - It filters data based on a set of criteria
+ * sort - It sorts data based on a set of criteria
+ *
+ *
+ **/
 export class DataActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
@@ -29,6 +38,23 @@ export class DataActions {
         init_panic_hook();
     }
 
+    /**
+     * @method - The function takes a JSON string, a source string, and a boolean value. It returns a JSON string
+     *
+     * @param step - The step object from the process.
+     * @param context - The context of the current process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.source {String} - The source string that will be filtered.
+     * @param step.args.filter {String} - The filter criteria.
+     * @param step.args.case_sensitive {Boolean} - A boolean value that determines if the filter is case-sensitive.
+     * @param step.args.target {String} - The target where the result will be stored.
+     *
+     * @example
+     *
+     * @returns The result of the filter_data function.
+     */
     static async filter(step, context, process, item) {
         await crs.call("data", "debug");
 
