@@ -93,7 +93,7 @@ export class ConsoleActions {
     }
 
     /**
-     * @method -This function takes a message and logs it to the console as a warning
+     * @method warn - This function takes a message and logs it to the console as a warning
      *
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
