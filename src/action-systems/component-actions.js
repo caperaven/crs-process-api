@@ -23,16 +23,16 @@ export class ComponentActions {
     }
 
     /**
-     * @method -  Used in components, observe properties and when all the properties have values, perform the callback.
+     * @method observe -  Used in components, observe properties and when all the properties have values, perform the callback.
      * @returns {Promise<*|number>}
      *
-     * @param step - The step object from the process.
-     * @param context  - The context object that is passed to the process.
-     * @param process - The process object that is being run.
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being run.
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {String} - The element that is being observed.
-     * @param step.args.properties {String} - The properties that are being observed.
+     * @param step.args.properties {[String]} - The properties that are being observed.
      * @param step.args.callback {String} - The callback that is being executed when all the properties have values.
      *
      * @returns {Promise<*>} - The id of the observation.
@@ -86,12 +86,12 @@ export class ComponentActions {
 
 
     /**
-     * @method - Disable previously created observation of properties on a component
+     * @method unobserve - Disable previously created observation of properties on a component
      * It removes a callback from the element's data object
-     * @param step - The step object from the process definition.
-     * @param context - The context of the current process.
-     * @param process - The process that is running.
-     * @param item - The current item being processed.
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The process that is running.
+     * @param item {Object} - The current item being processed.
      *
      * @param step.args.element {String} - The element that is being observed.
      * @param step.args.ids {String} - The ids of the observations to remove.
@@ -132,15 +132,15 @@ export class ComponentActions {
 
 
     /**
-     * @method - It sets the `ready` attribute on the element specified in the `element` argument, and then dispatches a `ready`
+     * @method notify_ready - It sets the `ready` attribute on the element specified in the `element` argument, and then dispatches a `ready`
      * event on the element
      *
      * Notify that the component is ready for interacting with
      *
-     * @param step - The step object from the process.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object that is running the script.
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is running the script.
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {String} - The element that is being observed.
      *
@@ -168,12 +168,12 @@ export class ComponentActions {
 
 
     /**
-     * @method - Get notified when the component is ready
+     * @method on_ready - Get notified when the component is ready
      * It waits for an element to be ready, then calls a callback function
-     * @param step - The step object.
-     * @param context - The context of the process.
-     * @param process - The process that is currently running.
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the process.
+     * @param process {Object} - The process that is currently running.
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {String} - The element that is being observed.
      * @param step.args.callback {String} - The callback function to execute when the element is ready.
@@ -220,8 +220,8 @@ export class ComponentActions {
 
 
 /**
- * @function - It returns a unique ID for each element
- * @param element - The element that the process observer is attached to.
+ * @function getNextId - It returns a unique ID for each element
+ * @param element {*} - The element that the process observer is attached to.
  * @returns The next id in the sequence.
  */
 function getNextId(element) {
@@ -231,11 +231,11 @@ function getNextId(element) {
 }
 
 /**
- * @function - Create a function that will evaluate the properties of the data object and call the callback function if all the
+ * @function createPropertiesEvaluation - Create a function that will evaluate the properties of the data object and call the callback function if all the
  * properties are not null
- * @param context - The context of the function.
- * @param properties - The list of properties that are being observed.
- * @param id - The id of the observer.
+ * @param context {Object} - The context of the function.
+ * @param properties {[]} - The list of properties that are being observed.
+ * @param id {String|Number} - The id of the observer.
  * @returns A function that will be called when the properties are available.
  */
 function createPropertiesEvaluation(context, properties, id) {

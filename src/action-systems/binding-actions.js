@@ -19,14 +19,14 @@ export class BindingActions {
     }
 
     /**
-     * @method - Create a new context object and return the id of the new context
+     * @method create_context - Create a new context object and return the id of the new context
      * You are responsible to clear the context once done using "free_context"
-     * @param step - The current step in the process.
-     * @param context - The context object that is passed to the step.
-     * @param process - The process object that is being executed.
-     * @param item - The item that is being processed.
+     * @param step {Object} - The current step in the process.
+     * @param context {Object} - The context object that is passed to the step.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
      *
-     * @param step.args.context_id - The name of the context object.
+     * @param [step.args.context_id = "process_text"] {String|Number} - The name of the context object.
      *
      * @returns The bId is being returned.
      *
@@ -59,13 +59,13 @@ export class BindingActions {
     }
 
     /**
-     * @method - Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
-     * @param step - The step object that is being executed.
-     * @param context - The context object that was passed to the process.
-     * @param process - The process object that is being executed.
-     * @param item - The item that is being processed.
+     * @method free_context - Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
+     * @param step {Object} - The step object that is being executed.
+     * @param context {Object} - The context object that was passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
      *
-     * @requires process.parameters.bId - The bId of the context object.
+     * @requires process.parameters.bId {String} - The bId of the context object.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("binding", "free_context", {}, context, process, item);
@@ -85,14 +85,14 @@ export class BindingActions {
     }
 
     /**
-     * @method - Get the value of a property from the current item
-     * @param step - The step object from the process.
-     * @param context - The context object that is passed to the process.
-     * @param process - The current process object
-     * @param item - The item that is being processed.
+     * @method get_property - Get the value of a property from the current item
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The item that is being processed.
      *
-     * @param step.args.property - The property to get the value from.
-     * @param step.args.target - The target to set the value to.
+     * @param step.args.property {String} - The property to get the value from.
+     * @param step.args.target {String} - The target to set the value to.
      *
      * @returns The value of the property.
      *
@@ -125,14 +125,14 @@ export class BindingActions {
     }
 
     /**
-     * @method - Set the value of a property on the current item
-     * @param step - The step object from the process definition.
-     * @param context - The context of the current process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @method set_property - Set the value of a property on the current item
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
-     * @param step.args.property - The property to set the value to.
-     * @param step.args.value - The value to set the property to.
+     * @param step.args.property {String} - The property to set the value to.
+     * @param step.args.value {String} - The value to set the property to.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("binding", "set_property", {
@@ -157,13 +157,13 @@ export class BindingActions {
     }
 
     /**
-     * @method - Get the data from the binding and set it to the target
-     * @param step - The step object
-     * @param context - The context of the current process.
-     * @param process - The current process
-     * @param item - The item that is being processed.
+     * @method get_data - Get the data from the binding and set it to the target
+     * @param step {Object} - The step object
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process
+     * @param item {Object} - The item that is being processed.
      *
-     * @param step.args.target - The target to set the value to.
+     * @param step.args.target {String} - The target to set the value to.
      * @requires process.parameters.bId - The binding id
      *
      * @example <caption>javascript example</caption>
@@ -189,15 +189,15 @@ export class BindingActions {
     }
 
     /**
-     * @method - Set the errors in the error store
+     * @method set_errors - Set the errors in the error store
      * Default store is "errors" if you don't provide a store.
-     * @param step - The step object
-     * @param context - The context of the current step.
-     * @param process - The current process
-     * @param item - The current item in the loop
+     * @param step {Object} - The step object
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The current process
+     * @param item {Object} - The current item in the loop
      *
-     * @param step.args.errors - The errors to set
-     * @param [step.args.error_store="errors"] - The store to set the errors to.
+     * @param step.args.errors {[String]} - The errors to set
+     * @param [step.args.error_store="errors"] {String} - The store to set the errors to.
      *
      * @requires process.parameters.bId - The binding id
      *
@@ -232,14 +232,14 @@ export class BindingActions {
     }
 
     /**
-     * @method - Set a global property to a value
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @method set_global - Set a global property to a value
+     * @param step {Object} - The step object that is being executed.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object}  - The process object
+     * @param item {Object}  - The current item being processed.
      *
-     * @param step.args.property - The property to set the value to.
-     * @param step.args.value - The value to set the property to.
+     * @param step.args.property {String} - The property to set the value to.
+     * @param step.args.value {String} - The value to set the property to.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("binding", "set_global", {
@@ -264,13 +264,13 @@ export class BindingActions {
     }
 
     /**
-     * @method - Set the values of the global variables
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @method set_globals - Set the values of the global variables
+     * @param step {Object}  - The step object from the process definition.
+     * @param context {Object}  - The context object that is passed to the process.
+     * @param process {Object}  - The process object
+     * @param item {Object}  - The current item being processed.
      *
-     * @param step.args.values - The values to set the global variables to.
+     * @param step.args.values {Object} - The values to set the global variables to with the key being the name of the variable and the value being the value of the variable.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("binding", "set_globals", {
@@ -301,14 +301,14 @@ export class BindingActions {
     }
 
     /**
-     * @method - Get the value of a global property and optionally store it in a variable
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @method get_global - Get the value of a global property and optionally store it in a variable
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The current item being processed.
      *
-     * @param step.args.property - The property to get the value of.
-     * @param step.args.target - The variable to store the value in.
+     * @param step.args.property {String} - The property to get the value of.
+     * @param step.args.target {String}- The variable to store the value in.
      *
      * @returns The value of the property.
      *
@@ -340,14 +340,14 @@ export class BindingActions {
     }
 
     /**
-     * @method - Get the values of the global variables specified in the `values` argument and store them in the `target` argument
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @method get_globals - Get the values of the global variables specified in the `values` argument and store them in the `target` argument
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The current item being processed.
      *
-     * @param step.args.values - The global variables to get
-     * @param step.args.target - The target to store the values in.
+     * @param step.args.values {[String]} - The global variables to get
+     * @param step.args.target {String} - The target to store the values in.
      *
      * @returns The values of the global variables.
      *

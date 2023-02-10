@@ -16,13 +16,13 @@ export class ColorsActions {
     }
 
     /**
-     * @method - It takes a hex value, and returns an object with the red, green, and blue values
-     * @param step - The step object from the process.
-     * @param context  - The context object that is passed to the process.
-     * @param process - The process object that is being run.
-     * @param item - The item that is being processed.
+     * @method hex_to_rgb - It takes a hex value, and returns an object with the red, green, and blue values
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being run.
+     * @param item {Object} - The item that is being processed.
      *
-     * @param step.args.hex {string} - The hex value to convert to rgb.
+     * @param step.args.hex {String} - The hex value to convert to rgb.
      *
      * @returns An object with the RGB values of the hex color.
      *
@@ -52,11 +52,11 @@ export class ColorsActions {
     }
 
     /**
-     * @method - It takes a hex color code and returns an object with the red, green, blue, and alpha values
-     * @param step - The step object from the process.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object that is currently being executed.
-     * @param item - The item that is being processed.
+     * @method hex_to_rgba - It takes a hex color code and returns an object with the red, green, blue, and alpha values
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is currently being executed.
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.hex {string} - The hex value to convert to rgba.
      *
@@ -93,11 +93,11 @@ export class ColorsActions {
     }
 
     /**
-     * @method - It converts a hexadecimal color value to a normalized RGBA color value where the values range between 0 and 1.
-     * @param step - The step number of the current step in the process.
-     * @param context - The context of the current step.
-     * @param process - The process object that is passed to the step.
-     * @param item - The item to be processed.
+     * @method hex_to_normalized - It converts a hexadecimal color value to a normalized RGBA color value where the values range between 0 and 1.
+     * @param step {Object} - The step number of the current step in the process.
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The process object that is passed to the step.
+     * @param item {Object} - The item to be processed.
      *
      * @param step.args.hex {string} - The hex value to convert to rgba.
      *
@@ -128,10 +128,10 @@ export class ColorsActions {
 
     /**
      * @method rgb_to_hex - It takes three numbers (red, green, and blue) and returns a hexadecimal color code
-     * @param step - The step object that is being processed.
-     * @param context - The current context of the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object that is being processed.
+     * @param context {Object} - The current context of the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.r {number} - The red value of the color
      * @param step.args.g {number} - The green value of the color
@@ -166,12 +166,12 @@ export class ColorsActions {
     }
 
     /**
-     * @method - It takes four arguments, each of which is a number between 0 and 255, and returns a string that represents the RGBA
+     * @method rgba_to_hex - It takes four arguments, each of which is a number between 0 and 255, and returns a string that represents the RGBA
      * color in hexadecimal format
-     * @param step - The step object that is being processed.
-     * @param context - The context of the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object that is being processed.
+     * @param context {Object} - The context of the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
      * @param [step.args.r=0] {number} - The red value of the color
      * @param [step.args.g=0] {number} - The green value of the color
@@ -210,11 +210,11 @@ export class ColorsActions {
     }
 
     /**
-     * @method - It takes a string in the format of `rgb(255, 255, 255)` or `rgba(255, 255, 255, 1)` and converts it to a hex string
-     * @param step - The step object that is being processed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @method rgb_text_to_hex - It takes a string in the format of `rgb(255, 255, 255)` or `rgba(255, 255, 255, 1)` and converts it to a hex string
+     * @param step {Object} - The step object that is being processed.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.value {string} - The rgb or rgba value to convert to hex
      *
@@ -251,14 +251,14 @@ export class ColorsActions {
     }
 
     /**
-     * @method - Get a css variable and convert it to a hex string
-     * @param step - The step object
-     * @param context - The context of the current process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @method css_to_hex - Get a css variable and convert it to a hex string
+     * @param step {Object} - The step object
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {HTMLElement} - The element to get the css variable from
-     * @param step.args.variables {array of string} - The names of the css variable to convert to hex
+     * @param step.args.variables {[String]} - The names of the css variable to convert to hex
      *
      * @returns - array of hex values
      *
@@ -306,14 +306,14 @@ export class ColorsActions {
     }
 
     /**
-     * @method - Gets a css variables from an element, converts it to a hex string, then converts that hex string to a normalized hex string
-     * @param step - The step object from the pipeline
-     * @param context - The context of the current step.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @method css_to_normalized - Gets a css variables from an element, converts it to a hex string, then converts that hex string to a normalized hex string
+     * @param step {Object} - The step object from the pipeline
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {HTMLElement} - The element to get the css variable from
-     * @param step.args.variables {array of string} - The names of the css variable to convert to hex
+     * @param step.args.variables {[String]} - The names of the css variable to convert to hex
      *
      * @returns - array of normalized hex values
      *
@@ -348,12 +348,12 @@ export class ColorsActions {
 
 
 /**
- *  It takes a list of CSS variables, gets the computed value of each, and then passes that value to a callback function
- * @param step - The step object
- * @param context - The context object that is passed to the process.
- * @param process - the current process
- * @param item - the current item being processed
- * @param callback - a function that takes a string and returns a value.
+ * @function processVariables - It takes a list of CSS variables, gets the computed value of each, and then passes that value to a callback function
+ * @param step {Object} - The step object
+ * @param context {Object} - The context object that is passed to the process.
+ * @param process {Object} - the current process
+ * @param item {Object} - the current item being processed
+ * @param callback {Function} - a function that takes a string and returns a value.
  *
  * @param step.args.element {HTMLElement} - The element to get the css variable from
  * @param step.args.variables {array of string} - The names of the css variable to convert to hex
@@ -380,8 +380,8 @@ async function processVariables(step, context, process, item, callback) {
 }
 
 /**
- * Converts a decimal value to a normalized hex string
- * @param value
+ * @function decimalToHex - Converts a decimal value to a normalized hex string
+ * @param value {Number} - the number value to convert
  * @returns {string} - the hex value of that decimal
  */
 function decimalToHex(value) {

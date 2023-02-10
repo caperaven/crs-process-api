@@ -21,15 +21,15 @@ export class CompileActions {
     }
 
     /**
-     * @method -If the expression is true, return the value of the expression, otherwise return null
+     * @method if_value - If the expression is true, return the value of the expression, otherwise return null
      *
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - the process object
+     * @param item {Object} - The item that is being processed.
      *
-     * @param {string} step.args.exp - The expression to evaluate
-     * @param {string} [step.args.target] - The target to set the result of the expression to
+     * @param step.args.exp {String} - The expression to evaluate
+     * @param step.args.target {String} - The target to set the result of the expression to
      *
      * @returns The function that is returned is the function that will be used to evaluate the expression.
      *
@@ -61,14 +61,14 @@ export class CompileActions {
     }
 
     /**
-     * @method - Compiles a case expression
-     * @param step
-     * @param context
-     * @param process
-     * @param item
+     * @method case_value - Compiles a case expression
+     * @param step {Object} - The step object
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - the process object
+     * @param item {Object} - The item that is being processed.
      *
-     * @param {string} step.args.exp - The expression to evaluate
-     * @param {string} [step.args.target] - The target to set the result of the expression to
+     * @param step.args.exp {String} - The expression to evaluate
+     * @param step.args.target {String} - The target to set the result of the expression to
      *
      * @returns {Promise<Function | Function>}
      *

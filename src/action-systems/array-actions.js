@@ -204,8 +204,8 @@ export class ArrayActions {
      * @param process {Object} - process to perform
      * @param item {Object} - item to perform the action on
      *
-     * @param step.args.sources - array of source arrays
-     * @param step.args.target - target array to add to
+     * @param step.args.sources {Array} - array of source arrays
+     * @param step.args.target {string} - target array to add to
      *
      * @returns {Promise<*[]>}
      *
@@ -242,15 +242,15 @@ export class ArrayActions {
     }
 
     /**
-     * @method - Change the values of fields in a object array
+     * @method change_values - Change the values of fields in a object array
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object} - step to perform
+     * @param context {Object}  - context of the process
+     * @param process {Object}  - process to perform
+     * @param item {Object}  - item to perform the action on
      *
-     * @param step.args.source - source array to change
-     * @param step.args.changes - object of changes to make
+     * @param step.args.source {string|[]} - source array to change
+     * @param step.args.changes {Object} - object of changes to make with key being the field to change and value being the new value
      *
      * @returns {Promise<void>}
      *
@@ -292,16 +292,18 @@ export class ArrayActions {
     }
 
     /**
-     * @method - For a given record at index provided, get the value of defined property
+     * @method get_value - For a given record at index provided, get the value of defined property
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object}  - step to perform
+     * @param context {Object}  - context of the process
+     * @param process {Object} - process to perform
+     * @param item {Object} - item to perform the action on
      *
-     * @param step.args.source - source array to change
-     * @param step.args.index - index of the record to get the value from
-     * @param step.args.property - property to get the value from
+     * @param step.args.source {string|[]} - source array to change
+     * @param step.args.index {Number} - index of the record to get the value from
+     * @param step.args.property {String} - property to get the value from
+     * @param step.args.target {string} - target to store the value in
+     *
      *
      * @returns {Promise<*>}
      *
@@ -337,16 +339,16 @@ export class ArrayActions {
     }
 
     /**
-     * @method - For an array of objects map an object field/s to a flat array of values
+     * @method map_objects - For an array of objects map an object field/s to a flat array of values
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object} - process to perform
+     * @param item {Object} - item to perform the action on
      *
-     * @param step.args.source - source array to change
-     * @param step.args.fields - fields to map
-     * @param step.args.target - target array to add to
+     * @param step.args.source {string|[]} - source array to change
+     * @param step.args.fields {[string]} - fields to map
+     * @param step.args.target {String} - target array to add to
      *
      * @returns {Promise<*[]>}
      *
@@ -386,17 +388,18 @@ export class ArrayActions {
     }
 
     /**
-     * @method - Get records starting at a page number for a particular batch size
+     * @method get_records - Get records starting at a page number for a particular batch size
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object} - process to perform
+     * @param item {Object} - item to perform the action on
      *
-     * @param step.args.source - source array to change
-     * @param step.args.page_number - page number to start from
-     * @param step.args.page_size - page size to get
-     * @param step.args.fields - fields to get
+     * @param step.args.source {string|[]} - source array to change
+     * @param step.args.page_number {Number} - page number to start from
+     * @param step.args.page_size {Number} - page size to get
+     * @param step.args.fields {[string]} - fields to get
+     * @param step.args.target {String} - target array to add to
      *
      * @returns {Promise<*>}
      *
@@ -454,16 +457,16 @@ export class ArrayActions {
     }
 
     /**
-     * @method - get the min and max values of the data for a given field.
+     * @method get_range - get the min and max values of the data for a given field.
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object}  - step to perform
+     * @param context {Object}  - context of the process
+     * @param process {Object}  - process to perform
+     * @param item {Object}  - item to perform the action on
      *
-     * @param step.args.source - source array to change
-     * @param step.args.field - field to get the min and max values from
-     * @param step.args.target - target array to add to
+     * @param step.args.source {string|[]} - source array to change
+     * @param step.args.field {String} - field to get the min and max values from
+     * @param step.args.target {String} - target array to add to
      *
      * @returns {Promise<*>}
      *
@@ -508,16 +511,16 @@ export class ArrayActions {
     }
 
     /**
-     * @method - Calculate the number of pages of an array for a given batch size
+     * @method calculate_paging - Calculate the number of pages of an array for a given batch size
      *
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object} - process to perform
+     * @param item {Object} - item to perform the action on
      *
-     * @param step.args.source - source array to change
-     * @param step.args.page_size - page size to get
-     * @param step.args.target - target array to add to
+     * @param step.args.source {string|[]} - source array to change
+     * @param step.args.page_size {Number} - page size to get
+     * @param step.args.target {String} - target array to add to
      *
      * @returns {Promise<*>}
      *
@@ -557,7 +560,7 @@ export class ArrayActions {
     }
 
     /**
-     * @method - Map an array of objects to a new array of objects and optionally add new properties to each object
+     * @method map_assign_data - Map an array of objects to a new array of objects and optionally add new properties to each object
      *
      * @param step {object} - step to perform
      * @param context {object} - context of the process
@@ -565,8 +568,8 @@ export class ArrayActions {
      * @param item {object} - item to perform the action on
      *
      * @param step.args.source {string|[]} - source array to map and assign data to
-     * @param step.args.mappings {object} - mappings to perform
-     * @param step.args.properties {object} - properties to add
+     * @param step.args.mappings {object} - mappings to perform where key is the source field and value is the target field
+     * @param step.args.properties {object} - properties to add to each object where key is the field and value is the value
      * @param step.args.target {string|[]} - target to save new array of objects to
      *
      * @example <caption>javascript example</caption>
@@ -635,9 +638,9 @@ export class ArrayActions {
 
 /**
  *  Convert an array of objects to a csv string
- * @param array - array of objects
- * @param field - field to get
- * @param delimiter - delimiter to use
+ * @param array {[object]} - array of objects
+ * @param field {string} - field to get
+ * @param delimiter {delimiter} - delimiter to use
  * @returns {Promise<*>}
  * @private
  *
@@ -651,9 +654,9 @@ async function field_to_csv(array, field, delimiter) {
 
 /**
  * Convert an array of objects to a csv string
- * @param array - array of objects
- * @param fields - fields to get
- * @param delimiter - delimiter to use
+ * @param array {[object]} - array of objects
+ * @param fields {[string]} - fields to get
+ * @param delimiter {delimiter} - delimiter to use
  * @returns {Promise<*[]>}
  * @private
  *
