@@ -16,14 +16,14 @@ export class LocalStorageAction {
     }
 
     /**
-     * @method Set a value in local storage
+     * @method set_value - Set a value in local storage
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param key {string} - The key to store the value under.
-     * @param value {string} - The value to store.
+     * @param step.args.key {string} - The key to set the value to.
+     * @param step.args.value {string} - The value to set.
      *
      * @returns {Promise<void>}
      *
@@ -51,18 +51,19 @@ export class LocalStorageAction {
 
 
     /**
-     * @method It gets the value of a key from local storage and returns it
+     * @method get_value - It gets the value of a key from local storage and returns it
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param key {string} - The key to get the value from.
+     * @param step.args.key {string} - The key to get the value from.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the value to.
      *
      * @returns The value of the key in local storage.
      *
      * @example <caption>javascript example</caption>
-     * const value = await crs.call("local_storage", "get_value", {
+     * const result = await crs.call("local_storage", "get_value", {
      *      key: "key"
      * },context, process, item);
      *
@@ -72,6 +73,7 @@ export class LocalStorageAction {
      *     "action": "get_value",
      *     "args": {
      *         "key": "key"
+     *         "target": "$context.result"
      *     }
      * }
      */
@@ -87,14 +89,14 @@ export class LocalStorageAction {
     }
 
     /**
-     * @method It takes a key and a value, converts the value to JSON, and stores it in local storage
+     * @method set_object - It takes a key and a value, converts the value to JSON, and stores it in local storage
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - the current item being processed
      *
-     * @param key {string} - The key to store the value under.
-     * @param value {object} - The value to store.
+     * @param step.args.key {string} - The key to set the value to.
+     * @param step.args.value {object} - The value to set.
      *
      * @returns {Promise<void>}
      *
@@ -128,20 +130,20 @@ export class LocalStorageAction {
     }
 
     /**
-     * @method It gets the value of a key from local storage, parses it as JSON, and returns it
+     * @method get_object - It gets the value of a key from local storage, parses it as JSON, and returns it
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The current item being processed.
      *
-     * @param key {string} - The key to get the value from.
-     * @param target {string} - The target to store the value in.
+     * @param step.args.key {string} - The key to get the value from.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the value to.
      *
      * @returns The value of the key in local storage parsed as JSON.
      *
      * @example <caption>javascript example</caption>
-     * const value = await crs.call("local_storage", "get_object", {
-     *     key: "name"
+     * const result = await crs.call("local_storage", "get_object", {
+     *     key: "key"
      * },context, process, item);
      *
      *  @example <caption>json example</caption>
@@ -149,7 +151,7 @@ export class LocalStorageAction {
      *    "type": "local_storage",
      *    "action": "get_object",
      *    "args": {
-     *         "key": "name"
+     *         "key": "key"
      *         "target": "$context.result"
      *     }
      *  }
@@ -167,13 +169,13 @@ export class LocalStorageAction {
     }
 
     /**
-     * @method Remove the item with the specified key from the local storage
+     * @method remove - Remove the item with the specified key from the local storage
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param key {string} - The key to remove from local storage.
+     * @param step.args.key {string} - The key to remove.
      *
      * @returns {Promise<void>}
      *

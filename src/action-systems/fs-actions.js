@@ -19,11 +19,18 @@ export class FsActions {
         await this[step.action](step, context, process, item);
     }
 
+    /**
+     * @method select_folder - This function selects a folder
+     * @param step - The step number of the current step.
+     * @param context - The context object that is passed to the step.
+     * @param process - The process object that is being executed.
+     * @param item - The item that was selected.
+     */
     static async select_folder(step, context, process, item) {
     }
 
     /**
-     * @method Create a folder in the target location
+     * @method create_folder - Create a folder in the target location
      * @param step - The step number of the current step in the process.
      * @param context - The context object that is passed to the step.
      * @param process - The process object
@@ -34,7 +41,7 @@ export class FsActions {
     }
 
     /**
-     * @method The function `select_file` is an asynchronous function that returns a file handle
+     * @method select_file - The function `select_file` is an asynchronous function that returns a file handle
      * @param step - The step object that is being executed.
      * @param context - The context of the step.
      * @param process - The process object that is being run.
@@ -55,7 +62,7 @@ export class FsActions {
      * @param process - The process that is running the step.
      * @param item - The item that is being processed.
      *
-     * @param handle {string} - The handle of the file to read.
+     * @param [step.args.handle = "handle"] {string} - The handle of the file to read.
      *
      * @returns {Promise<void>} - The contents of the file.
      *
@@ -88,15 +95,22 @@ export class FsActions {
      * @param process - the process object
      * @param item - The item that is being processed.
      *
+     *  @param [step.args.handle = "handle"] {string} - The handle of the file to read.
+     *
      * @returns The JSON.parse(text) is being returned.
      *
      * @example <content>javascript example</caption>
-     * const result = await crs.call("fs", "read_json");
+     * const result = await crs.call("fs", "read_json", {
+     *     handle: "$context.value"
+     * });
      *
      * @example <caption>json example</caption>
      * {
      *     "type": "fs",
      *     "action": "read_json"
+     *     "args": {
+     *         "handle": "$context.value"
+     *      }
      * }
      */
     static async read_json(step, context, process, item) {
@@ -105,14 +119,14 @@ export class FsActions {
     }
 
     /**
-     * @method It takes a file handle and a content string, and writes the content to the file
+     * @method save_file - It takes a file handle and a content string, and writes the content to the file
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param handle {string} - The handle of the file to write to.
-     * @param content {string} - The content to write to the file.
+     * @param step.args.handle {string} - The handle of the file to read.
+     * @param step.args.content {string|object} - The content to write to the file.
      *
      * @example <caption>javascript example </caption>
      * await crs.call("fs", "save_file", {
@@ -137,15 +151,15 @@ export class FsActions {
     }
 
     /**
-     * @method Saves text as utf8 in a file
+     * @method write_new_file - Saves text as utf8 in a file
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param fileTypes {string} - The file types that are allowed to be selected.
-     * @param defaultName {string} - The default name of the file.
-     * @param content {string} - The content to write to the file.
+     * @param step.args.file_types {string} - The file types that are allowed to be selected.
+     * @param step.args.default_name {string} - The default name of the file.
+     * @param step.args.content {string|object} - The content to write to the file.
      *
      * @returns {Promise<void>}
      *
@@ -177,19 +191,19 @@ export class FsActions {
     }
 
     /**
-     * @method save a json file to a utf8 file with a json extension
+     * @method write_new_json - save a json file to a utf8 file with a json extension
      * @param step - the step object from the process
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The current item being processed.
      *
-     * @param content {object} - The json object to write to the file.
+     * @param step.args.content {string|object} - The content to write to the file.
      *
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
      *  await crs.call("fs", "write_new_json", {
-     *      "content": {}
+     *      "content": "contents"
      *  },context, process, item);
      *
      * @example <caption>json example</caption>
@@ -197,7 +211,7 @@ export class FsActions {
      *    "type": "fs",
      *    "action": "write_new_json",
      *    "args": {
-     *      "content": {}
+     *      "content": "contents"
      *    }
      *  }
      */
@@ -218,13 +232,13 @@ export class FsActions {
     }
 
     /**
-     * @method It opens a folder and returns a list of files in the folder.
+     * @method open_folder - It opens a folder and returns a list of files in the folder.
      * @param step - The step object from the workflow.
      * @param context - The context of the current process.
      * @param process - The current process
      * @param item - The item that is being processed.
      *
-     * @param handle {string} - The handle of the folder to open.
+     * @param step.args.handle {string} - The handle of the folder to open.
      *
      * @returns An array of file entries.
      *
@@ -258,9 +272,9 @@ export class FsActions {
 }
 
 /**
- * @method It takes a file handle and some contents, and writes the contents to the file
- * @param fileHandle - The file handle that you want to write to.
- * @param contents - The contents of the file. This can be a string or an object. If it's an object, it will be converted
+ * @function writeFile - It takes a file handle and some contents, and writes the contents to the file
+ * @param fileHandle {string} - The file handle that you want to write to.
+ * @param contents {string|object} - The contents of the file. This can be a string or an object. If it's an object, it will be converted
  * to a JSON string.
  */
 async function writeFile(fileHandle, contents) {
@@ -274,9 +288,9 @@ async function writeFile(fileHandle, contents) {
 }
 
 /**
- * @method It shows a save file picker dialog and returns a handle to the file that the user selected
- * @param types - An array of strings that specify the types of files that can be saved.
- * @param defaultName - The default name of the file.
+ * @function getSaveHandle - It shows a save file picker dialog and returns a handle to the file that the user selected
+ * @param types {array} - An array of strings that specify the types of files that can be saved.
+ * @param defaultName {string} - The default name of the file.
  * @returns A Promise that resolves to a FileSystemWritableFileStream.
  */
 async function getSaveHandle(types, defaultName) {
@@ -289,10 +303,10 @@ async function getSaveHandle(types, defaultName) {
 }
 
 /**
- * @method It checks if the user has granted permission to read or
+ * @function verifyPermission - It checks if the user has granted permission to read or
  * write to the file, and if not, it requests permission
- * @param fileHandle - The file handle to verify permissions for.
- * @param readWrite - A boolean value that indicates whether the file should be opened for reading and writing.
+ * @param fileHandle {string} - The file handle to verify permissions for.
+ * @param readWrite {boolean} - A boolean value that indicates whether the file should be opened for reading and writing.
  * @returns A boolean value.
  */
 async function verifyPermission(fileHandle, readWrite) {
