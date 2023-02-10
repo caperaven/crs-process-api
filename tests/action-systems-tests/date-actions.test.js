@@ -161,6 +161,72 @@ describe("date actions tests if only_current = true", () => {
     });
 });
 
+describe("get_year_range_by_offsets tests", () => {
+    it("passing in ranges of  10 to see if it calculates 10 years forward and back from current year", async () => {
+        // Arrange
+        const minYearSelectOffset = 10;
+        const maxYearSelectOffset = 10;
+
+        // Act
+        const range = await crs.call("date", "get_year_range_by_offsets", {
+            minYearSelectOffset,
+            maxYearSelectOffset
+        });
+
+        // Assert
+        assertEquals(range[0], 2013);
+        assertEquals(range.at(-1), 2033);
+    });
+    it("passing through a value of 0 to see if range ends on the current year", async () => {
+
+        // Arrange
+        const minYearSelectOffset = 20;
+        const maxYearSelectOffset = 0;
+
+        // Act
+        const range = await crs.call("date", "get_year_range_by_offsets", {
+            minYearSelectOffset,
+            maxYearSelectOffset
+        });
+
+        // Assert
+        assertEquals(range[0], 2003);
+        assertEquals(range.at(-1), 2023);
+    });
+
+    it('passing through an empty min and max value', async () => {
+        // Arrange
+        const minYearSelectOffset = "";
+        const maxYearSelectOffset = "";
+
+        // Act
+        const range = await crs.call("date", "get_year_range_by_offsets", {
+            minYearSelectOffset,
+            maxYearSelectOffset
+        });
+
+        // Assert
+        assertEquals(range[0], 2023);
+        assertEquals(range.at(-1), 2023);
+    });
+
+    it('passing value of type null', async () => {
+        // Arrange
+        const minYearSelectOffset = null;
+        const maxYearSelectOffset = null;
+
+        // Act
+        const range = await crs.call("date", "get_year_range_by_offsets", {
+            minYearSelectOffset,
+            maxYearSelectOffset
+        });
+
+        // Assert
+        assertEquals(range[0], 2023);
+        assertEquals(range.at(-1), 2023);
+    });
+});
+
 function checkRequired(item, properties) {
     for (const property of properties) {
         assert(item[property] != null);

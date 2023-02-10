@@ -48,6 +48,54 @@ export class DateActions {
 
         return dates;
     }
+
+    /**
+     * @method get_year_range_by_offsets - Returns an array of years based on the current year and the min and max offsets.
+     * @param step - the step object
+     * @param context - The context object that is passed to the process.
+     * @param process - The process object
+     * @param item - The item that is being processed.
+     *
+     * @param step.args.minYearSelectOffset {number} - The minimum number of years to go back from the current year.
+     * @param step.args.maxYearSelectOffset {number} - The maximum number of years to go forward from the current year.
+     * @param [step.args.target] {string} - The target to set the result to.
+     *
+     * @returns An array of years.
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("date", "get_year_range_by_offsets", {
+     *      minYearSelectOffset: 10,
+     *      maxYearSelectOffset: 10
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "date",
+     *     "action": "get_year_range_by_offsets",
+     *     "args": {
+     *         "minYearSelectOffset": 10,
+     *         "maxYearSelectOffset": 10
+     *         "target": "$context.result"
+     *     }
+     * }
+     */
+    static async get_year_range_by_offsets(step, context, process, item){
+        const minYearSelectOffset = await crs.process.getValue(step.args.minYearSelectOffset, context, process, item);
+        const maxYearSelectOffset = await crs.process.getValue(step.args.maxYearSelectOffset, context, process, item);
+
+        const currentYear = new Date().getFullYear();
+        const years = [];
+
+        for (let i = currentYear - minYearSelectOffset; i <= currentYear + maxYearSelectOffset; i++) {
+            years.push(i);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, years, context, process, item);
+        }
+
+        return years;
+    }
 }
 
 crs.intent.date = DateActions;
