@@ -74,19 +74,22 @@ export class DateActions {
      *     "action": "get_year_range_by_offsets",
      *     "args": {
      *         "minYearSelectOffset": 10,
-     *         "maxYearSelectOffset": 10
+     *         "maxYearSelectOffset": 10,
      *         "target": "$context.result"
      *     }
      * }
      */
-    static async get_year_range_by_offsets(step, context, process, item){
+    static async get_year_range_by_offsets(step, context, process, item) {
         const minYearSelectOffset = await crs.process.getValue(step.args.minYearSelectOffset, context, process, item);
         const maxYearSelectOffset = await crs.process.getValue(step.args.maxYearSelectOffset, context, process, item);
+
+        const min = parseIntWithDefault(minYearSelectOffset, 0);
+        const max = parseIntWithDefault(maxYearSelectOffset, 0);
 
         const currentYear = new Date().getFullYear();
         const years = [];
 
-        for (let i = currentYear - minYearSelectOffset; i <= currentYear + maxYearSelectOffset; i++) {
+        for (let i = currentYear - min; i <= currentYear + max; i++) {
             years.push(i);
         }
 
@@ -97,7 +100,18 @@ export class DateActions {
         return years;
     }
 }
-
 crs.intent.date = DateActions;
+
+/**
+ * @function parseIntWithDefault - Parses the input value as an integer, and returns a default value if the input is not
+ * a valid number.
+ * @param value {string} - The value to parse as an integer.
+ * @param defaultValue {number} - The default value to return if the input is not a valid number.
+ * @return {number} The parsed integer value, or the default value if the input is not a valid number.
+ */
+function parseIntWithDefault(value, defaultValue) {
+    const parsed = parseInt(value);
+    return Number.isNaN(parsed) ? defaultValue : parsed;
+}
 
 

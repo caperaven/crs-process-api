@@ -225,6 +225,22 @@ describe("get_year_range_by_offsets tests", () => {
         assertEquals(range[0], 2023);
         assertEquals(range.at(-1), 2023);
     });
+
+    it('passing value of type string "10"', async () => {
+        // Arrange
+        const minYearSelectOffset = "10";
+        const maxYearSelectOffset = "10";
+
+        // Act
+        const range = await crs.call("date", "get_year_range_by_offsets", {
+            minYearSelectOffset,
+            maxYearSelectOffset
+        });
+
+        // Assert
+        assertEquals(range[0], 2013);
+        assertEquals(range.at(-1), 2033);
+    });
 });
 
 function checkRequired(item, properties) {
