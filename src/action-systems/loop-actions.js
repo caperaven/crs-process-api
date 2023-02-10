@@ -8,14 +8,14 @@ const BATCH_SIZE = 500;
  */
 export class LoopActions {
     /**
-     * @method It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
+     * @method perform - It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
      * @param step - the current step in the process
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      *
-     * @param source {string} - The path to the source array
-     * @param steps {object} - The steps to run for each item in the source array
-     * @param target {string} - The path to the target object to set the value of
+     * @param step.args.source {string} - The path to the source array
+     * @param step.args.steps {object} - The steps to run for each item in the source array
+     * @param [step.args.target == "$context.result"] {string} - The path to the target object to set the value of.
      *
      * @returns The result of the last step in the steps array
      */
@@ -57,7 +57,7 @@ export class LoopActions {
 }
 
 /**
- * @method It takes a collection of items, and for each item, it runs a set of steps
+ * @function processBatch - It takes a collection of items, and for each item, it runs a set of steps
  * @param step - The step object
  * @param stepKeys - The keys of the steps to run.
  * @param collection - The collection to process.

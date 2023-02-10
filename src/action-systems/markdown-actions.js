@@ -16,16 +16,17 @@ export class MarkdownActions {
     }
 
     /**
-     * @method Convert markdown to html
+     * @method to_html - Convert markdown to html
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param markdown {string} - The markdown to convert
-     * @param parameters {object} - The parameters to pass to the markdown processor
+     * @param step.args.markdown {string} - The markdown to convert
+     * @param step.args.parameters {object} - The parameters to use when inflating the markdown
+     * @param [step.args.target = "$context.result"] {string} - The target to store the html
      *
-     * @return {Promise<any>} - The html
+     * @returns {string} - The html
      *
      * @example <caption>javascript example</caption>
      * const html = await crs.call("markdown", "to_html", {

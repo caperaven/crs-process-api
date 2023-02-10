@@ -13,7 +13,7 @@ export class HtmlActions {
     }
 
     /**
-     * @method If the step has a URL, then load the template from the URL and return the result. Otherwise, if the step has a
+     * @method get - If the step has a URL, then load the template from the URL and return the result. Otherwise, if the step has a
      * schema, then load the schema and return the result. Otherwise, if the step has a function, then call the function
      * and return the result. Otherwise, if the step has a markdown, then convert the markdown to HTML and return the
      * result
@@ -22,12 +22,10 @@ export class HtmlActions {
      * @param process - the process object
      * @param item - the item being processed
      *
-     * @param url {string} - The URL to fetch the template from.
-     * @param template {string} - The name of the template to fetch.
-     * @param schema {string} - The name of the schema to fetch.
-     * @param function {string} - The name of the function to call.
-     * @param markdown {string} - The markdown to convert to HTML.
-     * @param args {object} - The arguments to pass to the function.
+     * @param [step.args.url = "url"] {string} - The URL of the template to load.
+     * @param [step.args.template = "example"] {string} - The name of the template to load.
+     * @param [step.args.schema = {schema}] {object} - The URL of the schema to load.
+     * @param [step.args.function] {string} - The function to call.
      *
      * @returns The result of the function call.
      *
@@ -45,6 +43,28 @@ export class HtmlActions {
      *        "template": "example"
      *        "url": "import.meta.url.replace("example-systems-tests/example-actions.test.js", "example.html")"
      *     }
+     * }
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("html", "get", {
+     *     schema: {
+     *         body: {
+     *             "elements": [ { "element": "div", "content": "Hello World" } ]
+     *         }
+     *     }
+     *}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "html",
+     *     "action": "get",
+     *     "args": {
+     *          "schema": {
+     *              "body": {
+     *                "elements": [ { "element": "div", "content": "Hello World" } ]
+     *              }
+     *           }
+     *      }
      * }
      */
     static async get(step, context, process, item) {
@@ -69,15 +89,15 @@ export class HtmlActions {
     }
 
     /**
-     * @method Creates an element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided
+     * @method create - Creates an element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided
      * @param step - The step object
      * @param context - The context of the current process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param html {string} - The HTML to inflate
-     * @param ctx {object} - The context to inflate the HTML with
-     * @param target {string} - The target to set the result to.
+     * @param step.args.html {string} - The html string to inflate.
+     * @param step.args.ctx {object} - The context object to use when inflating the html.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the template.
      *
@@ -120,13 +140,13 @@ export class HtmlActions {
     }
 
     /**
-     * @method It takes a URL, fetches the contents of that URL, and returns the contents as a string
+     * @method #from_file - It takes a URL, fetches the contents of that URL, and returns the contents as a string
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The current item being processed.
      *
-     * @param url {string} - The URL to fetch
+     * @param step.args.url {string} - The URL to fetch the file from.
      *
      * @returns The text of the file.
      */
@@ -136,14 +156,14 @@ export class HtmlActions {
     }
 
     /**
-     * @method It takes a template, and returns the result of the template
+     * @method #from_template - It takes a template, and returns the result of the template
      * @param step - the step object
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
-     * @param template {string} - The name of the template
-     * @param url {string} - The URL to fetch the template from.
+     * @param step.args.template {string} - The template to use.
+     * @param step.args.url {string} - The URL to fetch the template from.
      *
      * @returns The template is being returned.
      */
@@ -154,13 +174,13 @@ export class HtmlActions {
     }
 
     /**
-     * @method It takes a schema, and returns a parser
+     * @method #from_schema -  It takes a schema, and returns a parser
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param json {string} - The schema to parse
+     * @param step.args.schema {object} - The schema to use.
      *
      * @returns A schema object.
      */
@@ -175,14 +195,14 @@ export class HtmlActions {
     }
 
     /**
-     * @method It takes a function and a list of parameters, and calls the function with the parameters
+     * @method #from_function - It takes a function and a list of parameters, and calls the function with the parameters
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param fn {function} - The function to call
-     * @param parameters {array} - The parameters to pass to the function
+     * @param step.args.function {string} - The function to call.
+     * @param [step.args.parameters = [parameters]] {array} - The parameters to pass to the function.
      *
      * @returns The result of the function call.
      */

@@ -25,15 +25,15 @@ export class MathActions {
 
 
     /**
-     * @method This function adds two numbers together
+     * @method add - This function adds two numbers together
      * @param step - the step object
      * @param context - The context object that is passed to the step.
      * @param process - The process object that is currently running.
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 {string} - The first value to add
-     * @param step.args.value2 {string} - The second value to add
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value1 {number} - The first value to add
+     * @param step.args.value2 {number} - The second value to add
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The result of the do_math function.
      *
@@ -58,15 +58,15 @@ export class MathActions {
     }
 
     /**
-     * @method Subtracts the value of the second input from the value of the first input
+     * @method subtract - Subtracts the value of the second input from the value of the first input
      * @param step - The step object from the workflow definition
      * @param context - The context object that is passed to the function.
      * @param process - The process object
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 {string} - The first value to subtract from
-     * @param step.args.value2 {string} - The second value to subtract
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value1 {number} - The first value to subtract from
+     * @param step.args.value2 {number} - The second value to subtract
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      *
@@ -93,15 +93,15 @@ export class MathActions {
 
 
     /**
-     * @method This function takes two numbers, multiplies them, and returns the result
+     * @method multiply - This function takes two numbers, multiplies them, and returns the result
      * @param step - the step object
      * @param context - The context object that is passed to the step.
      * @param process - the process object
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 {string} - The first value to multiply
-     * @param step.args.value2 {string} - The second value to multiply
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value1 {number} - The first value to multiply
+     * @param step.args.value2 {number} - The second value to multiply
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      *
@@ -127,15 +127,15 @@ export class MathActions {
     }
 
     /**
-     * @method This function divides the first input by the second input and returns the result
+     * @method divide - This function divides the first input by the second input and returns the result
      * @param step - the step object
      * @param context - The context object that is passed to the function.
      * @param process - The process object that is currently running.
      * @param item - the item that is being processed
      *
-     * @param step.args.value1 {string} - The first value to divide
-     * @param step.args.value2 {string} - The second value to divide by
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value1 {number} - The first value to divide
+     * @param step.args.value2 {number} - The second value to divide by
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The result of the do_math function.
      *
@@ -161,16 +161,16 @@ export class MathActions {
     }
 
     /**
-     * @method It takes two values, performs a mathematical operation on them,and then stores the result in a variable
+     * @method do_math - It takes two values, performs a mathematical operation on them,and then stores the result in a variable
      * and returns it.
      * @param step - The step object
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.value1 {string} - The first value to perform the math operation on
-     * @param step.args.value2 {string} - The second value to perform the math operation on
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value1 {number} - The first value to perform the math operation on
+     * @param step.args.value2 {number} - The second value to perform the math operation on
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      */
@@ -187,15 +187,15 @@ export class MathActions {
     }
 
     /**
-     * @method It takes a step, context, process, and item, and then it gets the value of each of the arguments, calls the
+     * @method do_math_api - It takes a step, context, process, and item, and then it gets the value of each of the arguments, calls the
      * appropriate Math function, and then sets the result to the target
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.value {object} - The [value] to perform the math operation on
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value {array} - The [value] to perform the math operation on
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The result of the math operation.
      */
@@ -218,16 +218,16 @@ export class MathActions {
     }
 
     /**
-     * @method This function takes a number and returns the absolute value of that number
+     * @method normalize - This function takes a number and returns the absolute value of that number
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.value {string} - The value to perform the math operation on
-     * @param step.args.min {string} - The minimum value to return
-     * @param step.args.max {string} - The maximum value to return
-     * @param step.args.target {string} - The target to store the result in
+     * @param step.args.value {number} - The value to perform the math operation on
+     * @param step.args.min {number} - The minimum value to return
+     * @param step.args.max {number} - The maximum value to return
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in
      *
      * @returns The normalized value.
      *
