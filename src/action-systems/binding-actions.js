@@ -197,7 +197,7 @@ export class BindingActions {
      * @param item - The current item in the loop
      *
      * @param step.args.errors - The errors to set
-     * @param step.args.error_store - The store to set the errors to.
+     * @param [step.args.error_store="errors"] - The store to set the errors to.
      *
      * @requires process.parameters.bId - The binding id
      *

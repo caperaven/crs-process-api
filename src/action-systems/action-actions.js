@@ -8,15 +8,15 @@
  */
 export class ActionActions {
     /**
-     * @method - perform an action on a component or element
-     * @param step - step to perform
-     * @param context - context of the process
-     * @param process - process to perform
-     * @param item - item to perform the action on
+     * @method perform - perform an action on a component or element
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the process
+     * @param process {Object}  - process to perform
+     * @param item {Object}  - item to perform the action on
      *
-     * @param step.args.action - action to perform
-     * @param step.args.parameters - parameters to pass to the action
-     * @param step.args.target - target to set the result of the action to
+     * @param step.args.action {String} - action to perform
+     * @param step.args.parameters {[string]} - parameters to pass to the action
+     * @param step.args.target {String} - target to set the result of the action to
      *
      * @returns {Promise<*>}
      *
@@ -60,13 +60,13 @@ export class ActionActions {
 }
 
 /**
- * get the parameters for the action
- * @param step - step to perform
- * @param context - context of the process
- * @param process - process to perform
- * @param item - item to perform the action on
+ * @function getParameters - get the parameters for the action
+ * @param step {Object} - step to perform
+ * @param context {Object} - context of the process
+ * @param process {Object} - process to perform
+ * @param item {Object} - item to perform the action on
  *
- * @param step.args.parameters - parameters to pass to the action
+ * @param step.args.parameters {[string]} - parameters to pass to the action
  *
  * @returns {Promise<*[]>}
  */
@@ -86,16 +86,16 @@ export async function getParameters(step, context, process, item) {
 }
 
 /**
- * utility function to call a function on a path of an object
- * @param source - object to call the function on
- * @param step - step to perform
- * @param context - context of the process
- * @param process - process to perform
- * @param item - item to perform the action on
+ * @function callFunctionOnPath - utility function to call a function on a path of an object
+ * @param source {Object} - object to call the function on
+ * @param step {Object} - step to perform
+ * @param context {Object} - context of the process
+ * @param process {Object} - process to perform
+ * @param item {Object} - item to perform the action on
  *
- * @param step.args.action - action to perform
- * @param step.args.parameters - parameters to pass to the action
- * @param step.args.target - target to set the result of the action to
+ * @param step.args.action {String} - action to perform
+ * @param step.args.parameters {[string]} - parameters to pass to the action
+ * @param step.args.target {String} - target to set the result of the action to
  *
  * @returns {Promise<*>}
  */

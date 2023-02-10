@@ -8,7 +8,7 @@
  */
 export class ConditionActions {
 
-    /** "If the condition is true, run the pass step, otherwise run the fail step."
+    /** @method "If the condition is true, run the pass step, otherwise run the fail step."
      * The `perform` method is the only method that is required for a step. It is called when the step is run
      *
      * @param step - The step object from the process definition
@@ -62,10 +62,10 @@ export class ConditionActions {
 }
 
 /**
- * @method - It takes a condition and a process, and returns a function that takes a context, process, and item, and returns the
+ * @function - It takes a condition and a process, and returns a function that takes a context, process, and item, and returns the
  * result of evaluating the condition
- * @param condition - The condition to be evaluated.
- * @param process - the process object
+ * @param condition {String} - The condition to be evaluated.
+ * @param process {Object} - the process object
  *
  * @returns A function that takes in a context, process, and item and returns the result of the expression.
  */
@@ -87,10 +87,10 @@ function compileExpression(condition, process) {
 }
 
 /**
- * @method - It takes an expression and replaces all instances of `$binding.property` with `crsbinding.data.getProperty(bindingId,
+ * @function - It takes an expression and replaces all instances of `$binding.property` with `crsbinding.data.getProperty(bindingId,
  * "property")`
- * @param exp - The expression to process
- * @param bId - The binding id of the element.
+ * @param exp {String} - The expression to process
+ * @param bId {String} - The binding id of the element.
  * @returns The value of the property.
  */
 function processBinding(exp, bId) {

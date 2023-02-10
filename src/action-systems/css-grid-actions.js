@@ -1,7 +1,7 @@
 /**
  *  @class CssGridActions - This class contains functions that perform actions on CSS grids
  *  Features:
- *  init - Enable a element to be a CSS grid
+ *  init - Enable an element to be a CSS grid
  *  enable_resize - Enable a CSS grid to be resized
  *  disable_resize - Disable a CSS grid from being resized
  *  auto_fill - Automatically fill a CSS grid with items
@@ -35,13 +35,10 @@ export class CssGridActions {
         await this[step.action](step, context, process, item);
     }
 
-    /**
-     * Enable a element to be a CSS grid
-     */
-
 
     /**
      * @method - The function sets the display style of the element to "grid"
+     * Enable an element to be a CSS grid
      * @param step - The step object from the JSON file.
      * @param context - The context object that is passed to the step.
      * @param process - The process object that is currently running.
@@ -277,10 +274,6 @@ export class CssGridActions {
         element.style.gridTemplateColumns = columns;
     }
 
-    /**
-     * Set the rows of a grid
-     */
-
 
     /**
      * @method - It sets the grid-template-rows property of the element specified in the step's args.element property to the value of
@@ -390,10 +383,6 @@ export class CssGridActions {
         await remove(step, context, process, item, "gridTemplateColumns");
     }
 
-    /**
-     * set the width of a css column
-     */
-
 
     /**
      * @method - Sets the width of a column in the specified element's grid at the specified position.
@@ -428,10 +417,6 @@ export class CssGridActions {
     static async set_column_width(step, context, process, item) {
         await resize(step, context, process, item, "gridTemplateColumns", "width");
     }
-
-    /**
-     * Add a css row
-     */
 
 
     /**
@@ -469,10 +454,6 @@ export class CssGridActions {
         await add(step, context, process, item, "gridTemplateRows", "height");
     }
 
-    /**
-     * Remove a css row
-     */
-
 
     /**
      * @method - Remove the rows from the grid of the specified element in the specified position.
@@ -509,10 +490,6 @@ export class CssGridActions {
         await remove(step, context, process, item, "gridTemplateRows");
     }
 
-    /**
-     * Set the height of a css row
-     */
-
 
     /**
      * @method - Resize the row height of the grid of the specified element in the specified position.
@@ -546,10 +523,6 @@ export class CssGridActions {
     static async set_row_height(step, context, process, item) {
         await resize(step, context, process, item, "gridTemplateRows", "height");
     }
-
-    /**
-     * Set css region
-     */
 
 
     /**
@@ -669,11 +642,6 @@ export class CssGridActions {
     }
 
     /**
-     * for a css grid get the column count
-     */
-
-
-    /**
      * @method - Get the number of columns for a css grid element.
      * @param step - The step object that is passed to the function.
      *
@@ -700,10 +668,6 @@ export class CssGridActions {
         const result = getColumnCount(element);
         return result;
     }
-
-    /**
-     * for a css grid element get the row count
-     */
 
 
     /**
@@ -806,7 +770,7 @@ function getRowCount(element) {
 
 /**
  * @function - It creates a 2D array of dots
- * @param element - The element that the grid is applied to.
+ * @param element {String} - The element that the grid is applied to.
  * @returns An array of arrays.
  */
 async function areasToArray(element) {
@@ -833,6 +797,11 @@ async function areasToArray(element) {
  * @param item - the current item in the loop
  * @param property - The CSS property to set.
  * @param valueProperty - The name of the property that contains the value to set.
+ *
+ * @param {string} step.args.element - The element to set the property on.
+ * @param {string} step.args.position - The position to set the value at.
+ * @param {string} step.args[valueProperty] - The value to set.
+ *
  * @returns the value of the property.
  */
 async function resize(step, context, process, item, property, valueProperty) {
@@ -850,12 +819,18 @@ async function resize(step, context, process, item, property, valueProperty) {
 
 /**
  * @function - It adds a value to a CSS property
+ *
  * @param step - The step object
  * @param context - The context of the current process.
  * @param process - The process that is running the step.
  * @param item - The item that is being processed.
  * @param property - The name of the property to add to.
  * @param valueProperty - The name of the property that contains the value to add.
+ *
+ * @param {string} step.args.element - The element to add the value to.
+ * @param {string} step.args.position - The position to add the value to. Can be "front" or "end".
+ * @param {string} step.args[valueProperty] - The value to add.
+ *
  * @returns the value of the property.
  */
 async function add(step, context, process, item, property, valueProperty) {
@@ -889,11 +864,17 @@ async function add(step, context, process, item, property, valueProperty) {
 
 /**
  * @function - It removes a number of items from the end of a space-separated list of items in a CSS property
+ *
  * @param step - The step object.
  * @param context - The context of the process.
  * @param process - The process that is currently running.
  * @param item - The item that is being processed.
  * @param property - The name of the property to modify.
+ *
+ * @param step.args.element {String} - The element to modify.
+ * @param step.args.position {String} - The position to remove from. Can be "front", "end", or a number.
+ * @param step.args.count {Number} - The number of items to remove.
+ *
  * @returns the element.style[property]
  */
 async function remove(step, context, process, item, property) {
