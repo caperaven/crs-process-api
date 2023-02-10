@@ -202,7 +202,7 @@ export class HtmlActions {
      * @param item - The item that is being processed.
      *
      * @param step.args.function {string} - The function to call.
-     * @param [step.args.parameters = {parameters] {array} - The parameters to pass to the function.
+     * @param [step.args.parameters = [parameters]] {array} - The parameters to pass to the function.
      *
      * @returns The result of the function call.
      */
