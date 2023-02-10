@@ -218,7 +218,7 @@ export class MathActions {
     }
 
     /**
-     * @method This function takes a number and returns the absolute value of that number
+     * @method normalize - This function takes a number and returns the absolute value of that number
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
