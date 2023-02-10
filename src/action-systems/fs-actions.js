@@ -49,7 +49,7 @@ export class FsActions {
     }
 
     /**
-     * @method It reads the contents of a file
+     * @method read_file - It reads the contents of a file
      * @param step - The step object from the process definition.
      * @param context - The current context of the process.
      * @param process - The process that is running the step.
@@ -82,7 +82,7 @@ export class FsActions {
     }
 
     /**
-     * @method It reads a file and returns the contents as a JSON object
+     * @method read_json - It reads a file and returns the contents as a JSON object
      * @param step - the step object
      * @param context - The context object that is passed to the function.
      * @param process - the process object
