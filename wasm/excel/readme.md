@@ -6,3 +6,5 @@ The purpose of this web assembly is to provide simple import and export of data 
 2. PDF
 3. CSV
 4. XLSX
+   
+wasm-pack build --target web --out-dir ./../../src/bin
