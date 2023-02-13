@@ -9,17 +9,17 @@
  */
 export class ConsoleActions {
     /**
-     * @method - The `perform` function is a static function that is called by the `process` function. It takes the `step` object,
+     * @method perform - The `perform` function is a static function that is called by the `process` function. It takes the `step` object,
      * the `context` object, the `process` function, and the `item` object as arguments. It then calls the `step.action`
      * function, passing the `step`, `context`, `process`, and `item` objects as arguments
-     * @param step - The step object from the process definition
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object that is being executed.
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object from the process definition
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
      *
-     * @param {string} step.action - The action to perform
-     * @param {object} step.args - The arguments to pass to the action
-     * @param {string} step.args.message - The message to log
+     * @param step.action {String} - The action to perform
+     * @param step.args {Object} - The arguments to pass to the action
+     * @param step.args.message {String} - The message to log
      * or
      * @param {string} step.args.messages - The messages to log
      *
@@ -54,14 +54,14 @@ export class ConsoleActions {
     }
 
     /**
-     * @method - It takes a message, evaluates it, and logs it to the console
+     * @method log - It takes a message, evaluates it, and logs it to the console
      *
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
      *
-     * @param {string} step.args.message - The message to log
+     * @param step.args.message {String} - The message to log
      */
     static async log(step, context, process, item) {
         let message = await crs.process.getValue(step.args.message || step.args.messages, context, process, item);
@@ -78,14 +78,14 @@ export class ConsoleActions {
     }
 
     /**
-     * @method - Prints the Error message to the console.
+     * @method error - Prints the Error message to the console.
      *
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object}- The context object that is passed to the process.
+     * @param process {Object}- The process object
+     * @param item {Object} - The current item being processed.
      *
-     * @param {string} step.args.message - The message to log
+     * @param step.args.message {String}- The message to log
      */
     static async error(step, context, process, item) {
         const message = await crs.process.getValue(step.args.message, context, process, item);
@@ -95,12 +95,12 @@ export class ConsoleActions {
     /**
      * @method warn - This function takes a message and logs it to the console as a warning
      *
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The current item being processed.
      *
-     * @param {string} step.args.message - The message to log
+     * @param step.args.message {String} - The message to log
      */
     static async warn(step, context, process, item) {
         const message = await crs.process.getValue(step.args.message, context, process, item);
@@ -108,14 +108,14 @@ export class ConsoleActions {
     }
 
     /**
-     * @method - This function takes a message and displays it in a table
+     * @method table - This function takes a message and displays it in a table
      *
-     * @param step - The step object from the process definition
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @param step {Object} - The step object from the process definition
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The current item being processed.
      *
-     * @param {string} step.args.message - The message to log
+     * @param step.args.message {String}- The message to log
      */
     static async table(step, context, process, item) {
         const message = await crs.process.getValue(step.args.message, context, process, item);
