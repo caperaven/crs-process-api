@@ -13,15 +13,15 @@ export class RandomActions {
     }
 
     /**
-     * @method Generate a random integer between the min and max values
+     * @method integer - Generate a random integer between the min and max values
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.min {integer} - The minimum value
-     * @param step.args.max {integer} - The maximum value
-     * @param step.args.target {string} - The target variable to store the result in.
+     * @param step.args.min {number} - The minimum value
+     * @param step.args.max {number} - The maximum value
+     * @param [step.args.target = "$context.result"] {string} - The target variable to store the result in.
      *
      * @returns The result of the random number generator.
      *
@@ -37,7 +37,7 @@ export class RandomActions {
      *       "action": "integer",
      *       "args": {
      *           "min": 1,
-     *           "max": 10
+     *           "max": 10,
      *           "target": "$context.result"
      *       }
      * }
@@ -53,15 +53,15 @@ export class RandomActions {
     }
 
     /**
-     * @method Generate a random float between the min and max values
+     * @method float - Generate a random float between the min and max values
      * @param step - The step object that is being executed.
      * @param context - The context object that was passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.min {float} - The minimum value
-     * @param step.args.max {float} - The maximum value
-     * @param step.args.target {string} - The target variable to store the result in.
+     * @param step.args.min {number} - The minimum value
+     * @param step.args.max {number} - The maximum value
+     * @param [step.args.target = "$context.result"] {string} - The target variable to store the result in.
      *
      * @returns A random number between the min and max values.
      *

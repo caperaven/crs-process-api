@@ -16,7 +16,7 @@ export class TranslationsActions {
     }
 
     /**
-     * @method Add the translations to the context
+     * @method add - Add the translations to the context
      * @param step - The step object from the process definition.
      * @param context - The context of the current step.
      * @param process - the process object
@@ -54,14 +54,14 @@ export class TranslationsActions {
     }
 
     /**
-     * @method Get the translation for the given key and store it in the given target or return the value
+     * @method get - Get the translation for the given key and store it in the given target or return the value
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
      * @param process - The process that is currently running.
      * @param item - The item that is being processed.
      *
      * @param step.args.key {string} - The key to get the translation for.
-     * @param step.args.target {string} - The target to store the translation in.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the translation in.
      *
      * @returns The translation for the key.
      *
@@ -93,7 +93,7 @@ export class TranslationsActions {
     }
 
     /**
-     * @method Delete the translation for the specified context from the translation mechanism
+     * @method delete - Delete the translation for the specified context from the translation mechanism
      * @param step - the step object
      * @param context - The context of the translation.
      * @param process - the process object
@@ -123,7 +123,7 @@ export class TranslationsActions {
     }
 
     /**
-     * @method Translate the parent element and it's children,
+     * @method translate_elements - Translate the parent element and it's children,
      * @param step - The step object from the test case.
      * @param context - The context of the current step.
      * @param process - The process object that is currently running.
@@ -154,7 +154,7 @@ export class TranslationsActions {
     }
 
     /**
-     * @method uses a translation string and format it using properties
+     * @method inflate - uses a translation string and format it using properties
      * @description for example "${code} is valid" -> "A11 is valid" provided the parameters has a property called code
      * and with the value "A11"
      *
@@ -165,7 +165,7 @@ export class TranslationsActions {
      *
      * @param step.args.key {string}- The key to get the translation for.
      * @param step.args.parameters {object} - The {parameters} to use when formatting the translation.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the inflate function.
      *

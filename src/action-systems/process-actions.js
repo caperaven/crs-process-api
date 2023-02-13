@@ -6,7 +6,7 @@
  */
 export class ProcessActions {
     /**
-     * @method It takes the step, context, process, and item, and then emits an event with the same information
+     * @method perform - It takes the step, context, process, and item, and then emits an event with the same information
      * @param step - The step object that is being executed.
      * @param context - The context of the current process.
      * @param process - The process that is being run.

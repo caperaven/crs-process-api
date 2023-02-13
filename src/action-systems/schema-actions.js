@@ -7,12 +7,7 @@ class SchemaParserManager {
     }
 
     /**
-     * @method It creates a new instance of the parser, registers all the providers,
-     * and then stores the parser and a queue for it
-     * @param id - The id of the parser.
-     * @param parser - The parser class to use.
-     * @param providers - An array of strings that are the paths to the providers.
-     * @param parameters - An object containing the parameters to be passed to the parser.
+     * @function register - It creates a new instance of the parser, registers all the providers, and then stores the parser and a queue for it
      *
      * @params step.args.id - The id of the parser.
      * @params step.args.parser - The parser class to use.
@@ -34,8 +29,8 @@ class SchemaParserManager {
     }
 
     /**
-     * @method This function removes a parser from the queue.
-     * @param id - The id of the parser.
+     * @function unregister - This function removes a parser from the queue.
+     * @param id - The id of the parser to remove.
      */
     async unregister(id) {
         this.#parsers[id]?.dispose();
@@ -44,31 +39,12 @@ class SchemaParserManager {
     }
 
     /**
-     * @method It adds a callback to a queue, and when the queue is empty, it executes the callback
+     * @function parse - It adds a callback to a queue, and when the queue is empty, it executes the callback
      * @param id - The id of the parser to use.
      * @param schema - The schema to parse.
      * @param ctx - The context of the parser. This is used to pass information between parsers.
      *
-     * @params step.args.id - The id of the parser to use.
-     * @params step.args.schema - The schema to parse.
-     *
      * @returns A promise that resolves to the result of the parser.
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("schema", "parse", {
-     *    id: "my-parser",
-     *    schema: {schema}
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "schema",
-     *     "action": "parse",
-     *     "args": {
-     *         "id": "my-parser",
-     *         "schema": {schema}
-     *     }
-     * }
      */
     async parse(id, schema, ctx) {
         return new Promise(async (resolve) => {
@@ -84,7 +60,7 @@ class SchemaParserManager {
     }
 
     /**
-     * @method If the queue is empty, run the promise. If the queue is not empty, add the promise to the queue.
+     * @function #addToQueue - If the queue is empty, run the promise. If the queue is not empty, add the promise to the queue.
      * If only one item in queue we can call the runQueue function
      * @param id - The id of the queue to add the promise to.
      * @param promise - The promise to add to the queue.
@@ -98,7 +74,7 @@ class SchemaParserManager {
 
 
     /**
-     * @method This function will run through the queue and when a promise resolves the then function will start the queue again
+     * @function #runQueue - This function will run through the queue and when a promise resolves the then function will start the queue again
      *
      * @param id - The id of the queue you want to run.
      * @returns A function that takes an id as an argument.
@@ -128,7 +104,7 @@ export class SchemaActions {
     }
 
     /**
-     * @method It registers a new schema parser
+     * @method register - It registers a new schema parser
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process that is currently running.
@@ -136,9 +112,9 @@ export class SchemaActions {
      *
      * @param step.args.id {string} - The id of the parser.
      * @param step.args.parser {string} - The parser class to use.
-     * @param step.args.providers {object} - An [array] of strings that are the paths to the providers.
+     * @param step.args.providers {array} - An [array] of strings that are the paths to the providers.
      * @param step.args.parameters {object} - An {object} containing the parameters to be passed to the parser.
-     * @param step.args.target {string} - The target to register the parser to.
+     * @param [step.args.target = "$context.result"] {string} - The target to register the parser to.
      *
      * @returns The instance of the registered schema parser.
      * @example <caption>javascript example</caption>
@@ -177,7 +153,7 @@ export class SchemaActions {
     }
 
     /**
-     * @method Unregister a schema parser
+     * @method unregister - Unregister a schema parser
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -205,7 +181,7 @@ export class SchemaActions {
     }
 
     /**
-     * @method It takes a schema, parses it, and returns the result
+     * @method parse - It takes a schema, parses it, and returns the result
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -213,7 +189,7 @@ export class SchemaActions {
      *
      * @param step.args.id {string} - The id of the parser to use.
      * @param step.args.schema {object} - The schema to parse.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the parse.
      *

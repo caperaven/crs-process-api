@@ -27,7 +27,7 @@ export class RestServicesActions {
     }
 
     /**
-     * @method Perform a GET request to the specified URL.
+     * @method get - Perform a GET request to the specified URL.
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
      * @param process - The current process
@@ -35,7 +35,7 @@ export class RestServicesActions {
      *
      * @param step.args.request {object} - The request object to use for the request.
      * @param step.args.url {string} - The URL to perform the GET request on.
-     * @param step.args.target {string} - The target to set the result to.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -69,7 +69,7 @@ export class RestServicesActions {
     }
 
     /**
-     * @method Make a POST request to the given URL with the given body and request options, and set the result to the
+     * @method post - Make a POST request to the given URL with the given body and request options, and set the result to the
      * given target
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
@@ -79,7 +79,7 @@ export class RestServicesActions {
      * @param step.args.url {string} - The URL to perform the POST request on.
      * @param step.args.body {object} - The body to send with the request.
      * @param step.args.request {object} - The request object to use for the request.
-     * @param step.args.target {string} - The target to set the result to.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -97,7 +97,7 @@ export class RestServicesActions {
      *      "args": {
      *             "url": "https://jsonplaceholder.typicode.com/todos",
      *             "body": {body},
-     *             "request": {requests}
+     *             "request": {requests},
      *             "target": "$context.result"
      *       }
      * }
@@ -117,7 +117,7 @@ export class RestServicesActions {
     }
 
     /**
-     * @method This function takes a step, context, process, and item, and returns a promise that resolves to the result
+     * @method put - This function takes a step, context, process, and item, and returns a promise that resolves to the result
      * of a PUT request to the url specified in the step's args
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
@@ -145,7 +145,7 @@ export class RestServicesActions {
      *        "args": {
      *            "url": "https://jsonplaceholder.typicode.com/todos/1",
      *            "body": {body},
-     *            "request": {requests}
+     *            "request": {requests},
      *            "target": "$context.result"
      *       }
      * }
@@ -165,7 +165,7 @@ export class RestServicesActions {
     }
 
     /**
-     * @method This function takes the body, request, and url from the step,
+     * @method patch - This function takes the body, request, and url from the step,
      * and then makes a PATCH request to the url with the body and request
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
@@ -175,6 +175,7 @@ export class RestServicesActions {
      * @param step.args.url {string} - The URL to perform the PATCH request on.
      * @param step.args.body {object} - The body to send with the request.
      * @param step.args.request {object} - The request object to use for the request.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -196,7 +197,8 @@ export class RestServicesActions {
      *          "body": {
      *              "name": "testing",
      *          },
-     *          "request": {requests}
+     *          "request": {requests},
+     *          "target": "$context.result"
      *     }
      * }
      */
@@ -214,7 +216,7 @@ export class RestServicesActions {
     }
 
     /**
-     * @method This function makes a DELETE request to the specified URL, and then sets the result to the specified target
+     * @method delete - This function makes a DELETE request to the specified URL, and then sets the result to the specified target
      * @param step - The step object from the process definition.
      * @param context - The context of the current process.
      * @param process - The current process object
@@ -222,6 +224,7 @@ export class RestServicesActions {
      *
      * @param step.args.url {string} - The URL to perform the DELETE request on.
      * @param step.args.request {object} - The request object to use for the request.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the fetch call.
      *
@@ -237,7 +240,8 @@ export class RestServicesActions {
      *     "action": "delete",
      *     "args": {
      *         "url": "https://jsonplaceholder.typicode.com/todos/1",
-     *         "request": {requests}
+     *         "request": {requests},
+     *         "target": "$context.result"
      *     }
      * }
      */
@@ -254,7 +258,7 @@ export class RestServicesActions {
 }
 
 /**
- * @method Set the value of the target variable to the result of the function
+ * @function setTarget - Set the value of the target variable to the result of the function
  * @param step - The step object
  * @param result - The result of the previous step.
  * @param context - The context object that is passed to the process.

@@ -13,7 +13,7 @@ export class ScriptsActions {
     }
 
     /**
-     * @method Dynamically load a javascript file from file as a script tag.
+     * @method load_file - Dynamically load a javascript file from file as a script tag.
      * @param step - The step object from the process.
      * @param context - The context of the current process.
      * @param process - The current process
@@ -21,7 +21,7 @@ export class ScriptsActions {
      *
      * @param step.args.id {string} - The id of the script tag.
      * @param step.args.file {string} - The file to load.
-     * @param step.args.target {string} - The target to load the script into.
+     * @param [step.args.target = "$context.result"] {string} - The target to load the script into.
      *
      * @returns A promise that resolves to the script element.
      *
@@ -37,7 +37,7 @@ export class ScriptsActions {
      *     "action": "load_file",
      *     "args": {
      *          "id": "my-script",
-     *          "file": file
+     *          "file": file,
      *          "target": "$context.myTarget"
      *     }
      * }
@@ -63,7 +63,7 @@ export class ScriptsActions {
     }
 
     /**
-     * @method Remove a script file based on id from the dom.
+     * @method unload_file - Remove a script file based on id from the dom.
      * @param step - The step object from the process.
      * @param context - The context of the current step.
      * @param process - The process object that is running the step.

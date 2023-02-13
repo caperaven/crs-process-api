@@ -16,7 +16,7 @@ export class SessionStorageAction {
     }
 
     /**
-     * @method Set a value in the browser's session storage
+     * @method set_value - Set a value in the browser's session storage
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -48,14 +48,14 @@ export class SessionStorageAction {
     }
 
     /**
-     * @method It gets the value of the key from the session storage and returns it
+     * @method get_value - It gets the value of the key from the session storage and returns it
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
      * @param step.args.key {string} - The key to get the value for.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The value of the key in sessionStorage.
      *
@@ -69,7 +69,7 @@ export class SessionStorageAction {
      *     "type": "session_storage",
      *     "action": "get_value",
      *     "args": {
-     *          "key": "my-key"
+     *          "key": "my-key",
      *          "target": "$context.result"
      *     }
      * }
@@ -86,7 +86,7 @@ export class SessionStorageAction {
     }
 
     /**
-     * @method It takes a key and a value, converts the value to JSON, and stores it in the browser's session storage
+     * @method set_object - It takes a key and a value, converts the value to JSON, and stores it in the browser's session storage
      * @param step - The step object from the process.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
@@ -119,7 +119,7 @@ export class SessionStorageAction {
     }
 
     /**
-     * @method It gets the value of the key argument, gets the value from session storage, parses it as JSON, and then sets the
+     * @method get_object - It gets the value of the key argument, gets the value from session storage, parses it as JSON, and then sets the
      * value of the target argument to the result
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
@@ -127,7 +127,7 @@ export class SessionStorageAction {
      * @param item - The current item being processed.
      *
      * @param step.args.key {string} - The key to get the value for.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The value of the key in the session storage.
      *
@@ -141,7 +141,7 @@ export class SessionStorageAction {
      *     "type": "session_storage",
      *     "action": "get_object",
      *     "args": {
-     *          "key": "my-key"
+     *          "key": "my-key",
      *          "target": "$context.result"
      *     }
      * }
@@ -159,7 +159,7 @@ export class SessionStorageAction {
     }
 
     /**
-     * @method Remove a value from the session storage
+     * @method remove - Remove a value from the session storage
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object

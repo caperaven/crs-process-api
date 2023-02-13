@@ -13,20 +13,20 @@ export class MediaActions {
     }
 
     /**
-     * @method It takes a canvas element and a set of constraints,and then sets the canvas to display.
+     * @method render_camera - It takes a canvas element and a set of constraints,and then sets the canvas to display.
      * @param step - The step object
      * @param context - The context of the current process.
      * @param process - The current process
      * @param item - the item that is being processed
      *
-     * @param canvas {object} - The canvas element to display the video stream on.
-     * @param constraints {object} - The constraints to use when getting the video stream.
+     *@param step.args.element{object} - The canvas element to display the video on.
+     *@param step.args.constraints {object} - The constraints to use when capturing the video.
      *
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
      * await crs.call("media", "render_camera", {
-     *     canvas: {canvas}
+     *     element: {canvas}
      *     constraints: {constraints}
      * }, context, process, item);
      *
@@ -35,7 +35,7 @@ export class MediaActions {
      *      "type": "media",
      *      "action": "render_camera",
      *      "args": {
-     *          "canvas": {canvas}
+     *          "element": {canvas}
      *          "constraints": {constraints}
      *      }
      * }
@@ -56,22 +56,22 @@ export class MediaActions {
     }
 
     /**
-     * @method "Capture the current frame of the video element and draw it on the canvas element."
+     * @method capture_image - "Capture the current frame of the video element and draw it on the canvas element."
      * The first line of the function is a comment. Comments are ignored by the interpreter
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process that is running the step.
      * @param item - The item that is being processed.
      *
-     * @param video {object} - The video element to capture the frame from.
-     * @param canvas {object} - The canvas element to draw the frame on.
+     * @param step.args.target {string} - The canvas element to draw the image on.
+     * @param step.args.source {string} - The video element to capture the image from.
      *
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
      * await crs.call("media", "capture_image", {
-     *     canvas: {canvas}
-     *     video: {video}
+     *     target: this.querySelector("canvas"),
+     *     source: this.querySelector("video")
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -79,8 +79,8 @@ export class MediaActions {
      *    "type": "media",
      *    "action": "capture_image",
      *    "args": {
-     *          "canvas": {canvas}
-     *          "video": {video}
+     *          "target": "canvas",
+     *          "source": "video"
      *     }
      * }
      */

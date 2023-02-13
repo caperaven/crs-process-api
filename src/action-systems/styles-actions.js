@@ -13,7 +13,7 @@ export class StylesActions {
     }
 
     /**
-     * @method It loads a CSS file into the page
+     * @method load_file - It loads a CSS file into the page
      * @param step - The step object from the process.
      * @param context - The context of the current process.
      * @param process - The process object
@@ -57,7 +57,7 @@ export class StylesActions {
     }
 
     /**
-     * @method It removes a link from the DOM
+     * @method unload_file - It removes a link from the DOM
      * @param step - The step object from the process.
      * @param context - The context of the current step.
      * @param process - The process object that is running the step.

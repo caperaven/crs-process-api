@@ -20,19 +20,22 @@ export class ModuleActions {
     }
 
     /**
-     * @method Call a module function
+     * @method call - Call a module function
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the module.
      *
-     * @param module {string} - The name of the module to call.
-     * @param parameters {object} - The parameters to pass to the function.
+     * @param step.args.default {boolean} - If true, it will call the default function in the module.
+     * @param step.args.module {string} - The name of the module to call.
+     * @param step.args.fnName {string} - The name of the function to call.
+     * @param step.args.parameters {object} - The parameters to pass to the function.
+     * @param [step.args.target = "$context.result] {string} - The name of the variable to store the result in.
      *
      * @returns The result of the module call.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("module", "call", {
+     *     default: true,
      *     module: "module",
-     *     function: "function",
      *    "parameters": {parameters}
      * }, context, process, item);
      *
@@ -41,9 +44,11 @@ export class ModuleActions {
      *    "type": "module",
      *    "action": "call",
      *    "args": {
+     *        "default": false,
      *        "module": "module",
      *        "function": "function",
-     *        "parameters": {parameters}
+     *        "parameters": {parameters},
+     *        "target": "$context.result"
      *    }
      * }
      *
@@ -57,19 +62,23 @@ export class ModuleActions {
     }
 
     /**
-     * @method creates an instance of a module
+     * @method create_class - creates an instance of a module
      * @param step - The step object that is being executed.
-     * @param module {string} - The name of the module that contains the class.
-     * @param parameters {object} - The parameters to pass to the constructor.
-     * @param default {boolean} - If true, it will create an instance of the default class in the module.
+     *
+     * @param step.args.default {boolean} - If true, it will create an instance of the default class in the module.
+     * @param step.args.module {string} - The name of the module that contains the class.
+     * @param [step.args.class = "class"] {string} - The name of the class to create an instance of.
+     * @param step.args.parameters {object} - The parameters to pass to the constructor.
+     * @param [step.args.target = "$context.result] {string} - The name of the variable to store the result in.
      *
      * @returns The instance of the class.
      *
      * @example <caption>javascript example</caption>
-     * const instance = await crs.call("module", "create_class", {
+     * const result = await crs.call("module", "create_class", {
+     *     default: false,
      *     module: "module",
+     *     class: "class",
      *     parameters: {parameters},
-     *     default: false
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -77,9 +86,10 @@ export class ModuleActions {
      *   "type": "module",
      *   "action": "create_class",
      *   "args": {
+     *      "default": true,
      *      "module": "module",
-     *      "parameters": {parameters}
-     *      "default": true
+     *      "parameters": {parameters},
+     *      "target": "$context.result"
      *   }
      * }
      */
@@ -92,11 +102,12 @@ export class ModuleActions {
     }
 
     /**
-     * @method It returns the value of a constant in a module
+     * @method get_constant - It returns the value of a constant in a module
      * @param step - The step object that is being executed.
      *
-     * @param module {string} - The name of the module that contains the constant.
-     * @param name {string} - The name of the constant.
+     * @param step.args.module {string} - The name of the module that contains the constant.
+     * @param step.args.name {string} - The name of the constant.
+     * @param [step.args.target = "$context.result] {string} - The name of the variable to store the result in.
      *
      * @returns The constant value of the module and name.
      *
@@ -112,7 +123,8 @@ export class ModuleActions {
      *      "action": "get_constant",
      *      "args": {
      *          "module": "module",
-     *          "name": "constant"
+     *          "name": "constant",
+     *          "target": "$context.result"
      *      }
      * }
      */
