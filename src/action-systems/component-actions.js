@@ -185,7 +185,7 @@ export class ComponentActions {
      * @example <caption>javascript</caption>
      * await crs.call("component", "on_ready", {
      *   element: "my-element",
-     *   callback: function(),
+     *   callback: function,
      *   caller: this
      *   };
      *
@@ -195,8 +195,8 @@ export class ComponentActions {
      *     "action": "on_ready",
      *     "args": {
      *      "element": "my-element",
-     *      "callback": function(),
-     *      "caller": this
+     *      "callback": "$context.callback"
+     *      "caller": "$context"
      *     }
      * }
      */
