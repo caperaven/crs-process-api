@@ -25,7 +25,7 @@ import {callFunctionOnPath} from "./action-actions.js";
  * set_css_variables - Set multiple css variables
  * get_css_variables - Get multiple css variables
  *
- * */
+ **/
 export class DomActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
