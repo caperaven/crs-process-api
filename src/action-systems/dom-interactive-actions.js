@@ -1,5 +1,18 @@
 /**
- * This deals with resizing of elements, moving it, interactive functions
+ * @class DomInteractiveActions - This deals with resizing of elements, moving it, interactive functions.
+ *
+ * Features:
+ * get_animation_layer - get the animation layer
+ * clear_animation_layer - clear the animation layer
+ * remove_animation_layer - remove the animation layer
+ * highlight - highlight an element
+ * clone_for_movement - clone an element for movement
+ * enable_resize - enable resizing of an element
+ * disable_resize - disable resizing of an element
+ * enable_dragdrop - enable drag and drop of an element
+ * disable_dragdrop - disable drag and drop of an element
+ * enable_move - enable moving of an element
+ * disable_move - disable moving of an element
  */
 
 export class DomInteractiveActions {
@@ -8,7 +21,30 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Create an animation layer for elements to move and animate on.
+     * @method get_animation_layer - Create an animation layer for elements to move and animate on.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.target {String} - The id of the target element.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "get_animation_layer", {
+     *  target: "my-list"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "get_animation_layer",
+     *  "args": {
+     *    "target": "my-list"
+     *  }
+     * }
+     *
+     * @returns {Promise<void>}
      */
     static async get_animation_layer(step, context, process, item) {
         const layer = document.querySelector("#animation-layer");
@@ -40,7 +76,23 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Remove all elements from the animation layer.
+     * @method clear_animation_layer - Remove all elements from the animation layer.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "clear_animation_layer");
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "clear_animation_layer"
+     * }
+     *
+     * @returns {Promise<void>}
      */
     static async clear_animation_layer(step, context, process, item) {
         const element = document.querySelector("#animation-layer");
@@ -50,7 +102,23 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Remove the animation layer from the dom
+     * @method remove_animation_layer - Remove the animation layer from the dom
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "remove_animation_layer");
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "remove_animation_layer"
+     * }
+     *
+     * @returns {Promise<void>}
      */
     static async remove_animation_layer(step, context, process, item) {
         const element = document.querySelector("#animation-layer");
@@ -58,7 +126,37 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Create a highlight graphic around a given element
+     * @method highlight - Create a highlight graphic around a given element
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.target {String} - The id of the target element.
+     * @param step.args.classes {String} - The classes to apply to the highlight element.
+     * @param step.args.duration {Number} - The duration of the highlight animation.
+     * @param step.args.template {String} - The template to use for the highlight element.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "highlight", {
+     *   target: "my-list",
+     *   classes: "highlight",
+     *   duration: 1000,
+     *   template: "<div class='highlight'></div>"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "highlight",
+     *  "args": {
+     *    "target": "my-list",
+     *    "classes": "highlight",
+     *    "duration": 1000,
+     *    "template": "<div class='highlight'></div>"
+     *  }
+     * }
      */
     static async highlight(step, context, process, item) {
         const animationLayer = await this.get_animation_layer();
@@ -109,7 +207,53 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Clone a element for the purpose of drag and drop
+     * @method clone_for_movement - Clone an element for the purpose of drag and drop
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to clone.
+     * @param step.args.parent {String} - The id of the parent element to append the clone to.
+     * @param step.args.position {Object} - The position of the clone.
+     * @param step.args.attributes {Object} - The attributes to apply to the clone.
+     * @param step.args.styles {Object} - The styles to apply to the clone.
+     * @param step.args.classes {[String]} - The classes to apply to the clone.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "clone_for_movement", {
+     *  element: "my-list",
+     *  parent: "my-list",
+     *  position: {x: 0, y: 0},
+     *    attributes: {
+     *    "id": "my-list-clone"
+     *   },
+     *  styles: {
+     *    "position": "absolute"
+     *   },
+     *  classes: ["my-list-clone"]
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "clone_for_movement",
+     *  "args": {
+     *    "element": "my-list",
+     *    "parent": "my-list",
+     *    "position": {x: 0, y: 0},
+     *    "attributes": {
+     *      "id": "my-list-clone"
+     *    },
+     *    "styles": {
+     *      "position": "absolute"
+     *    },
+     *    "classes": ["my-list-clone"]
+     *   }
+     * }
+     *
+     * @returns {Promise} - A promise that resolves with the clone.
      */
     static async clone_for_movement(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -145,7 +289,36 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Enable resize functionality on a element so that interactions will perform resize operations.
+     * @method enable_resize - Enable resize functionality on a element so that interactions will perform resize operations.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to enable resize on.
+     * @param step.args.resize_query {String} - The query to use to find the resize handles.
+     * @param [step.args.options] {Object} - The options to pass to the resize manager.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "enable_resize", {
+     *  element: "my-list",
+     *  resize_query: ".resize-handle",
+     *  options: {}
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "enable_resize",
+     *  "args": {
+     *    "element": "my-list",
+     *    "resize_query": ".resize-handle",
+     *    "options": {}
+     * }
+     * }
+     *
+     * @returns {Promise} - A promise that resolves when the resize functionality is enabled.
      */
     static async enable_resize(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -159,7 +332,30 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Resize features are no longer required on an element so remove the resize ability on that element.
+     * @method disable_resize - Resize features are no longer required on an element so remove the resize ability on that element.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to disable resize on.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "disable_resize", {
+     *   element: "my-list"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "disable_resize",
+     *  "args": {
+     *    "element": "my-list"
+     *  }
+     * }
+     *
+     * @returns {Promise} - A promise that resolves when the resize functionality is disabled.
      */
     static async disable_resize(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -167,7 +363,33 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Enable drag and drop behaviour on a parent element who's children can be dragged.
+     * @method enable_dragdrop - Enable drag and drop behaviour on a parent element who's children can be dragged.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to enable drag and drop on.
+     * @param [step.args.options] {Object} - The options to pass to the drag and drop manager.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "enable_dragdrop", {
+     *   element: "my-list",
+     *   options: {}
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "enable_dragdrop",
+     *  "args": {
+     *    "element": "my-list",
+     *    "options": {}
+     *   }
+     * }
+     *
+     * @returns {Promise} - A promise that resolves when the drag and drop functionality is enabled.
      */
     static async enable_dragdrop(step, context, process, item) {
         const options = await crs.process.getValue(step.args.options, context, process, item);
@@ -179,7 +401,28 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Drag and drop operations are no longer required so you can remove the feature from the element
+     * @method disable_dragdrop - Drag and drop operations are no longer required so you can remove the feature from the element
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to disable drag and drop on.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "disable_dragdrop", {
+     *  element: "my-list"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "disable_dragdrop",
+     *  "args": {
+     *   "element": "my-list"
+     *   }
+     * }
      */
     static async disable_dragdrop(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -188,12 +431,38 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Enable the movement of fixed position items.
+     * @method enable_move - Enable the movement of fixed position items.
      * This is used for things like floating menu items that are at a fixed position.
      * Note that your element's position must be fixed, the top set to 0 and the left set to 0;
      * Use translate to position the element on the screen.
      * The element you define will be the item you move.
-     * If a child is responsible for staring the move process, set the move_query to match that of the child.
+     * If a child is responsible for starting the move process, set the move_query to match that of the child.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to enable move on.
+     * @param step.args.move_query {String} - The query to use to find the element that starts the move process.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "enable_move", {
+     *  element: "my-list",
+     *  move_query: ".move"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "enable_move",
+     *  "args": {
+     *    "element": "my-list",
+     *    "move_query": ".move"
+     *   }
+     * }
+     *
+     * @returns {Promise} - A promise that resolves when the move functionality is enabled.
      */
     static async enable_move(step, context, process, item) {
         const moveQuery = await crs.process.getValue(step.args.move_query, context, process, item);
@@ -205,7 +474,30 @@ export class DomInteractiveActions {
     }
 
     /**
-     * Disable the movement of fixed position items.
+     * @method disable_move - Disable the movement of fixed position items.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to disable move on.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-interactive", "disable_move", {
+     *   element: "my-list"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-interactive",
+     *  "action": "disable_move",
+     *  "args": {
+     *     "element": "my-list"
+     *   }
+     * }
+     *
+     * @returns {Promise} - A promise that resolves when the move functionality is disabled.
      */
     static async disable_move(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);

@@ -2,11 +2,98 @@
  * https://www.w3.org/TR/IndexedDB/
  */
 
+
+
+/**
+ * @class DatabaseActions - It provides a set of static methods that can be used to perform database actions
+ * Features:
+ * open - Open a database
+ * delete_old - Delete old databases
+ * close - Close a database
+ * delete - Delete a database
+ * dump - Dump a database
+ * get_from_index - Get records from an index
+ * get_all - Get all records from a table
+ * clear - Clear a table
+ * delete_record - Delete a record
+ * update_record - Update a record
+ * add_record - Add a record
+ * get_batch - Get a batch of records
+ * get_values - Get values from a table
+ * calculate_paging - Calculate paging
+ * get_page - Get a page of records
+ * get_range - Get a range of records
+ * */
 export class DatabaseActions {
+    /**
+     * @method perform - The `perform` function is a static function that is called by the `process` function. It calls the `action`
+     * function that is passed in the `step` object
+     * @param step {Object} - The step object from the process definition
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is being executed.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.action {String} - The action to perform
+     */
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
+    /**
+     * @method open - It opens a database
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.name {String} - The name of the database
+     * @param step.args.version {Number} - The version of the database
+     * @param step.args.tables {Array} - The tables to create in the database
+     * @param [step.args.add_timestamp] {Boolean} - If true, a timestamp will be added to the database name
+     * @param [step.args.target] {String} - The target to set the database instance to
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("database", "open", {
+     *    name: "my_database",
+     *    version: 1,
+     *    tables: [
+     *     {
+     *      name: "my_table",
+     *      indexes: [
+     *       {
+     *        name: "my_index",
+     *        keyPath: "my_key_path",
+     *        options: {
+     *          unique: false
+     *        }
+     *       }
+     *      ]
+     *    }
+     *   ]
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "name": "my_database",
+     *  "version": 1,
+     *  "tables": [
+     *    {
+     *     "name": "my_table",
+     *     "indexes": [
+     *      {
+     *       "name": "my_index",
+     *       "keyPath": "my_key_path",
+     *       "options": {
+     *       "unique": false
+     *      }
+     *     }
+     *    ]
+     *   }
+     *  ]
+     * }
+     *
+     * @returns The instance of the database.
+     */
     static async open(step, context, process, item) {
         let dbName = await crs.process.getValue(step.args.name, context, process, item);
         const version = await crs.process.getValue(step.args.version, context, process, item);

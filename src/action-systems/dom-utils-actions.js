@@ -1,7 +1,16 @@
 import {callFunctionOnPath} from "./action-actions.js";
 
 /**
- * This contains functions for utility
+ * @class DomUtilsActions - This contains functions for utility
+ *
+ * Features:
+ * call_on_element - call a function on a element
+ * get_property - get a element's property value
+ * set_properties - set a element's property value
+ * open_tab - open a new tab
+ * get_element_bounds - get the bounds of an element
+ * find_parent_of_type - find the parent of a given type
+ * #find_parent_of_type - find the parent of a given type
  */
 
 export class DomUtilsActions {
@@ -10,7 +19,36 @@ export class DomUtilsActions {
     }
 
     /**
-     * Call a function on a element
+     * @method call_on_element - Call a function on a element
+     *
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to call the function on.
+     * @param step.args.function {String} - The name of the function to call.
+     * @param step.args.args {Array} - The arguments to pass to the function.
+     * @param step.args.target {String} - The target to store the result in.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-utils", "call_on_element", {
+     *   element: "my-element",
+     *   function: "myFunction",
+     *   args: ["my", "arguments"]
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-utils",
+     *  "action": "call_on_element",
+     *  "args": {
+     *    "element": "my-element",
+     *    "function": "myFunction",
+     *    "args": ["my", "arguments"]
+     *   }
+     * }
+     *
      * @returns {Promise<*>}
      */
     static async call_on_element(step, context, process, item) {
