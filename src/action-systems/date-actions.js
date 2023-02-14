@@ -1,8 +1,48 @@
+/**
+ * @class DateActions - It takes a month and year, and returns an array of days for that month.
+ * Features:
+ * get_days - Returns an array of days for a given month and year.
+ *
+ * */
 export class DateActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
+    /**
+     * @method get_days - This function returns an array of objects that represent the days of a given month
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.month {String} - The month to get the days for.
+     * @param step.args.year {String} - The year to get the days for.
+     * @param [step.args.only_current] {Boolean} - If true, only the days in the current month will be returned.
+     * @param step.args.table {String} - The name of the table to store the days in.
+     *
+     * @example <caption>javascript</caption>
+     * const days = await crs.call("date", "get_days", {
+     *   month: "month",
+     *   year: "year",
+     *   only_current: true,
+     *   table: "days"
+     * });
+     *
+     *@example <caption>json</caption>
+     * {
+     *  type: "date",
+     *  action: "get_days",
+     *  args: {
+     *    month: "month",
+     *    year: "year",
+     *    only_current: true,
+     *    table: "days"
+     *    }
+     * }
+     *
+     * @returns An array of objects.
+     */
     static async get_days(step, context, process, item) {
         const month = await crs.process.getValue(step.args.month, context, process, item);
         const year = await crs.process.getValue(step.args.year, context, process, item);

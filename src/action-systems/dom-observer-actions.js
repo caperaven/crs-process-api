@@ -1,8 +1,8 @@
 /**
- * @class DomObserverActions
+ * @class DomObserverActions - Use this class for observing dom changes e.g. ResizeObserver
  * @description Use this class for observing dom changes e.g. ResizeObserver
  *
- * Actions supported are:
+ * Features:
  * - observe_resize - observer resize for an element
  * - unobserve_resize - unobserve resize for an element
  */
@@ -12,11 +12,11 @@ export class DomObserverActions {
     }
 
     /**
-     * Observe the element for changes in size.  When the size changes, the callback is called.
-     * @param step - The step to perform
-     * @param context - The context of the process
-     * @param process - The process
-     * @param item - The item being processed
+     * @method observe_resize - Observe the element for changes in size.  When the size changes, the callback is called.
+     * @param step {Object} - The step to perform
+     * @param context {Object} - The context of the process
+     * @param process {Object} - The process
+     * @param item {Object} - The item being processed
      *
      * @param step.args.element {HTMLElement} - The element to observe
      * @param step.args.callback {Function} - The callback to call when the size changes
@@ -51,11 +51,11 @@ export class DomObserverActions {
     }
 
     /**
-     * Disable the resize observer for the element
-     * @param step - The step to perform
-     * @param context - The context of the process
-     * @param process - The process
-     * @param item - The item being processed
+     * @method unobserve_resize - Disable the resize observer for the element
+     * @param step {Object} - The step to perform
+     * @param context {Object} - The context of the process
+     * @param process {Object} - The process
+     * @param item {Object} - The item being processed
      *
      * @param step.args.element {HTMLElement} - The element to unobserve
      *
