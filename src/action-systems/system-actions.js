@@ -19,19 +19,19 @@ export class SystemActions {
     }
 
     /**
-     * @method Copy the value of the source to the clipboard
+     * @method copy_to_clipboard - Copy the value of the source to the clipboard
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The current item being processed.
      *
-     * @param step.args.source {string} - The source value to copy to the clipboard.
+     * @param step.args.source {string} - The source to copy to the clipboard.
      *
      * @returns {Promise<void>}
      *
      * @example <caption>javascript example</caption>
      * await crs.call("system", "copy_to_clipboard", {
-     *     source: "$context.value"
+     *     source: "value"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -49,15 +49,13 @@ export class SystemActions {
     }
 
     /**
-     * @method Sleep function used for testing to emulate network traffic delay
-     * @description "Wait for the specified duration before continuing."
+     * @method sleep - Sleep function used for testing to emulate network traffic delay
      * @param step - The step object from the process definition
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     *  @param step.args.duration {integer} - The duration to wait in milliseconds.
-     *  @param step.args.target {string} - The target to copy the value to.
+     * @param step.args.duration {number} - The duration to sleep in milliseconds.
      *
      * @returns A promise that resolves after the duration has passed.
      *
@@ -86,27 +84,20 @@ export class SystemActions {
     }
 
     /**
-     * @method The function pauses the process and waits for the user to resume the process
+     * @method pause - The function pauses the process and waits for the user to resume the process
      * @param step - the current step in the process.
      * @param context - the context of the process.
      * @param process - The process object that is being run.
      *
-     * @param step.args.bId {string} - The binding context id to use for the resume function.
-     *
      * @returns A promise.
      *
      * @example <caption>javascript example</caption>
-     * await crs.call("system", "pause", {
-     *      bId: "myBindingContext"
-     * }, context, process, item);
+     * await crs.call("system", "pause", {}, context, process, item);
      *
      * @example <caption>json example</caption>
      * {
      *      "type": "system",
-     *      "action": "pause",
-     *      "args": {
-     *          "bId": "myBindingContext"
-     *       }
+     *      "action": "pause"
      * }
      */
     static async pause(step, context, process) {
@@ -140,20 +131,29 @@ export class SystemActions {
     }
 
     /**
-     * @method Resume the process if it is waiting.
+     * @method resume - Resume the process if it is waiting.
      * @param step - The step object that is being executed.
      * @param context - The context object that was passed to the process when it was started.
      * @param process - The process object that was created when the process was started.
      * @param item - The item that is being processed.
      *
      * @returns A promise that resolves immediately.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "resume", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "resume"
+     *  }
      */
     static async resume(step, context, process, item) {
         process.resume?.();
     }
 
     /**
-     * @method It throws an error
+     * @method abort - It throws an error
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
@@ -165,7 +165,7 @@ export class SystemActions {
      *
      * @example <caption>javascript example</caption>
      * await crs.call("system", "abort", {
-     *    error: "This is an error"
+     *    error: "Something went really wrong"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -173,7 +173,7 @@ export class SystemActions {
      *     "type": "system",
      *     "action": "abort",
      *     "args": {
-     *         "error": "This is an error"
+     *         "error": "Something went really wrong"
      *     }
      * }
      */
@@ -183,13 +183,13 @@ export class SystemActions {
     }
 
     /**
-     * @method If the user agent string contains the word "Mobi", then return true
+     * @method is_mobile - If the user agent string contains the word "Mobi", then return true
      * @param step - The current step in the process
      * @param context - The context object that is passed to the step.
      * @param process - the process object
      * @param item - the item that is being processed
      *
-     * @param step.args.target {string} - The target to copy the value to.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns A boolean value.
      *
@@ -210,13 +210,13 @@ export class SystemActions {
     }
 
     /**
-     * @method If the device is in portrait mode, return true, otherwise return false
+     * @method is_portrait - If the device is in portrait mode, return true, otherwise return false
      * @param step - The step object
      * @param context - The context of the current step.
      * @param process - The process object
      * @param item - The current item being processed.
      *
-     * @param step.args.target {string} - The target to copy the value to.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the matchMedia function.
      *
@@ -243,13 +243,13 @@ export class SystemActions {
     }
 
     /**
-     * @method If the device is in landscape mode, return true, otherwise return false
+     * @method is_landscape - If the device is in landscape mode, return true, otherwise return false
      * @param step - The step object
      * @param context - The context of the current step.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.target {string} - The target to copy the value to.
+     * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
      * @returns The result of the matchMedia function.
      *

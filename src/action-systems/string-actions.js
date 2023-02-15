@@ -21,7 +21,7 @@ export class StringActions {
 
 
     /**
-     * @method Given this format, inflate a string and replace the string literal markers with the actual value.
+     * @method inflate - Given this format, inflate a string and replace the string literal markers with the actual value.
      * @examples.
      *      "#input/${id}?type='tasks'&typeId='${typeId}'"
      *      "${firstName} ${lastName} = ${age} old"
@@ -32,8 +32,8 @@ export class StringActions {
      * @param item - The item that is being processed.
      *
      * @param step.args.template {string} - The template to inflate.
-     * @param step.args.parameters {object} - The {parameters} to use to inflate the template.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.parameters] {object} - The {parameters} to use to inflate the template.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the inflate_string function.
      *
@@ -82,14 +82,14 @@ export class StringActions {
     }
 
     /**
-     * @method Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
+     * @method translate - Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
      * @param step.args.template {string} - The template to translate.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the translation.
      *
@@ -104,7 +104,7 @@ export class StringActions {
      *      "action": "translate",
      *      "args": {
      *           "template": "Hello &{firstName} &{lastName}",
-     *           "target": "$context.myTarget"
+     *           "target": "$context.result"
      *      }
      * }
      */
@@ -125,15 +125,15 @@ export class StringActions {
     }
 
     /**
-     * @method Split a string into an array of strings using a regular expression
+     * @method to_array - Split a string into an array of strings using a regular expression
      * @param step - The step object
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
      * @param step.args.source {string} - The string to split.
-     * @param step.args.pattern {string} - The regular expression to use to split the string.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param step.args.pattern {string} - The pattern to split the string on.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the split operation.
      *
@@ -150,7 +150,7 @@ export class StringActions {
      *      "args": {
      *           "source": "$context.value",
      *           "pattern": ",",
-     *           "target": "$context.myTarget"
+     *           "target": "$context.result"
      *      }
      * }
      */
@@ -166,15 +166,15 @@ export class StringActions {
     }
 
     /**
-     * @method It takes an array, joins it together with a separator, and stores the result in a variable
+     * @method from_array - It takes an array, joins it together with a separator, and stores the result in a variable
      * @param step - The step object
      * @param context - The context object that is passed to the process.
      * @param process - the process object
      * @param item - The item that is being processed.
      *
      * @param step.args.source {string} - The array to join.
-     * @param step.args.separator {string} - The separator to use to join the array.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.separator] {string} - The separator to use when joining the array.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the join operation.
      *
@@ -191,7 +191,7 @@ export class StringActions {
      *      "args": {
      *          "source": "$context.value",
      *          "separator": ",",
-     *          "target": "$context.myTarget"
+     *          "target": "$context.result"
      *       }
      * }
      */
@@ -208,25 +208,25 @@ export class StringActions {
     }
 
     /**
-     * @method It takes a string, splits it into an array of strings, joins the array of strings back together,
+     * @method replace - It takes a string, splits it into an array of strings, joins the array of strings back together,
      * and returns the result
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     *  @param step.args.source {string} - The string to split and join.
-     *  @param step.args.pattern {string} - The regular expression to use to split the string.
-     *  @param step.args.value {string} - The value to use to join the array.
-     *  @param step.args.target {string} - The target to store the result in.
+     * @param step.args.source {string} - The string to replace.
+     * @param step.args.pattern {string} - The pattern to replace.
+     * @param step.args.value {string} - The value to replace the pattern with.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The result of the replace function.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("string", "replace", {
-     *     source: "$context.value",
-     *     pattern: "old",
-     *     value: "new"
+     *     source: "source",
+     *     pattern: ",",
+     *     value: "|"
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
@@ -234,10 +234,10 @@ export class StringActions {
      *      "type": "string",
      *      "action": "replace",
      *      "args": {
-     *           "source": "$context.value",
-     *           "pattern": "old",
-     *           "value": "new",
-     *           "target": "$context.myTarget"
+     *           "source": "$context.source",
+     *           "pattern": ",",
+     *           "value": "|",
+     *           "target": "$context.result"
      *      }
      * }
      */
@@ -255,17 +255,16 @@ export class StringActions {
     }
 
     /**
-     * @method It takes a URL query string and returns an object with the key/value pairs
-     * @description Accepts a query string, or string of key value pairs i.e. 'param1=value1&param2=value2...' and converts the string
-     * into an equivalent object. Supports 2nd level nesting through optional complex_parameters array.
+     * @method get_query_string - It takes a URL query string and returns an object with the key/value pairs
      * @param step - The step object from the process definition.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.source {string} - The query string to convert to an object.
-     * @param step.args.complex_parameters {object} - An array of [parameters] that should be converted to an object.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param step.args.source {string} - The URL query string to parse.
+     * @param [step.args.complex_parameters] {string|[]} - An array of parameters that have complex values.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
+     *
      *
      * @returns The result of the query string.
      *
@@ -322,16 +321,16 @@ export class StringActions {
     }
 
     /**
-     * @method It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
+     * @method template - It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
      * returns the result
      * @param step - The step object
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
-     * @param step.args.template {string} - The template string to replace the values in.
-     * @param step.args.options {object} - The {object} containing the values to replace in the template.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param step.args.template {string} - The template string.
+     * @param step.args.options {object} - The options object.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The template with the options replaced.
      *
@@ -376,24 +375,24 @@ export class StringActions {
     }
 
     /**
-     * @method Slice a string and return the result
+     * @method slice - Slice a string and return the result
      * @param step - The step object that is being executed.
      * @param context - The context object that is passed to the process.
      * @param process - The process object
      * @param item - The item that is being processed.
      *
      * @param step.args.value {string} - The string to slice.
-     * @param step.args.index {integer} - The index to start the slice at.
-     * @param step.args.length {integer} - The length of the slice.
-     * @param step.args.overflow {string} - The overflow behavior.If the length is greater than the string, then the overflow behavior will be used.
-     * @param step.args.target {string} - The target to store the result in.
+     * @param [step.args.index] {number} - The index to start the slice. If no value is given, the value is set to 0.
+     * @param step.args.length {number} - The length of the slice.
+     * @param [step.args.overflow] {string} - The overflow value. if no value is given, the value is set to null.
+     * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
      *
      * @returns The substring of the value from the index to the length.
      *
      * @example <caption>javascript example</caption>
      * const result = await crs.call("string", "slice", {
      *      value: "Hello World",
-     *      index: 0,
+     *      index: 2,
      *      length: 5,
      *      overflow: "ellipsis"
      * }, context, process, item);
@@ -404,7 +403,7 @@ export class StringActions {
      *       "action": "slice",
      *       "args": {
      *             "value": "Hello World",
-     *             "index": 0,
+     *             "index": 2,
      *             "length": 5,
      *             "overflow": "ellipsis",
      *             "target": "$context.result"
@@ -435,7 +434,7 @@ export class StringActions {
 }
 
 /**
- * @method It takes a string, replaces all instances of `${` with `${context.`, then creates a function that returns
+ * @function inflate_string - It takes a string, replaces all instances of `${` with `${context.`, then creates a function that returns
  * the string, and then calls that function with the parameters
  * @param string - The string to inflate.
  * @param parameters - The parameters passed to the function.
@@ -456,7 +455,7 @@ async function inflate_string(string, parameters, context, process, item) {
 }
 
 /**
- * @method It takes a parameters object, and gets the value for each property on the object.
+ * @function sanitise_parameters - It takes a parameters object, and gets the value for each property on the object.
  * @param parameters - The parameters object that was passed to the function.
  * @param context - The context of the current process.
  * @param process - The process that is being executed.
@@ -476,7 +475,7 @@ async function sanitise_parameters(parameters, context, process, item) {
 }
 
 /**
- * @method If the string contains a translation key, get the translation and replace the key with the translation
+ * @function translate_string - If the string contains a translation key, get the translation and replace the key with the translation
  * @param value - The string to translate.
  * @returns A promise that resolves to the translated string.
  */
