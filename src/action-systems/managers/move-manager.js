@@ -33,13 +33,25 @@ export class MoveManager {
     }
 
     #mouseDown(event) {
-        if (this.#moveQuery == null && event.target != this.#element) return;
-        if (this.#moveQuery != null && event.target.matches(this.#moveQuery) == false) return;
+        // If the move query is null, check if the event target is the same as the element
+        if (this.#moveQuery == null) {
+            if (event.target != this.#element) {
+                return; // The event target does not match the element, so do nothing
+            }
+        }
+        // If the move query is not null, check if the event target or its shadow root matches the query
+        else {
+            let matches = event.target.matches(this.#moveQuery);
+            if (matches === false && event.target.shadowRoot != null) {
+                matches ||= event.target.shadowRoot.querySelector(this.#moveQuery) != null;
+            }
+            if (matches === false) {
+                return; // The event target or its shadow root do not match the query, so do nothing
+            }
+        }
 
         this.#startPos = {x: event.clientX, y: event.clientY};
         this.#bounds = this.#element.getBoundingClientRect();
-
-        console.log(this.#bounds);
 
         document.addEventListener("mousemove", this.#mouseMoveHandler);
         document.addEventListener("mouseup", this.#mouseUpHandler);
