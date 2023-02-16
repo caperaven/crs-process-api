@@ -36,6 +36,7 @@ export class ActionActions {
      *      "parameters": ["param1", "param2"],
      *      "target": "@process.result"
      *   }, context, process, item);
+     * }
      **/
     static async perform(step, context, process, item) {
         let expr = `return await ${step.action.replace("$", "")}(...(args||[]))`;

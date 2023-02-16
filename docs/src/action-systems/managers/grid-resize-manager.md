@@ -1,0 +1,1 @@
+ Options        columns, define this array of indexes if you only want to resize certain columns  

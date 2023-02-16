@@ -16,7 +16,7 @@
         "bundel-to-version": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js",
         "bundel-to-version-beta": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js --beta",
         "run": "caddy run",
-        "build-docs": "crs-jsdoc folder src dest docs"
+        "build-docs": "crs-jsdoc folder src\\action-systems dest docs"
     },
     "keywords": [],
     "author": "",
