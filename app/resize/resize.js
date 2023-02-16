@@ -1,3 +1,4 @@
+import "./../test-components/test-component.js";
 export default class Resize extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
@@ -32,6 +33,14 @@ export default class Resize extends crsbinding.classes.ViewBase {
                 lock_axis: "y"
             }
         })
+
+        await crs.call("dom_interactive", "enable_resize", {
+            element: this._element.querySelector("#shadowComponent"),
+            resize_query: ".resize",
+            options: {
+
+            }
+        });
     }
 
     async disconnectedCallback() {

@@ -32,23 +32,30 @@ export class MoveManager {
         this.#element = null;
     }
 
-    #mouseDown(event) {
+    #matches(event) {
         // If the move query is null, check if the event target is the same as the element
         if (this.#moveQuery == null) {
-            if (event.target != this.#element) {
-                return; // The event target does not match the element, so do nothing
-            }
+            if (event.target != this.#element)
+                return false; // The event target does not match the element
         }
         // If the move query is not null, check if the event target or its shadow root matches the query
         else {
             let matches = event.target.matches(this.#moveQuery);
             if (matches === false && event.target.shadowRoot != null) {
-                matches ||= event.target.shadowRoot.querySelector(this.#moveQuery) != null;
+                for (const element of event.composedPath()) {
+                    if (element.matches != null && element.matches(this.#moveQuery)) {
+                        return true;
+                    }
+                }
             }
-            if (matches === false) {
-                return; // The event target or its shadow root do not match the query, so do nothing
-            }
+            if (matches === false)
+                return false; // The event target or its shadow root do not match the query
         }
+    }
+
+    #mouseDown(event) {
+        if (this.#matches(event) === false)
+            return;
 
         this.#startPos = {x: event.clientX, y: event.clientY};
         this.#bounds = this.#element.getBoundingClientRect();

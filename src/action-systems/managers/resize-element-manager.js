@@ -43,7 +43,7 @@ export class ResizeElementManager {
         const draggable = getDraggable(event, {dragQuery: this.#resizeQuery});
         if (draggable == null) return;
 
-        this.#targetElement = draggable.parentElement;
+        this.#targetElement = draggable.parentElement ?? event.target;
         this.#bounds = this.#targetElement.getBoundingClientRect();
         this.#startPos = {x: event.clientX, y: event.clientY};
 
