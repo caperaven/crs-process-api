@@ -25,7 +25,7 @@ import {callFunctionOnPath} from "./action-actions.js";
  * set_css_variables - Set multiple css variables
  * get_css_variables - Get multiple css variables
  *
- **/
+ */
 export class DomActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
@@ -52,10 +52,6 @@ export class DomActions {
      */
 
 
-    /**
-     * Set a element's attribute value
-     * @returns {Promise<void>}
-     */
 
 
     /**
@@ -93,10 +89,6 @@ export class DomActions {
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
 
-    /**
-     * Set multiple attributes on an element
-     * @returns {Promise<void>}
-     */
 
 
     /**
@@ -138,10 +130,6 @@ export class DomActions {
         }
     }
 
-    /**
-     * Get a element's attribute value
-     * @returns {Promise<*>}
-     */
 
 
     /**
@@ -185,14 +173,9 @@ export class DomActions {
         return value;
     }
 
-    /**
-     * Add a class to the classlist
-     * @returns {Promise<void>}
-     */
-
 
     /**
-     * @method add_class - It adds a class to an element
+     * @method add_class - It adds a class to the classList
      * @param step {Object} - The step object from the process.
      * @param context {Object} - The context object that is passed to the process.
      * @param process {Object} - The current process object
@@ -227,14 +210,9 @@ export class DomActions {
         element.classList.add(...collection);
     }
 
-    /**
-     * Add a class to the classlist
-     * @returns {Promise<void>}
-     */
-
 
     /**
-     * @method remove_class - Remove a class from an element
+     * @method remove_class - Remove a class from the classList
      * @param step {Object} - The step object from the process.
      * @param context {Object} - The context of the current process.
      * @param process {Object} - The current process object
