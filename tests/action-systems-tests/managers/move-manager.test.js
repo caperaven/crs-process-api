@@ -12,7 +12,7 @@ Deno.test("move-manager - clicked element matches the move query", async () => {
     const instance = new MoveManager(element, "header");
 
     // Act
-    element.performEvent("mousedown", {matches: (query) => query === "header"});
+    element.performEvent("mousedown", element, {composedPath: () => [{matches: (query) => query === "header"}]});
 
     // Assert
     assertEquals(document.__events.length, 2);
@@ -28,9 +28,7 @@ Deno.test("move-manager - clicked element does not match the move query", async 
     const instance = new MoveManager(element, "header");
 
     // Act
-    element.performEvent("mousedown", {
-        matches: (query) => query !== "header"
-    }, {composedPath: () => []});
+    element.performEvent("mousedown", element, {composedPath: () => [{matches: (query) => query !== "header"}]});
 
     // Assert
     assertEquals(document.__events.length, 0);
@@ -46,7 +44,7 @@ Deno.test("move-manager - move query is null and target == element", async () =>
     const instance = new MoveManager(element);
 
     // Act
-    element.performEvent("mousedown", element, {composedPath: () => []});
+    element.performEvent("mousedown", element, {composedPath: () => [element]});
 
     // Assert
     assertEquals(document.__events.length, 2);
@@ -62,7 +60,7 @@ Deno.test("move-manager - move query is null and target != element", async () =>
     const instance = new MoveManager(element);
 
     // Act
-    element.performEvent("mousedown", {matches: (query) => query !== "header"}, {composedPath: () => []});
+    element.performEvent("mousedown", element, {composedPath: () => [{}]});
 
     // Assert
     assertEquals(document.__events.length, 0);
@@ -78,11 +76,8 @@ Deno.test("move-manager - clicked element is within the shadow dom", async () =>
     const instance = new MoveManager(element, "header");
 
     // Act
-    element.performEvent("mousedown", {
-        matches: (query) => false
-    }, {
+    element.performEvent("mousedown",element, {
         composedPath: () => [
-            {matches: (query) => query !== "header"},
             {matches: (query) => query === "header"}
         ]
     });
@@ -101,11 +96,8 @@ Deno.test("move-manager - clicked element is within the shadow dom no move query
     const instance = new MoveManager(element);
 
     // Act
-    element.performEvent("mousedown", {
-        matches: (query) => false
-    }, {
+    element.performEvent("mousedown", element, {
         composedPath: () => [
-            {matches: (query) => query !== "header"},
             {matches: (query) => query === "header"}
         ]
     });
