@@ -9,7 +9,7 @@
  */
 export function getDraggable(event, options) {
     const dragQuery = options?.dragQuery || "[draggable='true']";
-
+    
     if (event.target.matches(dragQuery)) {
         return event.target;
     }
@@ -18,9 +18,11 @@ export function getDraggable(event, options) {
         return event.target.parentElement;
     }
 
-    const shadowElement = event.target.shadowRoot?.querySelector(dragQuery);
-    if (shadowElement != null) {
-        return shadowElement
+    // If the event target is a shadow root, check if any of the elements in the shadow root match the query
+    for (const element of event.composedPath()) {
+        if (element !== event.target && element.matches && element.matches(dragQuery)) {
+            return element;
+        }
     }
 
     return null;
