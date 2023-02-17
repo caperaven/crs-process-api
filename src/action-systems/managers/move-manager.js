@@ -38,7 +38,8 @@ export class MoveManager {
      * @returns {boolean} - Returns true if the event matches the element or its shadow root, and false otherwise.
      */
     #matches(event) {
-        const target = event.composedPath()[0];
+        const path = event.composedPath();
+        const target = path[0];
         // If no query is specified, return true if the event target is the element
         if (this.#moveQuery == null) {
             return target === this.#element;
@@ -49,8 +50,9 @@ export class MoveManager {
             return true;
         }
 
-        // If no match was found, return false
-        return false;
+        // If the matching element is further down the event path, return true
+        const match = path.find(element => element.matches && element.matches(this.#moveQuery));
+        return match != null;
     }
 
 
@@ -58,6 +60,7 @@ export class MoveManager {
         if (this.#matches(event) === false)
             return;
 
+        event.preventDefault();
         this.#startPos = {x: event.clientX, y: event.clientY};
         this.#bounds = this.#element.getBoundingClientRect();
 

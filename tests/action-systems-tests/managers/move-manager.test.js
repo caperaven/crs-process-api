@@ -78,6 +78,7 @@ Deno.test("move-manager - clicked element is within the shadow dom", async () =>
     // Act
     element.performEvent("mousedown",element, {
         composedPath: () => [
+            {matches: (query) => query !== "header"},
             {matches: (query) => query === "header"}
         ]
     });
