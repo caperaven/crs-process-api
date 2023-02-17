@@ -9,7 +9,7 @@
  */
 export function getDraggable(event, options) {
     const dragQuery = options?.dragQuery || "[draggable='true']";
-    
+
     if (event.target.matches(dragQuery)) {
         return event.target;
     }
