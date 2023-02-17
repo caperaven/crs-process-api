@@ -1,0 +1,1 @@
+ Sets the drag drop events necessary for handeling a file drop   A handler should e passed in through the arguments to recieve the file results.  **Returns**: {Promise<void>} Cleans up and removes file drop events and associated handlers, must be called after using enable_dropzone  **Returns**: {Promise<void>}

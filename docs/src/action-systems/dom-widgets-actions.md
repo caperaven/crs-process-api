@@ -1,0 +1,1 @@
+ Set a widgets html and context for binding after adding it to the UI  **Returns**: {Promise<void>}
