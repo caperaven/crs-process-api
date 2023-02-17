@@ -64,7 +64,33 @@ export class DomUtilsActions {
     }
 
     /**
-     * Get a element's property value
+     * @method get_property - Get a element's property value
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to call the function on.
+     * @param step.args.property {String} - The name of the property to get.
+     * @param [step.args.target] {String} - The target to store the result in.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-utils", "get_property", {
+     *   element: "my-element",
+     *   property: "myProperty"
+     *   target: "my-target"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-utils",
+     *  "action": "get_property",
+     *  "args": {
+     *    "element": "my-element",
+     *    "property": "myProperty"
+     *    "target": "my-target"
+     *   }
+     * }
      * @returns {Promise<*>}
      */
     static async get_property(step, context, process, item) {
@@ -79,7 +105,34 @@ export class DomUtilsActions {
     }
 
     /**
-     * Set a element's property value
+     * @method set_properties - Set a element's property value
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to call the function on.
+     * @param step.args.properties {Object} - The properties to set.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-utils", "set_properties", {
+     *   element: "my-element",
+     *   properties: {
+     *    myProperty: "myValue"
+     *   }
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-utils",
+     *  "action": "set_properties",
+     *  "args": {
+     *    "element": "my-element",
+     *    "properties": {
+     *      "myProperty": "myValue"
+     *    }
+     *  }
+     * }
      * @returns {Promise<void>}
      */
     static async set_properties(step, context, process, item) {
@@ -92,6 +145,38 @@ export class DomUtilsActions {
         }
     }
 
+    /**
+     * @method open_tab - It opens a new tab in the browser
+     * @param step {Object} - The step object
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.url {String} - The url to open in the new tab.
+     * @param step.args.parameters {Object} - The parameters to inflate the url with.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-utils", "open_tab", {
+     *  url: "https://www.google.com/search?q={query}",
+     *  parameters: {
+     *    query: "my query"
+     *    }
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-utils",
+     *  "action": "open_tab",
+     *  "args": {
+     *    "url": "https://www.google.com/search?q={query}",
+     *    "parameters": {
+     *      "query": "my query"
+     *     }
+     *    }
+     *  }
+     *
+     * @returns {Promise<void>}
+     */
     static async open_tab(step, context, process, item) {
         let url = await crs.call("string", "inflate", {
             template: step.args.url,
@@ -101,6 +186,33 @@ export class DomUtilsActions {
         window.open(url, "_blank");
     }
 
+    /**
+     * @method get_element_bounds - It gets the bounds of an element and stores them in a variable
+     * @param step {Object} - The step object
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The process that is running the step.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to get the bounds of.
+     * @param [step.args.target] {String} - The target to store the result in.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-utils", "get_element_bounds", {
+     *   element: "my-element",
+     *   target: "my-target"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-utils",
+     *  "action": "get_element_bounds",
+     *  "args": {
+     *    "element": "my-element",
+     *    "target": "my-target"
+     *   }
+     * }
+     * @returns The bounds of the element.
+     */
     static async get_element_bounds(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const bounds = element.getBoundingClientRect();
@@ -113,8 +225,38 @@ export class DomUtilsActions {
     }
 
     /**
-     * Recursively finds a parent or ancestor that matches a specific tagName,
+     * @method find_parent_of_type - Recursively finds a parent or ancestor that matches a specific tagName,
      * optionally stopping at a specified node for performance.
+     *
+     * @param step {Object} - The step object
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The process that is running the step.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to get the bounds of.
+     * @param step.args.nodeName {String} - The name of the node to find.
+     * @param step.args.nodeQuery {String} - The query to find the node.
+     * @param step.args.stopAtNodeName {String} - The name of the node to stop at.
+     * @param step.args.stopAtNodeQuery {String} - The query to find the node to stop at.
+     * @param step.args.target {String} - The target to store the result in.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("dom-utils", "find_parent_of_type", {
+     *  element: "my-element",
+     *  nodeName: "DIV",
+     *  target: "my-target"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom-utils",
+     *  "action": "find_parent_of_type",
+     *  "args": {
+     *    "element": "my-element",
+     *    "nodeName": "DIV",
+     *    "target": "my-target"
+     *   }
+     * }
      * @returns {Promise<Element|undefined>}
      */
     static async find_parent_of_type(step, context, process, item) {
@@ -136,11 +278,23 @@ export class DomUtilsActions {
     }
 
     /**
-     * Recursively finds a parent or ancestor that matches a specific tagName,
+     * ToDo: AW - Ask about this method use-case for example.
+     */
+
+    /**
+     * @method #findParentOfType - Recursively finds a parent or ancestor that matches a specific tagName,
      * optionally stopping at a specified node for performance.
-     * @param {Element} element
-     * @param {string} nodeName
-     * @param {string} stopAtNodeName
+     *
+     * @param  element {Element} - The element to start searching from.
+     * @param  nodeName {string} - The name of the node to find.
+     * @param  stopAtNodeName {string} - The name of the node to stop at.
+     * @param  stopAtNodeQuery {string} - The query to find the node to stop at.
+     * @param  nodeQuery {string} - The query to find the node.
+     *
+     * @example <caption>javascript</caption>
+     *
+     * @example <caption>json</caption>
+     *
      * @returns {Promise<undefined|Element>}
      */
     static async #findParentOfType(element, nodeName, nodeQuery, stopAtNodeName, stopAtNodeQuery) {

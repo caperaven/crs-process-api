@@ -36,7 +36,7 @@ await init();
  * assert_equal - It asserts that two values are equal
  * perspective - It builds a perspective
  *
- **/
+ */
 export class DataActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);

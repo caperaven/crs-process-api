@@ -23,7 +23,7 @@
  * calculate_paging - Calculate paging
  * get_page - Get a page of records
  * get_range - Get a range of records
- * */
+ */
 export class DatabaseActions {
     /**
      * @method perform - The `perform` function is a static function that is called by the `process` function. It calls the `action`

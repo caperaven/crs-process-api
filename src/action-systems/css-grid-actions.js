@@ -320,9 +320,6 @@ export class CssGridActions {
         element.style.gridTemplateRows = rows;
     }
 
-    /**
-     * ToDo: Ask about position.
-     */
 
     /**
      * @method add_columns - It adds columns to the specified element in the specified position.
@@ -362,10 +359,6 @@ export class CssGridActions {
     static async add_columns(step, context, process, item) {
         await add(step, context, process, item, "gridTemplateColumns", "width");
     }
-
-    /**
-     * ToDo: Ask about Column and Row count ? Multiple or single ?
-     */
 
 
     /**
