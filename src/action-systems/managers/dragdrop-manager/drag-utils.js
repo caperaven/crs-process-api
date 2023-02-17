@@ -1,8 +1,11 @@
 /**
- * From the event get the element that can be dragged.
- * @param event
- * @param options
- * @returns {null|any}
+ * Returns the draggable element based on a given event and options.
+ *
+ * @param {Event} event - The event object that triggers the drag action.
+ * @param {Object} [options] - An optional object that can contain the following properties:
+ * @param {string} [options.dragQuery="[draggable='true']"] - A CSS selector to identify draggable elements.
+ *
+ * @returns {Element} The draggable element if found, or null if not found.
  */
 export function getDraggable(event, options) {
     const dragQuery = options?.dragQuery || "[draggable='true']";

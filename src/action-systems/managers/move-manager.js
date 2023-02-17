@@ -32,26 +32,33 @@ export class MoveManager {
         this.#element = null;
     }
 
+    /**
+     * Checks whether an event matches a specific element or its shadow root.
+     * @param {Event} event - The event to check.
+     * @returns {boolean} - Returns true if the event matches the element or its shadow root, and false otherwise.
+     */
     #matches(event) {
-        // If the move query is null, check if the event target is the same as the element
+        // If no query is specified, return true if the event target is the element
         if (this.#moveQuery == null) {
-            if (event.target != this.#element)
-                return false; // The event target does not match the element
+            return event.target === this.#element;
         }
-        // If the move query is not null, check if the event target or its shadow root matches the query
-        else {
-            let matches = event.target.matches(this.#moveQuery);
-            if (matches === false && event.target.shadowRoot != null) {
-                for (const element of event.composedPath()) {
-                    if (element.matches != null && element.matches(this.#moveQuery)) {
-                        return true;
-                    }
-                }
+
+        // If the event target matches the query, return true
+        if (event.target.matches(this.#moveQuery)) {
+            return true;
+        }
+
+        // If the event target is a shadow root, check if any of the elements in the shadow root match the query
+        for (const element of event.composedPath()) {
+            if (element !== event.target && element.matches && element.matches(this.#moveQuery)) {
+                return true;
             }
-            if (matches === false)
-                return false; // The event target or its shadow root do not match the query
         }
+
+        // If no match was found, return false
+        return false;
     }
+
 
     #mouseDown(event) {
         if (this.#matches(event) === false)
