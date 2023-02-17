@@ -93,3 +93,26 @@ Deno.test("move-manager - clicked element is within the shadow dom", async () =>
     // Dispose
     document.__events = [];
 });
+
+Deno.test("move-manager - clicked element is within the shadow dom no move query provided", async () => {
+    // Arrange
+    const element = new ElementMock("div");
+    element.bounds = {x: 0, y: 0, width: 100, height: 100};
+    const instance = new MoveManager(element);
+
+    // Act
+    element.performEvent("mousedown", {
+        matches: (query) => false
+    }, {
+        composedPath: () => [
+            {matches: (query) => query !== "header"},
+            {matches: (query) => query === "header"}
+        ]
+    });
+
+    // Assert
+    assertEquals(document.__events.length, 0);
+
+    // Dispose
+    document.__events = [];
+});

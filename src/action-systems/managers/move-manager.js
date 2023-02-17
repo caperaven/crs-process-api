@@ -38,21 +38,15 @@ export class MoveManager {
      * @returns {boolean} - Returns true if the event matches the element or its shadow root, and false otherwise.
      */
     #matches(event) {
+        const target = event.composedPath()[0];
         // If no query is specified, return true if the event target is the element
         if (this.#moveQuery == null) {
-            return event.target === this.#element;
+            return target === this.#element;
         }
 
         // If the event target matches the query, return true
-        if (event.target.matches(this.#moveQuery)) {
+        if (target.matches(this.#moveQuery)) {
             return true;
-        }
-
-        // If the event target is a shadow root, check if any of the elements in the shadow root match the query
-        for (const element of event.composedPath()) {
-            if (element !== event.target && element.matches && element.matches(this.#moveQuery)) {
-                return true;
-            }
         }
 
         // If no match was found, return false

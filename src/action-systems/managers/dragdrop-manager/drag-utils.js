@@ -9,20 +9,14 @@
  */
 export function getDraggable(event, options) {
     const dragQuery = options?.dragQuery || "[draggable='true']";
+    const target = event.composedPath()[0];
 
-    if (event.target.matches(dragQuery)) {
-        return event.target;
+    if (target.matches(dragQuery)) {
+        return target;
     }
 
-    if (event.target.parentElement?.matches(dragQuery)) {
-        return event.target.parentElement;
-    }
-
-    // If the event target is a shadow root, check if any of the elements in the shadow root match the query
-    for (const element of event.composedPath()) {
-        if (element !== event.target && element.matches && element.matches(dragQuery)) {
-            return element;
-        }
+    if (target.parentElement?.matches(dragQuery)) {
+        return target.parentElement;
     }
 
     return null;

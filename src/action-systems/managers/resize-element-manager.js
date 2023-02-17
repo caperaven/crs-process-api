@@ -43,7 +43,9 @@ export class ResizeElementManager {
         const draggable = getDraggable(event, {dragQuery: this.#resizeQuery});
         if (draggable == null) return;
 
-        this.#targetElement = draggable.parentElement ?? event.target;
+        // Parent element will be null if the parent is a shadowRoot
+        // In that case, composedPath()[2] is the parent element and composedPath()[1] is the shadowRoot
+        this.#targetElement = draggable.parentElement || event.composedPath()[2];
         this.#bounds = this.#targetElement.getBoundingClientRect();
         this.#startPos = {x: event.clientX, y: event.clientY};
 
