@@ -3,16 +3,16 @@
  * @description - This class contains a set of actions that can be used to manipulate objects.
  *
  * Features:
- * perform - The method that is called to execute the action.
- * set - Sets the properties on the target object to the values.
- * get - Gets the values of the properties on the target object.
- * delete - Deletes the properties on the target object.
- * copy_on_path - Copy the value of the source object's property to the target object's property
- * create - Create object literal on target defined.
- * assign - Assigns the properties of one object to another (injection)
- * clone - Clones the source object to the target object.
- * json_clone - It takes a JavaScript object, converts it to a JSON string, then converts it back to a JavaScript object
- * assert - It takes a source object, and a list of property paths,and returns true if all of the properties exist on
+ * -perform - The method that is called to execute the action.
+ * -set - Sets the properties on the target object to the values.
+ * -get - Gets the values of the properties on the target object.
+ * -delete - Deletes the properties on the target object.
+ * -copy_on_path - Copy the value of the source object's property to the target object's property
+ * -create - Create object literal on target defined.
+ * -assign - Assigns the properties of one object to another (injection)
+ * -clone - Clones the source object to the target object.
+ * -json_clone - It takes a JavaScript object, converts it to a JSON string, then converts it back to a JavaScript object
+ * -assert - It takes a source object, and a list of property paths,and returns true if all of the properties exist on
  * the source object
  */
 export class ObjectActions {
@@ -22,10 +22,10 @@ export class ObjectActions {
 
     /**
      * @method set - It takes a list of properties and values, and sets the properties to the values
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.properties {object}  - The list of {properties} to set.
      *
@@ -59,10 +59,10 @@ export class ObjectActions {
     /**
      * @method get - It takes a list of properties, gets the value of each property,
      * and returns the list of values
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.properties {array} - The list of [properties] to get the values from.
      * @param [step.args.target = "$context.result"] {string} - The target object to set the properties on.*
@@ -102,10 +102,10 @@ export class ObjectActions {
 
     /**
      * @method delete - Delete the properties specified in the `properties` argument from the context, process, or item
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The current process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The current process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.properties {array} - The list of [properties] to delete.
      *
@@ -147,10 +147,10 @@ export class ObjectActions {
 
     /**
      * @method copy_on_path - Copy the value of the source object's property to the target object's property
-     * @param step - the step object
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - the step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The source object to copy the property from.
      * @param step.args.target {string} - The target object to copy the property to.
@@ -189,10 +189,10 @@ export class ObjectActions {
 
     /**
      * @method create - Create object literal on target defined.
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.target {string} - The target is the new object.
      *
@@ -220,10 +220,10 @@ export class ObjectActions {
 
     /**
      * @method assign - Assigns the properties of one object to another (injection)
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - the current item being processed
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - the current item being processed
      *
      * @param step.args.source {string} - The source object to copy the properties from.
      * @param step.args.target {string} - The target object to copy the properties to.
@@ -256,10 +256,10 @@ export class ObjectActions {
      * @method clone - Create a clone of an object by creating a new object literal and copying either all or a subset of
      * properties from the source. If target is defined (in schema should be) the new object is attached to that target.
      * If no properties are defined, all fields will be copied over.
-     * @param step - The step object.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The source object to clone.
      * @param step.args.properties {array}- The [properties] to clone.
@@ -311,10 +311,10 @@ export class ObjectActions {
 
     /**
      * @method json_clone - This clone function makes an exact copy of the object including paths using JSON parsing.
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The source object to clone.
      * @param [step.args.target = "$context.result"] {string} - The target object to store the result.
@@ -350,10 +350,10 @@ export class ObjectActions {
 
     /**
      * @method assert - Assert that the source object properties has a value not null or undefined.
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The source object to clone.
      * @param step.args.properties {array} - The [properties] to check.
@@ -406,7 +406,7 @@ export class ObjectActions {
 
 /**
  * @function formatProperty - It takes a property name and returns a JavaScript expression that evaluates to the value of that property
- * @param property - The property to be formatted.
+ * @param property {object} - The property to be formatted.
  * @returns a string that is the property name with the $context. prefix added.
  */
 function formatProperty(property) {
@@ -418,9 +418,9 @@ function formatProperty(property) {
 
 /**
  * @function setValueOnPath - It takes an object, a path, and a value, and sets the value on the object at the path
- * @param obj - The object to set the value on.
- * @param path - The path to the property you want to set.
- * @param value - The value to set on the path.
+ * @param obj {object} - The object to set the value on.
+ * @param path {string} - The path to the property you want to set.
+ * @param value {any} - The value to set.
  */
 async function setValueOnPath(obj, path, value) {
     const parts = path.split(".").join("/").split("/");
@@ -448,8 +448,8 @@ async function setValueOnPath(obj, path, value) {
 
 /**
  * @function getValueOnPath - It takes an object and a path, and returns the value at the end of the path
- * @param obj - The object to get the value from.
- * @param path - The path to the property you want to get.
+ * @param obj {object} - The object to get the value from.
+ * @param path {string} - The path to the property you want to get.
  * @returns The value of the property at the end of the path.
  */
 async function getValueOnPath(obj, path) {
@@ -477,8 +477,8 @@ async function getValueOnPath(obj, path) {
 
 /**
  * @function deleteOnPath - It takes an object and a path, and deletes the property at the end of the path
- * @param obj - The object to delete the property from.
- * @param path - The path to the property to delete.
+ * @param obj {object} - The object to delete the property from.
+ * @param path {string} - The path to the property you want to delete.
  * @returns the value of the property at the end of the path.
  */
 async function deleteOnPath(obj, path) {
@@ -510,9 +510,9 @@ async function deleteOnPath(obj, path) {
 
 /**
  * @function copyPath - It copies the value of a path from one object to another
- * @param source - The source object to copy from
- * @param target - The target object to copy the value to.
- * @param path - The path to the value you want to copy.
+ * @param source {string} - The object to copy the value from.
+ * @param target {string} - The object to copy the value to.
+ * @param path {string} - The path to the property you want to copy.
  * @returns A function that takes three arguments: source, target, and path.
  */
 async function copyPath(source, target, path) {

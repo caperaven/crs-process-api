@@ -3,12 +3,12 @@
  * @description It provides a set of functions that allow you to interact with the local storage of the browser.
  *
  * Features:
- * perform - This is the main function that is called by the action system.
- * set_value - This function sets a value in local storage.
- * get_value - This function gets a value from local storage.
- * set_object - It takes a key and a value, converts the value to JSON, and stores it in local storage
- * get_object - It gets the value of a key from local storage, parses it as JSON, and returns it
- * remove - Remove the item with the specified key from the local storage
+ * -perform - This is the main function that is called by the action system.
+ * -set_value - This function sets a value in local storage.
+ * -get_value - This function gets a value from local storage.
+ * -set_object - It takes a key and a value, converts the value to JSON, and stores it in local storage
+ * -get_object - It gets the value of a key from local storage, parses it as JSON, and returns it
+ * -remove - Remove the item with the specified key from the local storage
  */
 export class LocalStorageAction {
     static async perform(step, context, process, item) {
@@ -17,10 +17,10 @@ export class LocalStorageAction {
 
     /**
      * @method set_value - Set a value in local storage
-     * @param step - The step object from the process.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.key {string} - The key to set the value to.
      * @param step.args.value {string} - The value to set.
@@ -49,13 +49,12 @@ export class LocalStorageAction {
         localStorage.setItem(key, value);
     }
 
-
     /**
      * @method get_value - It gets the value of a key from local storage and returns it
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.key {string} - The key to get the value from.
      * @param [step.args.target = "$context.result"] {string} - The target to set the value to.
@@ -90,10 +89,10 @@ export class LocalStorageAction {
 
     /**
      * @method set_object - It takes a key and a value, converts the value to JSON, and stores it in local storage
-     * @param step - The step object from the process.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - the current item being processed
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - the current item being processed
      *
      * @param step.args.key {string} - The key to set the value to.
      * @param step.args.value {object} - The value to set.
@@ -131,10 +130,10 @@ export class LocalStorageAction {
 
     /**
      * @method get_object - It gets the value of a key from local storage, parses it as JSON, and returns it
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The current item being processed.
      *
      * @param step.args.key {string} - The key to get the value from.
      * @param [step.args.target = "$context.result"] {string} - The target to set the value to.
@@ -170,10 +169,10 @@ export class LocalStorageAction {
 
     /**
      * @method remove - Remove the item with the specified key from the local storage
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.key {string} - The key to remove.
      *

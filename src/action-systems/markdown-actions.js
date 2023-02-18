@@ -7,8 +7,8 @@ await init();
  * @description It converts markdown to html
  *
  * Features:
- * perform - The perform method is called by the action system to perform the action.
- * to_html - Converts markdown to html
+ * -perform - The perform method is called by the action system to perform the action.
+ * -to_html - Converts markdown to html
  */
 export class MarkdownActions {
     static async perform(step, context, process, item) {
@@ -17,10 +17,10 @@ export class MarkdownActions {
 
     /**
      * @method to_html - Convert markdown to html
-     * @param step - The step object from the process.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.markdown {string} - The markdown to convert
      * @param step.args.parameters {object} - The parameters to use when inflating the markdown

@@ -2,15 +2,15 @@
  * @class ProcessActions - This class is used to run a process from another process.
  *
  * Features:
- * perform - This method takes the step, context, process, and item, and then emits an event with the same information
+ * -perform - This method takes the step, context, process, and item, and then emits an event with the same information
  */
 export class ProcessActions {
     /**
      * @method perform - It takes the step, context, process, and item, and then emits an event with the same information
-     * @param step - The step object that is being executed.
-     * @param context - The context of the current process.
-     * @param process - The process that is being run.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process that is being run.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.parameters {object}- The parameters to pass to the event.
      *

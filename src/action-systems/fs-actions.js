@@ -3,16 +3,16 @@
  * @class FsActions - This is a static class that contains the actions for the file system
  *
  * Features:
- * perform - perform an action on a component or element
- * select_folder - select a folder
- * create_folder - create a folder in the target location
- * select_file - the function `select_file` is an asynchronous function that returns a file handle
- * read_file - It reads the contents of a file
- * read_file_json - It reads a file and returns the contents as a JSON object
- * save_file - It takes a file handle and a content string, and writes the content to the file
- * write_new_file - Saves text as utf8 in a file
- * write_new_json - save a json file to a utf8 file with a json extension
- * open_folder - It opens a folder and returns a list of files in the folder.
+ * -perform - perform an action on a component or element
+ * -select_folder - select a folder
+ * -create_folder - create a folder in the target location
+ * -select_file - the function `select_file` is an asynchronous function that returns a file handle
+ * -read_file - It reads the contents of a file
+ * -read_file_json - It reads a file and returns the contents as a JSON object
+ * -save_file - It takes a file handle and a content string, and writes the content to the file
+ * -write_new_file - Saves text as utf8 in a file
+ * -write_new_json - save a json file to a utf8 file with a json extension
+ * -open_folder - It opens a folder and returns a list of files in the folder.
  */
 export class FsActions {
     static async perform(step, context, process, item) {
@@ -21,20 +21,20 @@ export class FsActions {
 
     /**
      * @method select_folder - This function selects a folder
-     * @param step - The step number of the current step.
-     * @param context - The context object that is passed to the step.
-     * @param process - The process object that is being executed.
-     * @param item - The item that was selected.
+     * @param step {object} - The step number of the current step.
+     * @param context {object} - The context object that is passed to the step.
+     * @param process {object} - The process object that is being executed.
+     * @param item {object} - The item that was selected.
      */
     static async select_folder(step, context, process, item) {
     }
 
     /**
      * @method create_folder - Create a folder in the target location
-     * @param step - The step number of the current step in the process.
-     * @param context - The context object that is passed to the step.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step number of the current step in the process.
+     * @param context {object} - The context object that is passed to the step.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      */
     static async create_folder(step, context, process, item) {
@@ -42,10 +42,10 @@ export class FsActions {
 
     /**
      * @method select_file - The function `select_file` is an asynchronous function that returns a file handle
-     * @param step - The step object that is being executed.
-     * @param context - The context of the step.
-     * @param process - The process object that is being run.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context of the step.
+     * @param process {object} - The process object that is being run.
+     * @param item {object} - The item that is being processed.
      *
      * @returns The fileHandle is being returned.
      */
@@ -57,10 +57,10 @@ export class FsActions {
 
     /**
      * @method read_file - It reads the contents of a file
-     * @param step - The step object from the process definition.
-     * @param context - The current context of the process.
-     * @param process - The process that is running the step.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The current context of the process.
+     * @param process {object} - The process that is running the step.
+     * @param item {object} - The item that is being processed.
      *
      * @param [step.args.handle = "handle"] {string} - The handle of the file to read.
      *
@@ -90,10 +90,10 @@ export class FsActions {
 
     /**
      * @method It reads a file and returns the contents as a JSON object
-     * @param step - the step object
-     * @param context - The context object that is passed to the function.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - the step object
+     * @param context {object} - The context object that is passed to the function.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      *  @param [step.args.handle = "handle"] {string} - The handle of the file to read.
      *
@@ -120,10 +120,10 @@ export class FsActions {
 
     /**
      * @method save_file - It takes a file handle and a content string, and writes the content to the file
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.handle {string} - The handle of the file to read.
      * @param step.args.content {string|object} - The content to write to the file.
@@ -152,10 +152,10 @@ export class FsActions {
 
     /**
      * @method write_new_file - Saves text as utf8 in a file
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.file_types {string} - The file types that are allowed to be selected.
      * @param step.args.default_name {string} - The default name of the file.
@@ -192,10 +192,10 @@ export class FsActions {
 
     /**
      * @method write_new_json - save a json file to a utf8 file with a json extension
-     * @param step - the step object from the process
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The current item being processed.
+     * @param step {object} - the step object from the process
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The current item being processed.
      *
      * @param step.args.content {string|object} - The content to write to the file.
      *
@@ -233,10 +233,10 @@ export class FsActions {
 
     /**
      * @method open_folder - It opens a folder and returns a list of files in the folder.
-     * @param step - The step object from the workflow.
-     * @param context - The context of the current process.
-     * @param process - The current process
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the workflow.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The current process
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.handle {string} - The handle of the folder to open.
      *

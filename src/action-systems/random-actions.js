@@ -3,9 +3,9 @@
  * @description This class is used to generate random numbers.
  *
  * Features:
- * perform - The main entry point for the class. This method is called by the action system.
- * integer - Generate a random integer between the min and max values
- * float - Generate a random float between the min and max values
+ * -perform - The main entry point for the class. This method is called by the action system.
+ * -integer - Generate a random integer between the min and max values
+ * -float - Generate a random float between the min and max values
  */
 export class RandomActions {
     static async perform(step, context, process, item) {
@@ -14,10 +14,10 @@ export class RandomActions {
 
     /**
      * @method integer - Generate a random integer between the min and max values
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.min {number} - The minimum value
      * @param step.args.max {number} - The maximum value
@@ -54,10 +54,10 @@ export class RandomActions {
 
     /**
      * @method float - Generate a random float between the min and max values
-     * @param step - The step object that is being executed.
-     * @param context - The context object that was passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that was passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.min {number} - The minimum value
      * @param step.args.max {number} - The maximum value

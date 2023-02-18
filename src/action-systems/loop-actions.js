@@ -4,14 +4,14 @@ const BATCH_SIZE = 500;
  * @description It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
  *
  * Features:
- * perform - It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
+ * -perform - It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
  */
 export class LoopActions {
     /**
      * @method perform - It takes a batch of items from the source array, and for each item, it runs the steps in the `steps` array
-     * @param step - the current step in the process
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
+     * @param step {object} - the current step in the process
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
      *
      * @param step.args.source {string} - The path to the source array
      * @param step.args.steps {object} - The steps to run for each item in the source array

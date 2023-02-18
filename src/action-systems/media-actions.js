@@ -3,9 +3,9 @@
  * the computer.
  *
  * Features:
- * perform - This method is called by the action system to execute the action.
- * render_camera - This method takes a canvas element and a set of constraints, and then sets the canvas to display the
- * capture_image - This method captures the current frame of the video element and draws it on the canvas element.
+ * -perform - This method is called by the action system to execute the action.
+ * -render_camera - This method takes a canvas element and a set of constraints, and then sets the canvas to display the
+ * -capture_image - This method captures the current frame of the video element and draws it on the canvas element.
  */
 export class MediaActions {
     static async perform(step, context, process, item) {
@@ -14,10 +14,10 @@ export class MediaActions {
 
     /**
      * @method render_camera - It takes a canvas element and a set of constraints,and then sets the canvas to display.
-     * @param step - The step object
-     * @param context - The context of the current process.
-     * @param process - The current process
-     * @param item - the item that is being processed
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The current process
+     * @param item {object} - the item that is being processed
      *
      *@param step.args.element{object} - The canvas element to display the video on.
      *@param step.args.constraints {object} - The constraints to use when capturing the video.
@@ -58,10 +58,10 @@ export class MediaActions {
     /**
      * @method capture_image - "Capture the current frame of the video element and draw it on the canvas element."
      * The first line of the function is a comment. Comments are ignored by the interpreter
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process that is running the step.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process that is running the step.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.target {string} - The canvas element to draw the image on.
      * @param step.args.source {string} - The video element to capture the image from.

@@ -3,9 +3,9 @@
  * @description It provides a set of functions that allow you to interact with the html action system.
  *
  * Features:
- * perform - This method is called by the action system to perform the action.
- * get - performs a conversion and then returns the result.
- * create - Create a element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided.
+ * -perform - This method is called by the action system to perform the action.
+ * -get - performs a conversion and then returns the result.
+ * -create - Create a element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided.
  */
 export class HtmlActions {
     static async perform(step, context, process, item) {
@@ -17,10 +17,10 @@ export class HtmlActions {
      * schema, then load the schema and return the result. Otherwise, if the step has a function, then call the function
      * and return the result. Otherwise, if the step has a markdown, then convert the markdown to HTML and return the
      * result
-     * @param step - the step object
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - the item being processed
+     * @param step {object} - the step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - the item being processed
      *
      * @param [step.args.url = "url"] {string} - The URL of the template to load.
      * @param [step.args.template = "example"] {string} - The name of the template to load.
@@ -90,10 +90,10 @@ export class HtmlActions {
 
     /**
      * @method create - Creates an element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided
-     * @param step - The step object
-     * @param context - The context of the current process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.html {string} - The html string to inflate.
      * @param step.args.ctx {object} - The context object to use when inflating the html.
@@ -141,10 +141,10 @@ export class HtmlActions {
 
     /**
      * @method #from_file - It takes a URL, fetches the contents of that URL, and returns the contents as a string
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The current item being processed.
      *
      * @param step.args.url {string} - The URL to fetch the file from.
      *
@@ -157,10 +157,10 @@ export class HtmlActions {
 
     /**
      * @method #from_template - It takes a template, and returns the result of the template
-     * @param step - the step object
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - the step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.template {string} - The template to use.
      * @param step.args.url {string} - The URL to fetch the template from.
@@ -175,10 +175,10 @@ export class HtmlActions {
 
     /**
      * @method #from_schema -  It takes a schema, and returns a parser
-     * @param step - The step object from the process definition.
-     * @param context - The context of the current process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.schema {object} - The schema to use.
      *
@@ -196,10 +196,10 @@ export class HtmlActions {
 
     /**
      * @method #from_function - It takes a function and a list of parameters, and calls the function with the parameters
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.function {string} - The function to call.
      * @param [step.args.parameters = [parameters]] {array} - The parameters to pass to the function.

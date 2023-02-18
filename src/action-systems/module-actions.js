@@ -4,10 +4,10 @@
  * a module constant
  *
  * Features:
- * perform - The main entry point for the module action system.
- * call - Call a module function.
- * create_class - Create an instance of a module class.
- * get_constant - Get the value of a module constant and returns it.
+ * -perform - The main entry point for the module action system.
+ * -call - Call a module function.
+ * -create_class - Create an instance of a module class.
+ * -get_constant - Get the value of a module constant and returns it.
  */
 export class ModuleActions {
     static async perform(step, context, process, item) {
@@ -21,8 +21,8 @@ export class ModuleActions {
 
     /**
      * @method call - Call a module function
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the module.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the module.
      *
      * @param step.args.default {boolean} - If true, it will call the default function in the module.
      * @param step.args.module {string} - The name of the module to call.
@@ -63,7 +63,7 @@ export class ModuleActions {
 
     /**
      * @method create_class - creates an instance of a module
-     * @param step - The step object that is being executed.
+     * @param step {object} - The step object that is being executed.
      *
      * @param step.args.default {boolean} - If true, it will create an instance of the default class in the module.
      * @param step.args.module {string} - The name of the module that contains the class.
@@ -103,7 +103,7 @@ export class ModuleActions {
 
     /**
      * @method get_constant - It returns the value of a constant in a module
-     * @param step - The step object that is being executed.
+     * @param step {object} - The step object that is being executed.
      *
      * @param step.args.module {string} - The name of the module that contains the constant.
      * @param step.args.name {string} - The name of the constant.
