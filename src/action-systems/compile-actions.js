@@ -3,9 +3,9 @@
  * @memberof crs.intent
  *
  * Features:
- * perform - The perform function is a static function that is called by the process function. It calls the action
- * if_value - If the expression is true, return the value of the expression, otherwise return null
- * case_value - Compiles a case statement and returns the value of the first expression that is true
+ * -perform - The perform function is a static function that is called by the process function. It calls the action
+ * -if_value - If the expression is true, return the value of the expression, otherwise return null
+ * -case_value - Compiles a case statement and returns the value of the first expression that is true
  */
 export class CompileActions {
     /**

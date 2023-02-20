@@ -4,13 +4,13 @@ import {callFunctionOnPath} from "./action-actions.js";
  * @class DomUtilsActions - This contains functions for utility
  *
  * Features:
- * call_on_element - call a function on a element
- * get_property - get a element's property value
- * set_properties - set a element's property value
- * open_tab - open a new tab
- * get_element_bounds - get the bounds of an element
- * find_parent_of_type - find the parent of a given type
- * #find_parent_of_type - find the parent of a given type
+ * -call_on_element - call a function on a element
+ * -get_property - get a element's property value
+ * -set_properties - set a element's property value
+ * -open_tab - open a new tab
+ * -get_element_bounds - get the bounds of an element
+ * -find_parent_of_type - find the parent of a given type
+ * - #find_parent_of_type - find the parent of a given type
  */
 
 export class DomUtilsActions {

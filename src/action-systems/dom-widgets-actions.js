@@ -2,8 +2,8 @@
  * @class DomWidgetsActions - It's a class that contains methods that are called by the CRS engine to perform actions on the DOM
  *
  * Features:
- * show_widget_dialog - show a widget dialog
- * show_form_dialog - show a form dialog
+ * -show_widget_dialog - show a widget dialog
+ * -show_form_dialog - show a form dialog
  *
  */
 export class DomWidgetsActions {

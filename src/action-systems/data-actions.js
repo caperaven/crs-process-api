@@ -23,18 +23,19 @@ await init();
 
 /**
  * @class DataActions - It provides a set of functions that can be used to manipulate data
+ *
  * Features:
- * filter - It filters data based on a set of criteria
- * sort - It sorts data based on a set of criteria
- * group - It groups data based on a set of criteria
- * aggregate - It aggregates data based on a set of criteria
- * aggregate_group - It aggregates data based on a set of criteria
- * iso8601_to_string - It converts an ISO8601 date to a string
- * iso8601_batch - It converts an array of ISO8601 dates to a string
- * in_filter - It filters data based on a set of criteria
- * unique_values - It returns an array of unique values
- * assert_equal - It asserts that two values are equal
- * perspective - It builds a perspective
+ * -filter - It filters data based on a set of criteria
+ * -sort - It sorts data based on a set of criteria
+ * -group - It groups data based on a set of criteria
+ * -aggregate - It aggregates data based on a set of criteria
+ * -aggregate_group - It aggregates data based on a set of criteria
+ * -iso8601_to_string - It converts an ISO8601 date to a string
+ * -iso8601_batch - It converts an array of ISO8601 dates to a string
+ * -in_filter - It filters data based on a set of criteria
+ * -unique_values - It returns an array of unique values
+ * -assert_equal - It asserts that two values are equal
+ * -perspective - It builds a perspective
  *
  */
 export class DataActions {

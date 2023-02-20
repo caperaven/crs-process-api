@@ -2,10 +2,10 @@
  *@class ConsoleActions - provides access to the console.md with common features
  *
  * Features:
- * log - logs a message to the console
- * warn - logs a warning message to the console
- * error - logs an error message to the console
- * table - logs a table to the console
+ * -log - logs a message to the console
+ * -warn - logs a warning message to the console
+ * -error - logs an error message to the console
+ * -table - logs a table to the console
  */
 export class ConsoleActions {
     /**

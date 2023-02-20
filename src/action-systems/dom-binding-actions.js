@@ -3,12 +3,12 @@
  * This includes events, inflation, parsing ...
  *
  * Features:
- * set_widget - Set the defined with context
- * clear_widget - Clear the defined widget
- * create_widget - Create a widget
- * create_inflation_template - Create a inflation template
- * elements_form_template - Create a form template
- * update_cells - Update cells
+ * -set_widget - Set the defined with context
+ * -clear_widget - Clear the defined widget
+ * -create_widget - Create a widget
+ * -create_inflation_template - Create a inflation template
+ * -elements_form_template - Create a form template
+ * -update_cells - Update cells
  */
 
 export class DomBindingActions {

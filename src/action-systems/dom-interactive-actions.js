@@ -2,17 +2,17 @@
  * @class DomInteractiveActions - This deals with resizing of elements, moving it, interactive functions.
  *
  * Features:
- * get_animation_layer - get the animation layer
- * clear_animation_layer - clear the animation layer
- * remove_animation_layer - remove the animation layer
- * highlight - highlight an element
- * clone_for_movement - clone an element for movement
- * enable_resize - enable resizing of an element
- * disable_resize - disable resizing of an element
- * enable_dragdrop - enable drag and drop of an element
- * disable_dragdrop - disable drag and drop of an element
- * enable_move - enable moving of an element
- * disable_move - disable moving of an element
+ * -get_animation_layer - get the animation layer
+ * -clear_animation_layer - clear the animation layer
+ * -remove_animation_layer - remove the animation layer
+ * -highlight - highlight an element
+ * -clone_for_movement - clone an element for movement
+ * -enable_resize - enable resizing of an element
+ * -disable_resize - disable resizing of an element
+ * -enable_dragdrop - enable drag and drop of an element
+ * -disable_dragdrop - disable drag and drop of an element
+ * -enable_move - enable moving of an element
+ * -disable_move - disable moving of an element
  */
 
 export class DomInteractiveActions {

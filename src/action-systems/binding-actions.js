@@ -2,16 +2,16 @@
  * @class BindingActions - This class contains all the actions that can be performed on a binding object.
  *
  * Features:
- * create_context - Create a new context object and return the id of the new context
- * free_context - Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
- * get_property - Get the value of a property from the current item
- * set_property - Set the value of a property on the current item
- * get_data - Get the value of a property from the data store
- * set_error - Set the error property on the current item
- * set_global - Set the value of a property on the global object
- * get_global - Get the value of a property from the global object
- * set_globals - Set the value of a property on the global object
- * get_globals - Get the value of a property from the global object
+ * -create_context - Create a new context object and return the id of the new context
+ * -free_context - Free binding context, If the process has a bId parameter, remove the object from the data store and delete the bId parameter
+ * -get_property - Get the value of a property from the current item
+ * -set_property - Set the value of a property on the current item
+ * -get_data - Get the value of a property from the data store
+ * -set_error - Set the error property on the current item
+ * -set_global - Set the value of a property on the global object
+ * -get_global - Get the value of a property from the global object
+ * -set_globals - Set the value of a property on the global object
+ * -get_globals - Get the value of a property from the global object
  */
 export class BindingActions {
     static async perform(step, context, process, item) {

@@ -7,22 +7,22 @@
 /**
  * @class DatabaseActions - It provides a set of static methods that can be used to perform database actions
  * Features:
- * open - Open a database
- * delete_old - Delete old databases
- * close - Close a database
- * delete - Delete a database
- * dump - Dump a database
- * get_from_index - Get records from an index
- * get_all - Get all records from a table
- * clear - Clear a table
- * delete_record - Delete a record
- * update_record - Update a record
- * add_record - Add a record
- * get_batch - Get a batch of records
- * get_values - Get values from a table
- * calculate_paging - Calculate paging
- * get_page - Get a page of records
- * get_range - Get a range of records
+ * -open - Open a database
+ * -delete_old - Delete old databases
+ * -close - Close a database
+ * -delete - Delete a database
+ * -dump - Dump a database
+ * -get_from_index - Get records from an index
+ * -get_all - Get all records from a table
+ * -clear - Clear a table
+ * -delete_record - Delete a record
+ * -update_record - Update a record
+ * -add_record - Add a record
+ * -get_batch - Get a batch of records
+ * -get_values - Get values from a table
+ * -calculate_paging - Calculate paging
+ * -get_page - Get a page of records
+ * -get_range - Get a range of records
  */
 export class DatabaseActions {
     /**

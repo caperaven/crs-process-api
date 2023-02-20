@@ -1,7 +1,7 @@
 /**
  * @class DateActions - It takes a month and year, and returns an array of days for that month.
  * Features:
- * get_days - Returns an array of days for a given month and year.
+ * -get_days - Returns an array of days for a given month and year.
  *
  */
 export class DateActions {

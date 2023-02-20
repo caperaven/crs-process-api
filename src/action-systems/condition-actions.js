@@ -2,7 +2,7 @@
  * @class ConditionActions - A class that contains the actions for the condition action system.
  *
  * Features:
- * perform - The perform function is a static function that is called by the process function.
+ * -perform - The perform function is a static function that is called by the process function.
  *
  * If the condition is true, run the pass step, otherwise run the fail step.
  */

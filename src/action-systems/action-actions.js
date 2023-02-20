@@ -2,8 +2,8 @@
  * @class ActionActions - This is a static class that contains the actions for the action system
  *
  * Features:
- * perform - perform an action on a component or element
- *
+ * -perform - perform an action on a component or element
+ *-test
  *
  */
 export class ActionActions {

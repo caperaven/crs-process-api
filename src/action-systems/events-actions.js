@@ -2,8 +2,8 @@
  * @class EventsActions - This class is used to perform actions related to events
  *
  * Features:
- * post-message - post a message to a listening component
- * emit - emit an event to a listening component
+ * -post-message - post a message to a listening component
+ * -emit - emit an event to a listening component
  *
  */
 export class EventsActions {

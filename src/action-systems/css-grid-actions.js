@@ -1,23 +1,23 @@
 /**
  *  @class CssGridActions - This class contains functions that perform actions on CSS grids
  *  Features:
- *  init - Enable an element to be a CSS grid
- *  enable_resize - Enable a CSS grid to be resized
- *  disable_resize - Disable a CSS grid from being resized
- *  auto_fill - Automatically fill a CSS grid with items
- *  set_columns - Set the number of columns in a CSS grid
- *  set_rows - Set the number of rows in a CSS grid
- *  add_columns - Add columns to a CSS grid
- *  add_rows - Add rows to a CSS grid
- *  remove_columns - Remove columns from a CSS grid
- *  remove_rows - Remove rows from a CSS grid
- *  set_column_width - Set the width of a column in a CSS grid
- *  set_row_height - Set the height of a row in a CSS grid
- *  set_region - Set the region of an element(s) in a CSS grid
- *  clear_region - Clear the region of an element(s) in a CSS grid
- *  column_count - Get the number of columns in a CSS grid
- *  row_count - Get the number of rows in a CSS grid
- *  get_column_sizes - Get the sizes of the columns in a CSS grid.
+ *  -init - Enable an element to be a CSS grid
+ *  -enable_resize - Enable a CSS grid to be resized
+ *  -disable_resize - Disable a CSS grid from being resized
+ *  -auto_fill - Automatically fill a CSS grid with items
+ *  -set_columns - Set the number of columns in a CSS grid
+ *  -set_rows - Set the number of rows in a CSS grid
+ *  -add_columns - Add columns to a CSS grid
+ *  -add_rows - Add rows to a CSS grid
+ *  -remove_columns - Remove columns from a CSS grid
+ *  -remove_rows - Remove rows from a CSS grid
+ *  -set_column_width - Set the width of a column in a CSS grid
+ *  -set_row_height - Set the height of a row in a CSS grid
+ *  -set_region - Set the region of an element(s) in a CSS grid
+ *  -clear_region - Clear the region of an element(s) in a CSS grid
+ *  -column_count - Get the number of columns in a CSS grid
+ *  -row_count - Get the number of rows in a CSS grid
+ *  -get_column_sizes - Get the sizes of the columns in a CSS grid.
  */
 export class CssGridActions {
     /**

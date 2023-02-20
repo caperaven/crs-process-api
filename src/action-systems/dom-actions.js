@@ -3,27 +3,27 @@ import {callFunctionOnPath} from "./action-actions.js";
 /**
  * @class DomActions - It contains methods that perform actions on the DOM.
  * Features:
- * set_attribute - Set a element's attribute value
- * set_attributes - Set multiple attributes on an element
- * get_attribute - Get a element's attribute value
- * add_class - Add a class to an element
- * remove_class - Remove a class from an element
- * set_style - Set a style property on an element
- * set_styles - Set multiple style properties on an element
- * get_style - Get a style property on an element
- * set_text - Set the text content of an element
- * get_text - Get the text content of an element
- * get_element - Get an element by id
- * create_element - Create an element
- * remove_element - Remove an element
- * clear_element - Clear an element
- * move_element - Move an element
- * move_element_up - Move an element up
- * move_element_down - Move an element down
- * set_css_variable - Set a css variable
- * get_css_variable - Get a css variable
- * set_css_variables - Set multiple css variables
- * get_css_variables - Get multiple css variables
+ * -set_attribute - Set a element's attribute value
+ * -set_attributes - Set multiple attributes on an element
+ * -get_attribute - Get a element's attribute value
+ * -add_class - Add a class to an element
+ * -remove_class - Remove a class from an element
+ * -set_style - Set a style property on an element
+ * -set_styles - Set multiple style properties on an element
+ * -get_style - Get a style property on an element
+ * -set_text - Set the text content of an element
+ * -get_text - Get the text content of an element
+ * -get_element - Get an element by id
+ * -create_element - Create an element
+ * -remove_element - Remove an element
+ * -clear_element - Clear an element
+ * -move_element - Move an element
+ * -move_element_up - Move an element up
+ * -move_element_down - Move an element down
+ * -set_css_variable - Set a css variable
+ * -get_css_variable - Get a css variable
+ * -set_css_variables - Set multiple css variables
+ * -get_css_variables - Get multiple css variables
  *
  */
 export class DomActions {

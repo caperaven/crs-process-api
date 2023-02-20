@@ -2,21 +2,21 @@
  * @class ComponentActions - Helper functions for working with custom components
  *
  * Features:
- *  perform - The entry point for the class.  This is called by the process engine.
- *  observe - Used in components, observe properties and when all the properties have values, perform the callback.
- *  unobserve - Used in components, unobserve properties.
- *  notify_ready - Used in components, notify the process engine that the component is ready.
- *  on_ready - Used in components, when the component is ready, perform the callback.
+ *  -perform - The entry point for the class.  This is called by the process engine.
+ *  -observe - Used in components, observe properties and when all the properties have values, perform the callback.
+ *  -unobserve - Used in components, unobserve properties.
+ *  -notify_ready - Used in components, notify the process engine that the component is ready.
+ *  -on_ready - Used in components, when the component is ready, perform the callback.
  *
  * Note:
- * meant for javascript use only.
+ * -meant for javascript use only.
  *
- * "Observe properties on a component and when all the properties have values, perform the callback."
+ * -"Observe properties on a component and when all the properties have values, perform the callback."
  *
- * The first method, `perform`, is a static method that is called by the process engine.  It is the entry point for the
- * class.  The process engine will pass in the step, context, process, and item.  The step is the step that is being
- * executed.  The context is the context of the process.  The process is the process that is being executed.  The item is
- * the item that is being processed
+ * -The first method, `perform`, is a static method that is called by the process engine.  It is the entry point for the
+ *  class.  The process engine will pass in the step, context, process, and item.  The step is the step that is being
+ *  executed.  The context is the context of the process.  The process is the process that is being executed.  The item is
+ *  the item that is being processed
  */
 export class ComponentActions {
     static async perform(step, context, process, item) {

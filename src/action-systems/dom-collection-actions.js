@@ -2,9 +2,9 @@
  * @class DomCollectionActions - This contains actions for working with lists. Filtering, sorting ...
  *
  * Features:
- * filter_children - filter children of an element based on a filter string
- * toggle_selection - toggle selection of an element
- * get_selected_state - get the selected state of an element
+ * -filter_children - filter children of an element based on a filter string
+ * -toggle_selection - toggle selection of an element
+ * -get_selected_state - get the selected state of an element
  *
  */
 
