@@ -93,10 +93,10 @@ class SchemaParserManager {
  * #description - It provides a way to register and unregister schema parsers, and to parse a schema.
  *
  * Features:
- * perform - This function will call the action that is passed in.
- * register - This function will register a new schema parser.
- * unregister - This function will unregister a schema parser.
- * parse - This function will parse a schema.
+ * -perform - This function will call the action that is passed in.
+ * -register - This function will register a new schema parser.
+ * -unregister - This function will unregister a schema parser.
+ * -parse - This function will parse a schema.
  */
 export class SchemaActions {
     static async perform(step, context, process, item) {
@@ -105,10 +105,10 @@ export class SchemaActions {
 
     /**
      * @method register - It registers a new schema parser
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process that is currently running.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process that is currently running.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.id {string} - The id of the parser.
      * @param step.args.parser {string} - The parser class to use.
@@ -154,10 +154,10 @@ export class SchemaActions {
 
     /**
      * @method unregister - Unregister a schema parser
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.id {string} - The id of the parser.
      *
@@ -182,10 +182,10 @@ export class SchemaActions {
 
     /**
      * @method parse - It takes a schema, parses it, and returns the result
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.id {string} - The id of the parser to use.
      * @param step.args.schema {object} - The schema to parse.

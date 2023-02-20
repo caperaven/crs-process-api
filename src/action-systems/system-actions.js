@@ -3,15 +3,15 @@
  * @description This class contains functions that are used to perform system actions.
  *
  * Features:
- * perform - The perform function is used to call the action function.
- * copy_to_clipboard - Copy the value of the source to the clipboard.
- * sleep - Sleep function used for testing to emulate network traffic delay.
- * pause - Pause the process for the specified duration.
- * resume - Resume the process after a pause.
- * abort - Abort the process.
- * ismobile - Check if the current device is a mobile device.
- * is_portrait - Check if the current device is in portrait mode.
- * is_landscape - Check if the current device is in landscape mode.
+ * -perform - The perform function is used to call the action function.
+ * -copy_to_clipboard - Copy the value of the source to the clipboard.
+ * -sleep - Sleep function used for testing to emulate network traffic delay.
+ * -pause - Pause the process for the specified duration.
+ * -resume - Resume the process after a pause.
+ * -abort - Abort the process.
+ * -ismobile - Check if the current device is a mobile device.
+ * -is_portrait - Check if the current device is in portrait mode.
+ * -is_landscape - Check if the current device is in landscape mode.
  */
 export class SystemActions {
     static async perform(step, context, process, item) {
@@ -20,10 +20,10 @@ export class SystemActions {
 
     /**
      * @method copy_to_clipboard - Copy the value of the source to the clipboard
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The current item being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The current item being processed.
      *
      * @param step.args.source {string} - The source to copy to the clipboard.
      *
@@ -50,10 +50,10 @@ export class SystemActions {
 
     /**
      * @method sleep - Sleep function used for testing to emulate network traffic delay
-     * @param step - The step object from the process definition
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.duration {number} - The duration to sleep in milliseconds.
      *
@@ -85,9 +85,9 @@ export class SystemActions {
 
     /**
      * @method pause - The function pauses the process and waits for the user to resume the process
-     * @param step - the current step in the process.
-     * @param context - the context of the process.
-     * @param process - The process object that is being run.
+     * @param step {object} - the current step in the process.
+     * @param context {object} - the context of the process.
+     * @param process {object} - The process object that is being run.
      *
      * @returns A promise.
      *
@@ -132,10 +132,10 @@ export class SystemActions {
 
     /**
      * @method resume - Resume the process if it is waiting.
-     * @param step - The step object that is being executed.
-     * @param context - The context object that was passed to the process when it was started.
-     * @param process - The process object that was created when the process was started.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that was passed to the process when it was started.
+     * @param process {object} - The process object that was created when the process was started.
+     * @param item {object} - The item that is being processed.
      *
      * @returns A promise that resolves immediately.
      *
@@ -154,10 +154,10 @@ export class SystemActions {
 
     /**
      * @method abort - It throws an error
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.error {string} - The message to display in the error.
      *
@@ -184,10 +184,10 @@ export class SystemActions {
 
     /**
      * @method is_mobile - If the user agent string contains the word "Mobi", then return true
-     * @param step - The current step in the process
-     * @param context - The context object that is passed to the step.
-     * @param process - the process object
-     * @param item - the item that is being processed
+     * @param step {object} - The current step in the process
+     * @param context {object} - The context object that is passed to the step.
+     * @param process {object} - the process object
+     * @param item {object} - the item that is being processed
      *
      * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
@@ -211,10 +211,10 @@ export class SystemActions {
 
     /**
      * @method is_portrait - If the device is in portrait mode, return true, otherwise return false
-     * @param step - The step object
-     * @param context - The context of the current step.
-     * @param process - The process object
-     * @param item - The current item being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object
+     * @param item {object} - The current item being processed.
      *
      * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *
@@ -244,10 +244,10 @@ export class SystemActions {
 
     /**
      * @method is_landscape - If the device is in landscape mode, return true, otherwise return false
-     * @param step - The step object
-     * @param context - The context of the current step.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param [step.args.target = "$context.result"] {string} - The target to set the result to.
      *

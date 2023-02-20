@@ -3,9 +3,9 @@
  * @description This class is used to load and unload scripts.
  *
  * Features:
- * perform - The main entry point for the action.
- * load_file - Dynamically load a javascript file from file as a script tag.
- * unload_file - Remove a script file based on id from the dom.
+ * -perform - The main entry point for the action.
+ * -load_file - Dynamically load a javascript file from file as a script tag.
+ * -unload_file - Remove a script file based on id from the dom.
  */
 export class ScriptsActions {
     static async perform(step, context, process, item) {
@@ -14,10 +14,10 @@ export class ScriptsActions {
 
     /**
      * @method load_file - Dynamically load a javascript file from file as a script tag.
-     * @param step - The step object from the process.
-     * @param context - The context of the current process.
-     * @param process - The current process
-     * @param item - The current item being processed.
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The current process
+     * @param item {object} - The current item being processed.
      *
      * @param step.args.id {string} - The id of the script tag.
      * @param step.args.file {string} - The file to load.
@@ -64,10 +64,10 @@ export class ScriptsActions {
 
     /**
      * @method unload_file - Remove a script file based on id from the dom.
-     * @param step - The step object from the process.
-     * @param context - The context of the current step.
-     * @param process - The process object that is running the step.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object that is running the step.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.id {string} - The id of the script tag.
      *

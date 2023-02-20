@@ -3,16 +3,16 @@
  * @description This class contains a collection of actions that can be performed on strings.
  *
  * Features:
- * perform - The main entry point for the class. This method will call the action method that is specified in the step.
- * inflate - Inflate a string by replacing the string literal markers with the actual value.
- * translate - Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
- * to_array - Convert a string to an array.
- * from_array - Convert an array to a string.
- * replace - Replace all occurrences of a string with another string.
- * get_query_string - Get the query string from a url.
- * template - It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
- * returns the resulting string.
- * slice - Slice a string.
+ * -perform - The main entry point for the class. This method will call the action method that is specified in the step.
+ * -inflate - Inflate a string by replacing the string literal markers with the actual value.
+ * -translate - Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
+ * -to_array - Convert a string to an array.
+ * -from_array - Convert an array to a string.
+ * -replace - Replace all occurrences of a string with another string.
+ * -get_query_string - Get the query string from a url.
+ * -template - It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
+ * -returns the resulting string.
+ * -slice - Slice a string.
  */
 export class StringActions {
     static async perform(step, context, process, item) {
@@ -26,10 +26,10 @@ export class StringActions {
      *      "#input/${id}?type='tasks'&typeId='${typeId}'"
      *      "${firstName} ${lastName} = ${age} old"
      *
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.template {string} - The template to inflate.
      * @param [step.args.parameters] {object} - The {parameters} to use to inflate the template.
@@ -83,10 +83,10 @@ export class StringActions {
 
     /**
      * @method translate - Translate a string by replacing all occurrences of `&{...}` with the value of the corresponding variable
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.template {string} - The template to translate.
      * @param [step.args.target = "$context.result"] {string} - The target to store the result in.
@@ -126,10 +126,10 @@ export class StringActions {
 
     /**
      * @method to_array - Split a string into an array of strings using a regular expression
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The string to split.
      * @param step.args.pattern {string} - The pattern to split the string on.
@@ -167,10 +167,10 @@ export class StringActions {
 
     /**
      * @method from_array - It takes an array, joins it together with a separator, and stores the result in a variable
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The array to join.
      * @param [step.args.separator] {string} - The separator to use when joining the array.
@@ -210,10 +210,10 @@ export class StringActions {
     /**
      * @method replace - It takes a string, splits it into an array of strings, joins the array of strings back together,
      * and returns the result
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The string to replace.
      * @param step.args.pattern {string} - The pattern to replace.
@@ -256,10 +256,10 @@ export class StringActions {
 
     /**
      * @method get_query_string - It takes a URL query string and returns an object with the key/value pairs
-     * @param step - The step object from the process definition.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The URL query string to parse.
      * @param [step.args.complex_parameters] {string|[]} - An array of parameters that have complex values.
@@ -323,10 +323,10 @@ export class StringActions {
     /**
      * @method template - It takes a template string, replaces all the `__key__` values with the values from the `options` object, and then
      * returns the result
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.template {string} - The template string.
      * @param step.args.options {object} - The options object.
@@ -376,10 +376,10 @@ export class StringActions {
 
     /**
      * @method slice - Slice a string and return the result
-     * @param step - The step object that is being executed.
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.value {string} - The string to slice.
      * @param [step.args.index] {number} - The index to start the slice. If no value is given, the value is set to 0.

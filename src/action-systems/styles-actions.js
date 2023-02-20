@@ -3,9 +3,9 @@
  * @description  It loads and unloads CSS files.
  *
  * Features:
- * perform - This method is called by the action system to perform the action.
- * load_file - This method loads a CSS file into the page.
- * unload_file - This method unloads a CSS file from the page.
+ * -perform - This method is called by the action system to perform the action.
+ * -load_file - This method loads a CSS file into the page.
+ * -unload_file - This method unloads a CSS file from the page.
  */
 export class StylesActions {
     static async perform(step, context, process, item) {
@@ -14,10 +14,10 @@ export class StylesActions {
 
     /**
      * @method load_file - It loads a CSS file into the page
-     * @param step - The step object from the process.
-     * @param context - The context of the current process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.id {string} - The id of the link tag.
      * @param step.args.file {string} - The file to load.
@@ -58,10 +58,10 @@ export class StylesActions {
 
     /**
      * @method unload_file - It removes a link from the DOM
-     * @param step - The step object from the process.
-     * @param context - The context of the current step.
-     * @param process - The process object that is running the step.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object that is running the step.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.id {string} - The id of the link tag.
      *

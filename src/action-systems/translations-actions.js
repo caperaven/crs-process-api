@@ -3,12 +3,12 @@
  * @description It contains all the actions that can be performed on the translations object
  *
  * Features:
- * perform - The method that is called to perform the action.
- * add - Add the translations to the context
- * get - Get the translation for the given key and store it in the given target or return the value
- * delete - Delete the translation for the given key
- * translate_elements - Translate the parent element and it's children, using the given context
- * inflate - uses a translation string and format it using properties
+ * -perform - The method that is called to perform the action.
+ * -add - Add the translations to the context
+ * -get - Get the translation for the given key and store it in the given target or return the value
+ * -delete - Delete the translation for the given key
+ * -translate_elements - Translate the parent element and it's children, using the given context
+ * -inflate - uses a translation string and format it using properties
  */
 export class TranslationsActions {
     static async perform(step, context, process, item) {
@@ -17,10 +17,10 @@ export class TranslationsActions {
 
     /**
      * @method add - Add the translations to the context
-     * @param step - The step object from the process definition.
-     * @param context - The context of the current step.
-     * @param process - the process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context of the current step.
+     * @param process {object} - the process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.context {string} - The context to add the translations to.
      * @param step.args.translations {object} - The {translations} to add.
@@ -55,10 +55,10 @@ export class TranslationsActions {
 
     /**
      * @method get - Get the translation for the given key and store it in the given target or return the value
-     * @param step - The step object from the process definition.
-     * @param context - The context of the current process.
-     * @param process - The process that is currently running.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process that is currently running.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.key {string} - The key to get the translation for.
      * @param [step.args.target = "$context.result"] {string} - The target to store the translation in.
@@ -94,10 +94,10 @@ export class TranslationsActions {
 
     /**
      * @method delete - Delete the translation for the specified context from the translation mechanism
-     * @param step - the step object
-     * @param context - The context of the translation.
-     * @param process - the process object
-     * @param item - the item that is being processed
+     * @param step {object} - the step object
+     * @param context {object} - The context of the translation.
+     * @param process {object} - the process object
+     * @param item {object} - the item that is being processed
      *
      * @param step.args.context {string} - The context to delete the translations for.
      *
@@ -124,10 +124,10 @@ export class TranslationsActions {
 
     /**
      * @method translate_elements - Translate the parent element and it's children,
-     * @param step - The step object from the test case.
-     * @param context - The context of the current step.
-     * @param process - The process object that is currently running.
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the test case.
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object that is currently running.
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.element {string} - The element to translate.
      *
@@ -158,10 +158,10 @@ export class TranslationsActions {
      * @description for example "${code} is valid" -> "A11 is valid" provided the parameters has a property called code
      * and with the value "A11"
      *
-     * @param step - The step object
-     * @param context - The context of the current process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.key {string}- The key to get the translation for.
      * @param step.args.parameters {object} - The {parameters} to use when formatting the translation.

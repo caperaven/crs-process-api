@@ -3,9 +3,9 @@
  * @description This class contains a set of actions that can be used to validate objects.
  *
  * Features:
- * perform - The main entry point for the class. This method will call the action method that is specified in the step.
- * assert_step - Assert that the specified process step has the specified properties.
- * required - If the object is valid, run the pass step, otherwise run the fail step.
+ * -perform - The main entry point for the class. This method will call the action method that is specified in the step.
+ * -assert_step - Assert that the specified process step has the specified properties.
+ * -required - If the object is valid, run the pass step, otherwise run the fail step.
  */
 export class ValidateActions {
     static async perform(step, context, process, item) {
@@ -14,10 +14,10 @@ export class ValidateActions {
 
     /**
      * @method assert_step - Assert that the specified process step has the specified properties
-     * @param step - The step object
-     * @param context - The context object that is passed to the process.
-     * @param process - The name of the process to run
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The name of the process to run
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The source to get the process from.
      * @param step.args.process {string} - The name of the process to validate.
@@ -81,10 +81,10 @@ export class ValidateActions {
 
     /**
      * @method required - If the object is valid, run the pass step, otherwise run the fail step
-     * @param step - The step object from the process definition
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object
-     * @param item - The item that is being processed.
+     * @param step {object} - The step object from the process definition
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
      *
      * @param step.args.source {string} - The source to get the object from.
      * @param step.args.properties {array} - The [properties] to validate.
