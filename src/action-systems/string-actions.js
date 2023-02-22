@@ -436,11 +436,12 @@ export class StringActions {
 /**
  * @function inflate_string - It takes a string, replaces all instances of `${` with `${context.`, then creates a function that returns
  * the string, and then calls that function with the parameters
- * @param string - The string to inflate.
- * @param parameters - The parameters passed to the function.
- * @param context - The context object that contains all the variables that are available to the template.
- * @param process - The process object
- * @param item - The item that is being processed.
+ *
+ * @param string {string} - The string to inflate.
+ * @param parameters {object} - The parameters object that was passed to the function.
+ * @param context {object} - The context of the current process.
+ * @param process {object} - The process that is being executed.
+ * @param item {object} - The item that is being processed.
  *
  * @returns A string with the parameters replaced.
  */
@@ -456,10 +457,11 @@ async function inflate_string(string, parameters, context, process, item) {
 
 /**
  * @function sanitise_parameters - It takes a parameters object, and gets the value for each property on the object.
- * @param parameters - The parameters object that was passed to the function.
- * @param context - The context of the current process.
- * @param process - The process that is being executed.
- * @param item - The item that is being processed.
+ *
+ * @param parameters {object} - The parameters object that was passed to the function.
+ * @param context {object} - The context of the current process.
+ * @param process {object} - The process that is being executed.
+ * @param item {object} - The item that is being processed.
  *
  * @returns The parameters object with the values replaced.
  */
@@ -475,8 +477,10 @@ async function sanitise_parameters(parameters, context, process, item) {
 }
 
 /**
- * @function translate_string - If the string contains a translation key, get the translation and replace the key with the translation
- * @param value - The string to translate.
+ * @function translate_string - If the string contains a translation key, get the translation and replace the key with the translation.
+ *
+ * @param value {string} - The string to translate.
+ *
  * @returns A promise that resolves to the translated string.
  */
 async function translate_string(value) {

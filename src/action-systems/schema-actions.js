@@ -9,10 +9,10 @@ class SchemaParserManager {
     /**
      * @function register - It creates a new instance of the parser, registers all the providers, and then stores the parser and a queue for it
      *
-     * @params step.args.id - The id of the parser.
-     * @params step.args.parser - The parser class to use.
-     * @params step.args.providers - An array of strings that are the paths to the providers.
-     * @params step.args.parameters - An object containing the parameters to be passed to the parser.
+     * @param id {string} - The id of the parser.
+     * @param parser {string} - The parser class to use.
+     * @param providers {array} - An array of strings that are the paths to the providers.
+     * @param parameters {object} - An object containing the parameters to be passed to the parser.
      *
      * @returns The instance of the parser.
      */
@@ -30,7 +30,7 @@ class SchemaParserManager {
 
     /**
      * @function unregister - This function removes a parser from the queue.
-     * @param id - The id of the parser to remove.
+     * @param id {string} - The id of the parser to remove.
      */
     async unregister(id) {
         this.#parsers[id]?.dispose();
@@ -40,9 +40,10 @@ class SchemaParserManager {
 
     /**
      * @function parse - It adds a callback to a queue, and when the queue is empty, it executes the callback
-     * @param id - The id of the parser to use.
-     * @param schema - The schema to parse.
-     * @param ctx - The context of the parser. This is used to pass information between parsers.
+     *
+     * @param id {string} - The id of the parser to use.
+     * @param schema {object} - The schema to parse.
+     * @param ctx {object} - The context to use when parsing the schema.
      *
      * @returns A promise that resolves to the result of the parser.
      */
@@ -62,7 +63,7 @@ class SchemaParserManager {
     /**
      * @function #addToQueue - If the queue is empty, run the promise. If the queue is not empty, add the promise to the queue.
      * If only one item in queue we can call the runQueue function
-     * @param id - The id of the queue to add the promise to.
+     * @param id {string} - The id of the queue to add the promise to.
      * @param promise - The promise to add to the queue.
      */
     #addToQueue(id, promise) {
@@ -76,7 +77,7 @@ class SchemaParserManager {
     /**
      * @function #runQueue - This function will run through the queue and when a promise resolves the then function will start the queue again
      *
-     * @param id - The id of the queue you want to run.
+     * @param id {string} - The id of the queue you want to run.
      * @returns A function that takes an id as an argument.
      */
     #runQueue(id) {
