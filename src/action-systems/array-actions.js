@@ -570,6 +570,7 @@ export class ArrayActions {
      * @param step.args.source {string|[]} - source array to map and assign data to
      * @param step.args.mappings {object} - mappings to perform where key is the source field and value is the target field
      * @param step.args.properties {object} - properties to add to each object where key is the field and value is the value
+     * @param step.args.keepOtherFields {boolean} - keep other fields in the objects
      * @param step.args.target {string|[]} - target to save new array of objects to
      *
      * @example <caption>javascript example</caption>
@@ -582,6 +583,7 @@ export class ArrayActions {
      *   properties: {
      *     "field3": "value3"
      *   },
+     *   keepOtherFields: true,
      *   target: "$process.result"
      * }, context, process, item);
      *
@@ -598,6 +600,7 @@ export class ArrayActions {
      *     "properties": {
      *       "field3": "value3"
      *     },
+     *     "keepOtherFields": true,
      *     "target": "@process.array"
      *   }
      * }
@@ -609,6 +612,7 @@ export class ArrayActions {
         const data = await crs.process.getValue(step.args.source, context, process, item);
         const mappings = await crs.process.getValue(step.args.mappings, context, process, item);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);
+        const keepOtherFields = await crs.process.getValue(step.args.keepOtherFields, context, process, item);
 
 
         let result = [];
@@ -616,12 +620,24 @@ export class ArrayActions {
         // Iterate over data and create new objects
         for (let row of data) {
             let obj = {};
+
             for (const [key, value] of Object.entries(mappings)) {
                 obj[await crs.process.getValue(value, context, process, item)] = row[await crs.process.getValue(key, context, process, item)];
             }
 
             for (const [key, value] of Object.entries(properties)) {
                 obj[await crs.process.getValue(key, context, process, item)] = await crs.process.getValue(value, context, process, item);
+            }
+
+            if (keepOtherFields == true) {
+                const keys = Object.keys(row);
+                const existingKeys = Object.keys(obj);
+
+                for (let key of keys) {
+                    if (existingKeys.indexOf(key) == -1) {
+                        obj[key] = row[key];
+                    }
+                }
             }
 
             result.push(obj);
