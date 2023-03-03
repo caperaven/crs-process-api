@@ -12,7 +12,6 @@ export class RandomActions {
         return await this[step.action](step, context, process, item);
     }
 
-
     /**
      * @method generate_object - Generate an object with defined fields but using random values based on the field type
      * @param step {object} - The step object that is being executed.
@@ -34,7 +33,13 @@ export class RandomActions {
      *         date: "date:2020-01-01:2020-12-31",
      *         time: "time:0:24",
      *         duration: "duration:1:10",
-     *         isValid: "boolean"
+     *         isValid: "boolean",
+     *         records: {
+     *             definition: {
+     *                 ... same as above: N levels deep
+     *             },
+     *             count: 10 // if count is defined it's an array of objects else it is just an object of defined fields.
+     *         },
      *     }
      * })
      */
@@ -64,6 +69,8 @@ export class RandomActions {
     static async generate_collection(step, context, process, item) {
         const definition = await crs.process.getValue(step.args.definition, context, process, item);
         const count = await crs.process.getValue(step.args.count, context, process, item);
+
+        // use the "generate_object" function above to create each record
     }
 
     /**
@@ -155,6 +162,9 @@ export class RandomActions {
     }
 
     static async duration(step, context, process, item) {
+    }
+
+    static async boolean(step, context, process, item) {
     }
 }
 
