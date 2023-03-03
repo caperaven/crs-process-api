@@ -578,7 +578,8 @@ export class ArrayActions {
      *   source: data,
      *   mappings: {
      *       "field1": "field5",
-     *       "field2": "field6"
+     *       "field2": "field6",
+     *       "field3": null
      *   }
      *   target: "$process.result"
      * }, context, process, item);
@@ -591,7 +592,8 @@ export class ArrayActions {
      *     "source": "@process.array",
      *     "mappings": {
      *       "field1": "field5",
-     *       "field2": "field6"
+     *       "field2": "field6",
+     *       "field3": null
      *     },
      *     "target": "@process.array"
      *   }
