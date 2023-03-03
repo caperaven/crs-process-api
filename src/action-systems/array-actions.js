@@ -610,25 +610,25 @@ export class ArrayActions {
         const rowKeys = Object.keys(data[0] ?? {});
 
         for (const row of data) {
-            for (let key of keys) {
-                let value = mappings[key];
-                key = await crs.process.getValue(key, context, process, item);
-                value = await crs.process.getValue(value, context, process, item);
+            for (let mappingKey of keys) {
+                let mappingValue = mappings[mappingKey];
+                mappingKey = await crs.process.getValue(mappingKey, context, process, item);
+                mappingValue = await crs.process.getValue(mappingValue, context, process, item);
 
-                // if the value is null, then we want to set the to field to null
-                if (value == null) {
-                    row[key] = null
+                // if the mappingValue is null, then we want to set the mappingKey field to null
+                if (mappingValue == null) {
+                    row[mappingKey] = null
                     continue;
                 }
 
-                // if the value is not in the row, then we want to set the to field to the value
-                if (rowKeys.indexOf(value) == -1) {
-                    row[key] = value;
+                // if the mappingValue is not in the row, then we want to set the mappingKey field to the mappingValue
+                if (rowKeys.indexOf(mappingValue) == -1) {
+                    row[mappingKey] = mappingValue;
                     continue;
                 }
 
-                // otherwise we want to set the to field to the value of the from field
-                row[key] = row[value];
+                // otherwise we want to do a normal mapping
+                row[mappingKey] = row[mappingValue];
             }
         }
 
