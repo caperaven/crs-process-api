@@ -244,16 +244,22 @@ Deno.test("ArrayActins - calculate_paging", async () => {
     assertEquals(result.page_count, 3);
 })
 
-Deno.test("map_assign_data: change 2 properties and add one", async () => {
+Deno.test("map_assign_data: change 2 properties and add one nulling changes", async () => {
     // Arrange
     const testData = [
         {a: 1, b: 2, c: 3},
         {a: 4, b: 5, c: 6}
     ];
-    const mappings = {a: "A", b: "$process.data.propertyMap"};
-    const properties = {d: "$process.data.testValue2"};
+    const mappings = {
+        A: "a",
+        "$process.data.propertyMap": "b",
+        d: "$process.data.testValue2",
+        c: null,
+        a: null,
+        b: null
+    };
 
-    const step = {source: testData, mappings, properties, target: "$context.result"};
+    const step = {source: testData, mappings, target: "$context.result"};
     const context = {};
     const process = {
         data: {
@@ -268,23 +274,22 @@ Deno.test("map_assign_data: change 2 properties and add one", async () => {
 
     // Assert
     const expected = [
-        {A: 1, B: 2, d: "Test"},
-        {A: 4, B: 5, d: "Test"}
+        {A: 1, B: 2, a: null, b: null, c: null, d: "Test"},
+        {A: 4, B: 5, a: null, b: null, c: null, d: "Test"}
     ];
     assertEquals(result, expected);
     assertEquals(context.result, expected);
 });
 
-Deno.test("map_assign_data: keep record data and map and assign", async () => {
+Deno.test("map_assign_data: map b and add d", async () => {
     // Arrange
     const testData = [
         {a: 1, b: 2, c: 3},
         {a: 4, b: 5, c: 6}
     ];
-    const mappings = {b: "B"};
-    const properties = {d: "$process.data.testValue2"};
+    const mappings = {B: "b", d: "$process.data.testValue2"};
 
-    const step = {source: testData, mappings, properties, target: "$context.result", keepOtherFields: true};
+    const step = {source: testData, mappings, target: "$context.result", keepOtherFields: true};
     const context = {};
     const process = {
         data: {
@@ -310,7 +315,6 @@ Deno.test("map_assign_data: empty input", async () => {
     const step = {
         source: [],
         mappings: {},
-        properties: {},
         target: null
     };
     const result = await crs.call("array", "map_assign_data", step);
@@ -322,21 +326,31 @@ Deno.test("map_assign_data: no mappings", async () => {
     const step = {
         source: [{a: 1, b: 2}],
         mappings: {},
-        properties: {c: 3},
         target: null
     };
     const result = await crs.call("array", "map_assign_data", step);
-    assertEquals(result, [{c: 3}]);
+    assertEquals(result, [{a: 1, b: 2}]);
 });
 
-// Edge case test: no properties
-Deno.test("map_assign_data: no properties", async () => {
+// Edge case test: map to a null value
+Deno.test("map_assign_data: map to a null value", async () => {
     const step = {
-        source: [{a: 1, b: 2}],
-        mappings: {a: "x", b: "y"},
-        properties: {},
+        source: [{a: 1, b: null}],
+        mappings: {b: 5},
         target: null
     };
     const result = await crs.call("array", "map_assign_data", step);
-    assertEquals(result, [{x: 1, y: 2}]);
+    assertEquals(result, [{a: 1, b: 5}]);
 });
+
+// Edge case test: map from a null value
+Deno.test("map_assign_data: map from a null value", async () => {
+    const step = {
+        source: [{a: 1, b: null}],
+        mappings: {a: "b"},
+        target: null
+    };
+    const result = await crs.call("array", "map_assign_data", step);
+    assertEquals(result, [{a: null, b: null}]);
+});
+

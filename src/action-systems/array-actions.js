@@ -560,7 +560,9 @@ export class ArrayActions {
     }
 
     /**
-     * @method map_assign_data - Map an array of objects to a new array of objects and optionally add new properties to each object
+     * @method map_assign_data - Apply mappings to an array of objects, allowing you to assign data from one field to another
+     * it also can add new fields and null existing fields. It returns the existing array with modifications made.
+     * Note: all source items must have the same fields.
      *
      * @param step {object} - step to perform
      * @param context {object} - context of the process
@@ -569,8 +571,6 @@ export class ArrayActions {
      *
      * @param step.args.source {string|[]} - source array to map and assign data to
      * @param step.args.mappings {object} - mappings to perform where key is the source field and value is the target field
-     * @param step.args.properties {object} - properties to add to each object where key is the field and value is the value
-     * @param step.args.keepOtherFields {boolean} - keep other fields in the objects
      * @param step.args.target {string|[]} - target to save new array of objects to
      *
      * @example <caption>javascript example</caption>
@@ -579,11 +579,7 @@ export class ArrayActions {
      *   mappings: {
      *       "field1": "field5",
      *       "field2": "field6"
-     *   },
-     *   properties: {
-     *     "field3": "value3"
-     *   },
-     *   keepOtherFields: true,
+     *   }
      *   target: "$process.result"
      * }, context, process, item);
      *
@@ -597,10 +593,6 @@ export class ArrayActions {
      *       "field1": "field5",
      *       "field2": "field6"
      *     },
-     *     "properties": {
-     *       "field3": "value3"
-     *     },
-     *     "keepOtherFields": true,
      *     "target": "@process.array"
      *   }
      * }
@@ -608,47 +600,41 @@ export class ArrayActions {
      * @returns {Array[{object}]} - array of objects
      */
     static async map_assign_data(step, context, process, item) {
-        // Get data, mappings and properties
         const data = await crs.process.getValue(step.args.source, context, process, item);
         const mappings = await crs.process.getValue(step.args.mappings, context, process, item);
-        const properties = await crs.process.getValue(step.args.properties, context, process, item);
-        const keepOtherFields = await crs.process.getValue(step.args.keepOtherFields, context, process, item);
 
+        const keys = Object.keys(mappings);
+        // get the keys of the first row, to improve performance this is done once
+        const rowKeys = Object.keys(data[0] ?? {});
 
-        let result = [];
+        for (const row of data) {
+            for (let key of keys) {
+                let value = mappings[key];
+                key = await crs.process.getValue(key, context, process, item);
+                value = await crs.process.getValue(value, context, process, item);
 
-        // Iterate over data and create new objects
-        for (let row of data) {
-            let obj = {};
-
-            for (const [key, value] of Object.entries(mappings)) {
-                obj[await crs.process.getValue(value, context, process, item)] = row[await crs.process.getValue(key, context, process, item)];
-            }
-
-            for (const [key, value] of Object.entries(properties)) {
-                obj[await crs.process.getValue(key, context, process, item)] = await crs.process.getValue(value, context, process, item);
-            }
-
-            if (keepOtherFields == true) {
-                const keys = Object.keys(row);
-                const existingKeys = Object.keys(obj);
-
-                for (let key of keys) {
-                    if (existingKeys.indexOf(key) == -1) {
-                        obj[key] = row[key];
-                    }
+                // if the value is null, then we want to set the to field to null
+                if (value == null) {
+                    row[key] = null
+                    continue;
                 }
+
+                // if the value is not in the row, then we want to set the to field to the value
+                if (rowKeys.indexOf(value) == -1) {
+                    row[key] = value;
+                    continue;
+                }
+
+                // otherwise we want to set the to field to the value of the from field
+                row[key] = row[value];
             }
-
-            result.push(obj);
         }
 
-        // Save result to target if on is provided
         if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, result, context, process, item);
+            await crs.process.setValue(step.args.target, data, context, process, item);
         }
 
-        return result;
+        return data;
     }
 }
 
