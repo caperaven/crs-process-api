@@ -13,6 +13,7 @@
  * - get_records - get the records from an array of objects, given the page size and page number to return
  * - get_range - get a range (min and max) of values from an array
  * - calculate_paging - for the given array and how big a page size is, how many pages fit in the array
+ * - map_assign_data - map an array of objects using a mapping definition to remap fields and add new fields.
  */
 export class ArrayActions {
     static async perform(step, context, process, item) {
