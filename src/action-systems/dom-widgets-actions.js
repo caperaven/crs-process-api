@@ -1,10 +1,42 @@
+/**
+ * @class DomWidgetsActions - It's a class that contains methods that are called by the CRS engine to perform actions on the DOM
+ *
+ * Features:
+ * -show_widget_dialog - show a widget dialog
+ * -show_form_dialog - show a form dialog
+ *
+ */
 export class DomWidgetsActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
     }
 
     /**
-     * Set a widgets html and context for binding after adding it to the UI
+     * @method show_widget_dialog - Set a widgets html and context for binding after adding it to the UI
+     *
+     * @param step {Object}- step to perform
+     * @param context {Object} - context to use
+     * @param process {Object} - process to use
+     * @param item {Object} - item to use
+     *
+     * @param step.args.html {String} - html to use
+     * @param step.args.url {String} - url to use
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_widgets", "show_widget_dialog", {
+     *    html: "<div>hello world</div>",
+     *    url: "https://www.google.com"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *   "type": "dom_widgets",
+     *   "action": "show_widget_dialog",
+     *   "args": {
+     *     "html": "<div>hello world</div>",
+     *     "url": "https://www.google.com"
+     *   }
+     * }
      * @returns {Promise<void>}
      */
     static async show_widget_dialog(step, context, process, item) {
@@ -18,6 +50,43 @@ export class DomWidgetsActions {
         })
     }
 
+    /**
+     * @method show_form_dialog - It creates a layer, loads the HTML into the layer, and then adds a pass and fail function to the binding context
+     * @param step {Object}- The step object
+     * @param context {Object} - The context object that was passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.html {String} - The HTML to load into the layer
+     * @param step.args.url {String} - The URL to load into the layer
+     * @param step.args.errors {Array} - An array of errors to display
+     * @param step.pass {String} - The name of the next step to perform if the form passes validation
+     * @param step.fail {String} - The name of the next step to perform if the form fails validation
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_widgets", "show_form_dialog", {
+     *   html: "<div>hello world</div>",
+     *   url: "https://www.google.com",
+     *   errors: ["error 1", "error 2"],
+     *   pass: "pass_step",
+     *   fail: "fail_step"
+     *   });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "type": "dom_widgets",
+     *  "action": "show_form_dialog",
+     *  "args": {
+     *    "html": "<div>hello world</div>",
+     *    "url": "https://www.google.com",
+     *    "errors": ["error 1", "error 2"],
+     *    "pass": "pass_step",
+     *    "fail": "fail_step"
+     *   }
+     * }
+     *
+     * @returns A promise.
+     */
     static async show_form_dialog (step, context, process, item) {
         return new Promise(resolve => {
             const parts = createWidgetLayer(step);
@@ -68,6 +137,17 @@ export class DomWidgetsActions {
     }
 }
 
+/**
+ * @function validate_form - It takes a query selector, finds all the labels in the form, and then checks the validation message of each input. If
+ * the validation message is not empty, it adds the label text and the validation message to an array of errors
+ *
+ * @param query {String}- The query selector for the form you want to validate.
+ *
+ * @example <caption>javascript</caption>
+ * const errors = await validate_form("#my_form");
+ *
+ * @returns An array of strings.
+ */
 async function validate_form(query) {
     const form = document.querySelector(query);
     const labels = form?.querySelectorAll("label");
@@ -84,6 +164,24 @@ async function validate_form(query) {
     return errors;
 }
 
+/**
+ * @function createWidgetLayer - It creates a layer and a widget, and returns them
+ * @param step - The step object that is passed to the function.
+ * @param [step.args.id="widget_layer"] {String} - The id of the layer.
+ *
+ * @example <caption>javascript</caption>
+ * const parts = createWidgetLayer(step);
+ * document.documentElement.appendChild(parts.layer);
+ * requestAnimationFrame(async () => {
+ *  await setWidgetContent(parts.widget.id, step.args.html, step.args.url, context, process, item);
+ *  ...
+ *  ...
+ *  ...
+ *  resolve();
+ *  })
+ *
+ * @returns An object with two properties: layer and widget.
+ */
 function createWidgetLayer(step) {
     const layer = document.createElement("div");
     layer.style.zIndex          = "99999999";
@@ -112,6 +210,18 @@ function createWidgetLayer(step) {
     }
 }
 
+/**
+ * @function setWidgetContent - It takes an HTML string, a URL, and a DOM element ID, and it sets the content of the DOM element with the given ID to
+ * the HTML string, and it sets the URL of the browser to the given URL
+ * @param id {String}- The id of the widget to set the content of.
+ * @param html {String}- The HTML to be inserted into the widget.
+ * @param url {String}- The URL of the widget.
+ * @param context {Object} - The context object that was passed to the process function.
+ * @param process {Object} - The process that is running the widget.
+ * @param item {Object} - The item that was clicked on.
+ *
+ *
+ */
 async function setWidgetContent(id, html, url, context, process, item) {
     await crs.call("dom_binding", "set_widget",
         {

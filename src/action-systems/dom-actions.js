@@ -1,5 +1,31 @@
 import {callFunctionOnPath} from "./action-actions.js";
 
+/**
+ * @class DomActions - It contains methods that perform actions on the DOM.
+ * Features:
+ * -set_attribute - Set a element's attribute value
+ * -set_attributes - Set multiple attributes on an element
+ * -get_attribute - Get a element's attribute value
+ * -add_class - Add a class to an element
+ * -remove_class - Remove a class from an element
+ * -set_style - Set a style property on an element
+ * -set_styles - Set multiple style properties on an element
+ * -get_style - Get a style property on an element
+ * -set_text - Set the text content of an element
+ * -get_text - Get the text content of an element
+ * -get_element - Get an element by id
+ * -create_element - Create an element
+ * -remove_element - Remove an element
+ * -clear_element - Clear an element
+ * -move_element - Move an element
+ * -move_element_up - Move an element up
+ * -move_element_down - Move an element down
+ * -set_css_variable - Set a css variable
+ * -get_css_variable - Get a css variable
+ * -set_css_variables - Set multiple css variables
+ * -get_css_variables - Get multiple css variables
+ *
+ */
 export class DomActions {
     static async perform(step, context, process, item) {
         await this[step.action]?.(step, context, process, item);
@@ -26,8 +52,36 @@ export class DomActions {
      */
 
 
+
+
     /**
-     * Set a element's attribute value
+     * @method set_attribute - It sets an attribute on an element
+     * @param step {Object}- The step object.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is currently running.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to set the attribute on.
+     * @param step.args.attr {String} - The name of the attribute to set.
+     * @param step.args.value {String} - The value to set the attribute to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_attribute", {
+     *    element: "my-element",
+     *    attr: "my-attribute",
+     *    value: "my-value"
+     *    });
+     *
+     * @example <caption>json</caption>
+     * {
+     *   "action": "set_attribute",
+     *   "args": {
+     *     "element": "my-element",
+     *     "attr": "my-attribute",
+     *     "value": "my-value"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async set_attribute(step, context, process, item) {
@@ -35,8 +89,38 @@ export class DomActions {
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
 
+
+
     /**
-     * Set multiple attributes on an element
+     * @method set_attributes - It gets an element from the DOM, and then sets the attributes of that element to the values specified in the step
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to set the attributes on.
+     * @param step.args.attributes {Object} - An object containing the attributes to set. The keys are the attribute names, and the values are the values to set the attributes to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_attributes", {
+     *   element: "my-element",
+     *   attributes: {
+     *   "my-attribute": "my-value",
+     *   "my-other-attribute": "my-other-value"
+     *   }
+     *   });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "set_attributes",
+     *  "args": {
+     *    "element": "my-element",
+     *    "attributes": {
+     *      "my-attribute": "my-value",
+     *     "my-other-attribute": "my-other-value"
+     *    }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async set_attributes(step, context, process, item) {
@@ -46,9 +130,37 @@ export class DomActions {
         }
     }
 
+
+
     /**
-     * Get a element's attribute value
-     * @returns {Promise<*>}
+     * @method get_attribute - It gets the value of an attribute of an element
+     * @param step {Object} - The step object that is being executed.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The id of the element to get the attribute from.
+     * @param step.args.attr {String} - The name of the attribute to get.
+     * @param step.args.target {String} - The name of the variable to store the value in.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "get_attribute", {
+     *  element: "my-element",
+     *  attr: "my-attribute",
+     *  target: "my-variable"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *   "action": "get_attribute",
+     *   "args": {
+     *     "element": "my-element",
+     *     "attr": "my-attribute",
+     *     "target": "my-variable"
+     *    }
+     * }
+     *
+     * @returns The value of the attribute.
      */
     static async get_attribute(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -61,9 +173,34 @@ export class DomActions {
         return value;
     }
 
+
     /**
-     * Add a class to the classlist
+     * @method add_class - It adds a class to the classList
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to add the class to.
+     * @param step.args.value {String|Array} - The class to add. If it is an array, it will add all the classes in the array.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "add_class", {
+     *   element: "my-element",
+     *   value: "my-class"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "add_class",
+     *  "args": {
+     *    "element": "my-element",
+     *    "value": "my-class"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
+     *
      */
     static async add_class(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
@@ -73,8 +210,32 @@ export class DomActions {
         element.classList.add(...collection);
     }
 
+
     /**
-     * Add a class to the classlist
+     * @method remove_class - Remove a class from the classList
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to remove the class from.
+     * @param step.args.value {String|Array} - The class to remove. If it is an array, it will remove all the classes in the array.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "remove_class", {
+     *  element: "my-element",
+     *  value: "my-class"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "remove_class",
+     *  "args": {
+     *    "element": "my-element",
+     *    "value": "my-class"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async remove_class(step, context, process, item) {
@@ -86,7 +247,34 @@ export class DomActions {
     }
 
     /**
-     * Set a style property value
+     * @method set_style - Set a style property value.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to set the style on.
+     * @param step.args.style {String} - The style property to set.
+     * @param step.args.value {String} - The value to set the style property to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_style", {
+     * element: "my-element",
+     * style: "color",
+     * value: "red"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "set_style",
+     *  "args": {
+     *    "element": "my-element",
+     *    "style": "color",
+     *    "value": "red"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async set_style(step, context, process, item) {
@@ -95,7 +283,37 @@ export class DomActions {
     }
 
     /**
-     * Set multiple styles on a element
+     * @method set_styles - Set multiple styles on a element.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to set the style on.
+     * @param step.args.styles {Object} - An object containing the style properties to set.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_styles", {
+     *   element: "my-element",
+     *   styles: {
+     *     color: "red",
+     *     background: "blue"
+     *    }
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "set_styles",
+     *  "args": {
+     *    "element": "my-element",
+     *    "styles": {
+     *      "color": "red",
+     *      "background": "blue"
+     *     }
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async set_styles(step, context, process, item) {
@@ -106,7 +324,32 @@ export class DomActions {
     }
 
     /**
-     * Get a style property value
+     * @method get_style - Get a style property value.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to get the style from.
+     * @param step.args.style {String} - The style property to get.
+     * @param step.args.target {String} - The target to set the value to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "get_style", {
+     *  element: "my-element",
+     *  style: "color"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "get_style",
+     *  "args": {
+     *    "element": "my-element",
+     *    "style": "color"
+     *   }
+     * }
+     *
      * @returns {Promise<*>}
      */
     static async get_style(step, context, process, item) {
@@ -121,7 +364,31 @@ export class DomActions {
     }
 
     /**
-     * Set the text content of a defined element
+     * @method set_text - Set the text content of a defined element.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to set the text on.
+     * @param step.args.value {String} - The value to set the text to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_text", {
+     *   element: "my-element",
+     *   value: "Hello World"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "set_text",
+     *  "args": {
+     *    "element": "my-element",
+     *    "value": "Hello World"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async set_text(step, context, process, item) {
@@ -130,7 +397,29 @@ export class DomActions {
     }
 
     /**
-     * Get the text content of a element and copy it to a defined target
+     * @method get_text - Get the text content of a element and copy it to a defined target.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to get the text from.
+     * @param step.args.target {String} - The target to set the value to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "get_text", {
+     *  element: "my-element"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "get_text",
+     *  "args": {
+     *    "element": "my-element"
+     *   }
+     * }
+     *
      * @returns {Promise<*|string|*|string|*|*>}
      */
     static async get_text(step, context, process, item) {
@@ -145,7 +434,29 @@ export class DomActions {
     }
 
     /**
-     * Get element
+     * @method get_element - Get element
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The id of the element to get.
+     * @param [step.args.target] {String} - The target to set the value to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "get_element", {
+     *   element: "my-element"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "get_element",
+     *  "args": {
+     *    "element": "my-element"
+     *   }
+     * }
+     *
      * @returns {Promise<HTMLElement|DocumentFragment|*>}
      */
     static async get_element(step, context, process, item) {
@@ -180,8 +491,86 @@ export class DomActions {
         return result;
     }
 
+    //ToDo: AW - Find out about use-case.
+
     /**
-     * Create a dom element and optionally append it to a defined parent or set it on a target
+     * @method create_element - Create a dom element and optionally append it to a defined parent or set it on a target
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.parent {String} - The id of the parent element to append the new element to.
+     * @param [step.args.tag_name="div"] {String} - The tag name of the element to create.
+     * @param [step.args.attributes={}] {Object} - The attributes to set on the element.
+     * @param [step.args.styles={}] {Object} - The styles to set on the element.
+     * @param [step.args.classes=[]] {Array} - The classes to set on the element.
+     * @param [step.args.dataset={}] {Object} - The dataset to set on the element.
+     * @param [step.args.variables={}] {Object} - The variables to set on the element.
+     * @param [step.args.id] {String} - The id to set on the element.
+     * @param [step.args.text_content] {String} - The text content to set on the element.
+     * @param [step.args.children] {[Object]} - The children to append to the element.
+     * @param [step.args.target] {String} - The target to set the value to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "create_element", {
+     *  parent: "my-parent",
+     *  tag_name: "div",
+     *  attributes: {
+     *    "data-test": "test"
+     *  },
+     *  styles: {
+     *   "background-color": "red"
+     *  },
+     *  classes: ["test"],
+     *  dataset: {
+     *   "test": "test"
+     *  },
+     *  variables: {
+     *   "test": "test"
+     *  },
+     *  id: "my-id",
+     *  text_content: "test",
+     *  children: [
+     *   {
+     *    "tag_name": "div",
+     *    "text_content": "test"
+     *   }
+     *  ]
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "create_element",
+     *  "args": {
+     *   "parent": "my-parent",
+     *   "tag_name": "div",
+     *   "attributes": {
+     *     "data-test": "test"
+     *   },
+     *   "styles": {
+     *     "background-color": "red"
+     *   },
+     *   "classes": ["test"],
+     *   "dataset": {
+     *     "test": "test"
+     *   },
+     *   "variables": {
+     *     "test": "test"
+     *   },
+     *   "id": "my-id",
+     *   "text_content": "test",
+     *   "children": [
+     *   {
+     *     "tag_name": "div",
+     *     "text_content": "test"
+     *    }
+     *   ]
+     *  }
+     * }
+     *
+     *
      * @returns {Promise<HTMLElement>}
      */
     static async create_element(step, context, process, item) {
@@ -253,7 +642,28 @@ export class DomActions {
     }
 
     /**
-     * Remove the element from the dom
+     * @method remove_element - Remove the element from the dom
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to remove.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "remove_element", {
+     *  element: "my-element"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "remove_element",
+     *  "args": {
+     *    "element": "my-element"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async remove_element(step, context, process, item) {
@@ -264,7 +674,28 @@ export class DomActions {
     }
 
     /**
-     * Clear a element, removing all the children
+     * @method clear_element - Clear a element, removing all the children.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to clear.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "clear_element", {
+     *   element: "my-element"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "clear_element",
+     *  "args": {
+     *    "element": "my-element"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async clear_element(step, context, process, item) {
@@ -278,7 +709,34 @@ export class DomActions {
     }
 
     /**
-     * Move a element from one parent to another
+     * @method move_element - Move a element from one parent to another.
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to move.
+     * @param step.args.target {String} - The target element.
+     * @param step.args.position {String} - The position to move the element to. (before, after, first, last)
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "move_element", {
+     *  element: "my-element",
+     *  target: "my-target",
+     *  position: "before"
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "move_element",
+     *  "args": {
+     *    "element": "my-element",
+     *    "target": "my-target",
+     *    "position": "before"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async move_element(step, context, process, item) {
@@ -288,6 +746,30 @@ export class DomActions {
         await move_element(element, parent, step.args.position);
     }
 
+    /**
+     * @method move_element_down - It moves the element down one position in the DOM
+     * @param step {Object} - The step object
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The current process
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The element to move.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "move_element_down", {
+     * element: "my-element"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "move_element_down",
+     *  "args": {
+     *    "element": "my-element"
+     *  }
+     * }
+     *
+     * @returns {Promise<void>}
+     */
     static async move_element_down(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const target = element.nextElementSibling;
@@ -297,6 +779,30 @@ export class DomActions {
         }
     }
 
+    /**
+     * @method move_element_up - It moves the element up one position in the DOM
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the current step.
+     * @param process {Object} - The current process
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The element to move.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "move_element_up", {
+     *  element: "my-element"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "move_element_up",
+     *  "args": {
+     *    "element": "my-element"
+     *  }
+     * }
+     *
+     * @returns {Promise<void>}
+     */
     static async move_element_up(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const target = element.previousElementSibling;
@@ -307,11 +813,34 @@ export class DomActions {
     }
 
     /**
-     *Sets a single CSS variable to an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
+     *@method set_css_variable - Sets a single CSS variable to an element
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to set the CSS variable to.
+     * @param step.args.variable {String} - The name of the CSS variable.
+     * @param step.args.value {String} - The value of the CSS variable.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_css_variable", {
+     *  element: "my-element",
+     *  variable: "--my-variable",
+     *  value: "red"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "set_css_variable",
+     *  "args": {
+     *    "element": "my-element",
+     *    "variable": "--my-variable",
+     *    "value": "red"
+     *   }
+     * }
+     *
+     * @returns {Promise<void>}
      */
 
     static async set_css_variable(step, context, process, item) {
@@ -323,11 +852,33 @@ export class DomActions {
     }
 
     /**
-     *Returns a single CSS variable value of an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
+     * @method get_css_variable - Returns a single CSS variable value of an element
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to get the CSS variable from.
+     * @param step.args.variable {String} - The name of the CSS variable.
+     * @param [step.args.target] {String} - The name of the variable to store the result in.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "get_css_variable", {
+     *   element: "my-element",
+     *   variable: "--my-variable"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "get_css_variable",
+     *  "args": {
+     *    "element": "my-element",
+     *    "variable": "--my-variable"
+     *   }
+     * }
+     *
+     * @returns {Promise<String>} - The value of the CSS variable.
+     *
      */
 
     static async get_css_variable(step, context, process, item) {
@@ -342,11 +893,37 @@ export class DomActions {
     }
 
     /**
-     *Sets a multiple CSS variables to an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
+     *@method set_css_variables - Sets a multiple CSS variables to an element
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to set the CSS variable to.
+     * @param step.args.variables {Object} - An object containing the CSS variables to set.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "set_css_variables", {
+     *   element: "my-element",
+     *   variables: {
+     *     "--my-variable": "red",
+     *     "--my-variable-2": "blue"
+     *   }
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "set_css_variables",
+     *  "args": {
+     *    "element": "my-element",
+     *    "variables": {
+     *      "--my-variable": "red",
+     *      "--my-variable-2": "blue"
+     *     }
+     *   }
+     * }
+     *
+     * @returns {Promise<void>}
      */
 
     static async set_css_variables(step, context, process, item) {
@@ -359,11 +936,31 @@ export class DomActions {
     }
 
     /**
-     *Returns an array of multiple CSS variable values of an element
-     * @param step
-     * @param context
-     * @param process
-     * @param item
+     * @method get_css_variables - Returns an array of multiple CSS variable values of an element
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to get the CSS variable from.
+     * @param step.args.variables {[String]} - An array of the names of the CSS variables.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom_actions", "get_css_variables", {
+     *  element: "my-element",
+     *  variables: ["--my-variable", "--my-variable-2"]
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "get_css_variables",
+     *  "args": {
+     *    "element": "my-element",
+     *    "variables": ["--my-variable", "--my-variable-2"]
+     *   }
+     * }
+     *
+     * @returns {Promise<[String]>} - An array of the values of the CSS variables.
      */
 
     static async get_css_variables(step, context, process, item) {
@@ -378,6 +975,14 @@ export class DomActions {
     }
 }
 
+/**
+ * @function move_element - It moves an element to a target element, and if a position is specified, it will move the element before or after the
+ * target element
+ * @param element - the element you want to move
+ * @param target {*} - the element you want to move
+ * @param position {String} - "before" or "after"
+ * @returns the result of the function call.
+ */
 async function move_element(element, target, position) {
     if (element == null || target == null) {
         return console.error(`both element and parent must exist to move the element`);

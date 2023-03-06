@@ -1,0 +1,1 @@
+ Use crs binding to post a message to a listening component  **Returns**: {Promise<void>} perform a crsbinding.events.emitter.emit  ***parameters***|parameter|type|description|required|default||---------|----|-----------|--------|-------||step|-|-|true|-||context|-|-|true|-||process|-|-|true|-||item|-|-|true|-|**Returns**: {Promise<void>}

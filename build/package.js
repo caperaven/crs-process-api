@@ -5,6 +5,7 @@ async function createFolderStructure() {
     await ensureDir("./dist");
     await emptyDir("./dist");
     await ensureDir("./dist/bin");
+    await ensureDir("./dist/docs");
     await ensureDir("./dist/action-systems");
     await ensureDir("./dist/action-systems/managers");
     await ensureDir("./dist/action-systems/managers/dragdrop-manager");
@@ -100,5 +101,6 @@ await packageDirectory({
 await bundle("./src/index.js", "./dist/crs-process-api.js", minified);
 
 await copyDirectory("./src/bin", "./dist/bin");
+await copyDirectory("./docs", "./dist/docs");
 
 Deno.exit(0);

@@ -1,6 +1,14 @@
 /**
- * This contains functions for dom actions using crs-binding.
+ * @class DomBindingActions - This contains functions for dom actions using crs-binding.
  * This includes events, inflation, parsing ...
+ *
+ * Features:
+ * -set_widget - Set the defined with context
+ * -clear_widget - Clear the defined widget
+ * -create_widget - Create a widget
+ * -create_inflation_template - Create a inflation template
+ * -elements_form_template - Create a form template
+ * -update_cells - Update cells
  */
 
 export class DomBindingActions {
@@ -9,7 +17,32 @@ export class DomBindingActions {
     }
 
     /**
-     * Set the defined with with context
+     * @method set_widget - Set the defined with context
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to set the widget on.
+     * @param [step.args.context=process.parameters.bID] {String} - The context to set the widget on.
+     * @param [process.parameters.bID] {String} - The context to set the widget on.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom-binding", "set_widget", {
+     *    element: "my-element",
+     *    context: "my-context",
+     *  });
+     *
+     * @example <caption>json</caption>
+     * {
+     *   "action": "set_widget",
+     *   "args": {
+     *     "element": "my-element",
+     *     "context": "my-context"
+     *   }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async set_widget(step, context, process, item) {
@@ -24,7 +57,43 @@ export class DomBindingActions {
     }
 
     /**
-     * Clear the defined widget
+     * @method clear_widget - Clear the defined widget
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.element {String} - The element to clear the widget on.
+     * @param [process.bindable] {Boolean} - If the process is bindable.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom-binding", "clear_widget", {
+     *   element: "my-element",
+     *   context: "my-context",
+     *   process: {
+     *     bindable: true,
+     *     parameters: {
+     *       bId: "my-context"
+     *     }
+     *   }
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "clear_widget",
+     *  "args": {
+     *    "element": "my-element",
+     *    "context": "my-context"
+     *   },
+     *  "process": {
+     *    "bindable": true,
+     *    "parameters": {
+     *    "bId": "my-context"
+     *   }
+     *  }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async clear_widget(step, context, process, item) {
@@ -43,10 +112,53 @@ export class DomBindingActions {
     }
 
     /**
-     * Use an object literal as the source to generate a template for inflation.
+     * @method create_inflation_template - Use an object literal as the source to generate a template for inflation.
      * For complex templates use the element from template.
      * Function is better for scenarios like cell generation.
      * It automatically registers the template on the inflation engine
+     *
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context of the current process.
+     * @param process {Object} - The current process object.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.template_id {String} - The id of the template.
+     * @param step.args.source {Object} - The object literal to use as the source.
+     * @param step.args.tag_name {String} - The tag name to use for the template.
+     * @param [step.args.wrapper] {String} - The wrapper tag name to use for the template.
+     * @param [step.args.ctx] {String} - The context to use for the template.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom-binding", "create_inflation_template", {
+     *  template_id: "my-template",
+     *  source: {
+     *    "my-element": {
+     *      "class": "my-class",
+     *      "data-id": "my-id"
+     *     }
+     *    },
+     *  tag_name: "div",
+     *  wrapper: "div",
+     *  ctx: "my-context"
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     * "action": "create_inflation_template",
+     * "args": {
+     *    "template_id": "my-template",
+     *    "source": {
+     *      "my-element": {
+     *      "class": "my-class",
+     *      "data-id": "my-id"
+     *     }
+     *    },
+     *    "tag_name": "div",
+     *    "wrapper": "div",
+     *    "ctx": "my-context"
+     *  }
+     * }
+     *
      * @returns {Promise<void>}
      */
     static async create_inflation_template(step, context, process, item) {
@@ -85,11 +197,52 @@ export class DomBindingActions {
     }
 
     /**
-     * Given an array of objects.
+     * @method elements_from_template - Given an array of objects.
      * 1. Create a fragment containing elements based on a template.
      * 2. Add the fragment to a parent element if defined
      * 3. Return fragment to caller
      * @returns {Promise<void>}
+     */
+
+
+    /**
+     * @method elements_from_template - Create a new DOM fragment from a template and add it to the DOM
+     * @param step {Object}- The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is currently running.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.template_id {String} - The id of the template to use.
+     * @param step.args.template {String} - The template to use.
+     * @param step.args.data {Array} - The array of objects to use as the data source.
+     * @param [step.args.remove_template] {Boolean} - If true, the template will be removed from the DOM after the fragment is created.
+     * @param [step.args.recycle] {Boolean} - If true, the template will be recycled after the fragment is created.
+     * @param [step.args.row_index] {Number} - The index of the row to use as the data source.
+     * @param step.args.parent {Element} - The parent element to add the fragment to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom-binding", "elements_from_template", {
+     *  template_id: "my-template",
+     *  data: [
+     *    { name: "John", age: 30 },
+     *    { name: "Jane", age: 25 }
+     *   ],
+     *  parent: document.getElementById("my-parent")
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     * "action": "elements_from_template",
+     * "args": {
+     *   "template_id": "my-template",
+     *   "data": [
+     *      { "name": "John", "age": 30 },
+     *      { "name": "Jane", "age": 25 }
+     *    ],
+     *   "parent": "#my-parent"
+     *   }
+     * }
+     * @returns The fragment that was created.
      */
     static async elements_from_template(step, context, process, item) {
         const id                = await crs.process.getValue(step.args.template_id, context, process, item);
@@ -130,7 +283,39 @@ export class DomBindingActions {
     }
 
     /**
-     * Update cells with the data sent starting at the provided record
+     * @method update_cells - Update cells with the data sent starting at the provided record
+     *
+     * @param step {Object}- The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is currently running.
+     * @param item {Object} - The current item being processed.
+     *
+     * @param step.args.template_id {String} - The id of the template to use.
+     * @param step.args.data {Array} - The array of objects to use as the data source.
+     * @param [step.args.row_index] {Number} - The index of the row to use as the data source.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("dom-binding", "update_cells", {
+     *  template_id: "my-template",
+     *  data: [
+     *    { name: "John", age: 30 },
+     *    { name: "Jane", age: 25 }
+     *   ],
+     *  row_index: 1
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *  "action": "update_cells",
+     *  "args": {
+     *    "template_id": "my-template",
+     *    "data": [
+     *      { "name": "John", "age": 30 },
+     *      { "name": "Jane", "age": 25 }
+     *   ],
+     *  "row_index": 1
+     *  }
+     * }
      * @returns {Promise<void>}
      */
     static async update_cells(step, context, process, item) {
@@ -138,6 +323,24 @@ export class DomBindingActions {
     }
 }
 
+/**
+ * @function getHTML - If the url contains a `$fn` prefix, then the function is called and the result is used as the html. Otherwise, the
+ * html is loaded from the url
+ * @param step {Object} - The step object from the test.
+ * @param context {Object} - The context object that is passed to the test function.
+ *
+ * @param step.args.url {String} - The url to load the html from.
+ * @param step.args.html {String} - The id of the html to use.
+ *
+ * @example <caption>javascript</caption>
+ * const html = await getHTML({
+ *   url: "$fn.getHTML",
+ *   html: "$template.my-template"
+ * }, context);
+ *
+ *
+ * @returns The HTML for the template.
+ */
 async function getHTML(step, context) {
     if (step.args.url.indexOf("$fn") != -1) {
         const fn = step.args.url.replace("$fn.", "");
@@ -157,6 +360,16 @@ async function getHTML(step, context) {
     }
 }
 
+/**
+ * @function load_template - Loads a template into the inflation manager
+ * @param template {String|HTMLTemplateElement}- The template to load. This can be a string (the selector for the template) or an HTMLTemplateElement.
+ * @param id {String}- The id of the template to load.
+ * @param context {Object} - The context object that will be used to resolve the template.
+ *
+ * @example <caption>javascript</caption>
+ * await load_template("#my-template", "my-template", context);
+ *
+ */
 async function load_template(template, id, context) {
     let templateElement;
     if (template instanceof HTMLTemplateElement) {

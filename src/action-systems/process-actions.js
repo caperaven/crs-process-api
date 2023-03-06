@@ -1,4 +1,38 @@
+/**
+ * @class ProcessActions - This class is used to run a process from another process.
+ *
+ * Features:
+ * -perform - This method takes the step, context, process, and item, and then emits an event with the same information
+ */
 export class ProcessActions {
+    /**
+     * @method perform - It takes the step, context, process, and item, and then emits an event with the same information
+     * @param step {object} - The step object that is being executed.
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process that is being run.
+     * @param item {object} - The item that is being processed.
+     *
+     * @param step.args.parameters {object}- The parameters to pass to the event.
+     *
+     * @returns The event is being emitted.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("process", "perform", {
+     *      parameters: {"parameter1", "parameter2"}
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "process",
+     *      "action": "perform",
+     *      "args": {
+     *          "parameters": {
+     *              "parameter1": "parameter1",
+     *              "parameter2": "parameter2"
+     *           }
+     *      }
+     * }
+     */
     static async perform(step, context, process, item) {
         const parameters = {};
 

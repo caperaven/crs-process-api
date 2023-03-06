@@ -1,18 +1,22 @@
 /**
- * From the event get the element that can be dragged.
- * @param event
- * @param options
- * @returns {null|any}
+ * Returns the draggable element based on a given event and options.
+ *
+ * @param {Event} event - The event object that triggers the drag action.
+ * @param {Object} [options] - An optional object that can contain the following properties:
+ * @param {string} [options.dragQuery="[draggable='true']"] - A CSS selector to identify draggable elements.
+ *
+ * @returns {Element} The draggable element if found, or null if not found.
  */
 export function getDraggable(event, options) {
     const dragQuery = options?.dragQuery || "[draggable='true']";
+    const target = event.composedPath()[0];
 
-    if (event.target.matches(dragQuery)) {
-        return event.target;
+    if (target.matches(dragQuery)) {
+        return target;
     }
 
-    if (event.target.parentElement?.matches(dragQuery)) {
-        return event.target.parentElement;
+    if (target.parentElement?.matches(dragQuery)) {
+        return target.parentElement;
     }
 
     return null;
@@ -35,13 +39,13 @@ export function getScrollAreas(element, opts) {
     const y2 = bounds.top + bounds.height - size;
 
     if (opts.indexOf("h") != -1) {
-        areas.left = { x1: x1, y1: y1, x2: x1 + size, y2: y2 };
-        areas.right = { x1: x2, y1: y1, x2: x2 + size, y2 };
+        areas.left = {x1: x1, y1: y1, x2: x1 + size, y2: y2};
+        areas.right = {x1: x2, y1: y1, x2: x2 + size, y2};
     }
 
     if (opts.indexOf("v") != -1) {
-        areas.top = { x1: x1, y1: y1, x2: x2, y2: y1 + size };
-        areas.bottom = { x1: x1, y1: y2, x2: x2, y2: y2 + size };
+        areas.top = {x1: x1, y1: y1, x2: x2, y2: y1 + size};
+        areas.bottom = {x1: x1, y1: y2, x2: x2, y2: y2 + size};
     }
 
     return areas;

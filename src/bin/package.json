@@ -1,12 +1,12 @@
 {
-  "name": "data",
+  "name": "exports",
   "version": "0.1.0",
   "files": [
-    "data_bg.wasm",
-    "data.js",
-    "data.d.ts"
+    "exports_bg.wasm",
+    "exports.js",
+    "exports.d.ts"
   ],
-  "module": "data.js",
-  "types": "data.d.ts",
+  "module": "exports.js",
+  "types": "exports.d.ts",
   "sideEffects": false
 }

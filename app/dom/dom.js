@@ -465,4 +465,27 @@ export default class Dom extends crsbinding.classes.ViewBase {
             classes: ["highlight"]
         })
     }
+
+    async addResizeObserver() {
+        const args = {
+            element: this.resizeContainer,
+            callback: ()=> {
+                this.resizeObserverText.textContent = "resize observer fired";
+            }
+        }
+
+        await crs.call("dom_observer", "enable_resize", args);
+        this.resizeObserverText.textContent = "resize observer added";
+    }
+
+    async removeResizeObserver() {
+        await crs.call("dom_observer", "disable_resize", {
+            element: this.resizeContainer
+        });
+        this.resizeObserverText.textContent = "resize observer removed";
+    }
+
+    async updateResizeContainer() {
+        this.resizeContainer.style.width = Math.random() * 100 + "%";
+    }
 }

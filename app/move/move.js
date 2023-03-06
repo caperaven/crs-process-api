@@ -1,3 +1,4 @@
+import "./../test-components/test-component.js";
 export default class Move extends crsbinding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
@@ -9,7 +10,12 @@ export default class Move extends crsbinding.classes.ViewBase {
         await crs.call("dom_interactive", "enable_move", {
             element: this._element.querySelector("#toolbar"),
             move_query: '[data-move="true"]',
-        })
+        });
+
+        await crs.call("dom_interactive", "enable_move", {
+            element: this._element.querySelector("#shadowComponent"),
+            move_query: "header"
+        });
     }
 
     async disconnectedCallback() {

@@ -7,15 +7,16 @@
         "test": "backups"
     },
     "scripts": {
-        "build-documents": "cd documents & hugo -d \"./../publish/documents\"",
-        "run-hugo": "cd documents & hugo serve",
+        "build-documents": "cd documents.hugo & hugo -d \\\"./../publish/documents\\\"",
+        "run-hugo": "cd documents.hugo & hugo serve",
         "test": "deno test tests --allow-all",
         "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
         "build-markdown": "wasm-pack build ./wasm/markdown/  --target web --out-dir ./../../src/bin",
         "build-bundle": "deno run --allow-read --allow-write --allow-env --allow-run ./build/package.js",
         "bundel-to-version": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js",
         "bundel-to-version-beta": "deno run --allow-read --allow-write --allow-env --allow-run ./build/version.js --beta",
-        "run": "caddy run"
+        "run": "caddy run",
+        "build-docs": "crs-jsdoc folder src\\action-systems dest docs"
     },
     "keywords": [],
     "author": "",

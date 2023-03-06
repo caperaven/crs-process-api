@@ -1,16 +1,17 @@
 /**
- * This is a static class that contains the actions for the fixed position action system.
+ * @class FixedPositionActions - This is a static class that contains the actions for the fixed position action system.
  *
- * Actions supported are:
- * - set - set the element to a fixed position
+ * Features:
+ * -set - set the element to a fixed position
+ *
  */
 export class FixedPositionActions {
     /**
      * Perform the action
-     * @param step - step to perform
-     * @param context - context of the action
-     * @param process - process that is performing the action
-     * @param item - item that is performing the action
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the action
+     * @param process {Object} - process that is performing the action
+     * @param item {Object} - item that is performing the action
      * @returns {Promise<void>}
      */
     static async perform(step, context, process, item) {
@@ -18,15 +19,15 @@ export class FixedPositionActions {
     }
 
     /**
-     * Set the element to a fixed position
-     * @param step - step to perform
-     * @param context - context of the action
-     * @param process - process that is performing the action
-     * @param item - item that is performing the action
+     * @method set -Set the element to a fixed position
+     * @param step {Object} - step to perform
+     * @param context {Object} - context of the action
+     * @param process {Object} - process that is performing the action
+     * @param item {Object} - item that is performing the action
      *
-     * @param {string} step.args.element - element to position
-     * @param {string} step.args.position - position to set the element to
-     * @param {number} [step.args.margin=0] - margin to apply to the element
+     * @param  step.args.element {string} - element to position
+     * @param  step.args.position {string} - position to set the element to, values: ["top-left", "top-right", "bottom-left", "bottom-right"]
+     * @param  [step.args.margin=0] {number} - margin to apply to the element
      *
      * @returns {Promise<void>}
      *
@@ -64,7 +65,7 @@ export class FixedPositionActions {
 }
 
 /**
- * This is a static class that contains the positioning functions for the fixed position action.
+ * @class Positioning - This is a static class that contains the positioning functions for the fixed position action.
  * Positions supported are:
  * - top-left
  * - top-center
@@ -72,6 +73,18 @@ export class FixedPositionActions {
  * - bottom-left
  * - bottom-center
  * - bottom-right
+ * - center-screen
+ *
+ * Features:
+ * -top-left - position the element at the top left
+ * -top-center - position the element at the top center
+ * -top-right - position the element at the top right
+ * -bottom-left - position the element at the bottom left
+ * -bottom-center - position the element at the bottom center
+ * -bottom-right - position the element at the bottom right
+ * -center-screen - position the element at the center of the screen
+ *
+ *
  * @param {HTMLElement} element - element to position
  * @param {number} margin - margin to use
  * @param {DOMRect} elementBounds - bounds of the element
@@ -80,19 +93,26 @@ export class FixedPositionActions {
  */
 class Positioning {
     /**
-     * Position the element at the top left
-     * @param element - element to position
-     * @param margin - margin to use
-     */
+     * @method "top-left" Position the element at the top left
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     *
+     * @example <caption>javascript</caption>
+     * Positioning["top-left"](element, margin);
+     *
+     **/
     static "top-left"(element, margin) {
         element.style.translate = `${margin}px ${margin}px`;
     }
 
     /**
-     * Position the element at the top center
-     * @param element - element to position
-     * @param margin - margin to use
-     * @param elementBounds - bounds of the element
+     * @method "top-center" - Position the element at the top center
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     * @param elementBounds {Bounding Rect} - bounds of the element
+     *
+     * @example <caption>javascript</caption>
+     * Positioning["top-center"](element, margin, elementBounds);
      */
     static "top-center"(element, margin, elementBounds) {
         const x = (window.innerWidth / 2) - (elementBounds.width / 2);
@@ -101,10 +121,14 @@ class Positioning {
     }
 
     /**
-     * Position the element at the top right
-     * @param element - element to position
-     * @param margin - margin to use
-     * @param elementBounds - bounds of the element
+     * @method "top-right" - Position the element at the top right
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     * @param elementBounds {Bounding Rect} - bounds of the element
+     *
+     * @example <caption>javascript</caption>
+     * Positioning["top-right"](element, margin, elementBounds);
+     *
      */
     static "top-right"(element, margin, elementBounds) {
         const x = window.innerWidth - elementBounds.width - margin;
@@ -113,10 +137,13 @@ class Positioning {
     }
 
     /**
-     * Position the element at the bottom left
-     * @param element - element to position
-     * @param margin - margin to use
-     * @param elementBounds - bounds of the element
+     * @method "bottom-left" - Position the element at the bottom left
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     * @param elementBounds {Bounding Rect} - bounds of the element
+     *
+     * @example <caption>javascript</caption>
+     * Positioning["bottom-left"](element, margin, elementBounds);
      */
     static "bottom-left"(element, margin, elementBounds) {
         const x = margin;
@@ -125,10 +152,13 @@ class Positioning {
     }
 
     /**
-     * Position the element at the bottom center
-     * @param element - element to position
-     * @param margin - margin to use
-     * @param elementBounds - bounds of the element
+     * @method "bottom-center" - Position the element at the bottom center
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     * @param elementBounds {Bounding Rect} - bounds of the element
+     *
+     * @example <caption>javascript</caption>
+     * Positioning["bottom-center"](element, margin, elementBounds);
      */
     static "bottom-center"(element, margin, elementBounds) {
         const x = (window.innerWidth / 2) - (elementBounds.width / 2);
@@ -137,14 +167,29 @@ class Positioning {
     }
 
     /**
-     * Position the element at the bottom right
-     * @param element - element to position
-     * @param margin - margin to use
-     * @param elementBounds - bounds of the element
+     * @method "bottom-right" - Position the element at the bottom right
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     * @param elementBounds {Bounding Rect} - bounds of the element
      */
     static "bottom-right"(element, margin, elementBounds) {
         const x = window.innerWidth - elementBounds.width - margin;
         const y = window.innerHeight - elementBounds.height - margin;
+        element.style.translate = `${x}px ${y}px`;
+    }
+
+    /**
+     * @method "center-screen" - Position the element at the center of the screen
+     * @param element {HTMLElement} - element to position
+     * @param margin {Number} - margin to use
+     * @param elementBounds {Bounding Rect} - bounds of the element
+     *
+     * @example <caption>javascript</caption>
+     * Positioning["center-screen"](element, margin, elementBounds);
+     */
+    static "center-screen"(element, margin, elementBounds) {
+        const x = (window.innerWidth / 2) - (elementBounds.width / 2);
+        const y = (window.innerHeight / 2) - (elementBounds.height / 2);
         element.style.translate = `${x}px ${y}px`;
     }
 }

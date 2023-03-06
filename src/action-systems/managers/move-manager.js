@@ -32,14 +32,37 @@ export class MoveManager {
         this.#element = null;
     }
 
-    #mouseDown(event) {
-        if (this.#moveQuery == null && event.target != this.#element) return;
-        if (this.#moveQuery != null && event.target.matches(this.#moveQuery) == false) return;
+    /**
+     * Checks whether an event matches a specific element or its shadow root.
+     * @param {Event} event - The event to check.
+     * @returns {boolean} - Returns true if the event matches the element or its shadow root, and false otherwise.
+     */
+    #matches(event) {
+        const path = event.composedPath();
+        const target = path[0];
+        // If no query is specified, return true if the event target is the element
+        if (this.#moveQuery == null) {
+            return target === this.#element;
+        }
 
+        // If the event target matches the query, return true
+        if (target.matches(this.#moveQuery)) {
+            return true;
+        }
+
+        // If the matching element is further down the event path, return true
+        const match = path.find(element => element.matches && element.matches(this.#moveQuery));
+        return match != null;
+    }
+
+
+    #mouseDown(event) {
+        if (this.#matches(event) === false)
+            return;
+
+        event.preventDefault();
         this.#startPos = {x: event.clientX, y: event.clientY};
         this.#bounds = this.#element.getBoundingClientRect();
-
-        console.log(this.#bounds);
 
         document.addEventListener("mousemove", this.#mouseMoveHandler);
         document.addEventListener("mouseup", this.#mouseUpHandler);
