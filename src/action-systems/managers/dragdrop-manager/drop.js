@@ -124,7 +124,7 @@ async function allowDrop(event, dragElement, options) {
 
 class AllowDrop {
     static async string(event, options) {
-        const target = event.path[0];
+        const target = event.composedPath()[0];
 
         if (target.matches(options.drop.allowDrop)) {
             return target;
