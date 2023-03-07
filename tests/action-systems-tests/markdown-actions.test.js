@@ -16,6 +16,20 @@ Deno.test("markdown to html", async () => {
     assertEquals(result, `<h1>heading 1</h1>\n`);
 })
 
+Deno.test("markdown using reserved words", async () => {
+    const result = await crs.call("markdown", "to_html", {
+        markdown: [
+            "# heading 1",
+            "some $100.00 value",
+            "$binding is a reserved word"
+        ].join("\n")
+    })
+
+    assert(result.indexOf("<h1>heading 1</h1>") != -1);
+    assert(result.indexOf("$100.00") != -1);
+    assert(result.indexOf("$binding") != -1);
+});
+
 Deno.test("markdown tables", async () => {
     const markdown = `
 | foo | bar |

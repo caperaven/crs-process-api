@@ -45,7 +45,13 @@ export class MarkdownActions {
      * }
      */
     static async to_html(step, context, process, item) {
-        let markdown = await crs.process.getValue(step.args.markdown, context, process, item);
+        let markdown = step.args.markdown;
+
+        // only check the path if you start the expression with a prefix keyword
+        if (markdown.startsWith("$context.") || markdown.startsWith("$process.") || markdown.startsWith("$item.")) {
+            markdown = await crs.process.getValue(step.args.markdown, context, process, item);
+        }
+
         const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
 
         if (parameters != null || markdown.indexOf("&{") != -1) {
