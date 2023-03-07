@@ -1,0 +1,1 @@
+ Checks whether an event matches a specific element or its shadow root.  ***parameters***|parameter|type|description|required|default||---------|----|-----------|--------|-------||event|Event|The event to check.|true|-|**Returns**: {boolean} - Returns true if the event matches the element or its shadow root, and false otherwise.

@@ -37,6 +37,18 @@ fn get_value_on_path(row: &Value, path: &str) -> Value {
     }
 }
 
+/**
+ * Evaluates an object based on the specified operator and returns a boolean indicating
+ * whether the evaluation is true or false.
+ *
+ * # Parameters
+ * - `intent`: A reference to a Value object that contains the operator and expressions to be evaluated.
+ * - `row`: A reference to a Value object that contains the data to be evaluated against.
+ * - `case_sensitive`: A boolean flag indicating whether the evaluation should be case-sensitive or not.
+ *
+ * # Returns
+ * A boolean indicating whether the evaluation is true or false.
+ */
 pub fn evaluate_object(intent: &Value, row: &Value, case_sensitive: bool) -> bool {
     let operator= intent["operator"].as_str().unwrap();
 
@@ -58,7 +70,7 @@ pub fn evaluate_object(intent: &Value, row: &Value, case_sensitive: bool) -> boo
 
     if intent_value.is_string() && case_sensitive == false {
         let intent_string = intent_value.as_str().unwrap().to_lowercase();
-        let row_value_string = row_value.as_str().unwrap().to_lowercase();
+        let row_value_string = row_value.as_str().unwrap_or("").to_lowercase();
 
         intent_value = Value::from(intent_string);
         row_value = Value::from(row_value_string);

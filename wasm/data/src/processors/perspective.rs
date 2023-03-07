@@ -302,4 +302,27 @@ mod test {
         let expected = "{\"root\":{\"child_count\":2,\"children\":{\"false\":{\"aggregates\":[{\"agg\":\"sum\",\"field\":\"value\",\"value\":15.0}],\"child_count\":2,\"field\":\"isActive\",\"row_count\":2,\"rows\":[1,4]},\"true\":{\"aggregates\":[{\"agg\":\"sum\",\"field\":\"value\",\"value\":50.0}],\"child_count\":3,\"field\":\"isActive\",\"row_count\":3,\"rows\":[0,2,3]}},\"field\":\"root\",\"row_count\":5}}";
         assert_eq!(expected, result.as_str());
     }
+
+    #[test]
+    fn null_filter_value() {
+        // Arrange
+        let json= r#"[
+            {"code": "a", "site": "A11"},
+            {"code": "a", "site": "A31"},
+            {"code": "b", "site": "A31"},
+            {"code": "b", "site": "A11"},
+            {"code": "a", "site": "A12"},
+            {"code": null, "site": "A12"}
+        ]"#;
+        let data_array: Vec<Value> = serde_json::from_str(json).unwrap();
+        let intent = r#"{"filter":[{"field":"code","operator":"=","value":"a"}],"sort":[{"direction":"asc","name":"site"}]}"#;
+        let intent_obj: Value = serde_json::from_str(intent).unwrap();
+        let rows: Vec<usize> = vec![];
+
+        // Act
+        let result = build_perspective(&intent_obj, &data_array, &rows);
+
+        // Assert
+        assert_eq!(result, "[0,4,1]");
+    }
 }
