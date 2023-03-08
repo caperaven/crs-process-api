@@ -1,5 +1,6 @@
 use wasm_bindgen::prelude::*;
 use pulldown_cmark::{Parser, Options, html};
+use ammonia::clean;
 
 #[wasm_bindgen]
 pub fn markdown_to_html(markdown_input: &str) -> JsValue {
@@ -14,5 +15,7 @@ pub fn markdown_to_html(markdown_input: &str) -> JsValue {
     let mut html_output = String::new();
     html::push_html(&mut html_output, parser);
 
-    JsValue::from_str(html_output.as_str())
+    let safe_html = clean(&html_output);
+
+    JsValue::from_str(safe_html.as_str())
 }

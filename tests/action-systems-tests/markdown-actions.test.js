@@ -74,3 +74,27 @@ Deno.test("markdown inflation", async () => {
 
     await crsbinding.translations.delete("md");
 })
+
+Deno.test("js injection", async () => {
+    const markdown = [
+        `<a href="javascript:alert('hello')">Test<a>`
+    ].join("");
+
+    const result = await crs.call("markdown", "to_html", {
+        markdown
+    })
+
+    assert(result.indexOf("javascript:alert('hello')") == -1);
+})
+
+Deno.test("js injection", async () => {
+    const markdown = [
+        `<button onclick="alert('hello')">Test<button>`
+    ].join("");
+
+    const result = await crs.call("markdown", "to_html", {
+        markdown
+    })
+
+    assert(result.indexOf("alert") == -1);
+})
