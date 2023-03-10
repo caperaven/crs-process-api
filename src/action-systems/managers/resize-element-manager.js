@@ -85,11 +85,17 @@ export class ResizeElementManager {
     }
 
     #mouseUp(event) {
+        let targetElement = this.#targetElement;
+
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
         document.removeEventListener("mouseup", this.#mouseUpHandler);
 
         this.#targetElement = null;
         this.#bounds = null;
         this.#startPos = null;
+
+        if (this.#options.callback) {
+            this.#options.callback(targetElement);
+        }
     }
 }
