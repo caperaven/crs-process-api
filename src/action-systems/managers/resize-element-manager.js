@@ -47,8 +47,14 @@ export class ResizeElementManager {
         // Parent element will be null if the parent is a shadowRoot
         // In that case, composedPath()[2] is the parent element and composedPath()[1] is the shadowRoot
         this.#targetElement = draggable.parentElement || event.composedPath()[2];
-        this.#targetElement.style.zIndex = "1";
-        this.#targetElement.style.filter = "var(--drop-shadow)";
+
+        if (this.#options.zIndex != null) {
+            this.#targetElement.style.zIndex = this.#options.zIndex;
+        }
+
+        if (this.#options.dropShadow == true) {
+            this.#targetElement.style.filter = "var(--drop-shadow)";
+        }
 
         this.#bounds = this.#targetElement.getBoundingClientRect();
         this.#startPos = {x: event.clientX, y: event.clientY};
@@ -88,8 +94,14 @@ export class ResizeElementManager {
     }
 
     #mouseUp(event) {
-        this.#targetElement.style.zIndex = "";
-        this.#targetElement.style.filter = "";
+        if (this.#options.zIndex != null) {
+            this.#targetElement.style.zIndex = "";
+        }
+
+        if (this.#options.dropShadow == true) {
+            this.#targetElement.style.filter = "";
+        }
+
         let targetElement = this.#targetElement;
 
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
