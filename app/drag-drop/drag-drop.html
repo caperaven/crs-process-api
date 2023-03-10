@@ -10,7 +10,7 @@
     .container {
         display: grid;
         grid-template-columns: repeat(4, 200px);
-        grid-template-rows: 600px;
+        grid-template-rows: minMax(600px, 1fr);
     }
 
     [role="list"] {
@@ -81,6 +81,18 @@
         background: #f4f4f4;
         border: 1px silver solid;
     }
+
+    [data-direction="horizontal"] {
+        display: flex;
+        flex-direction: row;
+        gap: 0.25rem;
+    }
+
+    .verticalMarker {
+        width: 100%;
+        height: 0;
+        border-top: 1px solid #0276C2;
+    }
 </style>
 
 <div class="grid">
@@ -118,4 +130,15 @@
     </section>
 
     <div class="drop-target" aria-dropeffect="none"></div>
+
+    <div class="drop-target" id="parentDragContainer" aria-dropeffect="move">
+        <template id="verticalIndicator">
+            <div class="verticalMarker"></div>
+        </template>
+        <div class="card small" draggable="true">1</div>
+        <div class="card small" draggable="true">2</div>
+        <div class="card small" draggable="true">3</div>
+        <div class="card small" draggable="true">4</div>
+    </div>
+    <div class="drop-target" id="parentDragContainer2" aria-dropeffect="move"></div>
 </div>

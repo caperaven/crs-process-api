@@ -25,6 +25,11 @@ function ensureDragOptions(drag) {
     return drag;
 }
 
+/**
+ * Make sure that the drop options are set to logical defaults if missing
+ * @param drop
+ * @returns {*|{}}
+ */
 function ensureDropOptions(drop) {
     drop ||= {};
 

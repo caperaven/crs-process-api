@@ -72,6 +72,35 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 }
             }
         })
+
+        //NOTE KR: testing configs for drag and drop horizontal vs vertical & drag decoration
+        await crs.call("dom_interactive", "enable_dragdrop", {
+            element: "#parentDragContainer",
+            options: {
+                drag: {
+                    placeholderType: "standard",
+                    indicator: "#verticalIndicator"
+                },
+                drop: {
+                    action: "reorder"
+                },
+                autoScroll: "hv"
+            }
+        }, context)
+
+        await crs.call("dom_interactive", "enable_dragdrop", {
+            element: "#parentDragContainer2",
+            options: {
+                drag: {
+                    placeholderType: "standard",
+                    indicator: "#verticalIndicator"
+                },
+                drop: {
+                    action: "reorder"
+                },
+                autoScroll: "hv"
+            }
+        }, context)
     }
 
     async disconnectedCallback() {

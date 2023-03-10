@@ -60,12 +60,19 @@ async function gotoOrigin(dragElement, placeholder, options) {
 }
 
 async function gotoTarget(event, dragElement, target, options, placeholder) {
-    target.appendChild(dragElement);
 
     switch (options.drop.action) {
         case "move": {
+            target.appendChild(dragElement);
             placeholder.parentElement.removeChild(placeholder);
             break;
+        }
+        case "reorder": {
+            console.log("reorder")
+            placeholder.parentElement.removeChild(placeholder);
+        }
+        default: {
+            target.appendChild(dragElement);
         }
     }
 }
@@ -124,14 +131,20 @@ async function allowDrop(event, dragElement, options) {
 
 class AllowDrop {
     static async string(event, options) {
-        const target = event.composedPath()[0];
+        const pathItems = event.composedPath();
+        const target = pathItems[0];
 
         if (target.matches(options.drop.allowDrop)) {
             return target;
         }
 
-        if (target.parentElement?.matches(options.drop.allowDrop)) {
-            return target.parentElement;
+        if (pathItems.length > 1) {
+            for (let i = 1; i < pathItems.length; i++) {
+                const element = pathItems[i];
+                if (element.matches && element.matches(options.drop.allowDrop)) {
+                    return element;
+                }
+            }
         }
 
         return false;

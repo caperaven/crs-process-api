@@ -2,7 +2,7 @@ import {ensureOptions} from "./dragdrop-manager/options.js";
 import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
 import {drop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
-import {getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
+import {addPlacementIndicator, getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
 
 export class DragDropManager {
     #element;
@@ -20,6 +20,7 @@ export class DragDropManager {
     #updateDragHandler;
     #target;
     #context;
+    #indicator;
 
     get updateDragHandler() {
         return this.#updateDragHandler;
@@ -41,6 +42,14 @@ export class DragDropManager {
         return this.#scrollAreas;
     }
 
+    get placementIndicator() {
+        return this.#indicator;
+    }
+
+    get target() {
+        return this.#target;
+    }
+
     constructor(element, options, context) {
         this.#element = element;
         this.#context = context;
@@ -53,6 +62,11 @@ export class DragDropManager {
 
         if (options.autoScroll != null) {
             this.#scrollAreas = getScrollAreas(this.#element, options.autoScroll);
+        }
+
+        if (options.drag.indicator != null) {
+            const template = document.querySelector(`${options.drag.indicator}`);
+            this.#indicator = template.content.cloneNode(true).children[0];
         }
 
         (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).addEventListener("mousedown", this.#mouseDownHandler);
@@ -70,6 +84,7 @@ export class DragDropManager {
         this.#mouseUpHandler = null;
         this.#mouseOverHandler = null;
         this.#scrollAreas = null;
+        this.#indicator = null;
         this.#startPoint = null;
         this.#movePoint = null;
         this.#placeholder = null;
@@ -91,6 +106,8 @@ export class DragDropManager {
 
         this.#placeholder = await applyPlaceholder(element, this.#options);
         this.#dragElement = await startDrag(element, this.#options);
+
+        if (this.placementIndicator != null) await addPlacementIndicator(this.#indicator);
 
         document.addEventListener("mousemove", this.#mouseMoveHandler);
         document.addEventListener("mouseup", this.#mouseUpHandler);

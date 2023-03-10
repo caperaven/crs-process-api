@@ -62,3 +62,14 @@ export function inArea(x, y, area) {
     const inY = y >= area.y1 && y <= area.y2;
     return inX && inY;
 }
+
+/**
+ * Adds the placement indicator to the animation layer
+ * @param {HTMLElement} indicator - The placement indicator used to show the position where the item will be dropped
+ * @returns {Promise<void>}
+ */
+export async function addPlacementIndicator(indicator) {
+    const layer = await crs.call("dom_interactive", "get_animation_layer");
+    indicator.style.display = "none";
+    layer.appendChild(indicator);
+}
