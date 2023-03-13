@@ -1,12 +1,15 @@
 {
-  "name": "markdown",
+  "name": "data_processing",
+  "collaborators": [
+    "user <user@gmail.com>"
+  ],
   "version": "0.1.0",
   "files": [
-    "markdown_bg.wasm",
-    "markdown.js",
-    "markdown.d.ts"
+    "data_processing_bg.wasm",
+    "data_processing.js",
+    "data_processing.d.ts"
   ],
-  "module": "markdown.js",
-  "types": "markdown.d.ts",
+  "module": "data_processing.js",
+  "types": "data_processing.d.ts",
   "sideEffects": false
 }

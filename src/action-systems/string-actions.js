@@ -447,10 +447,10 @@ export class StringActions {
  */
 async function inflate_string(string, parameters, context, process, item) {
     string = string.split("${").join("${context.");
-    parameters = await sanitise_parameters(parameters, context, process, item);
+    const localParameters = await sanitise_parameters(parameters, context, process, item);
 
     let fn = new Function("context", ["return `", string, "`;"].join(""));
-    let result = fn(parameters);
+    let result = fn(localParameters);
     fn = null;
     return result;
 }
@@ -467,13 +467,14 @@ async function inflate_string(string, parameters, context, process, item) {
  */
 async function sanitise_parameters(parameters, context, process, item) {
     const keys = Object.keys(parameters);
+    const returnParameters = {};
 
     for (let key of keys) {
         let value = parameters[key];
-        parameters[key] = await crs.process.getValue(value, context, process, item);
+        returnParameters[key] = await crs.process.getValue(value, context, process, item);
     }
 
-    return parameters
+    return returnParameters;
 }
 
 /**

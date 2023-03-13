@@ -1,0 +1,19 @@
+[package]
+name = "data_processing"
+version = "0.1.0"
+authors = ["user <user@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.83"
+js-sys = "0.3.60"
+console_error_panic_hook = "0.1.7"
+hashbrown = "0.12.3"
+
+[profile.release]
+lto = true
