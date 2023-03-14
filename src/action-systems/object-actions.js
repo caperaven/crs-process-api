@@ -38,8 +38,8 @@ export class ObjectActions {
      *
      * @example <caption>json example</caption>
      * {
-     *     "action": "object",
-     *     "method": "set",
+     *     "type": "object",
+     *     "action": "set",
      *     "args": {
      *          "properties": {"$process.name", "$process.age"}
      *     }
