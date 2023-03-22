@@ -3,6 +3,7 @@ import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
 import {drop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
 import {getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
+import {updateMarker} from "./dragdrop-manager/marker.js";
 
 export class DragDropManager {
     #element;
@@ -18,11 +19,16 @@ export class DragDropManager {
     #dragElement;
     #isBusy;
     #updateDragHandler;
+    #updateMarkerHandler;
     #target;
     #context;
 
     get updateDragHandler() {
         return this.#updateDragHandler;
+    }
+
+    get updateMarkerHandler() {
+        return this.#updateMarkerHandler;
     }
 
     get dragElement() {
@@ -76,6 +82,7 @@ export class DragDropManager {
         this.#dragElement = null;
         this.#isBusy = null;
         this.#updateDragHandler = null;
+        this.#updateMarkerHandler = null;
     }
 
     async #mouseDown(event) {
@@ -97,6 +104,9 @@ export class DragDropManager {
 
         this.#updateDragHandler = updateDrag.bind(this);
         this.#updateDragHandler();
+
+        this.#updateMarkerHandler = updateMarker.bind(this);
+        this.#updateMarkerHandler();
     }
 
     async #mouseMove(event) {
@@ -110,6 +120,7 @@ export class DragDropManager {
         this.#isBusy = true;
         event.preventDefault();
         this.#updateDragHandler = null;
+        this.#updateMarkerHandler = null;
         this.#movePoint = null;
         this.#startPoint = null;
 
@@ -125,6 +136,6 @@ export class DragDropManager {
     }
 
     async #mouseOver(event) {
-
+        console.log(event);
     }
 }
