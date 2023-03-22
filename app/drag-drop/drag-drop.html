@@ -59,6 +59,7 @@
 
     section {
         padding: 1rem;
+        grid-column: 1;
     }
 
     .drag-box {
@@ -72,7 +73,7 @@
 
     .grid {
         display: grid;
-        grid-template-columns: max-content 20rem;
+        grid-template-columns: max-content 20rem 15rem;
         gap: 1rem;
         margin: 1rem;
     }
@@ -80,6 +81,33 @@
     .drop-target {
         background: #f4f4f4;
         border: 1px silver solid;
+        grid-column: 2;
+    }
+
+    ul {
+        box-sizing: border-box;
+        grid-column: 3;
+        grid-row: 1 / 5;
+        border: silver 1px solid;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        background: white;
+        padding: 0.5rem;
+        border-bottom: solid 1px silver;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .red {
+        width: 2rem;
+        height: 2rem;
+        background: red;
+        margin-right: 0.5rem;
     }
 </style>
 
@@ -118,4 +146,19 @@
     </section>
 
     <div class="drop-target" aria-dropeffect="none"></div>
+
+    <ul id="mylist" aria-dropeffect="move">
+        <li>
+            <div class="red"></div>
+            <div>Item 1</div>
+        </li>
+        <li>
+            <div class="red"></div>
+            <div>Item 2</div>
+        </li>
+        <li>
+            <div class="red"></div>
+            <div>Item 3</div>
+        </li>
+    </ul>
 </div>

@@ -41,8 +41,8 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                         }
                     },
 
-                    allowCallback: (dragElement, target) => {
-                        return true;
+                    allowDrop: (dragElement, target, options) => {
+                        return target;
                     },
                     action: "copy",
                     callback: (element, target) => { console.log(element, target) }
@@ -69,6 +69,23 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 drop: {
                     clone: "template",
                     action: "copy"
+                }
+            }
+        })
+
+        await crs.call("dom_interactive", "enable_dragdrop", {
+            element: "ul",
+            options: {
+                drag: {
+                    query: ".red",
+                    cpIndex: 1
+                },
+                drop: {
+                    allowDrop: async (dragElement, target, options) => {
+                        if (target.id == "mylist") {
+                            return target;
+                        }
+                    }
                 }
             }
         })

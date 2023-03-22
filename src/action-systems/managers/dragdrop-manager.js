@@ -51,8 +51,8 @@ export class DragDropManager {
         this.#mouseUpHandler = this.#mouseUp.bind(this);
         this.#mouseOverHandler = this.#mouseOver.bind(this);
 
-        if (options.autoScroll != null) {
-            this.#scrollAreas = getScrollAreas(this.#element, options.autoScroll);
+        if (this.#options.autoScroll != null) {
+            this.#scrollAreas = getScrollAreas(this.#element, this.#options.autoScroll);
         }
 
         (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).addEventListener("mousedown", this.#mouseDownHandler);

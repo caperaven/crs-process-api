@@ -8,18 +8,7 @@
 export async function drop(event, dragElement, placeholder, options, context) {
     const target = await allowDrop(event, dragElement, options);
 
-    let allow = true;
-    if (options.drop.allowCallback) {
-        if (typeof options.drop.allowCallback == "object") {
-            const step = options.drop.allowCallback;
-            allow = await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
-        }
-        else {
-            allow = await options.drop.allowCallback(dragElement, target) == true;
-        }
-    }
-
-    if (target == false || allow == false) {
+    if (target == null) {
         await gotoOrigin(dragElement, placeholder, options);
     }
     else {
@@ -28,7 +17,7 @@ export async function drop(event, dragElement, placeholder, options, context) {
 
     cleanElements(dragElement, placeholder, options);
 
-    if (allow && options.drop.callback) {
+    if (target != null && options.drop.callback) {
         if (typeof options.drop.callback == "object") {
             const step = options.drop.callback;
             await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
@@ -138,10 +127,7 @@ class AllowDrop {
     }
 
     static async function(event, options) {
-        return await options.drop.allowDrop(event)
-    }
-
-    static async object(event) {
-
+        const target = event.composedPath()[0];
+        return await options.drop.allowDrop(event, target, options)
     }
 }
