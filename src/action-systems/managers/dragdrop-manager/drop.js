@@ -1,3 +1,5 @@
+import {createPlaceholderElement} from "./placeholder.js";
+
 /**
  * Handle the actions when the mouse is released and the drop action takes place.
  * @param dragElement
@@ -8,24 +10,30 @@
 export async function drop(event, dragElement, placeholder, options, context) {
     options.currentAction = "drop";
 
-    const target = await allowDrop(event, dragElement, options);
+    const intent = await allowDrop(event, dragElement, options);
 
-    if (target == null || target.classList.contains("placeholder")) {
+    if (intent == null || intent.target.classList.contains("placeholder")) {
         await gotoOrigin(dragElement, placeholder, options);
     }
     else {
-        await gotoTarget(event, dragElement, target, options, placeholder);
+        if (intent.position == "append") {
+            await gotoTarget.call(this, dragElement, intent.target, options, placeholder);
+        }
+
+        if (intent.position == "before") {
+            await insertBefore.call(this, dragElement, intent.target, options, placeholder);
+        }
     }
 
     cleanElements(dragElement, placeholder, options);
 
-    if (target != null && options.drop.callback) {
+    if (intent?.target != null && options.drop.callback) {
         if (typeof options.drop.callback == "object") {
             const step = options.drop.callback;
-            await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: target});
+            await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: intent.target});
         }
         else {
-            await options.drop.callback(dragElement, target);
+            await options.drop.callback(dragElement, intent.target);
         }
     }
 }
@@ -50,15 +58,28 @@ async function gotoOrigin(dragElement, placeholder, options) {
     }
 }
 
-async function gotoTarget(event, dragElement, target, options, placeholder) {
+async function gotoTarget(dragElement, target, options, placeholder) {
+
     target.appendChild(dragElement);
 
     switch (options.drop.action) {
         case "move": {
-            placeholder.parentElement.removeChild(placeholder);
+            placeholder.remove();
             break;
         }
     }
+}
+
+async function insertBefore(dragElement, target, options, placeholder) {
+    let targetPlaceholder = placeholder;
+
+    if (placeholder.parentElement !== this.element) {
+        targetPlaceholder = await createPlaceholderElement(placeholder._bounds);
+    }
+
+    target.parentElement.insertBefore(targetPlaceholder, target);
+    placeholder._bounds = placeholder.getBoundingClientRect();
+    await gotoOrigin(dragElement, targetPlaceholder, options);
 }
 
 /**
@@ -113,7 +134,10 @@ export async function allowDrop(event, dragElement, options) {
     const target = event.target || event.composedPath()[0];
 
     if (target.classList.contains("placeholder")) {
-        return target;
+        return {
+            target,
+            position: "before"
+        };
     }
 
     return AllowDrop[typeof options.drop.allowDrop](event, options);
@@ -124,11 +148,17 @@ class AllowDrop {
         const target = event.target || event.composedPath()[0];
 
         if (target.matches(options.drop.allowDrop)) {
-            return target;
+            return {
+                target,
+                position: "before"
+            };
         }
 
         if (target.parentElement?.matches(options.drop.allowDrop)) {
-            return target.parentElement;
+            return {
+                target: target.parentElement,
+                position: "before"
+            };
         }
 
         return null;

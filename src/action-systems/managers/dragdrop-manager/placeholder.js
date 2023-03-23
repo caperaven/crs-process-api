@@ -20,6 +20,16 @@ export async function applyPlaceholder(element, options) {
     return placeholder;
 }
 
+export async function createPlaceholderElement(bounds) {
+    return await crs.call("dom", "create_element", {
+        classes: ["placeholder"],
+        styles: {
+            width: `${bounds.width}px`,
+            height: `${bounds.height}px`
+        }
+    })
+}
+
 class Placeholder {
     /**
      * Create an element that will replace the existing item being dragged
@@ -28,13 +38,7 @@ class Placeholder {
      * @returns {Promise<void>}
      */
     static async standard(element, bounds) {
-        return await crs.call("dom", "create_element", {
-            classes: ["placeholder"],
-            styles: {
-                width: `${bounds.width}px`,
-                height: `${bounds.height}px`
-            }
-        })
+        return await createPlaceholderElement(bounds);
     }
 
     /**

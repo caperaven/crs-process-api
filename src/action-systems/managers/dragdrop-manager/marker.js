@@ -14,8 +14,8 @@ export async function startMarker(dragElement) {
             left: "0",
             top: "0",
             willChange: "transform",
-            translate: `${dragElement.__bounds.x}px ${dragElement.__bounds.y}px`,
-            width: `${dragElement.__bounds.width}px`
+            translate: `${dragElement._bounds.x}px ${dragElement._bounds.y}px`,
+            width: `${dragElement._bounds.width}px`
         },
         classes: ["drag-marker"]
     })
@@ -53,7 +53,9 @@ export async function updateMarker(now) {
  * @returns {Promise<void>}
  */
 async function performUpdateMarker() {
-    const dropTarget = await this.validateDropTarget(this.target);
+    const dropIntent = await this.validateDropTarget(this.target);
+    const dropTarget = dropIntent?.target;
+
     if (dropTarget == null) return;
 
     if (dropTarget === this.lastTarget) return;
@@ -65,7 +67,7 @@ async function performUpdateMarker() {
 
     ensureBounds.call(this, dropTarget);
 
-    this.marker.style.translate = `${dropTarget.__bounds.x}px ${dropTarget.__bounds.y}px`;
+    this.marker.style.translate = `${dropTarget._bounds.x}px ${dropTarget._bounds.y}px`;
 }
 
 /**
@@ -76,8 +78,7 @@ function addMarkerToContainer() {
 
     ensureBounds.call(this, lastChild);
 
-    this.marker.style.translate = `${lastChild.__bounds.x}px ${lastChild.__bounds.bottom}px`;
-    console.log(this.marker.style.translate);
+    this.marker.style.translate = `${lastChild._bounds.x}px ${lastChild._bounds.bottom}px`;
 }
 
 /**
@@ -86,8 +87,8 @@ function addMarkerToContainer() {
  * @param element
  */
 function ensureBounds(element) {
-    if (element.__bounds == null) {
-        element.__bounds = element.getBoundingClientRect();
+    if (element._bounds == null) {
+        element._bounds = element.getBoundingClientRect();
         this.boundsCache.push(element);
     }
 }

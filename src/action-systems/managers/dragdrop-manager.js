@@ -263,7 +263,7 @@ export class DragDropManager {
         }
 
         for (const element of this.#boundsCache) {
-            element.__bounds = null;
+            element._bounds = null;
         }
 
         this.#boundsCache.length = 0;
