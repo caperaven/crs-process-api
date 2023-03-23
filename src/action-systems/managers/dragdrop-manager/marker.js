@@ -43,8 +43,6 @@ async function performUpdateMarker() {
     ensureBounds.call(this, dropTarget);
 
     this.marker.style.translate = `${this.target.__bounds.x}px ${this.target.__bounds.y}px`;
-
-    console.log(this.marker.style.translate);
 }
 
 function addMarkerToContainer() {

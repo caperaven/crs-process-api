@@ -76,7 +76,6 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
         await crs.call("dom_interactive", "enable_dragdrop", {
             element: "ul",
             options: {
-                marker: true,
                 drag: {
                     query: ".red",
                     cpIndex: 1 // what index on the composing path are we moving
@@ -87,6 +86,10 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                         if (options.currentAction == "drop") {
                             if (target.tagName === "LI") {
                                 return target.parentElement;
+                            }
+
+                            if (target.parentElement.tagName === "LI") {
+                                return target.parentElement.parentElement;
                             }
 
                             return target.id === "mylist" ? target : null;
