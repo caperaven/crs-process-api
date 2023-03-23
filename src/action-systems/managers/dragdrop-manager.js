@@ -248,6 +248,11 @@ export class DragDropManager {
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
         document.removeEventListener("mouseup", this.#mouseUpHandler);
 
+        if (this.#marker) {
+            this.#marker.remove();
+            this.#marker = null;
+        }
+
         await drop.call(this, event, this.#dragElement, this.#placeholder, this.#options, this.#context);
 
         this.#dragElement = null;
@@ -256,11 +261,6 @@ export class DragDropManager {
         this.#isBusy = false;
         this.#moveEvent = null;
         this.#lastTarget = null;
-
-        if (this.#marker) {
-            this.#marker.remove();
-            this.#marker = null;
-        }
 
         for (const element of this.#boundsCache) {
             element._bounds = null;

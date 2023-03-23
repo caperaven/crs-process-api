@@ -59,15 +59,15 @@ async function gotoOrigin(dragElement, placeholder, options) {
 }
 
 async function gotoTarget(dragElement, target, options, placeholder) {
+    let targetPlaceholder = placeholder;
 
-    target.appendChild(dragElement);
-
-    switch (options.drop.action) {
-        case "move": {
-            placeholder.remove();
-            break;
-        }
+    if (placeholder.parentElement !== this.element) {
+        targetPlaceholder = await createPlaceholderElement(placeholder._bounds);
     }
+
+    target.appendChild(targetPlaceholder);
+    targetPlaceholder._bounds = targetPlaceholder.getBoundingClientRect();
+    await gotoOrigin(dragElement, targetPlaceholder, options);
 }
 
 async function insertBefore(dragElement, target, options, placeholder) {
@@ -78,7 +78,7 @@ async function insertBefore(dragElement, target, options, placeholder) {
     }
 
     target.parentElement.insertBefore(targetPlaceholder, target);
-    placeholder._bounds = placeholder.getBoundingClientRect();
+    targetPlaceholder._bounds = targetPlaceholder.getBoundingClientRect();
     await gotoOrigin(dragElement, targetPlaceholder, options);
 }
 
