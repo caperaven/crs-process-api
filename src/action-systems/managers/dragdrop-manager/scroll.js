@@ -5,7 +5,6 @@
  * @returns {Promise<void>}
  */
 export async function scrollY(time, direction) {
-    console.log(time);
 }
 
 /**
@@ -15,5 +14,4 @@ export async function scrollY(time, direction) {
  * @returns {Promise<void>}
  */
 export async function scrollX(time, direction) {
-    console.log(time);
 }
