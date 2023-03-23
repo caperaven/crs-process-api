@@ -1,9 +1,10 @@
 import {ensureOptions} from "./dragdrop-manager/options.js";
 import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
-import {drop} from "./dragdrop-manager/drop.js";
+import {drop, allowDrop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
 import {getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
 import {updateMarker} from "./dragdrop-manager/marker.js";
+import {startMarker} from "./dragdrop-manager/marker.js";
 
 export class DragDropManager {
     #element;
@@ -22,6 +23,8 @@ export class DragDropManager {
     #updateMarkerHandler;
     #target;
     #context;
+    #marker;
+    #moveEvent;
 
     get updateDragHandler() {
         return this.#updateDragHandler;
@@ -45,6 +48,14 @@ export class DragDropManager {
 
     get scrollAreas() {
         return this.#scrollAreas;
+    }
+
+    get target() {
+        return this.#target;
+    }
+
+    get marker() {
+        return this.#marker;
     }
 
     constructor(element, options, context) {
@@ -83,6 +94,9 @@ export class DragDropManager {
         this.#isBusy = null;
         this.#updateDragHandler = null;
         this.#updateMarkerHandler = null;
+        this.#target = null;
+        this.#context = null;
+        this.#marker = null;
     }
 
     async #mouseDown(event) {
@@ -90,6 +104,7 @@ export class DragDropManager {
 
         if (this.#isBusy == true) return;
 
+        this.#moveEvent = event;
         this.#startPoint = {x: event.clientX, y: event.clientY};
         this.#movePoint = {x: event.clientX, y: event.clientY};
 
@@ -98,6 +113,7 @@ export class DragDropManager {
 
         this.#placeholder = await applyPlaceholder(element, this.#options);
         this.#dragElement = await startDrag(element, this.#options);
+        this.#target = this.#placeholder;
 
         document.addEventListener("mousemove", this.#mouseMoveHandler);
         document.addEventListener("mouseup", this.#mouseUpHandler);
@@ -105,15 +121,20 @@ export class DragDropManager {
         this.#updateDragHandler = updateDrag.bind(this);
         this.#updateDragHandler();
 
-        this.#updateMarkerHandler = updateMarker.bind(this);
-        this.#updateMarkerHandler();
+        if (this.#options.marker === true) {
+            this.#marker = await startMarker(this.#dragElement);
+
+            this.#updateMarkerHandler = updateMarker.bind(this);
+            this.#updateMarkerHandler();
+        }
     }
 
     async #mouseMove(event) {
         event.preventDefault();
+        this.#moveEvent = event;
         this.#movePoint.x = event.clientX;
         this.#movePoint.y = event.clientY;
-        this.#target = event.target;
+        this.#target = event.target || event.composedPath()[0];
     }
 
     async #mouseUp(event) {
@@ -133,9 +154,19 @@ export class DragDropManager {
         this.#placeholder = null;
         this.#target = null;
         this.#isBusy = false;
+        this.#moveEvent = null;
+
+        if (this.#marker) {
+            this.#marker.remove();
+            this.#marker = null;
+        }
     }
 
     async #mouseOver(event) {
         console.log(event);
+    }
+
+    async validateDropTarget(element) {
+        return allowDrop(this.#moveEvent, element, this.#options);
     }
 }

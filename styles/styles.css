@@ -11,3 +11,32 @@
 *:focus {
     border: solid 1px blue;
 }
+
+.drag-marker {
+    position: relative;
+    height: 0.5rem;
+    background-color: #0055bb;
+    height: 2px;
+}
+
+.drag-marker:before {
+    content: "";
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #0055bb;
+    border-radius: 50%;
+}
+
+.drag-marker:after {
+    content: "";
+    position: absolute;
+    top: -0.25rem;
+    right: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #0055bb;
+    border-radius: 50%;
+}

@@ -76,9 +76,10 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
         await crs.call("dom_interactive", "enable_dragdrop", {
             element: "ul",
             options: {
+                marker: true,
                 drag: {
                     query: ".red",
-                    cpIndex: 1
+                    cpIndex: 1 // what index on the composing path are we moving
                 },
                 drop: {
                     allowDrop: async (dragElement, target, options) => {

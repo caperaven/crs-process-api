@@ -8,7 +8,7 @@
 export async function drop(event, dragElement, placeholder, options, context) {
     const target = await allowDrop(event, dragElement, options);
 
-    if (target == null) {
+    if (target == null || target.classList.contains("placeholder")) {
         await gotoOrigin(dragElement, placeholder, options);
     }
     else {
@@ -107,7 +107,13 @@ function cleanElements(dragElement, placeholder, options) {
  * @param options
  * @returns {Promise<*>}
  */
-async function allowDrop(event, dragElement, options) {
+export async function allowDrop(event, dragElement, options) {
+    const target = event.target || event.composedPath()[0];
+
+    if (target.classList.contains("placeholder")) {
+        return target;
+    }
+
     return AllowDrop[typeof options.drop.allowDrop](event, options);
 }
 
@@ -123,11 +129,11 @@ class AllowDrop {
             return target.parentElement;
         }
 
-        return false;
+        return null;
     }
 
     static async function(event, options) {
-        const target = event.composedPath()[0];
+        const target = event.target || event.composedPath()[0];
         return await options.drop.allowDrop(event, target, options)
     }
 }
