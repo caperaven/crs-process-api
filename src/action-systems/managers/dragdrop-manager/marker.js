@@ -1,14 +1,24 @@
+/**
+ * @function startMarker - create the marker and add it to the animation layer
+ * This is the first step in the drag and drop process
+ * @param dragElement
+ * @returns {Promise<HTMLDivElement>}
+ */
 export async function startMarker(dragElement) {
     ensureBounds.call(this, dragElement);
 
-    const marker = document.createElement("div");
-    marker.style.position = "absolute";
-    marker.style.left = "0";
-    marker.style.top = "0";
-    marker.style.willChange = "transform";
-    marker.style.translate = `${dragElement.__bounds.x}px ${dragElement.__bounds.y}px`;
-    marker.style.width = `${dragElement.__bounds.width}px`;
-    marker.classList.add("drag-marker");
+    const marker = await crs.call("dom", "create_element", {
+        tag_name: "div",
+        styles: {
+            position: "absolute",
+            left: "0",
+            top: "0",
+            willChange: "transform",
+            translate: `${dragElement.__bounds.x}px ${dragElement.__bounds.y}px`,
+            width: `${dragElement.__bounds.width}px`
+        },
+        classes: ["drag-marker"]
+    })
 
     const layer = await crs.call("dom_interactive", "get_animation_layer");
     layer.appendChild(marker);
@@ -16,6 +26,12 @@ export async function startMarker(dragElement) {
     return marker;
 }
 
+/**
+ * @function updateMarker - update the marker to the current target
+ * This does not do the actual work but is the timer that calls the actual work
+ * @param now
+ * @returns {Promise<void>}
+ */
 export async function updateMarker(now) {
     if (this.updateMarkerHandler == null) return;
 
@@ -29,6 +45,13 @@ export async function updateMarker(now) {
     requestAnimationFrame(this.updateMarkerHandler);
 }
 
+/**
+ * @function performUpdateMarker - update the marker to the current target
+ * There are some conditions to this such as.
+ * - The target must be a valid drop target
+ * - The target must be different from the last target
+ * @returns {Promise<void>}
+ */
 async function performUpdateMarker() {
     const dropTarget = await this.validateDropTarget(this.target);
     if (dropTarget == null) return;
@@ -42,9 +65,12 @@ async function performUpdateMarker() {
 
     ensureBounds.call(this, dropTarget);
 
-    this.marker.style.translate = `${this.target.__bounds.x}px ${this.target.__bounds.y}px`;
+    this.marker.style.translate = `${dropTarget.__bounds.x}px ${dropTarget.__bounds.y}px`;
 }
 
+/**
+ * @function addMarkerToContainer - add the marker to the container by showing it below the last child
+ */
 function addMarkerToContainer() {
     const lastChild = this.element.lastElementChild;
 
@@ -54,6 +80,11 @@ function addMarkerToContainer() {
     console.log(this.marker.style.translate);
 }
 
+/**
+ * @function ensureBounds - check if the bounds have been calculated.
+ * If it has not, calculate it and add it to the cache.
+ * @param element
+ */
 function ensureBounds(element) {
     if (element.__bounds == null) {
         element.__bounds = element.getBoundingClientRect();
