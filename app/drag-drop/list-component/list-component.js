@@ -5,6 +5,7 @@ class ListComponent extends HTMLElement {
     }
     async connectedCallback() {
         this.shadowRoot.innerHTML = await fetch(import.meta.url.replace(".js", ".html")).then(res => res.text());
+        this.innerHTML = await fetch(import.meta.url.replace(".js", ".lightdom.html")).then(res => res.text());
 
         requestAnimationFrame(async () => {
             await this.load();
