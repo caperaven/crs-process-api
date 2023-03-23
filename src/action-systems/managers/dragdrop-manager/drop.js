@@ -61,7 +61,7 @@ async function gotoOrigin(dragElement, placeholder, options) {
 async function gotoTarget(dragElement, target, options, placeholder) {
     let targetPlaceholder = placeholder;
 
-    if (placeholder.parentElement !== this.element) {
+    if (placeholder.parentElement !== this.element || options.drop.action == "copy") {
         targetPlaceholder = await createPlaceholderElement(placeholder._bounds);
     }
 
@@ -89,15 +89,17 @@ async function insertBefore(dragElement, target, options, placeholder) {
  */
 function gotoBounds(element, bounds) {
     return new Promise(resolve => {
+        // animate the drag element on the animation layer to the bounds
         const start = setTimeout(() => {
             element.style.transition = "translate 0.3s ease-out";
             element.style.translate = `${bounds.x}px ${bounds.y}px`;
         });
 
+        // once it is there, remove the element on the animation layer
         const wait = setTimeout(() => {
             clearTimeout(start);
             clearTimeout(wait);
-            element.parentElement.removeChild(element);
+            element.remove();
             resolve();
         }, 350);
     })
@@ -140,32 +142,29 @@ export async function allowDrop(event, dragElement, options) {
         };
     }
 
-    return AllowDrop[typeof options.drop.allowDrop](event, options);
+    return AllowDrop[typeof options.drop.allowDrop](event, options, target);
 }
 
 class AllowDrop {
-    static async string(event, options) {
-        const target = event.target || event.composedPath()[0];
-
+    static async string(event, options, target) {
         if (target.matches(options.drop.allowDrop)) {
             return {
                 target,
-                position: "before"
+                position: "append"
             };
         }
 
         if (target.parentElement?.matches(options.drop.allowDrop)) {
             return {
                 target: target.parentElement,
-                position: "before"
+                position: "append"
             };
         }
 
         return null;
     }
 
-    static async function(event, options) {
-        const target = event.target || event.composedPath()[0];
+    static async function(event, options, target) {
         return await options.drop.allowDrop(event, target, options)
     }
 }

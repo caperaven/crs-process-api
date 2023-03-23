@@ -12,17 +12,7 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
             options: {
                 drag: {
                     placeholderType: "standard",
-                },
-                drop: {
-                    allowCallback: {
-                        type: "process",
-                        action: "main",
-                        args: {
-                            schema: "drag-drop",
-                        }
-                    },
-                },
-                autoScroll: "hv"
+                }
             }
         }, context)
 
@@ -33,16 +23,10 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                     placeholderType: "opacity",
                 },
                 drop: {
-                    allowProcess2: {
-                        type: "console",
-                        action: "log",
-                        args: {
-
-                        }
-                    },
-
                     allowDrop: (dragElement, target, options) => {
-                        return target;
+                        return {
+                            target, position: "append"
+                        };
                     },
                     action: "copy",
                     callback: (element, target) => { console.log(element, target) }

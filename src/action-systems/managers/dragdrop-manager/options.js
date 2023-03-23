@@ -6,8 +6,6 @@
 export function ensureOptions(options) {
     options = options || {};
     options.dragQuery = options.dragQuery || "[draggable='true']";
-    options.rotation = options.rotate || 0;
-    options.insertBetween = options.insertBetween || true;
 
     options.drag = ensureDragOptions(options.drag);
     options.drop = ensureDropOptions(options.drop);
