@@ -83,6 +83,16 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 },
                 drop: {
                     allowDrop: async (dragElement, target, options) => {
+                        // drop check, only drop on container
+                        if (options.currentAction == "drop") {
+                            if (target.tagName === "LI") {
+                                return target.parentElement;
+                            }
+
+                            return target.id === "mylist" ? target : null;
+                        }
+
+                        // move operation allow marker to update on list items also
                         if (target.tagName === "LI" || target.id == "mylist") {
                             return target;
                         }

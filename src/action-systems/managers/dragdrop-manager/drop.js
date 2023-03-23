@@ -6,6 +6,8 @@
  * @returns {Promise<void>}
  */
 export async function drop(event, dragElement, placeholder, options, context) {
+    options.currentAction = "drop";
+
     const target = await allowDrop(event, dragElement, options);
 
     if (target == null || target.classList.contains("placeholder")) {

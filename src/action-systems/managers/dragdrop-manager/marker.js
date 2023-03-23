@@ -1,7 +1,5 @@
 export async function startMarker(dragElement) {
-    if (dragElement.__bounds == null) {
-        dragElement.__bounds = dragElement.getBoundingClientRect();
-    }
+    ensureBounds.call(this, dragElement);
 
     const marker = document.createElement("div");
     marker.style.position = "absolute";
@@ -42,9 +40,7 @@ async function performUpdateMarker() {
         return addMarkerToContainer.call(this);
     }
 
-    if (dropTarget.__bounds == null) {
-        dropTarget.__bounds = dropTarget.getBoundingClientRect();
-    }
+    ensureBounds.call(this, dropTarget);
 
     this.marker.style.translate = `${this.target.__bounds.x}px ${this.target.__bounds.y}px`;
 
@@ -54,10 +50,15 @@ async function performUpdateMarker() {
 function addMarkerToContainer() {
     const lastChild = this.element.lastElementChild;
 
-    if (lastChild.__bounds == null) {
-        lastChild.__bounds = lastChild.getBoundingClientRect();
-    }
+    ensureBounds.call(this, lastChild);
 
     this.marker.style.translate = `${lastChild.__bounds.x}px ${lastChild.__bounds.bottom}px`;
     console.log(this.marker.style.translate);
+}
+
+function ensureBounds(element) {
+    if (element.__bounds == null) {
+        element.__bounds = element.getBoundingClientRect();
+        this.boundsCache.push(element);
+    }
 }

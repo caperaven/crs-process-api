@@ -26,6 +26,7 @@ export class DragDropManager {
     #marker;
     #moveEvent;
     #lastTarget;
+    #boundsCache = [];
 
     get element() {
         return this.#element;
@@ -69,6 +70,10 @@ export class DragDropManager {
 
     set lastTarget(value) {
         this.#lastTarget = value;
+    }
+
+    get boundsCache() {
+        return this.#boundsCache;
     }
 
     constructor(element, options, context) {
@@ -136,7 +141,7 @@ export class DragDropManager {
         this.#updateDragHandler();
 
         if (this.#options.marker === true) {
-            this.#marker = await startMarker(this.#dragElement);
+            this.#marker = await startMarker.call(this, this.#dragElement);
 
             this.#updateMarkerHandler = updateMarker.bind(this);
             this.#updateMarkerHandler();
@@ -175,6 +180,13 @@ export class DragDropManager {
             this.#marker.remove();
             this.#marker = null;
         }
+
+        for (const element of this.#boundsCache) {
+            element.__bounds = null;
+        }
+
+        this.#boundsCache.length = 0;
+        delete this.#options.currentAction;
     }
 
     async #mouseOver(event) {
@@ -182,6 +194,7 @@ export class DragDropManager {
     }
 
     async validateDropTarget(element) {
+        this.#options.currentAction = "hover";
         return allowDrop(this.#moveEvent, element, this.#options);
     }
 }
