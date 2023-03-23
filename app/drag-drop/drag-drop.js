@@ -83,7 +83,7 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 },
                 drop: {
                     allowDrop: async (dragElement, target, options) => {
-                        if (target.id == "mylist") {
+                        if (target.tagName === "LI" || target.id == "mylist") {
                             return target;
                         }
                     }

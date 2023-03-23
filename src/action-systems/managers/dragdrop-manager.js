@@ -25,6 +25,11 @@ export class DragDropManager {
     #context;
     #marker;
     #moveEvent;
+    #lastTarget;
+
+    get element() {
+        return this.#element;
+    }
 
     get updateDragHandler() {
         return this.#updateDragHandler;
@@ -56,6 +61,14 @@ export class DragDropManager {
 
     get marker() {
         return this.#marker;
+    }
+
+    get lastTarget() {
+        return this.#lastTarget;
+    }
+
+    set lastTarget(value) {
+        this.#lastTarget = value;
     }
 
     constructor(element, options, context) {
@@ -97,6 +110,7 @@ export class DragDropManager {
         this.#target = null;
         this.#context = null;
         this.#marker = null;
+        this.#lastTarget = null;
     }
 
     async #mouseDown(event) {
@@ -155,6 +169,7 @@ export class DragDropManager {
         this.#target = null;
         this.#isBusy = false;
         this.#moveEvent = null;
+        this.#lastTarget = null;
 
         if (this.#marker) {
             this.#marker.remove();

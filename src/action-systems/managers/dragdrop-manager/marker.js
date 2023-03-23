@@ -35,9 +35,29 @@ async function performUpdateMarker() {
     const dropTarget = await this.validateDropTarget(this.target);
     if (dropTarget == null) return;
 
+    if (dropTarget === this.lastTarget) return;
+    this.lastTarget = dropTarget;
+
+    if (dropTarget === this.element) {
+        return addMarkerToContainer.call(this);
+    }
+
     if (dropTarget.__bounds == null) {
         dropTarget.__bounds = dropTarget.getBoundingClientRect();
     }
 
     this.marker.style.translate = `${this.target.__bounds.x}px ${this.target.__bounds.y}px`;
+
+    console.log(this.marker.style.translate);
+}
+
+function addMarkerToContainer() {
+    const lastChild = this.element.lastElementChild;
+
+    if (lastChild.__bounds == null) {
+        lastChild.__bounds = lastChild.getBoundingClientRect();
+    }
+
+    this.marker.style.translate = `${lastChild.__bounds.x}px ${lastChild.__bounds.bottom}px`;
+    console.log(this.marker.style.translate);
 }
