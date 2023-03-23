@@ -1,4 +1,5 @@
 import {schema} from "./schema.js";
+import "./list-component/list-component.js";
 
 export default class DragDrop extends crsbinding.classes.ViewBase {
     async connectedCallback() {
@@ -53,50 +54,6 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                 drop: {
                     clone: "template",
                     action: "copy"
-                }
-            }
-        })
-
-        await crs.call("dom_interactive", "enable_dragdrop", {
-            element: "ul",
-            options: {
-                drag: {
-                    query: ".red",
-                    cpIndex: 1 // what index on the composing path are we moving
-                },
-                drop: {
-                    allowDrop: async (dragElement, target, options) => {
-                        // drop check, only drop on container
-                        if (options.currentAction == "drop") {
-                            if (target.tagName === "LI") {
-                                return {
-                                    target,
-                                    position: "before"
-                                }
-                            }
-
-                            if (target.parentElement.tagName === "LI") {
-                                return {
-                                    target: target.parentElement,
-                                    position: "before"
-                                }
-                            }
-
-                            if (target.id !== "mylist") {
-                                return null;
-                            }
-
-                            return {
-                                target: target,
-                                position: "append"
-                            }
-                        }
-
-                        // move operation allow marker to update on list items also
-                        if (target.tagName === "LI" || target.id == "mylist") {
-                            return { target };
-                        }
-                    }
                 }
             }
         })

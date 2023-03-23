@@ -7,10 +7,10 @@ import {createPlaceholderElement} from "./placeholder.js";
  * @param options
  * @returns {Promise<void>}
  */
-export async function drop(event, dragElement, placeholder, options, context) {
+export async function drop(dragElement, placeholder, options, context) {
     options.currentAction = "drop";
 
-    const intent = await allowDrop(event, dragElement, options);
+    const intent = await allowDrop.call(this, dragElement, options);
 
     if (intent == null || intent.target.classList.contains("placeholder")) {
         await gotoOrigin(dragElement, placeholder, options);
@@ -132,8 +132,12 @@ function cleanElements(dragElement, placeholder, options) {
  * @param options
  * @returns {Promise<*>}
  */
-export async function allowDrop(event, dragElement, options) {
-    const target = event.target || event.composedPath()[0];
+export async function allowDrop(dragElement, options) {
+    const target = this.composedPath[0];
+
+    if (target == null) {
+        return null;
+    }
 
     if (target.classList.contains("placeholder")) {
         return {
@@ -142,11 +146,11 @@ export async function allowDrop(event, dragElement, options) {
         };
     }
 
-    return AllowDrop[typeof options.drop.allowDrop](event, options, target);
+    return AllowDrop[typeof options.drop.allowDrop].call(this, options, target);
 }
 
 class AllowDrop {
-    static async string(event, options, target) {
+    static async string(options, target) {
         if (target.matches(options.drop.allowDrop)) {
             return {
                 target,
@@ -164,7 +168,7 @@ class AllowDrop {
         return null;
     }
 
-    static async function(event, options, target) {
-        return await options.drop.allowDrop(event, target, options)
+    static async function(options, target) {
+        return await options.drop.allowDrop(target, options)
     }
 }

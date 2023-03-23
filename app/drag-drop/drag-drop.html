@@ -84,30 +84,9 @@
         grid-column: 2;
     }
 
-    ul {
-        box-sizing: border-box;
+    list-component {
         grid-column: 3;
         grid-row: 1 / 5;
-        border: silver 1px solid;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    li {
-        background: white;
-        padding: 0.5rem;
-        border-bottom: solid 1px silver;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .red {
-        width: 2rem;
-        height: 2rem;
-        background: red;
-        margin-right: 0.5rem;
     }
 </style>
 
@@ -147,18 +126,5 @@
 
     <div class="drop-target" aria-dropeffect="none"></div>
 
-    <ul id="mylist" aria-dropeffect="move">
-        <li>
-            <div class="red"></div>
-            <div>Item 1</div>
-        </li>
-        <li>
-            <div class="red"></div>
-            <div>Item 2</div>
-        </li>
-        <li>
-            <div class="red"></div>
-            <div>Item 3</div>
-        </li>
-    </ul>
+    <list-component></list-component>
 </div>

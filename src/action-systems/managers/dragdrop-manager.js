@@ -14,6 +14,10 @@ import {startMarker} from "./dragdrop-manager/marker.js";
  */
 export class DragDropManager {
     /**
+     * @field - The element that the event is attached too
+     */
+    #eventElement;
+    /**
      * @field - The element that drag and drop has been enabled on
      * This is more often than not the container or source of the drag operation
      * @type {HTMLElement}
@@ -98,12 +102,6 @@ export class DragDropManager {
      */
     #context;
     /**
-     * @field - In some cases we need access to the mouse event.
-     * Due to the nature of the event system, we need to cache the event so that utility functions can access it
-     * regardless to the call stack.
-     */
-    #moveEvent;
-    /**
      * @field - The bounds cache is used to cache the bounds of the elements that are being dragged over.
      * Since we don't want to calculate bounds on every mouse move, we cache them.
      * This however means that once you drop the element, you will need to recalculate the bounds.
@@ -112,6 +110,8 @@ export class DragDropManager {
      * @type {[]}
      */
     #boundsCache = [];
+
+    #composedPath;
 
     get element() {
         return this.#element;
@@ -161,6 +161,10 @@ export class DragDropManager {
         return this.#boundsCache;
     }
 
+    get composedPath() {
+        return this.#composedPath;
+    }
+
     constructor(element, options, context) {
         this.#element = element;
         this.#context = context;
@@ -174,7 +178,8 @@ export class DragDropManager {
             this.#scrollAreas = getScrollAreas(this.#element, this.#options.autoScroll);
         }
 
-        (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).addEventListener("mousedown", this.#mouseDownHandler);
+        this.#eventElement = this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot;
+        this.#eventElement.addEventListener("mousedown", this.#mouseDownHandler);
         this.#element.__dragDropManager = this;
     }
 
@@ -200,14 +205,15 @@ export class DragDropManager {
         this.#target = null;
         this.#context = null;
         this.#marker = null;
+        this.#composedPath = null;
     }
 
     async #mouseDown(event) {
         event.preventDefault();
+        this.#composedPath = event.composedPath();
 
         if (this.#isBusy == true) return;
 
-        this.#moveEvent = event;
         this.#startPoint = {x: event.clientX, y: event.clientY};
         this.#movePoint = {x: event.clientX, y: event.clientY};
 
@@ -231,7 +237,8 @@ export class DragDropManager {
 
     async #mouseMove(event) {
         event.preventDefault();
-        this.#moveEvent = event;
+        this.#composedPath = event.composedPath();
+
         this.#movePoint.x = event.clientX;
         this.#movePoint.y = event.clientY;
         this.#target = event.target || event.composedPath()[0];
@@ -240,6 +247,8 @@ export class DragDropManager {
     async #mouseUp(event) {
         this.#isBusy = true;
         event.preventDefault();
+        this.#composedPath = event.composedPath();
+
         this.#updateDragHandler = null;
         this.#updateMarkerHandler = null;
         this.#movePoint = null;
@@ -253,13 +262,12 @@ export class DragDropManager {
             this.#marker = null;
         }
 
-        await drop.call(this, event, this.#dragElement, this.#placeholder, this.#options, this.#context);
+        await drop.call(this, this.#dragElement, this.#placeholder, this.#options, this.#context);
 
         this.#dragElement = null;
         this.#placeholder = null;
         this.#target = null;
         this.#isBusy = false;
-        this.#moveEvent = null;
         this.#lastTarget = null;
 
         for (const element of this.#boundsCache) {
@@ -268,6 +276,7 @@ export class DragDropManager {
 
         this.#boundsCache.length = 0;
         delete this.#options.currentAction;
+        this.#composedPath = null;
     }
 
     async #mouseOver(event) {
@@ -276,6 +285,6 @@ export class DragDropManager {
 
     async validateDropTarget(element) {
         this.#options.currentAction = "hover";
-        return allowDrop(this.#moveEvent, element, this.#options);
+        return allowDrop.call(this, element, this.#options);
     }
 }
