@@ -100,7 +100,7 @@ async function gotoTarget(dragElement, target, options, placeholder) {
 async function insertBefore(dragElement, target, options, placeholder) {
     let targetPlaceholder = placeholder;
 
-    if (placeholder.parentElement !== this.element) {
+    if (placeholder.parentElement !== this.element || options.drop.action == "copy") {
         targetPlaceholder = await createPlaceholderElement(placeholder._bounds);
     }
 
