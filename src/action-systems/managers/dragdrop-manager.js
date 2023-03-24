@@ -2,7 +2,7 @@ import {ensureOptions} from "./dragdrop-manager/options.js";
 import {applyPlaceholder} from "./dragdrop-manager/placeholder.js";
 import {drop, allowDrop} from "./dragdrop-manager/drop.js";
 import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
-import {getDraggable, getScrollAreas} from "./dragdrop-manager/drag-utils.js";
+import {getDraggable} from "./dragdrop-manager/drag-utils.js";
 import {updateMarker} from "./dragdrop-manager/marker.js";
 import {startMarker} from "./dragdrop-manager/marker.js";
 
@@ -65,11 +65,6 @@ export class DragDropManager {
      * @field - The mouse up handler
      */
     #mouseUpHandler;
-    /**
-     * @field - The scroll areas is defined hotspots that are used to scroll the page
-     * This is only used if you have set autoScroll to true in the options
-     */
-    #scrollAreas;
     /**
      * @field - The start point of the drag operation
      * This is the point that the mouse was at when the drag operation started
@@ -138,10 +133,6 @@ export class DragDropManager {
         return this.#startPoint;
     }
 
-    get scrollAreas() {
-        return this.#scrollAreas;
-    }
-
     get target() {
         return this.#target;
     }
@@ -176,10 +167,6 @@ export class DragDropManager {
         this.#mouseMoveHandler = this.#mouseMove.bind(this);
         this.#mouseUpHandler = this.#mouseUp.bind(this);
 
-        if (this.#options.autoScroll != null) {
-            this.#scrollAreas = getScrollAreas(this.#element, this.#options.autoScroll);
-        }
-
         this.#eventElement = this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot;
         this.#eventElement.addEventListener("mousedown", this.#mouseDownHandler);
         this.#element.__dragDropManager = this;
@@ -195,7 +182,6 @@ export class DragDropManager {
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
         this.#mouseUpHandler = null;
-        this.#scrollAreas = null;
         this.#startPoint = null;
         this.#movePoint = null;
         this.#placeholder = null;

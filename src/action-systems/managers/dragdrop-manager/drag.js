@@ -1,6 +1,3 @@
-import {scrollY, scrollX} from "./scroll.js";
-import {inArea} from "./drag-utils.js";
-
 /**
  * Start the drag operation by creating the animation layer and adding the drag element too it.
  * @param dragElement
@@ -36,7 +33,6 @@ class DragClone {
         result._bounds = dragElement._bounds;
         result.dragElement = dragElement;
         return result;
-        // JHR: todo, enable inflation on templates
     }
 }
 
@@ -53,21 +49,6 @@ export async function updateDrag(frameTime) {
     const y = this.dragElement._bounds.y + (this.movePoint.y - this.startPoint.y);
 
     this.dragElement.style.translate = `${x}px ${y}px`;
-
-    if (this.scrollAreas != null) {
-        if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.left)) {
-            await scrollX.call(this, frameTime, -1);
-        }
-        else if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.right)) {
-            await scrollX.call(this, frameTime, 1);
-        }
-        else if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.top)) {
-            await scrollX.call(this, frameTime, -1);
-        }
-        else if (inArea(this.movePoint.x, this.movePoint.y, this.scrollAreas.bottom)) {
-            await scrollX.call(this, frameTime, 1);
-        }
-    }
 
     requestAnimationFrame(this.updateDragHandler);
 }
