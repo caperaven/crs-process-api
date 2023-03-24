@@ -1,5 +1,10 @@
 /**
  * Ensure that the options have logical defaults
+ * - dragQuery - default("[draggable='true']"): the query selector to use to find draggable elements
+ * - drag.placeholderType - default("standard"): the type of placeholder to use
+ * - drag.clone - default("element"): the type of clone to use
+ * - drop.allowDrop - default("[aria-dropeffect]"): the query selector to use to find elements that can be dropped on
+ * - drop.action - default("move"): the action to take when dropping an element
  * @param options
  * @returns {*}
  */
@@ -13,7 +18,7 @@ export function ensureOptions(options) {
 }
 
 /**
- * Make sure that the drag options are set to logcial defaults if missing
+ * @function ensureDragOptions - Make sure that the drag options are set to logical defaults if missing
  * @param drag
  * @returns {{dragClone}}
  */
@@ -24,6 +29,11 @@ function ensureDragOptions(drag) {
     return drag;
 }
 
+/**
+ * @function ensureDropOptions - Make sure that the drop options are set to logical defaults if missing
+ * @param drop
+ * @returns {*|{}}
+ */
 function ensureDropOptions(drop) {
     drop ||= {};
 

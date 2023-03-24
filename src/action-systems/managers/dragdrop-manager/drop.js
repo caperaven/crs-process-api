@@ -45,9 +45,11 @@ export async function drop(dragElement, placeholder, options) {
 }
 
 /**
- * Move back to where you started the drag operation from
- * @param dragElement
- * @param placeholder
+ * @function gotoOrigin - move the drag element to the placeholder
+ * This is used by other functions also to ensure consistent animation behaviour.
+ * When you drag the item and drop it on a non-supported element, this is also called.
+ * @param dragElement {HTMLElement} - the element that is being dragged
+ * @param placeholder {HTMLElement} - the placeholder element
  * @returns {Promise<void>}
  */
 async function gotoOrigin(dragElement, placeholder, options) {
@@ -64,6 +66,15 @@ async function gotoOrigin(dragElement, placeholder, options) {
     }
 }
 
+/**
+ * @function gotoTarget - move the drag element to the target element
+ * This is used when you append the element to a target element.
+ * @param dragElement {HTMLElement} - the element that is being dragged
+ * @param target {HTMLElement} - the target element
+ * @param options {Object} - the options object that was passed to the dragdrop manager
+ * @param placeholder {HTMLElement} - the placeholder element
+ * @returns {Promise<void>}
+ */
 async function gotoTarget(dragElement, target, options, placeholder) {
     let targetPlaceholder = placeholder;
 
@@ -76,6 +87,16 @@ async function gotoTarget(dragElement, target, options, placeholder) {
     await gotoOrigin(dragElement, targetPlaceholder, options);
 }
 
+/**
+ * @function insertBefore - insert the drag element and add it before the target element
+ * This is used on collections such as lists where you drop the item on another list item.
+ * List item in this context does not have to be li, but a child in a collection.
+ * @param dragElement {HTMLElement} - the element that is being dragged
+ * @param target {HTMLElement} - the target element
+ * @param options {Object} - the options object that was passed to the dragdrop manager
+ * @param placeholder {HTMLElement} - the placeholder element
+ * @returns {Promise<void>}
+ */
 async function insertBefore(dragElement, target, options, placeholder) {
     let targetPlaceholder = placeholder;
 
@@ -89,8 +110,9 @@ async function insertBefore(dragElement, target, options, placeholder) {
 }
 
 /**
- * Move the drag element to a defined bounds
- * @param bounds
+ * @function gotoBounds - move the drag element to the bounds
+ * @param element {HTMLElement} - the element to move, generally it is the element being dragged
+ * @param bounds {Object} - the bounds object that contains the x and y coordinates, most often a boundingClientRect
  * @returns {Promise<unknown>}
  */
 function gotoBounds(element, bounds) {
@@ -102,6 +124,7 @@ function gotoBounds(element, bounds) {
         });
 
         // once it is there, remove the element on the animation layer
+        // we wait for 350ms to ensure that the animation is done
         const wait = setTimeout(() => {
             clearTimeout(start);
             clearTimeout(wait);
@@ -112,9 +135,9 @@ function gotoBounds(element, bounds) {
 }
 
 /**
- * Once done with the drag and drop ensure that all properties are cleaned up
- * @param dragElement
- * @param placeholder
+ * @function cleanElements - Once done with the drag and drop ensure that all properties are cleaned up
+ * @param dragElement {HTMLElement} - the element that is being dragged
+ * @param placeholder {HTMLElement} - the placeholder element
  */
 function cleanElements(dragElement, placeholder, options) {
     delete dragElement._bounds;
@@ -133,9 +156,9 @@ function cleanElements(dragElement, placeholder, options) {
 }
 
 /**
- * Check if you are allowed to drop here
- * @param event
- * @param options
+ * @function allowDrop - Check if you are allowed to drop here
+ * @param event {Event} - the event that is being fired
+ * @param options {Object} - the options object that was passed to the dragdrop manager
  * @returns {Promise<*>}
  */
 export async function allowDrop(dragElement, options) {
@@ -155,6 +178,12 @@ export async function allowDrop(dragElement, options) {
     return AllowDrop[typeof options.drop.allowDrop].call(this, options, target);
 }
 
+/**
+ * @class AllowDrop - This class contains the different ways to check if you are allowed to drop here
+ * The types of operations are:
+ * - string - a selector string where we use css matching to check if you may drop here. For simple scenarios this is the easiest way.
+ * - function - a function that is called to check if you may drop here. This is useful when you want to check for more complex scenarios.
+ */
 class AllowDrop {
     static async string(options, target) {
         if (target.matches(options.drop.allowDrop)) {

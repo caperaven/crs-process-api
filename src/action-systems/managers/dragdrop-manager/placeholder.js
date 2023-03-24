@@ -20,6 +20,11 @@ export async function applyPlaceholder(element, options) {
     return placeholder;
 }
 
+/**
+ * @function createPlaceholderElement - Create a placeholder element to be used in the DOM
+ * @param bounds - The bounds of the element being dragged (width, height)
+ * @returns {Promise<*>}
+ */
 export async function createPlaceholderElement(bounds) {
     return await crs.call("dom", "create_element", {
         classes: ["placeholder"],
