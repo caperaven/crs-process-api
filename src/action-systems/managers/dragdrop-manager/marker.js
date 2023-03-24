@@ -61,8 +61,8 @@ async function performUpdateMarker() {
     if (dropTarget === this.lastTarget) return;
     this.lastTarget = dropTarget;
 
-    if (dropTarget === this.element) {
-        return addMarkerToContainer.call(this);
+    if (dropTarget === this.element || dropIntent.position === "append") {
+        return addMarkerToContainer.call(this, dropIntent.target);
     }
 
     ensureBounds.call(this, dropTarget);
@@ -73,12 +73,20 @@ async function performUpdateMarker() {
 /**
  * @function addMarkerToContainer - add the marker to the container by showing it below the last child
  */
-function addMarkerToContainer() {
-    const lastChild = this.element.lastElementChild;
+function addMarkerToContainer(target) {
+    const container = (target || this.element);
+    const lastChild = container.lastElementChild;
+    let property = "bottom";
+    let newTarget = lastChild;
 
-    ensureBounds.call(this, lastChild);
+    if (lastChild == null) {
+        property = "top";
+        newTarget = container;
+    }
 
-    this.marker.style.translate = `${lastChild._bounds.x}px ${lastChild._bounds.bottom}px`;
+    ensureBounds.call(this, newTarget);
+
+    this.marker.style.translate = `${newTarget._bounds.x}px ${newTarget._bounds[property]}px`;
 }
 
 /**

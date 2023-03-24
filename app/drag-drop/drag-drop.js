@@ -24,10 +24,25 @@ export default class DragDrop extends crsbinding.classes.ViewBase {
                     placeholderType: "opacity",
                 },
                 drop: {
-                    allowDrop: (dragElement, target, options) => {
-                        return {
-                            target, position: "append"
-                        };
+                    allowDrop: (target, options) => {
+                        if (options.currentAction == "drop") {
+                            if (target.classList.contains("drop-target")) {
+                                return {target, position: "append"};
+                            }
+
+                            if (target.classList.contains("card")) {
+                                return {target, position: "before"};
+                            }
+                        }
+                        else {
+                            if (target.classList.contains("drop-target")) {
+                                return {target, position: "append"};
+                            }
+
+                            if (target.classList.contains("card")) {
+                                return {target, position: "before"};
+                            }
+                        }
                     },
                     action: "copy",
                     callback: (element, target) => { console.log(element, target) }
