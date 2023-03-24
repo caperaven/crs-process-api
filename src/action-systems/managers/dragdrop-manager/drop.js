@@ -61,7 +61,7 @@ async function gotoOrigin(dragElement, placeholder, options) {
         dragElement = element;
     }
 
-    if (options.drag.clone == "element") {
+    if (options.drag.clone === "element" || options.drag.clone === "template") {
         placeholder.parentElement.replaceChild(dragElement, placeholder);
     }
 }
