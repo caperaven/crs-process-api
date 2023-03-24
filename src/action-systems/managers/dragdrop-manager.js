@@ -111,6 +111,12 @@ export class DragDropManager {
      */
     #boundsCache = [];
 
+    /**
+     * @field - The composed path is used to get the path of the event.
+     * There are a number of functions that want to check the composed path.
+     * Instead of passing the event on hand doing the work several times, we just do it once and cache it.
+     * Since functions are called with the manager as "this" they have access to the composed path.
+     */
     #composedPath;
 
     get element() {
@@ -167,6 +173,8 @@ export class DragDropManager {
 
     constructor(element, options, context) {
         this.#element = element;
+        this.#element.style.userSelect = "none";
+        
         this.#context = context;
         this.#options = ensureOptions(options);
 

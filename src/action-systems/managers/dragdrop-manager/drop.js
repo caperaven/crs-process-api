@@ -10,7 +10,19 @@ import {createPlaceholderElement} from "./placeholder.js";
 export async function drop(dragElement, placeholder, options, context) {
     options.currentAction = "drop";
 
+    const elementsCollection = Array.from(this.element.children);
+    const startIndex = elementsCollection.indexOf(placeholder);
+
     const intent = await allowDrop.call(this, dragElement, options);
+    let endIndex = elementsCollection.indexOf(intent?.target);
+
+    if (endIndex > startIndex) {
+        endIndex--;
+    }
+
+    if (endIndex == -1) {
+        endIndex = elementsCollection.length - 1;
+    }
 
     if (intent == null || intent.target.classList.contains("placeholder")) {
         await gotoOrigin(dragElement, placeholder, options);
@@ -33,7 +45,7 @@ export async function drop(dragElement, placeholder, options, context) {
             await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: intent.target});
         }
         else {
-            await options.drop.callback(dragElement, intent.target);
+            await options.drop.callback(startIndex, endIndex, dragElement);
         }
     }
 }

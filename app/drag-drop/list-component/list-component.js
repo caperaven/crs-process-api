@@ -53,6 +53,11 @@ class ListComponent extends HTMLElement {
                         if (target.tagName === "LI" || target.tagName === "UL") {
                             return { target };
                         }
+                    },
+                    callback: async (startIndex, endIndex, dragElement) => {
+                        console.log("startIndex", startIndex);
+                        console.log("endIndex", endIndex);
+                        console.log("dragElement", dragElement);
                     }
                 }
             }
