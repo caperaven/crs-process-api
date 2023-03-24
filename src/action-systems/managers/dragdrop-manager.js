@@ -97,11 +97,6 @@ export class DragDropManager {
      */
     #updateMarkerHandler;
     /**
-     * You can define a process step as the allow drop check.
-     * If you want this, you will need to define the context for the process if relevant
-     */
-    #context;
-    /**
      * @field - The bounds cache is used to cache the bounds of the elements that are being dragged over.
      * Since we don't want to calculate bounds on every mouse move, we cache them.
      * This however means that once you drop the element, you will need to recalculate the bounds.
@@ -171,11 +166,10 @@ export class DragDropManager {
         return this.#composedPath;
     }
 
-    constructor(element, options, context) {
+    constructor(element, options) {
         this.#element = element;
         this.#element.style.userSelect = "none";
         
-        this.#context = context;
         this.#options = ensureOptions(options);
 
         this.#mouseDownHandler = this.#mouseDown.bind(this);
@@ -197,7 +191,6 @@ export class DragDropManager {
         this.#element = null;
         this.#lastTarget = null;
 
-        this.#context = null;
         this.#options = null;
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
@@ -211,7 +204,6 @@ export class DragDropManager {
         this.#updateDragHandler = null;
         this.#updateMarkerHandler = null;
         this.#target = null;
-        this.#context = null;
         this.#marker = null;
         this.#composedPath = null;
     }
@@ -270,7 +262,7 @@ export class DragDropManager {
             this.#marker = null;
         }
 
-        await drop.call(this, this.#dragElement, this.#placeholder, this.#options, this.#context);
+        await drop.call(this, this.#dragElement, this.#placeholder, this.#options);
 
         this.#dragElement = null;
         this.#placeholder = null;

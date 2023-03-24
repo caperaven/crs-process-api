@@ -7,7 +7,7 @@ import {createPlaceholderElement} from "./placeholder.js";
  * @param options
  * @returns {Promise<void>}
  */
-export async function drop(dragElement, placeholder, options, context) {
+export async function drop(dragElement, placeholder, options) {
     options.currentAction = "drop";
 
     const elementsCollection = Array.from(this.element.children);
@@ -39,14 +39,8 @@ export async function drop(dragElement, placeholder, options, context) {
 
     cleanElements(dragElement, placeholder, options);
 
-    if (intent?.target != null && options.drop.callback) {
-        if (typeof options.drop.callback == "object") {
-            const step = options.drop.callback;
-            await crs.call(step.type, step.action, step.args, context, null, {dragElement: dragElement, targetElement: intent.target});
-        }
-        else {
-            await options.drop.callback(startIndex, endIndex, dragElement);
-        }
+    if (intent?.target != null && options.drop.callback != null) {
+        await options.drop.callback(startIndex, endIndex, dragElement);
     }
 }
 

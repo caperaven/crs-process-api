@@ -397,7 +397,7 @@ export class DomInteractiveActions {
 
         const file = import.meta.url.replace("dom-interactive-actions.js", "managers/dragdrop-manager.js");
         const module = await import(file);
-        new module.DragDropManager(element, options, context);
+        new module.DragDropManager(element, options);
     }
 
     /**
