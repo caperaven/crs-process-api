@@ -157,6 +157,11 @@ export class DragDropManager {
         return this.#composedPath;
     }
 
+    /**
+     * @constructor
+     * @param element {HTMLElement} - The container element that drag and drop has been enabled on
+     * @param options {Object} - The options for the drag and drop operation
+     */
     constructor(element, options) {
         this.#element = element;
         this.#element.style.userSelect = "none";
@@ -173,11 +178,11 @@ export class DragDropManager {
     }
 
     dispose() {
-        (this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot).removeEventListener("mousedown", this.#mouseDownHandler);
+        this.#eventElement.removeEventListener("mousedown", this.#mouseDownHandler);
 
+        this.#eventElement = null;
         this.#element = null;
         this.#lastTarget = null;
-
         this.#options = null;
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
@@ -192,8 +197,15 @@ export class DragDropManager {
         this.#target = null;
         this.#marker = null;
         this.#composedPath = null;
+        this.#boundsCache = null;
     }
 
+    /**
+     * @method - The mouse down handler starts the drag process and initializes resources required to help with the drag and drop operation
+     * This would include the dragging of the element, the marker, and the placeholder.
+     * @param event
+     * @returns {Promise<void>}
+     */
     async #mouseDown(event) {
         event.preventDefault();
         this.#composedPath = event.composedPath();
@@ -221,6 +233,13 @@ export class DragDropManager {
         this.#updateMarkerHandler();
     }
 
+    /**
+     * @method - The mouse move handler is used to update the drag and marker operations.
+     * Most of the logic is handled by the updateDrag and updateMarker timer functions.
+     * This method is used to update the values required for the drag and drop operations.
+     * @param event
+     * @returns {Promise<void>}
+     */
     async #mouseMove(event) {
         event.preventDefault();
         this.#composedPath = event.composedPath();
@@ -230,6 +249,12 @@ export class DragDropManager {
         this.#target = event.target || event.composedPath()[0];
     }
 
+    /**
+     * @method - The mouse up handler is used to end the drag and drop operation.
+     * This stops the drag and drop operations and cleans up the resources used.
+     * @param event
+     * @returns {Promise<void>}
+     */
     async #mouseUp(event) {
         this.#isBusy = true;
         event.preventDefault();
@@ -265,10 +290,14 @@ export class DragDropManager {
         this.#composedPath = null;
     }
 
-    async #mouseOver(event) {
-        console.log(event);
-    }
-
+    /**
+     * @method - This method is used to validate the drop target during the move operation.
+     * This is used to determine if the drop target is valid and if the drop operation can be performed.
+     * If the drop target is not valid you don't want to update the position of the marker.
+     * Most of the logic is deferred to the allowDrop function passed on using the options.
+     * @param element {HTMLElement} - The element that is being hovered over
+     * @returns {Promise<*>}
+     */
     async validateDropTarget(element) {
         this.#options.currentAction = "hover";
         return allowDrop.call(this, element, this.#options);
