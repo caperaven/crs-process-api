@@ -53,7 +53,7 @@ class Placeholder {
      */
     static async opacity(element, bounds, options) {
         const result = element.cloneNode(true);
-        result.style.opacity = options.drag.opacity || 0.5;
+        result.style.opacity = options.drag.opacity || "0.5";
         return result;
     }
 
