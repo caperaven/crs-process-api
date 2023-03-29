@@ -8,6 +8,7 @@ export class EventMock {
         }
 
         this.target = target;
+        this.composedPath = () => [target];
 
         this.actionsCalled = {
             preventDefault: false,
