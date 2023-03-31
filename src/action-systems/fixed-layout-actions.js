@@ -76,6 +76,7 @@ export class FixedLayoutActions {
 
         const at = await crs.process.getValue(step.args.at || "bottom", context, process, item);
         const anchor = await crs.process.getValue(step.args.anchor, context, process, item);
+        const container = await crs.process.getValue(step.args.container || document.body, context, process, item);
         const margin = await crs.process.getValue(step.args.margin || 0, context, process, item);
 
         element.style.position = "fixed";
@@ -83,6 +84,8 @@ export class FixedLayoutActions {
         element.style.top = 0;
 
         const elementBounds = element.getBoundingClientRect();
+
+        const containerBounds = container.getBoundingClientRect();
 
         let targetBounds;
 
@@ -103,6 +106,8 @@ export class FixedLayoutActions {
         }
 
         let position = this.#actions[at](elementBounds, targetBounds, margin, anchor);
+        position.x -= containerBounds.left;
+        position.y -= containerBounds.top;
         position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height);
         element.style.translate = `${position.x}px ${position.y}px`;
         element.removeAttribute("hidden");
