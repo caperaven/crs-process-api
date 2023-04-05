@@ -20,15 +20,13 @@ describe("fixed layout tests", () => {
         element = document.createElement("div");
         element.bounds = { x: 0, left: 0, y: 0, top: 0, width: 50, right: 50, height: 50, bottom: 50 };
 
-        container = document.createElement("div");
-        container.bounds = { x: 0, left: 0, y: 0, top: 0, width: 100, right: 100, height: 100, bottom: 100 };
+        document.body.bounds = { x: 0, left: 0, y: 0, top: 0, width: 100, right: 100, height: 100, bottom: 100 };
     })
 
     it("top - left", async () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "top",
             anchor: "left",
             margin: 10
@@ -42,7 +40,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "top",
             anchor: "right",
             margin: 10
@@ -56,7 +53,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "top",
             anchor: "middle"
         });
@@ -69,7 +65,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "bottom",
             anchor: "left",
             margin: 10
@@ -83,7 +78,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "bottom",
             anchor: "right",
             margin: 10
@@ -97,7 +91,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "left",
             anchor: "top",
             margin: 10
@@ -111,7 +104,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "left",
             anchor: "bottom",
             margin: 10
@@ -125,7 +117,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "left",
             anchor: "middle"
         });
@@ -138,7 +129,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "right",
             anchor: "top",
             margin: 10
@@ -152,7 +142,6 @@ describe("fixed layout tests", () => {
         await crs.call("fixed_layout", "set", {
             element: element,
             target: target,
-            container: container,
             at: "right",
             anchor: "bottom",
             margin: 10
@@ -165,7 +154,6 @@ describe("fixed layout tests", () => {
     it ("below - point - left", async() => {
         await crs.call("fixed_layout", "set", {
             element: element,
-            container: container,
             point: {x: 100, y:100},
             at: "bottom",
             anchor: "left"
@@ -178,7 +166,6 @@ describe("fixed layout tests", () => {
     it ("below - point - right", async() => {
         await crs.call("fixed_layout", "set", {
             element: element,
-            container: container,
             point: {x: 100, y:100},
             at: "bottom",
             anchor: "right"
@@ -191,7 +178,6 @@ describe("fixed layout tests", () => {
     it ("top - point - left", async() => {
         await crs.call("fixed_layout", "set", {
             element: element,
-            container: container,
             point: {x: 100, y:100},
             at: "top",
             anchor: "left"
@@ -204,7 +190,6 @@ describe("fixed layout tests", () => {
     it ("top - point - right", async() => {
         await crs.call("fixed_layout", "set", {
             element: element,
-            container: container,
             point: {x: 100, y:100},
             at: "top",
             anchor: "right"
