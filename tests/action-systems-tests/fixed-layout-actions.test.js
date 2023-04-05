@@ -11,6 +11,7 @@ beforeAll(async () => {
 describe("fixed layout tests", () => {
     let target;
     let element;
+    let container;
 
     beforeEach(async () => {
         target = document.createElement("div");
@@ -18,6 +19,8 @@ describe("fixed layout tests", () => {
 
         element = document.createElement("div");
         element.bounds = { x: 0, left: 0, y: 0, top: 0, width: 50, right: 50, height: 50, bottom: 50 };
+
+        document.body.bounds = { x: 0, left: 0, y: 0, top: 0, width: 100, right: 100, height: 100, bottom: 100 };
     })
 
     it("top - left", async () => {

@@ -165,7 +165,7 @@ export class DragDropManager {
     constructor(element, options) {
         this.#element = element;
         this.#element.style.userSelect = "none";
-        
+
         this.#options = ensureOptions(options);
 
         this.#mouseDownHandler = this.#mouseDown.bind(this);
@@ -217,6 +217,8 @@ export class DragDropManager {
 
         const element = getDraggable(event, this.#options);
         if (element == null) return;
+
+        this.#element.dataset.dragging = true;
 
         this.#placeholder = await applyPlaceholder(element, this.#options);
         this.#dragElement = await startDrag(element, this.#options);
@@ -288,6 +290,8 @@ export class DragDropManager {
         this.#boundsCache.length = 0;
         delete this.#options.currentAction;
         this.#composedPath = null;
+
+        delete this.#element.dataset.dragging;
     }
 
     /**
