@@ -7,8 +7,13 @@ export class EventMock {
             }
         }
 
+        let composedPath = options?.composedPath;
+        if (composedPath == null) {
+            composedPath = () => [target];
+        }
+
         this.target = target;
-        this.composedPath = () => [target];
+        this.composedPath = composedPath;
 
         this.actionsCalled = {
             preventDefault: false,

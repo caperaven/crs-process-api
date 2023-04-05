@@ -238,11 +238,11 @@ function dispatchEvent(event, args) {
     }
 }
 
-function performEvent(event, target, options) {
+async function performEvent(event, target, options) {
     const eventObj = new EventMock(target || this, options);
     const events = this.__events.filter(item => item.event == event) || [];
     for (let eventItem of events) {
-        eventItem.callback(eventObj);
+        await eventItem.callback(eventObj);
     }
     return eventObj;
 }

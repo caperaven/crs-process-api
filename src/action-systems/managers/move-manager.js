@@ -56,7 +56,7 @@ export class MoveManager {
     }
 
 
-    #mouseDown(event) {
+    async #mouseDown(event) {
         if (this.#matches(event) === false)
             return;
 
@@ -68,14 +68,14 @@ export class MoveManager {
         document.addEventListener("mouseup", this.#mouseUpHandler);
     }
 
-    #mouseMove(event) {
+    async #mouseMove(event) {
         let offsetX = event.clientX - this.#startPos.x;
         let offsetY = event.clientY - this.#startPos.y;
 
         this.#element.style.translate = `${this.#bounds.x + offsetX}px ${this.#bounds.y + offsetY}px`;
     }
 
-    #mouseUp(event) {
+    async #mouseUp(event) {
         document.removeEventListener("mousemove", this.#mouseMoveHandler);
         document.removeEventListener("mouseup", this.#mouseUpHandler);
         this.#startPos = null;
