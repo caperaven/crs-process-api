@@ -32,19 +32,19 @@ export class DomUtilsActions {
      * @param step.args.target {String} - The target to store the result in.
      *
      * @example <caption>javascript</caption>
-     * await crs.call("dom-utils", "call_on_element", {
+     * await crs.call("dom_utils", "call_on_element", {
      *   element: "my-element",
-     *   function: "myFunction",
+     *   action: "myFunction",
      *   args: ["my", "arguments"]
      * });
      *
      * @example <caption>json</caption>
      * {
-     *  "type": "dom-utils",
+     *  "type": "dom_utils",
      *  "action": "call_on_element",
      *  "args": {
      *    "element": "my-element",
-     *    "function": "myFunction",
+     *    "action": "myFunction",
      *    "args": ["my", "arguments"]
      *   }
      * }
@@ -75,7 +75,7 @@ export class DomUtilsActions {
      * @param [step.args.target] {String} - The target to store the result in.
      *
      * @example <caption>javascript</caption>
-     * await crs.call("dom-utils", "get_property", {
+     * await crs.call("dom_utils", "get_property", {
      *   element: "my-element",
      *   property: "myProperty"
      *   target: "my-target"
@@ -83,7 +83,7 @@ export class DomUtilsActions {
      *
      * @example <caption>json</caption>
      * {
-     *  "type": "dom-utils",
+     *  "type": "dom_utils",
      *  "action": "get_property",
      *  "args": {
      *    "element": "my-element",
@@ -115,7 +115,7 @@ export class DomUtilsActions {
      * @param step.args.properties {Object} - The properties to set.
      *
      * @example <caption>javascript</caption>
-     * await crs.call("dom-utils", "set_properties", {
+     * await crs.call("dom_utils", "set_properties", {
      *   element: "my-element",
      *   properties: {
      *    myProperty: "myValue"
@@ -124,7 +124,7 @@ export class DomUtilsActions {
      *
      * @example <caption>json</caption>
      * {
-     *  "type": "dom-utils",
+     *  "type": "dom_utils",
      *  "action": "set_properties",
      *  "args": {
      *    "element": "my-element",
@@ -156,7 +156,7 @@ export class DomUtilsActions {
      * @param step.args.parameters {Object} - The parameters to inflate the url with.
      *
      * @example <caption>javascript</caption>
-     * await crs.call("dom-utils", "open_tab", {
+     * await crs.call("dom_utils", "open_tab", {
      *  url: "https://www.google.com/search?q={query}",
      *  parameters: {
      *    query: "my query"
@@ -165,7 +165,7 @@ export class DomUtilsActions {
      *
      * @example <caption>json</caption>
      * {
-     *  "type": "dom-utils",
+     *  "type": "dom_utils",
      *  "action": "open_tab",
      *  "args": {
      *    "url": "https://www.google.com/search?q={query}",
@@ -197,14 +197,14 @@ export class DomUtilsActions {
      * @param [step.args.target] {String} - The target to store the result in.
      *
      * @example <caption>javascript</caption>
-     * await crs.call("dom-utils", "get_element_bounds", {
+     * await crs.call("dom_utils", "get_element_bounds", {
      *   element: "my-element",
      *   target: "my-target"
      * });
      *
      * @example <caption>json</caption>
      * {
-     *  "type": "dom-utils",
+     *  "type": "dom_utils",
      *  "action": "get_element_bounds",
      *  "args": {
      *    "element": "my-element",
@@ -241,7 +241,7 @@ export class DomUtilsActions {
      * @param step.args.target {String} - The target to store the result in.
      *
      * @example <caption>javascript</caption>
-     * await crs.call("dom-utils", "find_parent_of_type", {
+     * await crs.call("dom_utils", "find_parent_of_type", {
      *  element: "my-element",
      *  nodeName: "DIV",
      *  target: "my-target"
@@ -249,7 +249,7 @@ export class DomUtilsActions {
      *
      * @example <caption>json</caption>
      * {
-     *  "type": "dom-utils",
+     *  "type": "dom_utils",
      *  "action": "find_parent_of_type",
      *  "args": {
      *    "element": "my-element",
@@ -292,8 +292,21 @@ export class DomUtilsActions {
      * @param  nodeQuery {string} - The query to find the node.
      *
      * @example <caption>javascript</caption>
+     * await crs.call("dom_utils", "find_parent_of_type", {
+     *   element: "my-element",
+     *   nodeName: "DIV"
+     * });
+     *
      *
      * @example <caption>json</caption>
+     * {
+     *  "type": "dom_utils",
+     *  "action": "find_parent_of_type",
+     *  "args": {
+     *    "element": "my-element",
+     *    "nodeName": "DIV"
+     *   }
+     * }
      *
      * @returns {Promise<undefined|Element>}
      */
