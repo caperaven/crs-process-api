@@ -118,6 +118,11 @@
       "title": "Html",
       "hash": "#html",
       "view": "html"
+    },
+    {
+      "title": "IndexDB",
+      "hash": "#index-db",
+      "view": "index-db"
     }
   ]
 }

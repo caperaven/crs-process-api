@@ -1,3 +1,5 @@
+import {Database} from "./indexdb-manager/database.js";
+
 /**
  * @class IndexDBManager - manages access and transactions with index db
  *
@@ -15,23 +17,37 @@ export class IndexDBManager {
      * @field store - contains all the current open database instances.
      * key - value dictionary where the key is the entity name and the value is the db instance to interact with
      */
-    #store;
+    #store = {};
 
     async perform(step, context, process, item) {
-
+        await this[step.action](step, context, process, item);
     }
 
+    async connect(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const key = await crs.process.getValue(step.args.key || "index", context, process, item);
+
+        const instance = new Database();
+        await instance.connect(name, name, key);
+        this.#store[name] = instance;
+    }
+
+    async disconnect(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        await this.#store[name]?.disconnect();
+        delete this.#store[name]
+    }
 
     /**
      * @method set - add these records to the database
-     * @param name {string} - name of the database to work with
-     * @param records {array} - records to save
-     * @param returnFirstPage {boolean} - if true, while you are saving this, return the first page for me while continuing to add it in the background
+     * @param step.args.name {string} - name of the database to work with
+     * @param step.args.records {array} - records to save
      * @returns {*}
      */
-    set(name, records, returnFirstPage = false) {
-        // todo: convert this to a process.
-        return this.#store[name].set(records);
+    async set(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const records = await crs.process.getValue(step.args.records, context, process, item);
+        return await this.#store[name].set(records);
     }
 
     /**
@@ -39,7 +55,10 @@ export class IndexDBManager {
      * @param name {string} - name of the database to work with
      * @returns {*}
      */
-    get_all(name) {
-        return this.#store[name].getAll()
+    async get_all(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        return await this.#store[name].getAll()
     }
 }
+
+crs.intent.idb = new IndexDBManager()

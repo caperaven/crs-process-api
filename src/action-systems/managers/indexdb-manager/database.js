@@ -18,7 +18,7 @@
  * - getAll - get all records from the data store
  * - getPage - get a page of records from the data store
  */
-class Database {
+export class Database {
     #dbName = 'notes';
     #storeName = 'notes';
     #db = null;
@@ -31,26 +31,16 @@ class Database {
      */
     #queue = []
 
-    static async connect(dbName, storeName, keyName = "index") {
-        this.#dbName = dbName;
-        this.#storeName = storeName;
-        this.#keyName = keyName;
-
-        const instance = new Database();
-        await instance.#connect();
-        return instance;
-    }
-
-    async dispose() {
-        await this.#disconnect();
-    }
-
     /**
      * @method connect - connect to the database
      * @returns {Promise} - promise that resolves to the connection object
      */
-    #connect() {
+    connect(dbName, storeName, keyName = "index") {
         return new Promise((resolve, reject) => {
+            this.#dbName = dbName;
+            this.#storeName = storeName;
+            this.#keyName = keyName;
+
             const request = self.indexedDB.open(this.#dbName, 1);
 
             request.onerror = (event) => {
@@ -64,7 +54,7 @@ class Database {
 
             request.onupgradeneeded = (event) => {
                 const db = event.target.result;
-                db.createObjectStore(this.#storeName, { keyPath: this.#keyName, autoIncrement: true });
+                db.createObjectStore(this.#storeName);
             };
         });
     }
@@ -73,7 +63,7 @@ class Database {
      * @method disconnect - disconnect from the database
      * @returns {Promise<void>}
      */
-    async #disconnect() {
+    async disconnect() {
         if (this.#db) {
             this.#db.close();
             this.#db = null;
