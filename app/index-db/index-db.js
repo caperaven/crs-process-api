@@ -14,12 +14,10 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async connect() {
         Promise.all([
-            crs.call("idb", "connect", {
-                "name": "test_1",
-            }),
-
-            crs.call("idb", "connect", {
-                "name": "test_2",
+            crs.call("idb", "create", {
+                "name": "test_database",
+                "version": 1,
+                "storeNames": ["test_1", "test_2"]
             })
         ])
         .then(() => {
@@ -30,11 +28,11 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async disconnect() {
         Promise.all([
             crs.call("idb", "disconnect", {
-                "name": "test_1",
+                "name": "test_database",
             }),
 
             crs.call("idb", "disconnect", {
-                "name": "test_2",
+                "name": "test_database",
             })
         ])
         .then(() => {
@@ -55,7 +53,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
         await Promise.all([
             crs.call("idb", "set", {
-                "name": "test_1",
+                "name": "test_database",
+                "store": "test_1",
                 "records": this.#data1,
                 "clear": true
             })
@@ -67,7 +66,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
             }),
 
             await crs.call("idb", "set", {
-                "name": "test_2",
+                "name": "test_database",
+                "store": "test_2",
                 "records": this.#data2
             })
             .then(() => {
@@ -85,11 +85,13 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async clearData() {
         Promise.all([
             crs.call("idb", "clear", {
-                "name": "test_1",
+                "name": "test_database",
+                "store": "test_1"
             }),
 
             crs.call("idb", "clear", {
-                "name": "test_2",
+                "name": "test_database",
+                "store": "test_2"
             })
         ])
         .then(() => {
@@ -102,14 +104,16 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async fetch() {
         const result = await crs.call("idb", "get", {
-            "name": "test_1",
+            "name": "test_database",
+            "store": "test_1",
             "indexes": Number(this.getProperty("index"))
         })
 
         this.setProperty("model", result.data);
 
         const indexItems = await crs.call("idb", "get", {
-            "name": "test_1",
+            "name": "test_database",
+            "store": "test_1",
             "indexes": [0, 2, 4, 6, 8, 10]
         })
 
@@ -118,7 +122,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async fetchBatch() {
         const result = await crs.call("idb", "get_batch", {
-            "name": "test_1",
+            "name": "test_database",
+            "store": "test_1",
             "startIndex": Number(this.getProperty("batchStart")),
             "count": Number(this.getProperty("batchSize"))
         });
@@ -128,7 +133,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async fetchAll() {
         const result = await crs.call("idb", "get_all", {
-            "name": "test_1"
+            "name": "test_database",
+            "store": "test_1",
         })
 
         console.log(result);
@@ -136,7 +142,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async fetchPage() {
         const result = await crs.call("idb", "get_page", {
-            "name": "test_1",
+            "name": "test_database",
+            "store": "test_1",
             "pageSize": Number(this.getProperty("pageSize")),
             "page": Number(this.getProperty("page"))
         })
@@ -146,7 +153,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async deleteOlderThan() {
         const result = await crs.call("idb", "delete_older_than", {
-            "name": "test_1",
+            "name": "test_database",
+            "store": "test_1",
             "date": "2020-01-01"
         })
 

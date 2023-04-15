@@ -62,6 +62,14 @@ export class IndexDBManager {
         })
     }
 
+    async create(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const version = await crs.process.getValue(step.args.version, context, process, item);
+        const storeNames = await crs.process.getValue(step.args.storeNames, context, process, item);
+
+        return await this.#performWorkerAction("create", [name, version, storeNames], crypto.randomUUID());
+    }
+
     async connect(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         const key = await crs.process.getValue(step.args.key || "index", context, process, item);
@@ -92,7 +100,9 @@ export class IndexDBManager {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         const records = await crs.process.getValue(step.args.records, context, process, item);
         const clear = await crs.process.getValue(step.args.clear ?? false, context, process, item);
-        return await this.#performWorkerAction("set", [name, records, clear], crypto.randomUUID());
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        return await this.#performWorkerAction("set", [name, store, records, clear], crypto.randomUUID());
     }
 
     /**
@@ -109,7 +119,9 @@ export class IndexDBManager {
     async add(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         const record = await crs.process.getValue(step.args.record, context, process, item);
-        return await this.#performWorkerAction("add", [name, record], crypto.randomUUID());
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        return await this.#performWorkerAction("add", [name, store, record], crypto.randomUUID());
     }
 
     /**
@@ -123,7 +135,9 @@ export class IndexDBManager {
      */
     async clear(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
-        return await this.#performWorkerAction("clear", [name], crypto.randomUUID());
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        return await this.#performWorkerAction("clear", [name, store], crypto.randomUUID());
     }
 
     /**
@@ -133,7 +147,9 @@ export class IndexDBManager {
      */
     async get_all(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
-        return await this.#performWorkerAction("getAll", [name], crypto.randomUUID());
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        return await this.#performWorkerAction("getAll", [name, store], crypto.randomUUID());
     }
 
     /**
@@ -151,7 +167,9 @@ export class IndexDBManager {
     async get(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         const indexes = await crs.process.getValue(step.args.indexes, context, process, item);
-        return await this.#performWorkerAction("get", [name, indexes], crypto.randomUUID());
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+
+        return await this.#performWorkerAction("get", [name, store, indexes], crypto.randomUUID());
     }
 
     /**
@@ -169,20 +187,22 @@ export class IndexDBManager {
      */
     async get_batch(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
         const startIndex = await crs.process.getValue(step.args.startIndex, context, process, item);
         const endIndex = await crs.process.getValue(step.args.endIndex, context, process, item);
         const count = await crs.process.getValue(step.args.count, context, process, item);
 
-        return await this.#performWorkerAction("getBatch", [name, startIndex, endIndex, count], crypto.randomUUID());
+        return await this.#performWorkerAction("getBatch", [name, store, startIndex, endIndex, count], crypto.randomUUID());
     }
 
     async get_page(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
         const page = await crs.process.getValue(step.args.page, context, process, item);
         const pageSize = await crs.process.getValue(step.args.pageSize, context, process, item);
         const startIndex = (page - 1) * pageSize;
 
-        return await this.#performWorkerAction("getBatch", [name, startIndex, null, pageSize], crypto.randomUUID());
+        return await this.#performWorkerAction("getBatch", [name, store, startIndex, null, pageSize], crypto.randomUUID());
     }
 }
 

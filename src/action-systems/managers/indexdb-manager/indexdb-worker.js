@@ -1,3 +1,5 @@
+const DATABASE_REGISTRY = "database_registry";
+
 /**
  * @class Database
  * This is a class that wraps indexdb operations for crud operations and filtering
@@ -20,29 +22,17 @@
  */
 class Database {
     #dbName;
-    #storeName;
     #db = null;
-    #keyName = null;
 
-    /**
-     * @private
-     * @field queue - when the database is busy add the action to the queue to process when it becomes available.
-     * @type {[]}
-     */
-    #queue = []
-
-    /**
-     * @method connect - connect to the database
-     * @returns {Promise} - promise that resolves to the connection object
-     */
-    connect(dbName, storeName, keyName = "index") {
+    create(dbName, version, storeNames) {
         return new Promise((resolve, reject) => {
             this.#dbName = dbName;
-            this.#storeName = storeName;
-            this.#keyName = keyName;
 
-            const request = self.indexedDB.open(this.#dbName, 1);
-            let isNew = false;
+            if (this.#db != null) {
+                this.#db.close();
+            }
+
+            const request = self.indexedDB.open(this.#dbName, version);
 
             request.onerror = (event) => {
                 reject(event.target.error);
@@ -50,46 +40,75 @@ class Database {
 
             request.onsuccess = async (event) => {
                 this.#db = event.target.result;
-
-                if (isNew == true) {
-                    await this.#metaInit();
-                }
-
                 resolve();
             };
 
             request.onupgradeneeded = (event) => {
-                isNew = true;
                 const db = event.target.result;
-                db.createObjectStore("meta");
-                db.createObjectStore(this.#storeName);
+
+                for (const storeName of storeNames) {
+                    if (db.objectStoreNames.contains(storeName) === false) {
+                        db.createObjectStore(storeName);
+                    }
+                }
+            };
+        })
+    }
+
+    /**
+     * @method connect - connect to the database
+     * @returns {Promise} - promise that resolves to the connection object
+     */
+    connect(dbName) {
+        return new Promise((resolve, reject) => {
+            this.#dbName = dbName;
+
+            const request = self.indexedDB.open(this.#dbName, 1);
+
+            request.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            request.onsuccess = async (event) => {
+                this.#db = event.target.result;
+                resolve();
+            };
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+
+                for (let i = 0; i < 1000; i++) {
+                    db.createObjectStore(`table ${i}`);
+                }
             };
         });
     }
 
-    /**
-     * @method set - save details about the main table in the meta table
-     * This is later used to
-     * - get the total number of records
-     * - get the fields in the table
-     * - get the timestamp of the last update
-     * - delete old databases based on the timestamp
-     * - get the next id to use
-     * @returns {Promise<*>}
-     */
-    #metaInit() {
-        return this.#performTransaction((store) => {
-            return store.add({ timestamp: Date.now(), count: 0, fields: [] }, this.#storeName);
-        }, "readwrite", "meta");
-    }
+    // /**
+    //  * @method set - save details about the main table in the meta table
+    //  * This is later used to
+    //  * - get the total number of records
+    //  * - get the fields in the table
+    //  * - get the timestamp of the last update
+    //  * - delete old databases based on the timestamp
+    //  * - get the next id to use
+    //  * @returns {Promise<*>}
+    //  */
+    // #metaInit() {
+    //     return this.#performTransaction((store) => {
+    //         return store.add({ timestamp: Date.now(), count: 0, fields: [] }, this.#storeName);
+    //     }, "readwrite", "meta");
+    // }
 
     /**
      * @method metaGet - get the metadata for the main table
      */
     #metaGet() {
-        return this.#performTransaction((store) => {
-            return store.get(this.#storeName);
-        }, "readonly", "meta");
+        // return this.#performTransaction((store) => {
+        //     return store.get(this.#storeName);
+        // }, "readonly", "meta");
+
+        return { count: 0 }
     }
 
     /**
@@ -97,9 +116,9 @@ class Database {
      * @param data
      */
     #metaUpdate(data) {
-        return this.#performTransaction((store) => {
-            return store.put(data, this.#storeName);
-        }, "readwrite", "meta");
+        // return this.#performTransaction((store) => {
+        //     return store.put(data, this.#storeName);
+        // }, "readwrite", "meta");
     }
 
     /**
@@ -119,10 +138,10 @@ class Database {
      * @param callback {function} - callback function that does the actual work
      * @returns {Promise<unknown>}
      */
-    #performTransaction(callback, mode = "readwrite", storeName = null) {
+    #performTransaction(callback, mode = "readwrite", storeName) {
         return new Promise((resolve, reject) => {
-            const transaction = this.#db.transaction([storeName || this.#storeName], mode);
-            const store = transaction.objectStore(storeName || this.#storeName);
+            const transaction = this.#db.transaction([storeName], mode);
+            const store = transaction.objectStore(storeName);
 
             const request = callback(store);
 
@@ -140,14 +159,14 @@ class Database {
      * @method set - set the records in the database
      * @param records
      */
-    set(records, clear) {
+    set(storeName, records, clear) {
         return new Promise(async (resolve, reject) => {
             if (clear == true) {
-                await this.clear().catch(error => reject(error));
+                await this.clear(storeName).catch(error => reject(error));
             }
 
             const meta = await this.#metaGet();
-            const result = await this.setTimer(0, records, meta).catch(error => reject(error));
+            const result = await this.setTimer(storeName, 0, records, meta).catch(error => reject(error));
 
             meta.fields = Object.keys(records[0]);
             await this.#metaUpdate(meta);
@@ -163,19 +182,19 @@ class Database {
      * @param meta - what is the metadata for the table
      * @returns {Promise<unknown>}
      */
-    async setTimer(startIndex, data, meta) {
+    async setTimer(storeName, startIndex, data, meta) {
         let toIndex = startIndex + 100;
         if (toIndex > data.length) {
             toIndex = data.length
         }
 
         for (let i = startIndex; i < toIndex; i++) {
-            await this.add(data[i], meta);
+            await this.add(storeName, data[i], meta);
         }
 
         if (toIndex < data.length) {
             return new Promise(resolve => {
-                requestAnimationFrame(() => this.setTimer(toIndex, data, meta).then(() => resolve()));
+                requestAnimationFrame(() => this.setTimer(storeName, toIndex, data, meta).then(() => resolve()));
             });
         }
         else {
@@ -188,13 +207,25 @@ class Database {
      * @param {object} record - record to be created
      * @returns {Promise<void>}
      */
-    add(record, meta) {
+    add(storeName, record, meta) {
         return this.#performTransaction((store) => {
             const index = meta.count;
             meta.count += 1;
             meta.timestamp = Date.now();
             return store.add(record, index);
-        });
+        }, "readwrite", storeName);
+    }
+
+    /**
+     * @method addWithIndex - add a record with a specific index
+     * @param record - record to be added
+     * @param index - index to be used
+     * @returns {Promise<*>}
+     */
+    addWithIndex(storeName, record, index) {
+        return this.#performTransaction((store) => {
+            return store.add(record, index);
+        }, "readwrite", storeName);
     }
 
     /**
@@ -202,57 +233,57 @@ class Database {
      * @param {string} id - id of the record to be read
      * @returns {Promise<void>}
      */
-    read(index) {
+    get(storeName, index) {
         return this.#performTransaction((store) => {
             return store.get(index);
-        }, "readonly");
+        }, "readonly", storeName);
     }
 
     /**
      * @method update - update a record in the database
      * @returns {Promise<void>}
      */
-    update(data) {
+    update(storeName, data, key) {
         return this.#performTransaction((store) => {
-            return store.put(data);
-        }, "readwrite");
+            return store.put(data, key);
+        }, "readwrite", storeName);
     }
 
     /**
      * @method delete - delete a record from the database
      * @returns {Promise<void>}
      */
-    delete(index) {
+    delete(storeName, index) {
         return this.#performTransaction((store) => {
             return store.delete(index);
-        }, "readwrite");
+        }, "readwrite", storeName);
     }
 
     /**
      * @method clear - clear all records from the database
      * @returns {Promise<void>}
      */
-    clear() {
+    clear(storeName) {
         return this.#performTransaction((store) => {
             return store.clear();
-        },  "readwrite");
+        },  "readwrite", storeName);
     }
 
     /**
      * @method getAll - get all records from the database
      * @returns {Promise<void>}
      */
-    getAll() {
+    getAll(storeName) {
         return this.#performTransaction((store) => {
             return store.getAll();
-        }, "readonly");
+        }, "readonly", storeName);
     }
 
-    getBatch(startIndex, endIndex) {
+    getBatch(storeName, startIndex, endIndex) {
         return new Promise((resolve, reject) => {
             const result = []
-            const transaction = this.#db.transaction([this.#storeName], "readonly");
-            const store = transaction.objectStore(this.#storeName);
+            const transaction = this.#db.transaction([storeName], "readonly");
+            const store = transaction.objectStore(storeName);
             const range = IDBKeyRange.bound(startIndex, endIndex, false, false);
             const request = store.openCursor(range);
 
@@ -278,11 +309,11 @@ class Database {
      * @param indexes
      * @returns {Promise<*>}
      */
-    getRecordsByIndex(indexes) {
+    getRecordsByIndex(storeName, indexes) {
         const promises = indexes.map(index =>
             this.#performTransaction((store) => {
                 return store.get(index);
-            }, "readonly")
+            }, "readonly", storeName)
         );
 
         return Promise.all(promises);
@@ -294,7 +325,7 @@ class Database {
      * @param indexes {array} - indexes of the records, if not provided, all records are retrieved
      * @returns {Promise<void>}
      */
-    getValues(fields, indexes) {
+    getValues(storeName, fields, indexes) {
         return this.#performTransaction((store) => {
             const request = store.getAll(indexes);
             request.onsuccess = (event) => {
@@ -308,7 +339,17 @@ class Database {
                 });
                 return values;
             };
-        }, "readonly");
+        }, "readonly", storeName);
+    }
+
+    /**
+     * This checks if the store has a particular key
+     * @param key
+     */
+    hasKey(storeName, key) {
+        return this.#performTransaction((store) => {
+            return store.getKey(key);
+        }, "readonly", storeName);
     }
 }
 
@@ -350,11 +391,41 @@ class IndexDBManager {
         });
     }
 
-    connect(uuid, name, key) {
+    create(uuid, name, version, storeNames) {
         return new Promise(async (resolve, reject) => {
             const instance = new Database();
 
-            await instance.connect(name, name, key)
+            await instance.create(name, version, storeNames)
+                .catch((error) => {
+                    reject({
+                        uuid: uuid,
+                        result: false,
+                        error: error
+                    });
+                });
+
+            this.#store[name] = instance;
+
+            resolve({
+                uuid: uuid,
+                result: true
+            });
+        })
+    }
+
+    connect(uuid, name) {
+        return new Promise(async (resolve, reject) => {
+            // Database already set so nothing more to do
+            if (this.#store[name] !== undefined) {
+                resolve({
+                    uuid: uuid,
+                    result: true
+                })
+            }
+
+            const instance = new Database();
+
+            await instance.connect(name)
                 .catch((error) => {
                     reject({
                         uuid: uuid,
@@ -378,44 +449,44 @@ class IndexDBManager {
         })
     }
 
-    set(uuid, name, records, clear) {
+    set(uuid, name, store, records, clear) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].set(records, clear);
+            await this.#store[name].set(store, records, clear);
         });
     }
 
-    add(uuid, name, record) {
+    add(uuid, name, store, record) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].add(record);
+            await this.#store[name].add(store, record);
         });
     }
 
-    clear(uuid, name) {
+    clear(uuid, name, store) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].clear();
+            await this.#store[name].clear(store);
         });
     }
 
-    get(uuid, name, indexes) {
+    get(uuid, name, store, indexes) {
         return this.#performAction(uuid, name, async () => {
             if (Array.isArray(indexes) === false) {
-                return await this.#store[name].read(indexes);
+                return await this.#store[name].get(store, indexes);
             }
 
-            return await this.#store[name].getRecordsByIndex(indexes);
+            return await this.#store[name].getRecordsByIndex(store, indexes);
         })
     }
 
-    getAll(uuid, name) {
+    getAll(uuid, name, store) {
         return this.#performAction(uuid, name, async () => {
-            return await this.#store[name].getAll();
+            return await this.#store[name].getAll(store);
         });
     }
 
-    getBatch(uuid, name, startIndex, endIndex, count) {
+    getBatch(uuid, name, store, startIndex, endIndex, count) {
         return this.#performAction(uuid, name, async () => {
             endIndex ||= startIndex + count - 1;
-            return await this.#store[name].getBatch(startIndex, endIndex);
+            return await this.#store[name].getBatch(store, startIndex, endIndex);
         });
     }
 }
