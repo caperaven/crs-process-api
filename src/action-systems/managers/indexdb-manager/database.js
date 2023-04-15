@@ -24,6 +24,8 @@ export class Database {
     #db = null;
     #keyName = null;
 
+    #setTimerHandler = this.setTimer.bind(this);
+
     /**
      * @private
      * @field queue - when the database is busy add the action to the queue to process when it becomes available.
@@ -54,7 +56,7 @@ export class Database {
 
             request.onupgradeneeded = (event) => {
                 const db = event.target.result;
-                db.createObjectStore(this.#storeName);
+                db.createObjectStore(this.#storeName, { autoIncrement: true });
             };
         });
     }
@@ -99,9 +101,11 @@ export class Database {
      */
     set(records) {
         return this.#performTransaction((store) => {
+            let result;
             for (const record of records) {
-                store.add(record)
+                result = store.add(record)
             }
+            return result;
         });
     }
 

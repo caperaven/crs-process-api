@@ -4,22 +4,104 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     #data1;
     #data2;
 
+    async preLoad() {
+        this.setProperty("index", 0);
+    }
+
     async connect() {
-        await crs.call("idb", "connect", {
-            "name": "test_1",
+        Promise.all([
+            crs.call("idb", "connect", {
+                "name": "test_1",
+            }),
+
+            crs.call("idb", "connect", {
+                "name": "test_2",
+            })
+        ])
+        .then(() => {
+            console.log("all connected");
         })
     }
 
     async disconnect() {
-        await crs.call("idb", "disconnect", {
-            "name": "test_1",
+        Promise.all([
+            crs.call("idb", "disconnect", {
+                "name": "test_1",
+            }),
+
+            crs.call("idb", "disconnect", {
+                "name": "test_2",
+            })
+        ])
+        .then(() => {
+            console.log("all disconnected");
         })
     }
 
-    async GenerateData() {
-        this.#data1 = await generateData(100);
-        this.#data2 = await generateData(100);
-        alert("done");
+    async generateData() {
+        this.#data1 = await generateData(1000);
+        this.#data2 = await generateData(10);
+
+        console.log("data generated");
+        alert("data generated");
+    }
+
+    async pushData() {
+        const start = performance.now();
+
+        await Promise.all([
+            crs.call("idb", "set", {
+                "name": "test_1",
+                "records": this.#data1
+            })
+            .then(() => {
+                console.log("data 1 pushed");
+            })
+            .catch((error) => {
+                console.log(error);
+            }),
+
+            await crs.call("idb", "set", {
+                "name": "test_2",
+                "records": this.#data2
+            })
+            .then(() => {
+                console.log("data 2 pushed");
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        ])
+
+        const end = performance.now();
+        console.log("pushed in " + (end - start) + " ms");
+    }
+
+    async clearData() {
+        Promise.all([
+            crs.call("idb", "clear", {
+                "name": "test_1",
+            }),
+
+            crs.call("idb", "clear", {
+                "name": "test_2",
+            })
+        ])
+        .then(() => {
+            console.log("all cleared");
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
+    async fetch() {
+        const result = await crs.call("idb", "get", {
+            "name": "test_1",
+            "indexes": [this.getProperty("index")]
+        })
+
+        console.log(result);
     }
 }
 

@@ -1,7 +1,117 @@
+<style>
+    .animation-bar {
+        border: 1px solid silver;
+        padding: 0.5rem;
+    }
+
+    .rect {
+        width: 25px;
+        height: 25px;
+        background-color: red;
+        animation: move 1s linear infinite;
+    }
+
+    @keyframes move {
+        0% {
+            transform: translateX(0);
+        }
+        50% {
+            transform: translateX(300px);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    [role="toolbar"] {
+        display: flex;
+        flex-direction: row;
+        padding: 0.5rem;
+        border: silver 1px solid;
+    }
+
+    .form {
+        border: 1px solid silver;
+        padding: 0.5rem;
+    }
+
+    .form label {
+        display: flex;
+        flex-direction: row;
+        margin: 0.5rem;
+    }
+
+    .form label div {
+        width: 100px;
+    }
+
+    .form-toolbar {
+        display: flex;
+        flex-direction: row;
+        padding: 0.5rem;
+        border: silver 1px solid;
+    }
+
+    .form-toolbar div {
+        width: 100px;
+    }
+
+</style>
 <h2>${title}</h2>
+
+<div class="animation-bar">
+    <div class="rect"></div>
+</div>
 
 <div role="toolbar">
     <button click.call="connect">Connect</button>
-    <button click.call="GenerateData">Generate Data</button>
+    <button click.call="generateData">Generate Data</button>
+    <button click.call="pushData">Push Data</button>
+    <button click.call="clearData">Clear Data</button>
     <button click.call="disconnect">Disconnect</button>
+</div>
+
+<div class="form">
+    <label>
+        <div>Id</div>
+        <input type="text" value.bind="model.id" />
+    </label>
+    <label>
+        <div>Code</div>
+        <input type="text" value.bind="model.code" />
+    </label>
+    <label>
+        <div>Description</div>
+        <input type="text" value.bind="model.description" />
+    </label>
+    <label>
+        <div>Price</div>
+        <input type="text" value.bind="model.price" />
+    </label>
+    <label>
+        <div>Quantity</div>
+        <input type="text" value.bind="model.quantity" />
+    </label>
+    <label>
+        <div>Date</div>
+        <input type="text" value.bind="model.date" />
+    </label>
+    <label>
+        <div>Time</div>
+        <input type="text" value.bind="model.time" />
+    </label>
+    <label>
+        <div>Duration</div>
+        <input type="text" value.bind="model.duration" />
+    </label>
+    <label>
+        <div>Is Valid</div>
+        <input type="text" value.bind="model.isValid" />
+    </label>
+
+    <div role="toolbar" class="form-toolbar">
+        <div>Index</div>
+        <input type="text" value.bind="index" />
+        <button click.call="fetch">Fetch</button>
+    </div>
 </div>
