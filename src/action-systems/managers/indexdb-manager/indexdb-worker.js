@@ -290,6 +290,34 @@ class Database {
 class IndexDBManager {
     #store = {};
 
+    #performAction(uuid, name, callback) {
+        return new Promise(async (resolve, reject) => {
+            if (this.#store[name] === undefined) {
+                reject({
+                    uuid: uuid,
+                    result: false,
+                    error: new Error(`Database ${name} is not connected`)
+                })
+            }
+
+            await callback()
+                .then((result) => {
+                    resolve({
+                        uuid: uuid,
+                        result: true,
+                        data: result
+                    })
+                })
+                .catch((error) => {
+                    reject({
+                        uuid: uuid,
+                        result: false,
+                        error: error
+                    });
+                });
+        });
+    }
+
     connect(uuid, name, key) {
         return new Promise(async (resolve, reject) => {
             const instance = new Database();
@@ -313,112 +341,32 @@ class IndexDBManager {
     }
 
     disconnect(uuid, name) {
-        return new Promise(async (resolve, reject) => {
-            await this.#store[name]?.disconnect()
-                .catch((error) => {
-                    reject({
-                        uuid: uuid,
-                        result: false,
-                        error: error
-                    });
-                });
-
+        return this.#performAction(uuid, name, async () => {
             delete this.#store[name];
-
-            resolve({
-                uuid: uuid,
-                result: true
-            })
-        });
+        })
     }
 
     set(uuid, name, records) {
-        return new Promise(async (resolve, reject) => {
-            await this.#store[name]?.set(records)
-                .catch((error) => {
-                    reject({
-                        uuid: uuid,
-                        result: false,
-                        error: error
-                    });
-                });
-
-            resolve({
-                uuid: uuid,
-                result: true
-            })
-        })
+        return this.#performAction(uuid, name, async () => {
+            await this.#store[name].set(records);
+        });
     }
 
     add(uuid, name, record) {
-        return new Promise(async (resolve, reject) => {
-            await this.#store[name]?.add(record)
-                .catch((error) => {
-                    reject({
-                        uuid: uuid,
-                        result: false,
-                        error: error
-                    });
-                });
-
-            resolve({
-                uuid: uuid,
-                result: true
-            })
-        })
+        return this.#performAction(uuid, name, async () => {
+            await this.#store[name].add(record);
+        });
     }
 
     clear(uuid, name) {
-        return new Promise(async (resolve, reject) => {
-            if (this.#store[name] === undefined) {
-                reject({
-                    uuid: uuid,
-                    result: false,
-                    error: new Error(`Database ${name} is not connected`)
-                })
-            }
-
-            await this.#store[name]?.clear()
-                .catch((error) => {
-                    reject({
-                        uuid: uuid,
-                        result: false,
-                        error: error
-                    });
-                });
-
-            resolve({
-                uuid: uuid,
-                result: true
-            })
-        })
+        return this.#performAction(uuid, name, async () => {
+            await this.#store[name].clear();
+        });
     }
 
     get(uuid, name, indexes) {
-        return new Promise(async (resolve, reject) => {
-            if (this.#store[name] === undefined) {
-                reject({
-                    uuid: uuid,
-                    result: false,
-                    error: new Error(`Database ${name} is not connected`)
-                })
-            }
-
-            await this.#store[name]?.getRecordsByIndex(indexes)
-                .then((result) => {
-                    resolve({
-                        uuid: uuid,
-                        result: true,
-                        data: result
-                    })
-                })
-                .catch((error) => {
-                    reject({
-                        uuid: uuid,
-                        result: false,
-                        error: error
-                    });
-                });
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].getRecordsByIndex(indexes);
         })
     }
 }
