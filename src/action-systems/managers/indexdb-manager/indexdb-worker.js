@@ -295,7 +295,7 @@ class IndexDBManager {
             if (this.#store[name] === undefined) {
                 reject({
                     uuid: uuid,
-                    result: false,
+                    success: false,
                     error: new Error(`Database ${name} is not connected`)
                 })
             }
@@ -304,14 +304,14 @@ class IndexDBManager {
                 .then((result) => {
                     resolve({
                         uuid: uuid,
-                        result: true,
+                        success: true,
                         data: result
                     })
                 })
                 .catch((error) => {
                     reject({
                         uuid: uuid,
-                        result: false,
+                        success: false,
                         error: error
                     });
                 });
@@ -373,6 +373,12 @@ class IndexDBManager {
             return await this.#store[name].getRecordsByIndex(indexes);
         })
     }
+
+    getAll(uuid, name) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].getAll();
+        });
+    }
 }
 
 self.manager = new IndexDBManager();
@@ -385,10 +391,6 @@ self.onmessage = async function(event) {
     if (self.manager[action]) {
         await self.manager[action](uuid, ...args)
             .then(result => self.postMessage(result))
-            .catch(error => self.postMessage({
-                type: "error",
-                message: error.message,
-                stack: error.stack
-            }));
+            .catch(error => self.postMessage(error));
     }
 };

@@ -103,6 +103,14 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
         this.setProperty("model", result.data);
     }
+
+    async fetchAll() {
+        const result = await crs.call("idb", "get_all", {
+            "name": "test_1"
+        })
+
+        console.log(result);
+    }
 }
 
 async function generateData(count) {

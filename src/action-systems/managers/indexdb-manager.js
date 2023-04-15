@@ -38,14 +38,11 @@ export class IndexDBManager {
         const returnPromise = this.#requests[event.data.uuid];
 
         try {
-            if (event.data.type === "error") {
+            if (event.data.success === false) {
                 returnPromise.reject(event.data.error);
             }
             else {
-                returnPromise.resolve({
-                    result: event.data.result,
-                    data: event.data.data
-                });
+                returnPromise.resolve(event.data);
             }
         }
         finally {
@@ -127,7 +124,7 @@ export class IndexDBManager {
      */
     async get_all(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
-        return await this.#performWorkerAction("get_all", [name], crypto.randomUUID());
+        return await this.#performWorkerAction("getAll", [name], crypto.randomUUID());
     }
 
     async get(step, context, process, item) {
