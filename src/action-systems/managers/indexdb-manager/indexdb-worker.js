@@ -42,6 +42,7 @@ class Database {
             this.#keyName = keyName;
 
             const request = self.indexedDB.open(this.#dbName, 1);
+            let isNew = false;
 
             request.onerror = (event) => {
                 reject(event.target.error);
@@ -49,11 +50,16 @@ class Database {
 
             request.onsuccess = async (event) => {
                 this.#db = event.target.result;
-                await this.#metaInit();
+
+                if (isNew == true) {
+                    await this.#metaInit();
+                }
+
                 resolve();
             };
 
             request.onupgradeneeded = (event) => {
+                isNew = true;
                 const db = event.target.result;
                 db.createObjectStore("meta");
                 db.createObjectStore(this.#storeName);
@@ -238,11 +244,11 @@ class Database {
     getRecordsByIndex(indexes) {
         const promises = indexes.map(index =>
             this.#performTransaction((store) => {
-                return store.getAll(indexes);
+                return store.get(index);
             }, "readonly")
         );
 
-        return Promise.all(promises).then(result => console.log(result));
+        return Promise.all(promises);
     }
 
     /**
