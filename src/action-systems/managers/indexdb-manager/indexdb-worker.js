@@ -236,6 +236,31 @@ class Database {
         }, "readonly");
     }
 
+    getBatch(startIndex, endIndex) {
+        return new Promise((resolve, reject) => {
+            const result = []
+            const transaction = this.#db.transaction([this.#storeName], "readonly");
+            const store = transaction.objectStore(this.#storeName);
+            const range = IDBKeyRange.bound(startIndex, endIndex, false, false);
+            const request = store.openCursor(range);
+
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    result.push(cursor.value);
+                    cursor.continue();
+                }
+                else {
+                    resolve(result);
+                }
+            }
+
+            request.onerror = (event) => {
+                reject(event.target.error);
+            }
+        });
+    }
+
     /**
      * @methods getRecordsByIndex - get all the records for a given index
      * @param indexes
@@ -377,6 +402,13 @@ class IndexDBManager {
     getAll(uuid, name) {
         return this.#performAction(uuid, name, async () => {
             return await this.#store[name].getAll();
+        });
+    }
+
+    getBatch(uuid, name, startIndex, endIndex, count) {
+        return this.#performAction(uuid, name, async () => {
+            endIndex ||= startIndex + count - 1;
+            return await this.#store[name].getBatch(startIndex, endIndex);
         });
     }
 }

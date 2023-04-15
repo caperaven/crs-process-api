@@ -6,6 +6,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
     async preLoad() {
         this.setProperty("index", 0);
+        this.setProperty("batchStart", 10);
+        this.setProperty("batchSize", 10);
     }
 
     async connect() {
@@ -102,6 +104,23 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
         })
 
         this.setProperty("model", result.data);
+
+        const indexItems = await crs.call("idb", "get", {
+            "name": "test_1",
+            "indexes": [0, 2, 4, 6, 8, 10]
+        })
+
+        console.log("fetching items based on index:", indexItems);
+    }
+
+    async fetchBatch() {
+        const result = await crs.call("idb", "get_batch", {
+            "name": "test_1",
+            "startIndex": Number(this.getProperty("batchStart")),
+            "count": Number(this.getProperty("batchSize"))
+        });
+
+        console.log(result);
     }
 
     async fetchAll() {

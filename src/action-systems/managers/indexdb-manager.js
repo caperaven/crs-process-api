@@ -127,10 +127,44 @@ export class IndexDBManager {
         return await this.#performWorkerAction("getAll", [name], crypto.randomUUID());
     }
 
+    /**
+     * @method get - get a record from the database
+     * This can be either a single index item or a array of indexes
+     * @param step - step to process
+     * @param context - context of the process
+     * @param process - process to run
+     * @param item - item to process
+     *
+     * @param step.args.name {string} - name of the database to work with
+     * @param step.args.indexes {number|array} - indexes to get
+     * @returns {Promise<unknown>}
+     */
     async get(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         const indexes = await crs.process.getValue(step.args.indexes, context, process, item);
         return await this.#performWorkerAction("get", [name, indexes], crypto.randomUUID());
+    }
+
+    /**
+     * @method get_batch - get a sequential batch of records from the database
+     * @param step - step to process
+     * @param context - context of the process
+     * @param process - process to run
+     * @param item - item to process
+     *
+     * @param step.args.name {string} - name of the database to work with
+     * @param step.args.startIndex {number} - index to start from
+     * @param [step.args.endIndex] {number} - index to end at, use instead of count
+     * @param [step.args.count] {number} - number of records to get, use instead of endIndex
+     * @returns {Promise<void>}
+     */
+    async get_batch(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const startIndex = await crs.process.getValue(step.args.startIndex, context, process, item);
+        const endIndex = await crs.process.getValue(step.args.endIndex, context, process, item);
+        const count = await crs.process.getValue(step.args.count, context, process, item);
+
+        return await this.#performWorkerAction("getBatch", [name, startIndex, endIndex, count], crypto.randomUUID());
     }
 }
 

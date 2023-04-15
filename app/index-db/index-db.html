@@ -115,4 +115,12 @@
         <button click.call="fetch">Fetch</button>
         <button click.call="fetchAll">Fetch All</button>
     </div>
+
+    <div role="toolbar" class="form-toolbar">
+        <div>Batch Start</div>
+        <input type="number" value.bind="batchStart" />
+        <div>Batch Size</div>
+        <input type="number" value.bind="batchSize" />
+        <button click.call="fetchBatch">Fetch Batch</button>
+    </div>
 </div>
