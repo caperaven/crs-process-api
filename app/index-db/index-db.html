@@ -123,4 +123,12 @@
         <input type="number" value.bind="batchSize" />
         <button click.call="fetchBatch">Fetch Batch</button>
     </div>
+
+    <div role="toolbar" class="form-toolbar">
+        <div>Page</div>
+        <input type="number" value.bind="page" />
+        <div>Page Size</div>
+        <input type="number" value.bind="pageSize" />
+        <button click.call="fetchPage">Fetch Page</button>
+    </div>
 </div>

@@ -140,8 +140,12 @@ class Database {
      * @method set - set the records in the database
      * @param records
      */
-    set(records) {
+    set(records, clear) {
         return new Promise(async (resolve, reject) => {
+            if (clear == true) {
+                await this.clear().catch(error => reject(error));
+            }
+
             const meta = await this.#metaGet();
             const result = await this.setTimer(0, records, meta).catch(error => reject(error));
 
@@ -151,6 +155,14 @@ class Database {
         })
     }
 
+    /**
+     * This method manages batches of setting data in the database
+     * This is done to avoid blocking the thread and allows smaller set operations to be done before larger ones even if they start later
+     * @param startIndex - where in the array do we start the set operation
+     * @param data - what is the data we are trying to save
+     * @param meta - what is the metadata for the table
+     * @returns {Promise<unknown>}
+     */
     async setTimer(startIndex, data, meta) {
         let toIndex = startIndex + 100;
         if (toIndex > data.length) {
@@ -277,18 +289,6 @@ class Database {
     }
 
     /**
-     * @method getPage - get a page of records from the database
-     * @param page {number} - page number
-     * @param pageSize {number} - page size
-     * @returns {Promise<*>}
-     */
-    getPage(page, pageSize) {
-        return this.#performTransaction((store) => {
-            return store.getAll(null, pageSize, (page - 1) * pageSize);
-        }, "readonly");
-    }
-
-    /**
      * @method getValues - get the values of the fields for the records
      * @param fields {array} - fields to be retrieved
      * @param indexes {array} - indexes of the records, if not provided, all records are retrieved
@@ -312,6 +312,13 @@ class Database {
     }
 }
 
+/**
+ * @class IndexDBManager - manages the database connection managers
+ * This does not directly work with the index db, but manages a store of database instances using the Database class
+ * It acts a mediator and also deals with error handling and promise resolution
+ * The methods for the most part matches the Database class methods
+ * For descriptions on what the methods do, please refer to the Database class
+ */
 class IndexDBManager {
     #store = {};
 
@@ -371,9 +378,9 @@ class IndexDBManager {
         })
     }
 
-    set(uuid, name, records) {
+    set(uuid, name, records, clear) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].set(records);
+            await this.#store[name].set(records, clear);
         });
     }
 

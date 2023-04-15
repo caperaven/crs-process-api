@@ -8,6 +8,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
         this.setProperty("index", 0);
         this.setProperty("batchStart", 10);
         this.setProperty("batchSize", 10);
+        this.setProperty("page", 1);
+        this.setProperty("pageSize", 10);
     }
 
     async connect() {
@@ -54,7 +56,8 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
         await Promise.all([
             crs.call("idb", "set", {
                 "name": "test_1",
-                "records": this.#data1
+                "records": this.#data1,
+                "clear": true
             })
             .then(() => {
                 console.log("data 1 pushed");
@@ -126,6 +129,25 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async fetchAll() {
         const result = await crs.call("idb", "get_all", {
             "name": "test_1"
+        })
+
+        console.log(result);
+    }
+
+    async fetchPage() {
+        const result = await crs.call("idb", "get_page", {
+            "name": "test_1",
+            "pageSize": Number(this.getProperty("pageSize")),
+            "page": Number(this.getProperty("page"))
+        })
+
+        console.log(result);
+    }
+
+    async deleteOlderThan() {
+        const result = await crs.call("idb", "delete_older_than", {
+            "name": "test_1",
+            "date": "2020-01-01"
         })
 
         console.log(result);

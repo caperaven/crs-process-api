@@ -76,14 +76,23 @@ export class IndexDBManager {
 
     /**
      * @method set - add these records to the database
+     *
+     * @param step - step to process
+     * @param context - context of the process
+     * @param process - process to run
+     * @param item - item to process
+     *
      * @param step.args.name {string} - name of the database to work with
      * @param step.args.records {array} - records to save
+     * @parma step.args.clear {boolean} - clear the database before saving
+     *
      * @returns {*}
      */
     async set(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         const records = await crs.process.getValue(step.args.records, context, process, item);
-        return await this.#performWorkerAction("set", [name, records], crypto.randomUUID());
+        const clear = await crs.process.getValue(step.args.clear ?? false, context, process, item);
+        return await this.#performWorkerAction("set", [name, records, clear], crypto.randomUUID());
     }
 
     /**
@@ -165,6 +174,15 @@ export class IndexDBManager {
         const count = await crs.process.getValue(step.args.count, context, process, item);
 
         return await this.#performWorkerAction("getBatch", [name, startIndex, endIndex, count], crypto.randomUUID());
+    }
+
+    async get_page(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const page = await crs.process.getValue(step.args.page, context, process, item);
+        const pageSize = await crs.process.getValue(step.args.pageSize, context, process, item);
+        const startIndex = (page - 1) * pageSize;
+
+        return await this.#performWorkerAction("getBatch", [name, startIndex, null, pageSize], crypto.randomUUID());
     }
 }
 
