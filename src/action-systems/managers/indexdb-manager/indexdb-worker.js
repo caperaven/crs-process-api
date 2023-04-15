@@ -203,7 +203,7 @@ class Database {
     update(data) {
         return this.#performTransaction((store) => {
             return store.put(data);
-        }, "readwrite")
+        }, "readwrite");
     }
 
     /**
@@ -366,6 +366,10 @@ class IndexDBManager {
 
     get(uuid, name, indexes) {
         return this.#performAction(uuid, name, async () => {
+            if (Array.isArray(indexes) === false) {
+                return await this.#store[name].read(indexes);
+            }
+
             return await this.#store[name].getRecordsByIndex(indexes);
         })
     }
