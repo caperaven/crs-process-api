@@ -1,4 +1,4 @@
-const DATABASE_REGISTRY = "database_registry";
+const META_TABLE_NAME = "_meta";
 
 /**
  * @class Database
@@ -24,89 +24,27 @@ class Database {
     #dbName;
     #db = null;
 
-    create(dbName, version, storeNames) {
-        return new Promise((resolve, reject) => {
-            this.#dbName = dbName;
+    #getAvailableStoreQueue = [];
 
-            if (this.#db != null) {
-                this.#db.close();
+    #metaInit(newMetaData) {
+        if (newMetaData.length === 0) return;
+
+        return this.#performTransaction((store) => {
+            let result;
+            for (const meta of newMetaData) {
+                result = store.put(meta, meta.storeName);
             }
-
-            const request = self.indexedDB.open(this.#dbName, version);
-
-            request.onerror = (event) => {
-                reject(event.target.error);
-            };
-
-            request.onsuccess = async (event) => {
-                this.#db = event.target.result;
-                resolve();
-            };
-
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-
-                for (const storeName of storeNames) {
-                    if (db.objectStoreNames.contains(storeName) === false) {
-                        db.createObjectStore(storeName);
-                    }
-                }
-            };
-        })
+            return result;
+        }, "readwrite", META_TABLE_NAME);
     }
-
-    /**
-     * @method connect - connect to the database
-     * @returns {Promise} - promise that resolves to the connection object
-     */
-    connect(dbName) {
-        return new Promise((resolve, reject) => {
-            this.#dbName = dbName;
-
-            const request = self.indexedDB.open(this.#dbName, 1);
-
-            request.onerror = (event) => {
-                reject(event.target.error);
-            };
-
-            request.onsuccess = async (event) => {
-                this.#db = event.target.result;
-                resolve();
-            };
-
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-
-                for (let i = 0; i < 1000; i++) {
-                    db.createObjectStore(`table ${i}`);
-                }
-            };
-        });
-    }
-
-    // /**
-    //  * @method set - save details about the main table in the meta table
-    //  * This is later used to
-    //  * - get the total number of records
-    //  * - get the fields in the table
-    //  * - get the timestamp of the last update
-    //  * - delete old databases based on the timestamp
-    //  * - get the next id to use
-    //  * @returns {Promise<*>}
-    //  */
-    // #metaInit() {
-    //     return this.#performTransaction((store) => {
-    //         return store.add({ timestamp: Date.now(), count: 0, fields: [] }, this.#storeName);
-    //     }, "readwrite", "meta");
-    // }
 
     /**
      * @method metaGet - get the metadata for the main table
      */
-    #metaGet() {
-        // return this.#performTransaction((store) => {
-        //     return store.get(this.#storeName);
-        // }, "readonly", "meta");
+    #metaGet(storeName) {
+        return this.#performTransaction((store) => {
+            return store.get(storeName);
+        }, "readonly", META_TABLE_NAME);
 
         return { count: 0 }
     }
@@ -115,10 +53,73 @@ class Database {
      * @method metaUpdate - update the metadata for the main table
      * @param data
      */
-    #metaUpdate(data) {
-        // return this.#performTransaction((store) => {
-        //     return store.put(data, this.#storeName);
-        // }, "readwrite", "meta");
+    #metaUpdate(data, storeName) {
+        return this.#performTransaction((store) => {
+            return store.put(data, storeName);
+        }, "readwrite", META_TABLE_NAME);
+    }
+
+    #metaTimeStamp(storeName) {
+        return new Promise(async (resolve, reject) => {
+            const meta = await this.#metaGet(storeName).catch(error => reject(error));
+            meta.timestamp = new Date();
+            await this.#metaUpdate(meta, storeName).catch(error => reject(error));
+            resolve();
+        })
+    }
+
+    connect(dbName, version, count, storeNames) {
+        return new Promise((resolve, reject) => {
+            this.#dbName = dbName;
+
+            const newMegaData = [];
+            const request = self.indexedDB.open(this.#dbName, version);
+
+            request.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            request.onsuccess = async (event) => {
+                this.#db = event.target.result;
+                await this.#metaInit(newMegaData);
+                resolve();
+            };
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+
+                if (db.objectStoreNames.contains(META_TABLE_NAME) === false) {
+                    db.createObjectStore(META_TABLE_NAME);
+                }
+
+                if (count > 0) {
+                    for (let i = 0; i < count; i++) {
+                        let countString = i < 10 ? `0${i}` : i;
+                        const storeName = `table_${countString}`
+                        db.createObjectStore(storeName);
+
+                        newMegaData.push({
+                            storeName,
+                            timestamp: null,
+                            count: 0
+                        })
+                    }
+                }
+
+                for (const storeName of storeNames) {
+                    if (db.objectStoreNames.contains(storeName) === false) {
+                        db.createObjectStore(storeName);
+                        newStores.push(storeName);
+
+                        newMegaData.push({
+                            storeName,
+                            timestamp: null,
+                            count: 0
+                        })
+                    }
+                }
+            };
+        })
     }
 
     /**
@@ -141,6 +142,11 @@ class Database {
     #performTransaction(callback, mode = "readwrite", storeName) {
         return new Promise((resolve, reject) => {
             const transaction = this.#db.transaction([storeName], mode);
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
             const store = transaction.objectStore(storeName);
 
             const request = callback(store);
@@ -155,22 +161,85 @@ class Database {
         });
     }
 
+    markNextTableAsUsed() {
+        return new Promise((resolve, reject) => {
+            const transaction = this.#db.transaction([META_TABLE_NAME], "readwrite");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(META_TABLE_NAME);
+            const request = store.openCursor();
+
+            request.onsuccess = async (event) => {
+                let cursor = event.target.result;
+
+                do {
+                    const value = cursor.value;
+                    const storeName = value.storeName;
+                    const timeStamp = value.timestamp;
+
+                    if (timeStamp == null) {
+                        const meta = cursor.value;
+                        meta.timestamp = new Date();
+                        store.put(meta, storeName);
+                        resolve(storeName);
+                        break;
+                    }
+                } while (cursor.continue())
+            }
+
+            request.onerror = (event) => {
+                reject(event.target.error);
+            };
+        })
+    }
+
+    getAvailableStore() {
+        return new Promise(async (resolve, reject) => {
+            const storeName = await this.markNextTableAsUsed().catch(error => reject(error));
+            resolve(storeName);
+        })
+    }
+
+    releaseStores(storeName) {
+        return new Promise(async (resolve, reject) => {
+            await this.clear(storeName).catch(error => reject(error));
+
+            const result = await this.#performTransaction((store) => {
+                const meta = store.get(storeName);
+                meta.timestamp = null;
+                meta.count = 0;
+                return store.put(meta, storeName);
+            }, "readwrite", META_TABLE_NAME).catch(error => reject(error));
+
+            resolve(result);
+        })
+    }
+
     /**
      * @method set - set the records in the database
+     * If you define a store we will add data to that store and assume you have that locked by a previous operation
+     * If you want to clear the data first set the clear to true
+     * If you don't define a store wil will lookup a store that is not in use and lock it for you
      * @param records
      */
-    set(storeName, records, clear) {
+    set(storeName, records, clear = false) {
         return new Promise(async (resolve, reject) => {
+            storeName ||= await this.getAvailableStore().catch(error => reject(error));
+
             if (clear == true) {
                 await this.clear(storeName).catch(error => reject(error));
             }
 
-            const meta = await this.#metaGet();
-            const result = await this.setTimer(storeName, 0, records, meta).catch(error => reject(error));
-
-            meta.fields = Object.keys(records[0]);
-            await this.#metaUpdate(meta);
-            resolve(result);
+            // 1. get the meta data to update the count value
+            const meta = await this.#metaGet(storeName).catch(error => reject(error));
+            // 2. perform the set operation and update the count value
+            await this.setTimer(storeName, 0, records, meta).catch(error => reject(error));
+            // 3. update the meta data for next time
+            await this.#metaUpdate(meta, storeName).catch(error => reject(error));
+            resolve(storeName);
         })
     }
 
@@ -211,7 +280,6 @@ class Database {
         return this.#performTransaction((store) => {
             const index = meta.count;
             meta.count += 1;
-            meta.timestamp = Date.now();
             return store.add(record, index);
         }, "readwrite", storeName);
     }
@@ -283,6 +351,11 @@ class Database {
         return new Promise((resolve, reject) => {
             const result = []
             const transaction = this.#db.transaction([storeName], "readonly");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
             const store = transaction.objectStore(storeName);
             const range = IDBKeyRange.bound(startIndex, endIndex, false, false);
             const request = store.openCursor(range);
@@ -391,32 +464,10 @@ class IndexDBManager {
         });
     }
 
-    create(uuid, name, version, storeNames) {
-        return new Promise(async (resolve, reject) => {
-            const instance = new Database();
-
-            await instance.create(name, version, storeNames)
-                .catch((error) => {
-                    reject({
-                        uuid: uuid,
-                        result: false,
-                        error: error
-                    });
-                });
-
-            this.#store[name] = instance;
-
-            resolve({
-                uuid: uuid,
-                result: true
-            });
-        })
-    }
-
-    connect(uuid, name) {
+    connect(uuid, dbName, version, count, storeNames) {
         return new Promise(async (resolve, reject) => {
             // Database already set so nothing more to do
-            if (this.#store[name] !== undefined) {
+            if (this.#store[dbName] !== undefined) {
                 resolve({
                     uuid: uuid,
                     result: true
@@ -425,7 +476,7 @@ class IndexDBManager {
 
             const instance = new Database();
 
-            await instance.connect(name)
+            await instance.connect(dbName, version, count, storeNames)
                 .catch((error) => {
                     reject({
                         uuid: uuid,
@@ -434,7 +485,7 @@ class IndexDBManager {
                     });
                 });
 
-            this.#store[name] = instance;
+            this.#store[dbName] = instance;
 
             resolve({
                 uuid: uuid,
@@ -449,21 +500,39 @@ class IndexDBManager {
         })
     }
 
+    getAvailableStore(uuid, name) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].getAvailableStore();
+        })
+    }
+
+    releaseStore(uuid, name, store) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].releaseStore(store);
+        })
+    }
+
+    releaseStores(uuid, name, store) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].releaseStores(store);
+        })
+    }
+
     set(uuid, name, store, records, clear) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].set(store, records, clear);
+            return await this.#store[name].set(store, records, clear);
         });
     }
 
     add(uuid, name, store, record) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].add(store, record);
+            return await this.#store[name].add(store, record);
         });
     }
 
     clear(uuid, name, store) {
         return this.#performAction(uuid, name, async () => {
-            await this.#store[name].clear(store);
+            return      await this.#store[name].clear(store);
         });
     }
 

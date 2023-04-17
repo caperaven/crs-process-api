@@ -62,24 +62,29 @@ export class IndexDBManager {
         })
     }
 
-    async create(step, context, process, item) {
-        const name = await crs.process.getValue(step.args.name, context, process, item);
-        const version = await crs.process.getValue(step.args.version, context, process, item);
-        const storeNames = await crs.process.getValue(step.args.storeNames, context, process, item);
-
-        return await this.#performWorkerAction("create", [name, version, storeNames], crypto.randomUUID());
-    }
-
     async connect(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
-        const key = await crs.process.getValue(step.args.key || "index", context, process, item);
+        const version = await crs.process.getValue(step.args.version, context, process, item);
+        const count = await crs.process.getValue(step.args.count, context, process, item);
+        const storeNames = await crs.process.getValue(step.args.storeNames, context, process, item);
 
-        return await this.#performWorkerAction("connect", [name, key], crypto.randomUUID());
+        return await this.#performWorkerAction("connect", [name, version, count ?? 0, storeNames ?? []], crypto.randomUUID());
     }
 
     async disconnect(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
         return await this.#performWorkerAction("disconnect", [name], crypto.randomUUID());
+    }
+
+    async get_available_store(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        return await this.#performWorkerAction("getAvailableStore", [name], crypto.randomUUID());
+    }
+
+    async release_store(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        return await this.#performWorkerAction("releaseStore", [name, store], crypto.randomUUID());
     }
 
     /**

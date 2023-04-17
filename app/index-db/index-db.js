@@ -4,6 +4,9 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     #data1;
     #data2;
 
+    #data1Store;
+    #data2Store;
+
     async preLoad() {
         this.setProperty("index", 0);
         this.setProperty("batchStart", 10);
@@ -13,16 +16,12 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     }
 
     async connect() {
-        Promise.all([
-            crs.call("idb", "create", {
-                "name": "test_database",
-                "version": 1,
-                "storeNames": ["test_1", "test_2"]
-            })
-        ])
-        .then(() => {
-            console.log("all connected");
-        })
+        await crs.call("idb", "connect", {
+            "name": "test_database",
+            "version": 1,
+            "count": 100,
+            "storeNames": []
+        });
     }
 
     async disconnect() {
@@ -40,6 +39,14 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
         })
     }
 
+    async getAvailableStore() {
+        const result = await crs.call("idb", "get_available_store", {
+            "name": "test_database"
+        });
+
+        alert(result.data);
+    }
+
     async generateData() {
         this.#data1 = await generateData(1000);
         this.#data2 = await generateData(10);
@@ -49,37 +56,36 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     }
 
     async pushData() {
-        const start = performance.now();
-
         await Promise.all([
             crs.call("idb", "set", {
                 "name": "test_database",
-                "store": "test_1",
+                "store": this.#data1Store,
                 "records": this.#data1,
                 "clear": true
             })
-            .then(() => {
+            .then((result) => {
+                this.#data1Store = result.data;
                 console.log("data 1 pushed");
             })
             .catch((error) => {
                 console.log(error);
             }),
 
-            await crs.call("idb", "set", {
+            crs.call("idb", "set", {
                 "name": "test_database",
-                "store": "test_2",
+                "store": this.#data2Store,
                 "records": this.#data2
             })
-            .then(() => {
+            .then((result) => {
+                this.#data2Store = result.data;
                 console.log("data 2 pushed");
             })
             .catch((error) => {
                 console.log(error);
             })
-        ])
-
-        const end = performance.now();
-        console.log("pushed in " + (end - start) + " ms");
+        ]).then(() => {
+            console.log(this.#data1Store, this.#data2Store);
+        })
     }
 
     async clearData() {
