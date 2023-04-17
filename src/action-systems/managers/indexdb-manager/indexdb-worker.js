@@ -68,6 +68,16 @@ class Database {
         })
     }
 
+    #metaZeroCount(storeName) {
+        return new Promise(async (resolve, reject) => {
+            const meta = await this.#metaGet(storeName).catch(error => reject(error));
+            meta.count = 0;
+            await this.#metaUpdate(meta, storeName).catch(error => reject(error));
+            resolve();
+        })
+    }
+
+
     connect(dbName, version, count, storeNames) {
         return new Promise((resolve, reject) => {
             this.#dbName = dbName;
@@ -331,7 +341,9 @@ class Database {
      * @method clear - clear all records from the database
      * @returns {Promise<void>}
      */
-    clear(storeName) {
+    async clear(storeName) {
+        await this.#metaZeroCount(storeName);
+
         return this.#performTransaction((store) => {
             return store.clear();
         },  "readwrite", storeName);
