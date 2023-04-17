@@ -175,8 +175,9 @@ class Database {
                     return reject(event.target.error);
                 };
             }
-
-            resolve();
+            else {
+                resolve();
+            }
         });
     }
 
@@ -228,19 +229,7 @@ class Database {
                 storeNames = [storeNames];
             }
 
-            let result;
-            for (const storeName of storeNames) {
-                await this.clear(storeNames).catch(error => reject(error));
-
-                // const result = await this.#performTransaction((store) => {
-                //     const meta = store.get(storeName);
-                //     meta.timestamp = null;
-                //     meta.count = 0;
-                //     return store.put(meta, storeName);
-                // }, "readwrite", META_TABLE_NAME).catch(error => reject(error));
-            }
-
-            resolve(result);
+            await this.clear(storeNames, true, true).catch(error => reject(error));
         })
     }
 
@@ -256,7 +245,7 @@ class Database {
             storeName ||= await this.getAvailableStore().catch(error => reject(error));
 
             if (clear == true) {
-                await this.clear(storeName).catch(error => reject(error));
+                await this.clear([storeName], true, false).catch(error => reject(error));
             }
 
             // 1. get the meta data to update the count value
@@ -265,6 +254,7 @@ class Database {
             await this.setTimer(storeName, 0, records, meta).catch(error => reject(error));
             // 3. update the meta data for next time
             await this.#metaUpdate(meta, storeName).catch(error => reject(error));
+
             resolve(storeName);
         })
     }

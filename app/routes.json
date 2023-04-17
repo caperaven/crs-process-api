@@ -70,11 +70,6 @@
       "view": "css-grid"
     },
     {
-      "title": "index DB",
-      "hash": "#indexdb",
-      "view": "indexdb"
-    },
-    {
       "title": "perspective",
       "hash": "#perspective",
       "view": "perspective"
