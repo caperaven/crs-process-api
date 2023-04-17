@@ -100,7 +100,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async fetch() {
         const result = await crs.call("idb", "get", {
             "name": "test_database",
-            "store": "test_1",
+            "store": "table_00",
             "indexes": Number(this.getProperty("index"))
         })
 
@@ -108,7 +108,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
         const indexItems = await crs.call("idb", "get", {
             "name": "test_database",
-            "store": "test_1",
+            "store": "table_00",
             "indexes": [0, 2, 4, 6, 8, 10]
         })
 
@@ -118,7 +118,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async fetchBatch() {
         const result = await crs.call("idb", "get_batch", {
             "name": "test_database",
-            "store": "test_1",
+            "store": "table_00",
             "startIndex": Number(this.getProperty("batchStart")),
             "count": Number(this.getProperty("batchSize"))
         });
@@ -129,7 +129,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async fetchAll() {
         const result = await crs.call("idb", "get_all", {
             "name": "test_database",
-            "store": "test_1",
+            "store": "table_00",
         })
 
         console.log(result);
@@ -138,7 +138,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async fetchPage() {
         const result = await crs.call("idb", "get_page", {
             "name": "test_database",
-            "store": "test_1",
+            "store": "table_00",
             "pageSize": Number(this.getProperty("pageSize")),
             "page": Number(this.getProperty("page"))
         })
@@ -149,7 +149,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     async deleteOlderThan() {
         const result = await crs.call("idb", "delete_older_than", {
             "name": "test_database",
-            "store": "test_1",
+            "store": "table_00",
             "date": "2020-01-01"
         })
 
