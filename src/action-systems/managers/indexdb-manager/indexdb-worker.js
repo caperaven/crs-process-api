@@ -59,22 +59,27 @@ class Database {
         }, "readwrite", META_TABLE_NAME);
     }
 
-    #metaTimeStamp(storeName) {
-        return new Promise(async (resolve, reject) => {
-            const meta = await this.#metaGet(storeName).catch(error => reject(error));
-            meta.timestamp = new Date();
-            await this.#metaUpdate(meta, storeName).catch(error => reject(error));
-            resolve();
-        })
-    }
+    #metaZero(storeNames, count = true, timestamp = true) {
+        return this.#performTransaction(async (store) => {
+            for (const storeName of storeNames) {
+                const request = store.get(storeName);
 
-    #metaZeroCount(storeName) {
-        return new Promise(async (resolve, reject) => {
-            const meta = await this.#metaGet(storeName).catch(error => reject(error));
-            meta.count = 0;
-            await this.#metaUpdate(meta, storeName).catch(error => reject(error));
-            resolve();
-        })
+                const meta = await new Promise((resolve, reject) => {
+                    request.onsuccess = (event) => {
+                        resolve(event.target.result);
+                    };
+
+                    request.onerror = (event) => {
+                        reject(event);
+                    };
+                })
+
+                if (count) meta.count = 0;
+                if (timestamp) meta.timestamp = null;
+                store.put(meta, storeName)
+            }
+
+        }, "readwrite", META_TABLE_NAME);
     }
 
 
@@ -150,7 +155,7 @@ class Database {
      * @returns {Promise<unknown>}
      */
     #performTransaction(callback, mode = "readwrite", storeName) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const transaction = this.#db.transaction([storeName], mode);
 
             transaction.onerror = (event) => {
@@ -159,15 +164,19 @@ class Database {
 
             const store = transaction.objectStore(storeName);
 
-            const request = callback(store);
+            const request = await callback(store);
 
-            request.onsuccess = (event) => {
-                resolve(event.target.result);
-            };
+            if (request) {
+                request.onsuccess = (event) => {
+                    return resolve(event.target.result);
+                };
 
-            request.onerror = (event) => {
-                reject(event.target.error);
-            };
+                request.onerror = (event) => {
+                    return reject(event.target.error);
+                };
+            }
+
+            resolve();
         });
     }
 
@@ -213,16 +222,23 @@ class Database {
         })
     }
 
-    releaseStores(storeName) {
+    releaseStores(storeNames) {
         return new Promise(async (resolve, reject) => {
-            await this.clear(storeName).catch(error => reject(error));
+            if (Array.isArray(storeNames) === false) {
+                storeNames = [storeNames];
+            }
 
-            const result = await this.#performTransaction((store) => {
-                const meta = store.get(storeName);
-                meta.timestamp = null;
-                meta.count = 0;
-                return store.put(meta, storeName);
-            }, "readwrite", META_TABLE_NAME).catch(error => reject(error));
+            let result;
+            for (const storeName of storeNames) {
+                await this.clear(storeNames).catch(error => reject(error));
+
+                // const result = await this.#performTransaction((store) => {
+                //     const meta = store.get(storeName);
+                //     meta.timestamp = null;
+                //     meta.count = 0;
+                //     return store.put(meta, storeName);
+                // }, "readwrite", META_TABLE_NAME).catch(error => reject(error));
+            }
 
             resolve(result);
         })
@@ -341,12 +357,20 @@ class Database {
      * @method clear - clear all records from the database
      * @returns {Promise<void>}
      */
-    async clear(storeName) {
-        await this.#metaZeroCount(storeName);
+    async clear(storeNames, zeroCount = true, zeroTimestamp = true) {
+        await this.#metaZero(storeNames, zeroCount, zeroTimestamp)
 
-        return this.#performTransaction((store) => {
-            return store.clear();
-        },  "readwrite", storeName);
+        const promises = [];
+
+        for (let storeName of storeNames) {
+            promises.push(
+                this.#performTransaction((store) => {
+                    return store.clear();
+                },  "readwrite", storeName)
+            )
+        }
+
+        return Promise.all(promises);
     }
 
     /**
@@ -524,9 +548,9 @@ class IndexDBManager {
         })
     }
 
-    releaseStores(uuid, name, store) {
+    releaseStores(uuid, name, stores) {
         return this.#performAction(uuid, name, async () => {
-            return await this.#store[name].releaseStores(store);
+            return await this.#store[name].releaseStores(stores);
         })
     }
 
@@ -542,9 +566,9 @@ class IndexDBManager {
         });
     }
 
-    clear(uuid, name, store) {
+    clear(uuid, name, store, zeroCount, zeroTimestamp) {
         return this.#performAction(uuid, name, async () => {
-            return      await this.#store[name].clear(store);
+            return await this.#store[name].clear(store, zeroCount, zeroTimestamp);
         });
     }
 

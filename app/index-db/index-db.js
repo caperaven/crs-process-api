@@ -89,23 +89,12 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     }
 
     async clearData() {
-        Promise.all([
-            crs.call("idb", "clear", {
-                "name": "test_database",
-                "store": "test_1"
-            }),
+        await crs.call("idb", "clear", {
+            "name": "test_database",
+            "stores": ["table_00", "table_01"]
+        })
 
-            crs.call("idb", "clear", {
-                "name": "test_database",
-                "store": "test_2"
-            })
-        ])
-        .then(() => {
-            console.log("all cleared");
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+        console.log("all cleared");
     }
 
     async fetch() {
@@ -165,6 +154,13 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
         })
 
         console.log(result);
+    }
+
+    async releaseStores() {
+        await crs.call("idb", "release_stores", {
+            "name": "test_database",
+            "stores": ["table_00", "table_01"]
+        })
     }
 }
 

@@ -81,10 +81,10 @@ export class IndexDBManager {
         return await this.#performWorkerAction("getAvailableStore", [name], crypto.randomUUID());
     }
 
-    async release_store(step, context, process, item) {
+    async release_stores(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
-        const store = await crs.process.getValue(step.args.store, context, process, item);
-        return await this.#performWorkerAction("releaseStore", [name, store], crypto.randomUUID());
+        const stores = await crs.process.getValue(step.args.stores, context, process, item);
+        return await this.#performWorkerAction("releaseStores", [name, stores], crypto.randomUUID());
     }
 
     /**
@@ -140,9 +140,11 @@ export class IndexDBManager {
      */
     async clear(step, context, process, item) {
         const name = await crs.process.getValue(step.args.name, context, process, item);
-        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const stores = await crs.process.getValue(step.args.stores, context, process, item);
+        const zeroCount = await crs.process.getValue(step.args.zeroCount ?? true, context, process, item);
+        const zerTimeline = await crs.process.getValue(step.args.zeroTimeline ?? true, context, process, item);
 
-        return await this.#performWorkerAction("clear", [name, store], crypto.randomUUID());
+        return await this.#performWorkerAction("clear", [name, stores, zeroCount, zerTimeline], crypto.randomUUID());
     }
 
     /**
