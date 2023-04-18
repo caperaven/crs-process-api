@@ -491,6 +491,26 @@ class Database {
             resolve(result);
         });
     }
+
+    updateById(storeName, models) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = this.#db.transaction([storeName], "readwrite");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(storeName);
+
+            if (Array.isArray(models) === false) {
+                models = [models];
+            }
+
+            for (const model of models) {
+                store.put(model, model.id);
+            }
+        });
+    }
 }
 
 /**
@@ -635,6 +655,12 @@ class IndexDBManager {
     getById(uuid, name, store, id) {
         return this.#performAction(uuid, name, async () => {
             return await this.#store[name].getById(store, id);
+        });
+    }
+
+    updateById(uuid, name, store, models) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].updateById(store, models);
         });
     }
 }

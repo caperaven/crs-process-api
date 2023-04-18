@@ -159,6 +159,17 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
 
         console.log(records);
     }
+
+    async updateById() {
+        await crs.call("idb", "update_by_id", {
+            "name": "test_database",
+            "store": "table_00",
+            "models": [
+                { id: 0, code: "Hello", description: "world" },
+                { id: 5, code: "Five", description: "world" }
+            ]
+        })
+    }
 }
 
 async function generateData(count) {
