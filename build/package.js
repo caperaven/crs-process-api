@@ -9,6 +9,7 @@ async function createFolderStructure() {
     await ensureDir("./dist/action-systems");
     await ensureDir("./dist/action-systems/managers");
     await ensureDir("./dist/action-systems/managers/dragdrop-manager");
+    await ensureDir("./dist/action-systems/managers/indexdb-manager");
 }
 
 async function packageDirectory(def, loader, format, minified) {
@@ -92,6 +93,14 @@ await packageDirectory({
 
 await packageDirectory({
     dir: ["./src/action-systems/managers/dragdrop-manager"],
+    replace: {
+        "./src": ""
+    },
+    target: "./dist"
+}, "js", "esm", minified);
+
+await packageDirectory({
+    dir: ["./src/action-systems/managers/indexdb-manager"],
     replace: {
         "./src": ""
     },
