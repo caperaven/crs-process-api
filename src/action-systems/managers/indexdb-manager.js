@@ -211,6 +211,14 @@ export class IndexDBManager {
 
         return await this.#performWorkerAction("getBatch", [name, store, startIndex, null, pageSize], crypto.randomUUID());
     }
+
+    async get_by_id(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const id = await crs.process.getValue(step.args.id, context, process, item);
+
+        return await this.#performWorkerAction("getById", [name, store, id], crypto.randomUUID());
+    }
 }
 
 crs.intent.idb = new IndexDBManager()

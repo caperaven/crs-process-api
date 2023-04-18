@@ -70,19 +70,6 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
             .catch((error) => {
                 console.log(error);
             })
-
-            // crs.call("idb", "set", {
-            //     "name": "test_database",
-            //     "store": this.#data2Store,
-            //     "records": this.#data2
-            // })
-            // .then((result) => {
-            //     this.#data2Store = result.data;
-            //     console.log("data 2 pushed");
-            // })
-            // .catch((error) => {
-            //     console.log(error);
-            // })
         ]).then(() => {
             console.log(this.#data1Store, this.#data2Store);
         })
@@ -161,6 +148,16 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
             "name": "test_database",
             "stores": ["table_00", "table_01"]
         })
+    }
+
+    async getById() {
+        const records = await crs.call("idb", "get_by_id", {
+            "name": "test_database",
+            "store": "table_00",
+            "id": [1, 10, 20, 30]
+        });
+
+        console.log(records);
     }
 }
 

@@ -459,6 +459,38 @@ class Database {
             return store.getKey(key);
         }, "readonly", storeName);
     }
+
+    getById(storeName, ids) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = this.#db.transaction([storeName], "readonly");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(storeName);
+
+            if (Array.isArray(ids) === false) {
+                ids = [ids];
+            }
+
+            const index = store.index("idIndex");
+            const result = [];
+
+            for (const id of ids) {
+                const model = await new Promise(resolve => {
+                    const request = index.get(id);
+                    request.onsuccess = (event) => {
+                        resolve(event.target.result);
+                    }
+                })
+
+                result.push(model);
+            }
+
+            resolve(result);
+        });
+    }
 }
 
 /**
@@ -597,6 +629,12 @@ class IndexDBManager {
     deleteRange(uuid, name, store, startIndex, endIndex) {
         return this.#performAction(uuid, name, async () => {
             return await this.#store[name].deleteRange(store, startIndex, endIndex);
+        });
+    }
+
+    getById(uuid, name, store, id) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].getById(store, id);
         });
     }
 }
