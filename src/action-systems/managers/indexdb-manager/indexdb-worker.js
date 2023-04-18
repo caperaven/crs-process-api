@@ -253,6 +253,7 @@ class Database {
             // 2. perform the set operation and update the count value
             await this.setTimer(storeName, 0, records, meta).catch(error => reject(error));
             // 3. update the meta data for next time
+            meta.timestamp = new Date();
             await this.#metaUpdate(meta, storeName).catch(error => reject(error));
 
             resolve(storeName);
