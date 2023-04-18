@@ -48,7 +48,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     }
 
     async generateData() {
-        this.#data1 = await generateData(1000);
+        this.#data1 = await generateData(100000);
         this.#data2 = await generateData(10);
 
         console.log("data generated");
@@ -69,20 +69,20 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
             })
             .catch((error) => {
                 console.log(error);
-            }),
+            })
 
-            crs.call("idb", "set", {
-                "name": "test_database",
-                "store": this.#data2Store,
-                "records": this.#data2
-            })
-            .then((result) => {
-                this.#data2Store = result.data;
-                console.log("data 2 pushed");
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+            // crs.call("idb", "set", {
+            //     "name": "test_database",
+            //     "store": this.#data2Store,
+            //     "records": this.#data2
+            // })
+            // .then((result) => {
+            //     this.#data2Store = result.data;
+            //     console.log("data 2 pushed");
+            // })
+            // .catch((error) => {
+            //     console.log(error);
+            // })
         ]).then(() => {
             console.log(this.#data1Store, this.#data2Store);
         })

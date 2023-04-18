@@ -1,4 +1,4 @@
-const META_TABLE_NAME = "_meta";
+        const META_TABLE_NAME = "_meta";
 
 /**
  * @class Database
@@ -111,7 +111,8 @@ class Database {
                     for (let i = 0; i < count; i++) {
                         let countString = i < 10 ? `0${i}` : i;
                         const storeName = `table_${countString}`
-                        db.createObjectStore(storeName);
+                        const objectStore = db.createObjectStore(storeName);
+                        objectStore.createIndex("idIndex", "id", { unique: true });
 
                         newMegaData.push({
                             storeName,
@@ -123,7 +124,9 @@ class Database {
 
                 for (const storeName of storeNames) {
                     if (db.objectStoreNames.contains(storeName) === false) {
-                        db.createObjectStore(storeName);
+                        const objectStore = db.createObjectStore(storeName);
+                        objectStore.createIndex("idIndex", "id", { unique: true });
+
                         newStores.push(storeName);
 
                         newMegaData.push({
@@ -251,41 +254,24 @@ class Database {
             // 1. get the meta data to update the count value
             const meta = await this.#metaGet(storeName).catch(error => reject(error));
             // 2. perform the set operation and update the count value
-            await this.setTimer(storeName, 0, records, meta).catch(error => reject(error));
+
+            await new Promise((resolve, reject) => {
+                this.#performTransaction(async (store) => {
+                    for (const record of records) {
+                        await store.put(record, meta.count);
+                        meta.count += 1;
+                    }
+
+                    resolve();
+                }, "readwrite", storeName).catch(error => reject(error));
+            })
+
             // 3. update the meta data for next time
             meta.timestamp = new Date();
             await this.#metaUpdate(meta, storeName).catch(error => reject(error));
 
             resolve(storeName);
         })
-    }
-
-    /**
-     * This method manages batches of setting data in the database
-     * This is done to avoid blocking the thread and allows smaller set operations to be done before larger ones even if they start later
-     * @param startIndex - where in the array do we start the set operation
-     * @param data - what is the data we are trying to save
-     * @param meta - what is the metadata for the table
-     * @returns {Promise<unknown>}
-     */
-    async setTimer(storeName, startIndex, data, meta) {
-        let toIndex = startIndex + 100;
-        if (toIndex > data.length) {
-            toIndex = data.length
-        }
-
-        for (let i = startIndex; i < toIndex; i++) {
-            await this.add(storeName, data[i], meta);
-        }
-
-        if (toIndex < data.length) {
-            return new Promise(resolve => {
-                requestAnimationFrame(() => this.setTimer(storeName, toIndex, data, meta).then(() => resolve()));
-            });
-        }
-        else {
-            return Promise.resolve();
-        }
     }
 
     /**
@@ -338,9 +324,31 @@ class Database {
      * @method delete - delete a record from the database
      * @returns {Promise<void>}
      */
-    delete(storeName, index) {
+    deleteIndexes(storeName, indexes) {
         return this.#performTransaction((store) => {
-            return store.delete(index);
+            if (Array.isArray(indexes) === false) {
+                indexes = [indexes];
+            }
+
+            let result;
+            for (const index of indexes) {
+                result = store.delete(index);
+            }
+
+            return result;
+        }, "readwrite", storeName);
+    }
+
+    /**
+     * @method deleteRange - delete a range of records from the database
+     * @param storeName - name of the store to delete from
+     * @param start - start of the range
+     * @param end - end of the range
+     * @returns {Promise<*>}
+     */
+    deleteRange(storeName, start, end) {
+        return this.#performTransaction((store) => {
+            return store.delete(IDBKeyRange.bound(start, end));
         }, "readwrite", storeName);
     }
 
@@ -533,12 +541,6 @@ class IndexDBManager {
         })
     }
 
-    releaseStore(uuid, name, store) {
-        return this.#performAction(uuid, name, async () => {
-            return await this.#store[name].releaseStore(store);
-        })
-    }
-
     releaseStores(uuid, name, stores) {
         return this.#performAction(uuid, name, async () => {
             return await this.#store[name].releaseStores(stores);
@@ -585,9 +587,22 @@ class IndexDBManager {
             return await this.#store[name].getBatch(store, startIndex, endIndex);
         });
     }
+
+    deleteIndexes(uuid, name, store, indexes) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].deleteIndexes(store, indexes);
+        });
+    }
+
+    deleteRange(uuid, name, store, startIndex, endIndex) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].deleteRange(store, startIndex, endIndex);
+        });
+    }
 }
 
 self.manager = new IndexDBManager();
+self.metaDB = new Database();
 
 self.onmessage = async function(event) {
     const action = event.data.action;
