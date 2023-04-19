@@ -82,7 +82,10 @@ export class RandomActions {
                     break;
                 }
                 case "boolean": {
-                    result[field] = await RandomActions.boolean({ args: {} }, context, process, item);
+                    result[field] = await RandomActions.boolean({args: {}}, context, process, item);
+                }
+                case "uuid": {
+                        result[field] = crypto.randomUUID();
                     break;
                 }
             }

@@ -34,9 +34,9 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
                 "name": "test_database",
             })
         ])
-        .then(() => {
-            console.log("all disconnected");
-        })
+            .then(() => {
+                console.log("all disconnected");
+            })
     }
 
     async getAvailableStore() {
@@ -48,7 +48,7 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     }
 
     async generateData() {
-        this.#data1 = await generateData(100000);
+        this.#data1 = await generateData(10000);
         this.#data2 = await generateData(10);
 
         console.log("data generated");
@@ -63,13 +63,13 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
                 "records": this.#data1,
                 "clear": true
             })
-            .then((result) => {
-                this.#data1Store = result.data;
-                console.log("data 1 pushed");
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                .then((result) => {
+                    this.#data1Store = result.data;
+                    console.log("data 1 pushed");
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         ]).then(() => {
             console.log(this.#data1Store, this.#data2Store);
         })
@@ -151,24 +151,44 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
     }
 
     async getById() {
+        console.time("getById");
         const records = await crs.call("idb", "get_by_id", {
             "name": "test_database",
             "store": "table_00",
-            "id": [1, 10, 20, 30]
+            "id": this.#data1.slice(0, 1000).map(_ => _.id)
         });
+        console.timeEnd("getById");
 
         console.log(records);
     }
 
     async updateById() {
+        const models = this.#data1.slice(0, 1000);
+        models.forEach(_ => {
+            _.code = "Hello";
+            _.description = "world";
+        });
+        console.time("updateById");
         await crs.call("idb", "update_by_id", {
             "name": "test_database",
             "store": "table_00",
-            "models": [
-                { id: 0, code: "Hello", description: "world" },
-                { id: 5, code: "Five", description: "world" }
-            ]
+            "models": models
+        });
+        console.timeEnd("updateById");
+
+        await this.getById();
+    }
+
+    async deleteById() {
+        const ids = this.#data1.map(_ => _.id).slice(0, 1000);
+        console.time("deleteById")
+        await crs.call("idb", "delete_by_id", {
+            "name": "test_database",
+            "store": "table_00",
+            "ids": ids
         })
+        console.timeEnd("deleteById");
+        await this.getById();
     }
 }
 

@@ -227,6 +227,14 @@ export class IndexDBManager {
 
         return await this.#performWorkerAction("updateById", [name, store, models], crypto.randomUUID());
     }
+
+    async delete_by_id(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const ids = await crs.process.getValue(step.args.ids, context, process, item);
+
+        return await this.#performWorkerAction("deleteById", [name, store, ids], crypto.randomUUID());
+    }
 }
 
 crs.intent.idb = new IndexDBManager()
