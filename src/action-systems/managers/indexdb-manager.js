@@ -17,6 +17,9 @@ export class IndexDBManager {
         const workerUrl = new URL("./indexdb-manager/indexdb-worker.js", import.meta.url);
         this.#worker = new Worker(workerUrl);
         this.#worker.onmessage = this.onMessage.bind(this);
+
+        // const cleanUrl = new URL("./indexdb-manager/indexdb-clean-worker.js", import.meta.url);
+        // this.#cleanWorker = new Worker(cleanUrl);
     }
 
     dispose() {
@@ -226,6 +229,16 @@ export class IndexDBManager {
         const models = await crs.process.getValue(step.args.models, context, process, item);
 
         return await this.#performWorkerAction("updateById", [name, store, models], crypto.randomUUID());
+    }
+
+    async delete_old_db(step, context, process, item) {
+        const duration = await crs.process.getValue(step.args.duration, context, process, item);
+        return await this.#performWorkerAction("deleteOldDatabase", [duration], crypto.randomUUID());
+    }
+
+    async delete_db(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        return await this.#performWorkerAction("deleteDatabase", [name], crypto.randomUUID());
     }
 }
 

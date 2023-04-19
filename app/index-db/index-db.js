@@ -170,6 +170,18 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
             ]
         })
     }
+
+    async removeOld() {
+        await crs.call("idb", "delete_old_db", {
+            "duration": 10
+        })
+    }
+
+    async removeDb() {
+        await crs.call("idb", "remove_db", {
+            "name": "delete_database"
+        })
+    }
 }
 
 async function generateData(count) {

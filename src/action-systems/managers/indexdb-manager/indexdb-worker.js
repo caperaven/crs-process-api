@@ -1,4 +1,6 @@
-        const META_TABLE_NAME = "_meta";
+const META_TABLE_NAME = "_meta";
+const META_DB_NAME = "meta_database";
+const VERSION = 1;
 
 /**
  * @class Database
@@ -97,6 +99,7 @@ class Database {
             request.onsuccess = async (event) => {
                 this.#db = event.target.result;
                 await this.#metaInit(newMegaData);
+                updateMetaDB(dbName);
                 resolve();
             };
 
@@ -511,6 +514,32 @@ class Database {
             }
         });
     }
+
+    getOldDatbaseNames() {
+        return new Promise((resolve, reject) => {
+            const transaction = self.db.transaction([META_TABLE_NAME], "readonly");
+            transaction.onerror = (event) => { console.error(event.target.error) };
+
+            const store = transaction.objectStore(META_TABLE_NAME);
+            const request = store.openCursor();
+
+            const toRemove = [];
+            const now = Date.now();
+
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    do {
+                        const dbTime = cursor.value.timestamp;
+                        if (now - dbTime > duration) {
+                            toRemove.push(cursor.key);
+                        }
+                    } while (cursor.continue());
+                }
+                resolve();
+            }
+        });
+    }
 }
 
 /**
@@ -581,9 +610,15 @@ class IndexDBManager {
         });
     }
 
-    disconnect(uuid, name) {
+    disconnect(uuid, names) {
         return this.#performAction(uuid, name, async () => {
-            delete this.#store[name];
+            if (Array.isArray(names) === false) {
+                names = [names];
+            }
+
+            for (const name of names) {
+                delete this.#store[name];
+            }
         })
     }
 
@@ -663,10 +698,133 @@ class IndexDBManager {
             return await this.#store[name].updateById(store, models);
         });
     }
+
+    deleteOldDatabase(uuid, duration) {
+        return new Promise(async (resolve, reject) => {
+            const toRemove = await getOldDatabases(duration).catch((error) => reject(error));
+
+            // Nothing to delete
+            if (toRemove.length === 0) {
+                resolve({
+                    uuid: uuid,
+                    success: true,
+                    data: null
+                });
+            }
+
+            // close all open connections to the databases we want to delete
+            for (const name of toRemove) {
+                if (this.#store[name] != null) {
+                    this.#store[name].disconnect();
+                    delete this.#store[name];
+                }
+            }
+
+            const wasRemoved = [];
+
+            // first delete all the databases and low what you deleted.
+            // delete those you can and console log errors you could not.
+            for (const name of toRemove) {
+                // there is no external transaction to listen too but, we want to park here until we are done
+                await new Promise(resolve => {
+                    const deleteDatabaseRequest = indexedDB.deleteDatabase(name);
+
+                    deleteDatabaseRequest.onsuccess = () => {
+                        wasRemoved.push(name);
+                        resolve();
+                    }
+
+                    deleteDatabaseRequest.onerror = (event) => {
+                        console.error(event.target.error)
+                    }
+                })
+            }
+
+            const transaction = self.metaDB.transaction([META_TABLE_NAME], "readwrite");
+            const store = transaction.objectStore(META_TABLE_NAME);
+
+            for (const name of wasRemoved) {
+                store.delete(name);
+            }
+
+            transaction.oncomplete = () => {
+                resolve({
+                    uuid: uuid,
+                    result: true
+                })
+            }
+        })
+    }
+
+    deleteDatabase(uuid, name) {
+        return new Promise(resolve => {
+        })
+    }
 }
 
-self.manager = new IndexDBManager();
-self.metaDB = new Database();
+function getOldDatabases(duration) {
+    return new Promise(async (resolve, reject) => {
+        const databases = await indexedDB.databases();
+        const toRemove = [];
+
+        const transaction = self.metaDB.transaction([META_TABLE_NAME], "readonly");
+        const store = transaction.objectStore(META_TABLE_NAME);
+        const now = new Date();
+
+        for (const database of databases) {
+            const request = store.get(database.name);
+
+            request.onsuccess = (event) => {
+                const result = event.target.result;
+
+                if (result !== undefined) {
+                    const date = new Date(result.timestamp);
+
+                    if (now - date > duration) {
+                        toRemove.push(database.name);
+                    }
+                }
+            };
+        }
+
+        transaction.oncomplete = () => {
+            resolve(toRemove);
+        }
+    })
+}
+
+function connectMetaDB() {
+    return new Promise((resolve, reject) => {
+        const request = self.indexedDB.open(META_DB_NAME, VERSION);
+
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+
+        request.onsuccess = async (event) => {
+            self.metaDB = event.target.result;
+            resolve();
+        };
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore(META_TABLE_NAME);
+        };
+    })
+}
+
+function updateMetaDB(dbName) {
+    const transaction = self.metaDB.transaction([META_TABLE_NAME], "readwrite");
+
+    transaction.onerror = (event) => { console.error(event.target.error) };
+
+    const store = transaction.objectStore(META_TABLE_NAME);
+    store.put({ timestamp: new Date() }, dbName);
+}
+
+connectMetaDB().then(() => {
+    self.manager = new IndexDBManager();
+}).catch((error) => console.error(error));
 
 self.onmessage = async function(event) {
     const action = event.data.action;
