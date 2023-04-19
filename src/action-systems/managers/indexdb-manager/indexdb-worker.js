@@ -174,6 +174,7 @@ class Database {
 
             if (request) {
                 request.onsuccess = (event) => {
+                    updateMetaDB(this.#dbName);
                     return resolve(event.target.result);
                 };
 
@@ -735,7 +736,7 @@ class IndexDBManager {
 
     deleteOldDatabase(uuid, duration) {
         return new Promise(async (resolve, reject) => {
-            const toRemove = await getOldDatabases(duration).catch((error) => reject(error));
+            let toRemove = await getOldDatabases(duration).catch((error) => reject(error));
 
             // Nothing to delete
             if (toRemove.length === 0) {
@@ -746,13 +747,15 @@ class IndexDBManager {
                 });
             }
 
-            // close all open connections to the databases we want to delete
-            for (const name of toRemove) {
-                if (this.#store[name] != null) {
-                    this.#store[name].disconnect();
-                    delete this.#store[name];
-                }
-            }
+            toRemove = toRemove.filter(item => this.#store[item] == null);
+
+            // // close all open connections to the databases we want to delete
+            // for (const name of toRemove) {
+            //     if (this.#store[name] != null) {
+            //         this.#store[name].disconnect();
+            //         delete this.#store[name];
+            //     }
+            // }
 
             const wasRemoved = [];
 
@@ -900,11 +903,22 @@ function updateMetaDB(dbName) {
     store.put({ timestamp: new Date() }, dbName);
 }
 
+const actionsToPerformOnLoad = [];
+
 connectMetaDB().then(() => {
     self.manager = new IndexDBManager();
+
+    for (const action of actionsToPerformOnLoad) {
+        self.onmessage(action);
+    }
 }).catch((error) => console.error(error));
 
 self.onmessage = async function (event) {
+    if (self.manager == null) {
+        actionsToPerformOnLoad.push(event);
+        return;
+    }
+
     const action = event.data.action;
     const args = event.data.args;
     const uuid = event.data.uuid;

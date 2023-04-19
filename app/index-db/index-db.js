@@ -13,6 +13,10 @@ export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
         this.setProperty("batchSize", 10);
         this.setProperty("page", 1);
         this.setProperty("pageSize", 10);
+
+        await crs.call("idb", "delete_old_db", {
+            "duration": 10
+        })
     }
 
     async connect() {
