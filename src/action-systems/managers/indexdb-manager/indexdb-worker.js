@@ -48,7 +48,7 @@ class Database {
             return store.get(storeName);
         }, "readonly", META_TABLE_NAME);
 
-        return { count: 0 }
+        return {count: 0}
     }
 
     /**
@@ -115,7 +115,7 @@ class Database {
                         let countString = i < 10 ? `0${i}` : i;
                         const storeName = `table_${countString}`
                         const objectStore = db.createObjectStore(storeName);
-                        objectStore.createIndex("idIndex", "id", { unique: true });
+                        objectStore.createIndex("idIndex", "id", {unique: true});
 
                         newMegaData.push({
                             storeName,
@@ -128,7 +128,7 @@ class Database {
                 for (const storeName of storeNames) {
                     if (db.objectStoreNames.contains(storeName) === false) {
                         const objectStore = db.createObjectStore(storeName);
-                        objectStore.createIndex("idIndex", "id", { unique: true });
+                        objectStore.createIndex("idIndex", "id", {unique: true});
 
                         newStores.push(storeName);
 
@@ -180,8 +180,7 @@ class Database {
                 request.onerror = (event) => {
                     return reject(event.target.error);
                 };
-            }
-            else {
+            } else {
                 resolve();
             }
         });
@@ -368,7 +367,7 @@ class Database {
             promises.push(
                 this.#performTransaction((store) => {
                     return store.clear();
-                },  "readwrite", storeName)
+                }, "readwrite", storeName)
             )
         }
 
@@ -403,8 +402,7 @@ class Database {
                 if (cursor) {
                     result.push(cursor.value);
                     cursor.continue();
-                }
-                else {
+                } else {
                     resolve(result);
                 }
             }
@@ -481,22 +479,24 @@ class Database {
             const result = [];
 
             for (const id of ids) {
-                const model = await new Promise(resolve => {
-                    const request = index.get(id);
-                    request.onsuccess = (event) => {
-                        resolve(event.target.result);
-                    }
-                })
-
-                result.push(model);
+                index.get(id).onsuccess = (event) => {
+                    if(event.target.result == null) return; // don't add undefined to the result
+                    result.push(event.target.result);
+                }
             }
 
-            resolve(result);
+            transaction.oncomplete = () => {
+                resolve(result);
+            }
         });
     }
 
     updateById(storeName, models) {
         return new Promise(async (resolve, reject) => {
+            if (Array.isArray(models) === false) {
+                models = [models];
+            }
+
             const transaction = this.#db.transaction([storeName], "readwrite");
 
             transaction.onerror = (event) => {
@@ -505,12 +505,46 @@ class Database {
 
             const store = transaction.objectStore(storeName);
 
-            if (Array.isArray(models) === false) {
-                models = [models];
-            }
+            const index = store.index("idIndex");
 
             for (const model of models) {
-                store.put(model, model.id);
+                const request = index.getKey(model.id);
+                request.onsuccess = (event) => {
+                    store.put(model, event.target.result);
+                }
+            }
+
+            transaction.oncomplete = () => {
+                resolve();
+            }
+        });
+    }
+
+    deleteById(storeName, ids) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = this.#db.transaction([storeName], "readwrite");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(storeName);
+            const index = store.index("idIndex");
+
+            if (Array.isArray(ids) === false) {
+                ids = [ids];
+            }
+
+            for (const id of ids) {
+                const request = index.getKey(id);
+                request.onsuccess = (event) => {
+                    const key = event.target.result;
+                    store.delete(key);
+                }
+            }
+
+            transaction.oncomplete = () => {
+                resolve();
             }
         });
     }
@@ -798,6 +832,12 @@ class IndexDBManager {
             }
         })
     }
+    
+    deleteById(uuid, name, store, id) {
+        return this.#performAction(uuid, name, async () => {
+            return await this.#store[name].deleteById(store, id);
+        });
+    }
 }
 
 function getOldDatabases(duration) {
@@ -864,7 +904,7 @@ connectMetaDB().then(() => {
     self.manager = new IndexDBManager();
 }).catch((error) => console.error(error));
 
-self.onmessage = async function(event) {
+self.onmessage = async function (event) {
     const action = event.data.action;
     const args = event.data.args;
     const uuid = event.data.uuid;
