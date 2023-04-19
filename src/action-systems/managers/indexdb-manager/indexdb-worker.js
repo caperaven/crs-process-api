@@ -757,7 +757,45 @@ class IndexDBManager {
     }
 
     deleteDatabase(uuid, name) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
+            // 1. make sure database is disconnected
+            if (this.#store[name] != null) {
+                this.#store[name].disconnect();
+                delete this.#store[name];
+            }
+
+            // 2. delete the database
+            const deleteDatabaseRequest = indexedDB.deleteDatabase(name);
+
+            deleteDatabaseRequest.onerror = (event) => {
+                reject({
+                    uuid: uuid,
+                    success: false,
+                    error: event.target.error
+                });
+            }
+
+            deleteDatabaseRequest.onsuccess = () => {
+                const transaction = self.metaDB.transaction([META_TABLE_NAME], "readwrite");
+                const store = transaction.objectStore(META_TABLE_NAME);
+                const request = store.delete(name);
+
+                request.onsuccess = () => {
+                    resolve({
+                        uuid: uuid,
+                        success: true,
+                        data: null
+                    });
+                }
+
+                request.onerror = (event) => {
+                    reject({
+                        uuid: uuid,
+                        success: false,
+                        error: event.target.error
+                    });
+                }
+            }
         })
     }
 }
