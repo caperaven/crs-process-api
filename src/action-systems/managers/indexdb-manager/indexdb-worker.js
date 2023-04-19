@@ -477,7 +477,8 @@ class Database {
 
             for (const id of ids) {
                 index.get(id).onsuccess = (event) => {
-                    event.target.result && result.push(event.target.result);
+                    if(event.target.result == null) return; // don't add undefined to the result
+                    result.push(event.target.result);
                 }
             }
 
@@ -517,7 +518,6 @@ class Database {
     }
 
     deleteById(storeName, ids) {
-        // Read the keys first
         return new Promise(async (resolve, reject) => {
             const transaction = this.#db.transaction([storeName], "readwrite");
 
@@ -532,7 +532,6 @@ class Database {
                 ids = [ids];
             }
 
-            const keys = [];
             for (const id of ids) {
                 const request = index.getKey(id);
                 request.onsuccess = (event) => {
@@ -542,7 +541,7 @@ class Database {
             }
 
             transaction.oncomplete = () => {
-                resolve(keys);
+                resolve();
             }
         });
     }
