@@ -47,8 +47,6 @@ class Database {
         return this.#performTransaction((store) => {
             return store.get(storeName);
         }, "readonly", META_TABLE_NAME);
-
-        return {count: 0}
     }
 
     /**
@@ -845,27 +843,27 @@ class IndexDBManager {
 
 function getOldDatabases(duration) {
     return new Promise(async (resolve, reject) => {
-        const databases = await indexedDB.databases();
+        //const databases = await indexedDB.databases();
         const toRemove = [];
-
         const transaction = self.metaDB.transaction([META_TABLE_NAME], "readonly");
         const store = transaction.objectStore(META_TABLE_NAME);
         const now = new Date();
 
-        for (const database of databases) {
-            const request = store.get(database.name);
+        const cursorRequest = store.openCursor();
 
-            request.onsuccess = (event) => {
-                const result = event.target.result;
+        cursorRequest.onsuccess = async (event) => {
+            let cursor = event.target.result;
 
-                if (result !== undefined) {
-                    const date = new Date(result.timestamp);
+            while(cursor) {
+                const dbName = cursor.key;
+                const dbDate = cursor.value.timestamp;
 
-                    if (now - date > duration) {
-                        toRemove.push(database.name);
-                    }
+                if (now - dbDate > duration) {
+                    toRemove.push(dbName);
                 }
-            };
+
+                cursor.continue();
+            }
         }
 
         transaction.oncomplete = () => {
