@@ -89,6 +89,27 @@ export class HtmlActions {
     }
 
     /**
+     * @method template_from_file - Loads a template from a file and returns the result as a HTML Template element.
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
+     * @returns {Promise<void>}
+     */
+    static async template_from_file(step, context, process, item) {
+        const url = await crs.process.getValue(step.args.url, context, process, item);
+        const html = await fetch(url).then(result => result.text());
+        const template = document.createElement("template");
+        template.innerHTML = html;
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, template, context, process, item);
+        }
+
+        return template;
+    }
+
+    /**
      * @method create - Creates an element and inflate it using the provided ctx object. This returns a HTMLElement based on the html string provided
      * @param step {object} - The step object
      * @param context {object} - The context of the current process.
