@@ -862,7 +862,7 @@ function getOldDatabases(duration) {
                     toRemove.push(dbName);
                 }
 
-                cursor.continue();
+                cursor = cursor.continue();
             }
         }
 
