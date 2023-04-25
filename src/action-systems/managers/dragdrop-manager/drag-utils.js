@@ -12,7 +12,7 @@
  * @returns {Element} The draggable element if found, or null if not found.
  */
 export function getDraggable(event, options) {
-    const dragQuery = options.drag.query || "[draggable='true']";
+    const dragQuery = options.drag?.query || "[draggable='true']";
     const cp = event.composedPath();
     const target = cp[0];
 
