@@ -8,7 +8,7 @@ await init();
 describe("options tests", () => {
     it ("ensureOptions - default", async () => {
         const options = ensureOptions();
-        assertEquals(options.dragQuery, "[draggable='true']");
+        assertEquals(options.drag.query, "[draggable='true']");
         assertEquals(options.drag.placeholderType, "standard");
         assertEquals(options.drag.clone, "element");
         assertEquals(options.drop.allowDrop, "[aria-dropeffect]");

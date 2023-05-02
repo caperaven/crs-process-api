@@ -7,7 +7,7 @@
  *
  * @param {Event} event - The event object that triggers the drag action.
  * @param {Object} [options] - An optional object that can contain the following properties:
- * @param {string} [options.dragQuery="[draggable='true']"] - A CSS selector to identify draggable elements.
+ * @param {string} [options.drag.query="[draggable='true']"] - A CSS selector to identify draggable elements.
  * @param {number} [options.cpIndex] - The index of the composed path to use as the draggable element.
  * @returns {Element} The draggable element if found, or null if not found.
  */

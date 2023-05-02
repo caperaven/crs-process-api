@@ -40,7 +40,7 @@ export class ResizeElementManager {
     }
 
     #mouseDown(event) {
-        const draggable = getDraggable(event, {dragQuery: this.#resizeQuery});
+        const draggable = getDraggable(event, {drag : { query: this.#resizeQuery }});
         if (draggable == null) return;
         event.preventDefault();
 

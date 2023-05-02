@@ -9,9 +9,9 @@
  * @returns {*}
  */
 export function ensureOptions(options) {
-    options = options || {};
-    options.dragQuery = options.dragQuery || "[draggable='true']";
-
+    options = options || {
+        drag: {}
+    };
     options.drag = ensureDragOptions(options.drag);
     options.drop = ensureDropOptions(options.drop);
     return options;
@@ -24,6 +24,7 @@ export function ensureOptions(options) {
  */
 function ensureDragOptions(drag) {
     drag = drag || {};
+    drag.query = "[draggable='true']";
     drag.placeholderType = drag.placeholderType || "standard";
     drag.clone = drag.clone || "element";
     return drag;
