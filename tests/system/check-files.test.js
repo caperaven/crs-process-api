@@ -8,7 +8,7 @@ describe("checksource tests", async () => {
     it("checkSource", async () => {
         const testFilePath = Deno.mainModule;
         const testDir = path.dirname(testFilePath);
-        const folder = path.fromFileUrl(testDir).replace("tests\\system", "")
+        const folder = path.fromFileUrl(testDir.replace("tests/system", ""));
 
         const result = await checkSource(folder, ["app"]);
 

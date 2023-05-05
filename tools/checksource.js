@@ -23,6 +23,8 @@ async function getFiles(rootPath, ignoreCustomFolders) {
     // 1. get the start folder from the args.
     const startFolder = rootPath || Deno.args[0];
 
+    console.log(`Checking files in ${startFolder}`);
+
     // 2. get all the js files in this folder and subfolders.
     const files = [];
     for await (const entry of walk(startFolder)) {
