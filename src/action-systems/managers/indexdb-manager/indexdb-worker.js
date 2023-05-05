@@ -128,8 +128,6 @@ class Database {
                         const objectStore = db.createObjectStore(storeName);
                         objectStore.createIndex("idIndex", "id", {unique: true});
 
-                        newStores.push(storeName);
-
                         newMegaData.push({
                             storeName,
                             timestamp: null,
