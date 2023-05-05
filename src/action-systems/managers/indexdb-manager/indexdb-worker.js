@@ -233,7 +233,7 @@ class Database {
                 storeNames = [storeNames];
             }
 
-            await this.clear(storeNames, true, true).catch(error => reject(error));
+            this.clear(storeNames, true, true).then(()=> resolve()).catch(error => reject(error));
         })
     }
 
