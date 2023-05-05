@@ -27,6 +27,9 @@ export class MoveManager {
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
         this.#mouseUpHandler = null;
+        this.#moveQuery = null;
+        this.#startPos = null;
+        this.#bounds = null;
 
         delete this.#element.__moveManager;
         this.#element = null;
