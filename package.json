@@ -7,6 +7,7 @@
         "test": "backups"
     },
     "scripts": {
+        "validation": "deno run --allow-all ./tools/checksource.js /tools",
         "build-documents": "cd documents.hugo & hugo -d \\\"./../publish/documents\\\"",
         "run-hugo": "cd documents.hugo & hugo serve",
         "test": "deno test tests --allow-all",
