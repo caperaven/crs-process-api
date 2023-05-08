@@ -13,7 +13,6 @@ export async function init() {
         "condition"         : (await import("./providers/condition-provider.js")).default,
         "cssgrid"           : (await import("./providers/css-grid-provider.js")).default,
         "data"              : (await import("./providers/data-actions-provider.js")).default,
-        "db"                : (await import("./providers/database-actions-provider.js")).default,
         "dom"               : (await import("./providers/dom-provider.js")).default,
         "events"            : (await import("./providers/events-provider.js")).default
     }
