@@ -17,7 +17,7 @@ import { walk } from "https://deno.land/std/fs/mod.ts";
  * @param path
  * @returns {Promise<paths[]>}
  */
-async function getFiles(rootPath, ignoreCustomFolders) {
+async function getFiles(rootPath, ignoreCustomFolders, ignoreCustomFiles) {
     const ignoreFolders = ["node_modules", "dist", "build", "test", "mockups", "resources", "documents", "styles", "packages", ...ignoreCustomFolders];
 
     // 1. get the start folder from the args.
@@ -33,7 +33,18 @@ async function getFiles(rootPath, ignoreCustomFolders) {
         }
 
         if (entry.isFile && entry.path.endsWith(".js")) {
-            files.push(entry.path);
+            let ignore = false;
+
+            for (const ignoreFile of ignoreCustomFiles) {
+                if (entry.path.endsWith(ignoreFile)) {
+                    ignore = true;
+                    continue;
+                }
+            }
+
+            if (ignore == false) {
+                files.push(entry.path);
+            }
         }
     }
 
@@ -89,30 +100,70 @@ function checkForFields(file, content, resultCollection) {
     if (fields.length == 0) return;
 
     // 2. check if those fields are set to null in the dispose method
-    let disposeMethod = content.match(/dispose\s*\([^)]*\)\s*{([\s\S]*?)}/g);
-
-    // 3. if the dispose method is missing check for disconnectedCallback
-    if (disposeMethod == null) {
-        disposeMethod = content.match(/disconnectedCallback\(\)\s*{[^}]*$/g);
-    }
+    let disposedFields = getDisposedFields(content); // content.match(/dispose\s*\([^)]*\)\s*{((?:(?!if|for)[\s\S])*?)}/g);
 
     // 4. if the dispose method is missing but there are fields, add the file to the result
-    if (disposeMethod == null && fields.length > 0) {
+    if (disposedFields == null && fields.length > 0) {
         resultCollection.push({ file, field: fields.join(","), error: "missing dispose and disconnectedCallback method", action: "dispose field" });
     }
 
-    if (disposeMethod) {
-        const disposeContent = disposeMethod[0];
+    if (disposedFields) {
         for (const field of fields) {
-            if (!disposeContent.includes(field.replace(";", ""))) {
+            if (disposedFields.indexOf(field.replace(";", "")) == -1) {
                 resultCollection.push({ file, field, action: "dispose field" });
             }
         }
     }
 }
 
-export async function checkSource(rootPath, ignoreFolders) {
-    const files = await getFiles(rootPath, ignoreFolders || []);
+/**
+ * Find the dispose method and get the source code.
+ * @param content
+ */
+function getDisposedFields(content) {
+    const lines = content.split("\r\n");
+    let disposedFields = [];
+    let disposeFound = false;
+    let skipCodeBlock = 0;
+
+    for (const line of lines) {
+        const codeLine = line.trim();
+
+        if (codeLine.startsWith("*") || codeLine.length == 0) continue;
+
+        if (codeLine.startsWith("dispose") || codeLine.startsWith("disconnectedCallback")) {
+            disposeFound = true;
+            continue;
+        }
+
+        if (disposeFound == false) continue;
+
+        if (codeLine.startsWith("if") || codeLine.startsWith("for") || codeLine.indexOf("crs.call") != -1) {
+            skipCodeBlock += 1;
+            continue;
+        }
+
+        if (codeLine.startsWith("this.#")) {
+            disposedFields.push(codeLine.substring(0, codeLine.indexOf(" ")).replace("this.", ""));
+            continue;
+        }
+
+        if (codeLine.includes("}")) {
+            if (skipCodeBlock > 0) {
+                skipCodeBlock -= 1;
+            }
+            else {
+                disposeFound = false;
+                break;
+            }
+        }
+    }
+
+    return disposedFields.length == 0 ? null : disposedFields;
+}
+
+export async function checkSource(rootPath, ignoreFolders, ignoreFiles) {
+    const files = await getFiles(rootPath, ignoreFolders || [], ignoreFiles || []);
 
     if (files.length == 0) {
         throw new Error("no files found");
