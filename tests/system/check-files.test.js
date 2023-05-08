@@ -5,7 +5,7 @@ import * as path from "https://deno.land/std/path/mod.ts";
 import {checkSource} from "./../../tools/checksource.js";
 
 describe("checksource tests", async () => {
-    it.skip("checkSource", async () => {
+    it.ignore("checkSource", async () => {
         const testFilePath = Deno.mainModule;
         const testDir = path.dirname(testFilePath);
         const folder = path.fromFileUrl(testDir.replace("tests/system", ""));
