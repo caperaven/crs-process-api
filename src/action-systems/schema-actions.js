@@ -6,6 +6,11 @@ class SchemaParserManager {
         this.#parsers = {};
     }
 
+    dispose() {
+        this.#parsers = null;
+        this.#queue = null;
+    }
+
     /**
      * @function register - It creates a new instance of the parser, registers all the providers, and then stores the parser and a queue for it
      *

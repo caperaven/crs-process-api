@@ -31,12 +31,15 @@ export class ResizeElementManager {
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
         this.#mouseUpHandler = null;
-
-        delete this.#element.__resizeManager;
-        this.#element = null;
+        this.#targetElement = null;
+        this.#bounds = null;
+        this.#startPos = null;
         this.#resizeQuery = null;
         this.#options = null;
         this.#region = null;
+
+        delete this.#element.__resizeManager;
+        this.#element = null;
     }
 
     #mouseDown(event) {

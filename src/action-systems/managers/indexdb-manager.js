@@ -25,6 +25,8 @@ export class IndexDBManager {
     dispose() {
         this.#worker.onmessage = null;
         this.#worker.terminate();
+        this.#worker = null;
+        this.#requests = null;
     }
 
     async perform(step, context, process, item) {

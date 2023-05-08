@@ -41,10 +41,6 @@ export default [
         output: [{file: 'dist/action-systems/data-actions.js', format: 'es'}], plugins: [terser()]
     },
     {
-        input: "src/action-systems/database-actions.js",
-        output: [{file: 'dist/action-systems/database-actions.js', format: 'es'}], plugins: [terser()]
-    },
-    {
         input: "src/action-systems/dom-actions.js",
         output: [{file: 'dist/action-systems/dom-actions.js', format: 'es'}], plugins: [terser()]
     },
