@@ -10,7 +10,7 @@
         "validation": "deno run --allow-all ./tools/checksource.js /tools",
         "build-documents": "cd documents.hugo & hugo -d \\\"./../publish/documents\\\"",
         "run-hugo": "cd documents.hugo & hugo serve",
-        "test": "deno test tests --allow-all",
+        "test": "deno run --allow-all ./tools/checksource.js /tools & deno test tests --allow-all",
         "build-wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin",
         "build-markdown": "wasm-pack build ./wasm/markdown/  --target web --out-dir ./../../src/bin",
         "build-data-processing": "wasm-pack build ./wasm/data-processing/  --target web --out-dir ./../../src/bin",
