@@ -89,7 +89,7 @@ function checkForFields(file, content, resultCollection) {
     if (fields.length == 0) return;
 
     // 2. check if those fields are set to null in the dispose method
-    let disposeMethod = content.match(/dispose\(\)\s*{[^}]*}/g);
+    let disposeMethod = content.match(/dispose\s*\([^)]*\)\s*{([\s\S]*?)}/g);
 
     // 3. if the dispose method is missing check for disconnectedCallback
     if (disposeMethod == null) {
