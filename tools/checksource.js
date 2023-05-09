@@ -10,6 +10,7 @@
  */
 
 import { walk } from "https://deno.land/std/fs/mod.ts";
+import * as path from "https://deno.land/std/path/mod.ts";
 
 /**
  * @function getFiles - get all the js files in this folder and subfolders.
@@ -18,6 +19,8 @@ import { walk } from "https://deno.land/std/fs/mod.ts";
  * @returns {Promise<paths[]>}
  */
 async function getFiles(rootPath, ignoreCustomFolders, ignoreCustomFiles) {
+    console.log("src validation - rootPath: ", rootPath);
+
     const ignoreFolders = ["node_modules", "dist", "build", "test", "mockups", "resources", "documents", "styles", "packages", ...ignoreCustomFolders];
 
     // 1. get the start folder from the args.
@@ -28,14 +31,20 @@ async function getFiles(rootPath, ignoreCustomFolders, ignoreCustomFiles) {
     // 2. get all the js files in this folder and subfolders.
     const files = [];
     for await (const entry of walk(startFolder)) {
-        if (ignoreFolders.some(folder => entry.path.includes(folder))) {
-            continue;
+        let ignoreEntry = false;
+        for (const ignoreFolder of ignoreFolders) {
+            if (ignoreFolder.length > 0 && entry.path.includes(ignoreFolder)) {
+                ignoreEntry = true;
+                continue;
+            }
         }
+
+        if (ignoreEntry == true) continue;
 
         if (entry.isFile && entry.path.endsWith(".js")) {
             let ignore = false;
 
-            for (const ignoreFile of ignoreCustomFiles) {
+            for (const ignoreFile of ignoreCustomFiles || []) {
                 if (entry.path.endsWith(ignoreFile)) {
                     ignore = true;
                     continue;
@@ -86,6 +95,8 @@ function checkForEventListeners(file, content, resultCollection) {
 }
 
 function checkForFields(file, content, resultCollection) {
+    console.log(`processing: ${file}`);
+
     // get the code between the class keyword and the constructor or connectedCallback method
     const classContent = content.match(/class\s+\w+\s*{([\s\S]*?)(?=constructor|connectedCallback)/g);
     if (classContent == null) return;
@@ -131,7 +142,7 @@ function getDisposedFields(content) {
 
         if (codeLine.startsWith("*") || codeLine.length == 0) continue;
 
-        if (codeLine.startsWith("dispose") || codeLine.startsWith("disconnectedCallback")) {
+        if (codeLine.startsWith("dispose") || codeLine.startsWith("disconnectedCallback") || codeLine.startsWith("async disconnectedCallback")) {
             disposeFound = true;
             continue;
         }
@@ -173,9 +184,15 @@ export async function checkSource(rootPath, ignoreFolders, ignoreFiles) {
     return result;
 }
 
+console.log("--------- check version: 1.1.0 ---------");
 if (Deno.args.length > 0) {
+    console.log("running commandline")
+    const testFilePath = Deno.mainModule;
+    const testDir = path.dirname(testFilePath);
+    const folder = path.fromFileUrl(testDir.replace(Deno.args[0], ""));
+
     const ignore = (Deno.args[1] || "").split(",").map(item => item.trim());
-    const files = await getFiles(null, ignore);
+    const files = await getFiles(folder, ignore);
     const result = await EvaluateFiles(files);
 
     if (result.length == 0) {
@@ -186,4 +203,3 @@ if (Deno.args.length > 0) {
         console.log(result);
     }
 }
-

@@ -216,9 +216,10 @@ export class FilesActions {
     static async enable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const handler = await crs.process.getValue(step.args.handler, context, process, item);
-        element.addEventListener("drop", filedrop_handler.bind(this, handler));
+        const fileDropHandler = filedrop_handler.bind(this, handler);
+        element.addEventListener("drop", fileDropHandler);
         element.addEventListener("dragover", dragover_handler)
-        element.__dropHandler = filedrop_handler;
+        element.__dropHandler = fileDropHandler
         element.__dragoverHandler = dragover_handler;
     }
 
