@@ -73,7 +73,6 @@ export class FixedLayoutActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const target = await crs.dom.get_element(step.args.target, context, process, item);
         const point = await crs.process.getValue(step.args.point, context, process, item);
-
         const at = await crs.process.getValue(step.args.at || "bottom", context, process, item);
         const anchor = await crs.process.getValue(step.args.anchor, context, process, item);
         const container = await crs.process.getValue(step.args.container || document.body, context, process, item);
@@ -220,6 +219,9 @@ export class FixedLayoutActions {
         if (position.y + height > window.innerHeight) {
             position.y = window.innerHeight - height - 1;
         }
+
+        position.x = Math.round(position.x);
+        position.y = Math.round(position.y);
 
         return position;
     }
