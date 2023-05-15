@@ -1,10 +1,22 @@
-import init, {unique_values, filter} from "./../bin/data_processing.js";
+import init, {unique_values, filter, init_panic_hook} from "./../bin/data_processing.js";
 
 await init();
 
 export class DataProcessing {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
+    }
+
+    /**
+     * @method init_panic_hook - initializes the panic hook for the wasm module.
+     * This allows better debugging of the wasm module as it provides you with a stack trace
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     */
+    static init_panic_hook(step, context, process, item) {
+        init_panic_hook();
     }
 
     /**
@@ -61,6 +73,18 @@ export class DataProcessing {
         return result;
     }
 
+    /**
+     * @method filter - filters the data based on the intent
+     * @param step {object} - the step to perform
+     * @param context {object} - the context of the process
+     * @param process {object} - the process currently running
+     * @param item {object} - the item
+     *
+     * @param step.args.source {Array} - the data to filter
+     * @param step.args.intent {object} - the intent to filter on
+     * @param step.args.case_sensitive {boolean} - should the filter should be case-sensitive
+     * @returns {Promise<Array<*>>}
+     */
     static async filter(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
         const intent = await crs.process.getValue(step.args.intent, context, process, item);

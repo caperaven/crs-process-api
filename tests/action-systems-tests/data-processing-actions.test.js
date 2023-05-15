@@ -20,15 +20,15 @@ describe("data processing actions tests", () => {
         assertEquals(result["value"]["null"], 1);
     });
 
-    // it ("filter", async () => {
-    //     const result = await crs.call("data_processing", "filter", {
-    //         source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
-    //         filter: {field: "value", operator: "eq", value: 3},
-    //         invert: false
-    //     });
-    //
-    //     assertEquals(result.length, 2);
-    //     assertEquals(result[0], 2);
-    //     assertEquals(result[1], 3);
-    // })
+    it ("filter", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "eq", value: 3},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 2);
+        assertEquals(result[1], 3);
+    })
 })
