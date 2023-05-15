@@ -1,4 +1,4 @@
-import init, {unique_values} from "./../bin/data_processing.js";
+import init, {unique_values, filter} from "./../bin/data_processing.js";
 
 await init();
 
@@ -53,6 +53,20 @@ export class DataProcessing {
         }
 
         const result = unique_values(data, fields, rows);
+
+        if (step.args.target) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async filter(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const intent = await crs.process.getValue(step.args.intent, context, process, item);
+        const case_sensitive = await crs.process.getValue(step.args.case_sensitive ?? false, context, process, item);
+
+        const result = filter(data, intent, case_sensitive);
 
         if (step.args.target) {
             await crs.process.setValue(step.args.target, result, context, process, item);
