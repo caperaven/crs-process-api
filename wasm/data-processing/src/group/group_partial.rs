@@ -75,8 +75,21 @@ fn process_row(parent: &mut Field, row: &JsValue, fields: &Array, field_index: u
     let process_value: String = match value {
         None => String::from("none"),
         Some(value) => {
-            value_copy = value.as_string().unwrap();
-            value.as_string().unwrap()
+            if let Some(number_value) = value.as_f64() {
+                let number_value = number_value.to_string();
+                value_copy = number_value.clone();
+                number_value
+            } else if let Some(string_value) = value.as_string() {
+                let string_value = string_value.clone();
+                value_copy = string_value.clone();
+                string_value
+            } else if let Some(boolean_value) = value.as_bool() {
+                let boolean_value = boolean_value.to_string();
+                value_copy = boolean_value.clone();
+                boolean_value
+            } else {
+                String::from("none")
+            }
         }
     };
 

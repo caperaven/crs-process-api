@@ -1,4 +1,4 @@
-import init, {unique_values, filter, init_panic_hook} from "./../bin/data_processing.js";
+import init, {unique_values, filter, init_panic_hook, group} from "./../bin/data_processing.js";
 
 await init();
 
@@ -91,6 +91,32 @@ export class DataProcessing {
         const case_sensitive = await crs.process.getValue(step.args.case_sensitive ?? false, context, process, item);
 
         const result = filter(data, intent, case_sensitive);
+
+        if (step.args.target) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    /**
+     * @method group - groups the data based on the intent
+     * @param step {object} - the step to perform
+     * @param context {object} - the context of the process
+     * @param process {object} - the process currently running
+     * @param item {object} - the item
+     *
+     * @param step.args.source {Array} - the data to group
+     * @param step.args.intent {object} - the intent to group on
+     * @param step.args.rows {Array} - optional indexes of rows to group
+     * @returns {Promise<any>}
+     */
+    static async group(step, context, process, item) {
+        init_panic_hook();
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const intent = await crs.process.getValue(step.args.intent, context, process, item);
+        const rows = await crs.process.getValue(step.args.rows, context, process, item);
+        const result = group(data, intent, rows)
 
         if (step.args.target) {
             await crs.process.setValue(step.args.target, result, context, process, item);
