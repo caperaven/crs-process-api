@@ -89,6 +89,9 @@ pub fn sort(data: &Array, intent: &Array, rows: Option<Vec<usize>>) -> Result<Ve
     result
 }
 
+/**
+    JHR todo: we need to be able to pass in sort data so that the group items can be sorted if a group field matched a sort field.
+**/
 #[wasm_bindgen]
 pub fn group(data: &Array, intent: &Array, rows: Option<Vec<usize>>) -> Result<js_sys::Object, JsValue> {
     if data.length() == 0 {
@@ -103,6 +106,23 @@ pub fn group(data: &Array, intent: &Array, rows: Option<Vec<usize>>) -> Result<j
     result
 }
 
+/**
+    JHR: todo
+    We want to pass in sort direction as a parameter that can be
+    1. Ascending
+    2. Descending
+    3. None
+
+    Order the results based on that so that you can see the values in the order you want.
+
+    @Example
+    calculate aggregate on asset for the count of work orders on it and pass it back so tha the asset
+    with the most work orders is first and the asset the least is last.
+
+    @example
+    calculate aggregate on asset for the count of work orders
+    pass it back where the assets are sorted alphabetically
+**/
 #[wasm_bindgen]
 pub fn aggregate(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>>) -> Result<JsValue, JsValue> {
     if data.length() == 0 {
@@ -117,6 +137,19 @@ pub fn aggregate(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>>) -
     result
 }
 
+/**
+    JHR: todo
+    Allow sorting of the unique values.
+    1. Ascending
+    2. Descending
+    3. None
+
+    @example
+    Show me the values where the count is the highest to the lowest
+
+    @example
+    Show me the values in a ascending order of the value itself
+**/
 #[wasm_bindgen]
 pub fn unique_values(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>>) -> Result<JsValue, JsValue> {
     if data.length() == 0 {
