@@ -176,12 +176,25 @@ pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue
     let has_group = !group_def.is_undefined() && !group_def.is_null();
     let has_aggregate = !aggregate_def.is_undefined() && !aggregate_def.is_null();
 
+    let mut rows: Vec<usize> = vec![];
+
     if has_filter {
         let filter_result = filter(data, &filter_def, false)?;
 
         if !has_sort && !has_group && !has_aggregate {
             return Ok(JsValue::from(filter_result));
         }
+
+        rows = filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
+    }
+
+    if has_sort {
+        let sort_intent: Array = sort_def.into();
+        let sort_result = sort(data, &sort_intent, Some(rows))?;
+        rows = sort_result;
+
+        let result: Array = rows.iter().map(|x| JsValue::from(*x)).collect();
+        return Ok(result.into());
     }
 
     Ok(JsValue::NULL)
