@@ -41,4 +41,22 @@ describe("data processing actions tests", () => {
         assertExists(result);
         assertExists(result["root"]);
     })
+
+    it ("get_perspective", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "get_perspective", {
+            source: people,
+            intent: {
+                filter: { field: "lastName", operator: "eq", value: "Doe" },
+                sort: ["age:dec"]
+            }
+        });
+
+        assertEquals(result, [2, 0]);
+    });
 })
