@@ -34,8 +34,8 @@ describe("data processing actions tests", () => {
 
     it ("group", async () => {
         const result = await crs.call("data_processing", "group", {
-            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: "null"}],
-            intent: ["value"]
+            source: [{value: 1, value2: 0}, {value: 2, value2: 0}, {value: 3, value2: 1}, {value: 3, value2: 1}, {value: "null", value2: 0}],
+            intent: ["value", "value2"]
         });
 
         assertEquals(result["root"]["children"]["1"]["rows"][0], 0);

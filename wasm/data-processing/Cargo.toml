@@ -10,10 +10,11 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "0.2.83"
+wasm-bindgen = { version = "0.2.84", features = ["serde-serialize"] }
 js-sys = "0.3.60"
 console_error_panic_hook = "0.1.7"
 hashbrown = "0.12.3"
+uuid = { version = "0.8", features = ["v4", "wasm-bindgen"] }
 
 [profile.release]
 lto = true

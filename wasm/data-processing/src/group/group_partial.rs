@@ -2,6 +2,7 @@ use std::borrow::BorrowMut;
 use std::collections::HashMap;
 use js_sys::{Array, Object, Reflect};
 use wasm_bindgen::JsValue;
+use uuid::Uuid;
 
 struct Field {
     pub value: String,
@@ -23,7 +24,17 @@ impl Field {
     pub fn create_value_object(&mut self, parent: &Object) -> Result<JsValue, JsValue> {
         let result = Object::new();
 
-        if !self.children.is_empty() {
+        let id = Uuid::new_v4().to_string();
+        Reflect::set(&result, &JsValue::from("id"), &JsValue::from(id))?;
+        Reflect::set(&result, &JsValue::from("value"), &JsValue::from(&self.value))?;
+
+        if self.rows.is_some() {
+            let rows = self.rows.as_ref().unwrap();
+            Reflect::set(&result, &JsValue::from("rows"), rows)?;
+            Reflect::set(&result, &JsValue::from("child_count"), &JsValue::from(rows.length()))?;
+        }
+
+        else if !self.children.is_empty() {
             let children = Object::new();
 
             for child in self.children.iter_mut() {
@@ -32,10 +43,6 @@ impl Field {
 
             Reflect::set(&result, &JsValue::from("child_count"), &JsValue::from(self.child_count))?;
             Reflect::set(&result, &JsValue::from("children"), &children)?;
-        }
-
-        if self.rows.is_some() {
-            Reflect::set(&result, &JsValue::from("rows"), self.rows.as_ref().unwrap())?;
         }
 
         Reflect::set(parent, &JsValue::from(&self.value), &result)?;
