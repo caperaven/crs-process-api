@@ -102,6 +102,12 @@ export function aggregate(data: Array<any>, intent: any[], rows?: Uint32Array): 
 * @returns {any}
 */
 export function unique_values(data: Array<any>, intent: any[], rows?: Uint32Array): any;
+/**
+* @param {Array<any>} data
+* @param {any} intent
+* @returns {any}
+*/
+export function get_perspective(data: Array<any>, intent: any): any;
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -115,10 +121,11 @@ export interface InitOutput {
   readonly group: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly aggregate: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly unique_values: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
+  readonly get_perspective: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
-  readonly __wbindgen_free: (a: number, b: number) => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
+  readonly __wbindgen_free: (a: number, b: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
 }
 

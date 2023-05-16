@@ -9,7 +9,7 @@ mod group;
 mod aggregate;
 mod unique_values;
 
-use js_sys::{Array};
+use js_sys::{Array, Reflect};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -162,4 +162,27 @@ pub fn unique_values(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>
     };
 
     result
+}
+
+#[wasm_bindgen]
+pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue> {
+    let filter_def = Reflect::get(&intent, &JsValue::from("filter")).unwrap();
+    let sort_def = Reflect::get(&intent, &JsValue::from("sort")).unwrap();
+    let group_def = Reflect::get(&intent, &JsValue::from("group")).unwrap();
+    let aggregate_def = Reflect::get(&intent, &JsValue::from("aggregate")).unwrap();
+
+    let has_filter = !filter_def.is_undefined() && !filter_def.is_null();
+    let has_sort = !sort_def.is_undefined() && !sort_def.is_null();
+    let has_group = !group_def.is_undefined() && !group_def.is_null();
+    let has_aggregate = !aggregate_def.is_undefined() && !aggregate_def.is_null();
+
+    if has_filter {
+        let filter_result = filter(data, &filter_def, false)?;
+
+        if !has_sort && !has_group && !has_aggregate {
+            return Ok(JsValue::from(filter_result));
+        }
+    }
+
+    Ok(JsValue::NULL)
 }
