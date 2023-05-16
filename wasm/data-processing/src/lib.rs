@@ -194,7 +194,20 @@ pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue
         rows = sort_result;
 
         let result: Array = rows.iter().map(|x| JsValue::from(*x)).collect();
-        return Ok(result.into());
+
+        if !has_group && !has_aggregate {
+            return Ok(result.into());
+        }
+    }
+
+    if has_group {
+        let group_intent: Array = group_def.into();
+        let group_result = group(data, &group_intent, Some(rows))?;
+        let result = group_result;
+
+        if !has_aggregate {
+            return Ok(result.into());
+        }
     }
 
     Ok(JsValue::NULL)
