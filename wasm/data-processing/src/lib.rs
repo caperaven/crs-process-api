@@ -167,11 +167,13 @@ pub fn unique_values(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>
 #[wasm_bindgen]
 pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue> {
     let filter_def = Reflect::get(&intent, &JsValue::from("filter")).unwrap();
+    // let fuzzy_filter_def = Reflect::get(&intent, &JsValue::from("fuzzy_filter")).unwrap();
     let sort_def = Reflect::get(&intent, &JsValue::from("sort")).unwrap();
     let group_def = Reflect::get(&intent, &JsValue::from("group")).unwrap();
     let aggregate_def = Reflect::get(&intent, &JsValue::from("aggregate")).unwrap();
 
     let has_filter = !filter_def.is_undefined() && !filter_def.is_null();
+    // let has_fuzzy_filter = !fuzzy_filter_def.is_undefined() && !fuzzy_filter_def.is_null();
     let has_sort = !sort_def.is_undefined() && !sort_def.is_null();
     let has_group = !group_def.is_undefined() && !group_def.is_null();
     let has_aggregate = !aggregate_def.is_undefined() && !aggregate_def.is_null();
@@ -187,6 +189,14 @@ pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue
 
         rows = filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
     }
+
+    // if has_fuzzy_filter {
+        // this can be a single value that you need to check over all the fields.
+        // or this can be an single expression
+        // field eq value and field eq value
+        // field eq value or field eq value
+        // field eq value and (field eq value or field eq value)
+    // }
 
     if has_sort {
         let sort_intent: Array = sort_def.into();
