@@ -616,17 +616,9 @@ function getImports() {
         const ret = Reflect.set(getObject(arg0), getObject(arg1), getObject(arg2));
         return ret;
     }, arguments) };
-    imports.wbg.__wbindgen_jsval_eq = function(arg0, arg1) {
-        const ret = getObject(arg0) === getObject(arg1);
-        return ret;
-    };
     imports.wbg.__wbg_from_67ca20fa722467e6 = function(arg0) {
         const ret = Array.from(getObject(arg0));
         return addHeapObject(ret);
-    };
-    imports.wbg.__wbg_indexOf_8832f6af0c1ab7c5 = function(arg0, arg1, arg2) {
-        const ret = getObject(arg0).indexOf(getObject(arg1), arg2);
-        return ret;
     };
     imports.wbg.__wbg_randomFillSync_6894564c2c334c42 = function() { return handleError(function (arg0, arg1, arg2) {
         getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
@@ -668,6 +660,14 @@ function getImports() {
     imports.wbg.__wbg_value_6ac8da5cc5b3efda = function(arg0) {
         const ret = getObject(arg0).value;
         return addHeapObject(ret);
+    };
+    imports.wbg.__wbindgen_jsval_eq = function(arg0, arg1) {
+        const ret = getObject(arg0) === getObject(arg1);
+        return ret;
+    };
+    imports.wbg.__wbg_indexOf_8832f6af0c1ab7c5 = function(arg0, arg1, arg2) {
+        const ret = getObject(arg0).indexOf(getObject(arg1), arg2);
+        return ret;
     };
     imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
         const ret = getObject(arg0);

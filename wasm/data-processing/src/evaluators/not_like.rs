@@ -1,16 +1,30 @@
 use wasm_bindgen::JsValue;
+use crate::evaluators::{starts_with, ends_with, contains};
 
 pub fn evaluate(value1: &JsValue, value2: &JsValue) -> Result<bool, JsValue> {
-    if value1.is_string() {
-        let s1 = value1.as_string().unwrap();
-        let s2 = value2.as_string().unwrap();
-        let result = s1.find(&s2);
+    let mut intent = value2.as_string().unwrap();
 
-        return match result {
-            Some(_value) => Ok(false),
-            None => Ok(true)
-        }
+    let has_start = intent.starts_with('%');
+    let has_end = intent.ends_with('%');
+
+    intent = intent.replace('%', "");
+
+    let value2 = &JsValue::from(intent);
+
+    if has_start && has_end {
+        let result = contains::evaluate(value1, value2)?;
+        return Ok(!result);
     }
 
-    Ok(false)
+    if has_start {
+        let result = !starts_with::evaluate(value1, value2)?;
+        return Ok(!result);
+    }
+
+    if has_end {
+        let result = !ends_with::evaluate(value1, value2)?;
+        return Ok(!result);
+    }
+
+    Ok(true)
 }

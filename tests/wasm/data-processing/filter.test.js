@@ -89,3 +89,152 @@ Deno.test("filter - mixed 'and' and 'or'", () => {
 
     assertEquals(result.length, 2);
 });
+
+Deno.test("filter - not", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ], {
+        "operator": "not",
+        "expressions": [
+            { "field": "value2", "operator": "eq", "value": 10 },
+        ]
+    }, false);
+
+    assertEquals(result.length, 2);
+});
+
+Deno.test("filter - equal", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "eq", "value": 10 }, false);
+
+    assertEquals(result.length, 3);
+})
+
+Deno.test("filter - not equal", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "neq", "value": 10 }, false);
+
+    assertEquals(result.length, 2);
+})
+
+Deno.test("filter - greater than", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "gt", "value": 10 }, false);
+
+    assertEquals(result.length, 2);
+})
+
+Deno.test("filter - greater than", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "gt", "value": 12 }, false);
+
+    assertEquals(result.length, 1);
+})
+
+Deno.test("filter - less than", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "lt", "value": 12 }, false);
+
+    assertEquals(result.length, 3);
+})
+
+Deno.test("filter - greater or equal", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "ge", "value": 12 }, false);
+
+    assertEquals(result.length, 2);
+})
+
+Deno.test("filter - greater or equal", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: 20 }
+    ],{ "field": "value2", "operator": "le", "value": 12 }, false);
+
+    assertEquals(result.length, 4);
+})
+
+Deno.test("filter - is null", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: null }
+    ],{ "field": "value2", "operator": "is_null" }, false);
+
+    assertEquals(result.length, 1);
+})
+
+Deno.test("filter - is not null", () => {
+    const result = filter([
+        { value: "a", value2: 10 },
+        { value: "b", value2: 10 },
+        { value: "c", value2: 10 },
+        { value: "a", value2: 12 },
+        { value: "b", value2: null }
+    ],{ "field": "value2", "operator": "not_null" }, false);
+
+    assertEquals(result.length, 4);
+})
+
+Deno.test("filter - like", () => {
+    const result = filter([
+        { value: "hello", value2: 10 },
+        { value: "world", value2: 10 },
+        { value: "line 3", value2: 10 },
+        { value: "test 1", value2: 12 },
+        { value: "say whaaat", value2: null }
+    ],{ "field": "value", "operator": "like", value: "%line%" }, false);
+
+    assertEquals(result.length, 1);
+})
+
+Deno.test("filter - not like", () => {
+    const result = filter([
+        { value: "hello", value2: 10 },
+        { value: "world", value2: 10 },
+        { value: "line 3", value2: 10 },
+        { value: "test 1", value2: 12 },
+        { value: "say whaaat", value2: null }
+    ],{ "field": "value", "operator": "not_like", value: "%line%" }, false);
+
+    assertEquals(result.length, 4);
+})
