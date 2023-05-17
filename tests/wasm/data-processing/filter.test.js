@@ -1,5 +1,5 @@
 import {assertEquals, assertThrows} from "https://deno.land/std@0.148.0/testing/asserts.ts";
-import init, {filter} from "./../../../src/bin/data_processing.js";
+import init, {filter, init_panic_hook} from "./../../../src/bin/data_processing.js";
 await init();
 
 Deno.test("filter - simple", () => {
@@ -237,4 +237,57 @@ Deno.test("filter - not like", () => {
     ],{ "field": "value", "operator": "not_like", value: "%line%" }, false);
 
     assertEquals(result.length, 4);
+})
+
+Deno.test("filter - contains", () => {
+    const result = filter([
+        { value: "hello", value2: 10 },
+        { value: "world", value2: 10 },
+        { value: "line 3", value2: 10 },
+        { value: "test 1", value2: 12 },
+        { value: "say whaaat", value2: null }
+    ],{ "field": "value", "operator": "contains", value: "line" }, false);
+
+    assertEquals(result.length, 1);
+})
+
+Deno.test("filter - in", () => {
+    const result = filter([
+        { value: "hello", value2: 1 },
+        { value: "world", value2: 2 },
+        { value: "line 3", value2: 3 },
+        { value: "test 1", value2: 4 },
+        { value: "say whaaat", value2: null }
+    ],{ "field": "value2", "operator": "in", value: [1, 2, 3] }, false);
+
+    assertEquals(result.length, 3);
+})
+
+Deno.test("filter - starts with", () => {
+    const result = filter([
+        { value: "hello world", value2: 1 },
+        { value: "world order", value2: 2 },
+        { value: "line 3", value2: 3 },
+        { value: "test 1", value2: 4 },
+        { value: "say whaaat", value2: null }
+    ],{ "field": "value", "operator": "starts_with", value: "line" }, false);
+
+    assertEquals(result.length, 1);
+})
+
+Deno.test("filter - ends with", () => {
+    const result = filter([
+        { value: "hello world", value2: 1 },
+        { value: "world order", value2: 2 },
+        { value: "line 3", value2: 3 },
+        { value: "test 1", value2: 4 },
+        { value: "say whaaat", value2: null }
+    ],{ "field": "value", "operator": "ends_with", value: "order" }, false);
+
+    assertEquals(result.length, 1);
+})
+
+Deno.test("filter - between", () => {
+    // JHR: this is problematic, needs a better breakdown and see if the implementation works.
+    // More scenarios to cater for than the current allows as the current only allows strings.
 })
