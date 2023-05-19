@@ -28,14 +28,6 @@ pub fn unique_values_partial(data: &Array, intent: &[JsValue], rows: Vec<usize>)
     let result: js_sys::Object = js_sys::Object::new();
 
     for (key, value) in property_map {
-        // let property = key;
-        // let property_result: js_sys::Object = js_sys::Object::new();
-        // for (key, value) in value {
-        //     js_sys::Reflect::set(&property_result, &JsValue::from(key), &JsValue::from(value))?;
-        // }
-        //
-        // js_sys::Reflect::set(&result, &JsValue::from(property), &property_result)?;
-
         let property = key;
         let property_result: js_sys::Object = js_sys::Object::new();
 
