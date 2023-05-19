@@ -28,12 +28,24 @@ pub fn unique_values_partial(data: &Array, intent: &[JsValue], rows: Vec<usize>)
     let result: js_sys::Object = js_sys::Object::new();
 
     for (key, value) in property_map {
+        // let property = key;
+        // let property_result: js_sys::Object = js_sys::Object::new();
+        // for (key, value) in value {
+        //     js_sys::Reflect::set(&property_result, &JsValue::from(key), &JsValue::from(value))?;
+        // }
+        //
+        // js_sys::Reflect::set(&result, &JsValue::from(property), &property_result)?;
+
         let property = key;
         let property_result: js_sys::Object = js_sys::Object::new();
-        for (key, value) in value {
+
+        // Sort the values in alphabetical order (ascending)
+        let mut sorted_values: Vec<(String, i32)> = value.into_iter().collect();
+        sorted_values.sort_by_key(|&(ref k, _)| k.clone());
+
+        for (key, value) in sorted_values {
             js_sys::Reflect::set(&property_result, &JsValue::from(key), &JsValue::from(value))?;
         }
-
         js_sys::Reflect::set(&result, &JsValue::from(property), &property_result)?;
     }
 
