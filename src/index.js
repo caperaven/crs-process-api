@@ -80,9 +80,9 @@ globalThis.crs.call = async (system, fn, args, context, process, item, prefixes 
 
 globalThis.crs.getNextStep = (process, step) => {
     if (typeof step == "object") return step;
-    return crsbinding.utils.getValueOnPath(process.steps, step);
+    return crs.binding.utils.getValueOnPath(process.steps, step);
 }
 
-crsbinding.events.emitter.on("crs-process-error", (message) => {
+crs.binding.events.emitter.on("crs-process-error", (message) => {
     console.error(message.error);
 })

@@ -43,7 +43,7 @@ export class ProcessActions {
             }
         }
 
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             step: step,
             context: context,
             process: process,

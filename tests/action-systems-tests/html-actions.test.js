@@ -29,7 +29,7 @@ Deno.test("html - from template", async () => {
     })
 
     assert(result != null);
-    assert(await crsbinding.templates.get("test") != null);
+    assert(await crs.binding.templates.get("test") != null);
 })
 
 Deno.test("html - from schema", async () => {
@@ -71,7 +71,7 @@ Deno.test("html - markdown", async () => {
 
 Deno.test("html - create elements from string", async () => {
     // Arrange
-    await crsbinding.translations.add({label: "Its Approved"});
+    await crs.binding.translations.add({label: "Its Approved"});
     // Act
     const result = await crs.call("html", "create", {
         html: "<b data-id='${codeId}'>${code}</b><span aria-label='&{label}'>${description}</span>",
@@ -89,7 +89,7 @@ Deno.test("html - create elements from string using variables", async () => {
             html: "<b data-id='${codeId}'>${code}</b><span aria-label='&{label}'>${description}</span>",
             ctx: {code: "AP", description: "Approved", codeId: 101}
         }};
-    await crsbinding.translations.add({label: "Its Approved"});
+    await crs.binding.translations.add({label: "Its Approved"});
     // Act
     const result = await crs.call("html", "create", {
         html: "$process.data.html",

@@ -124,8 +124,8 @@ describe("condition tests", async () => {
         assertEquals(logs.log, null);
         assertEquals(logs.error, null);
 
-        const bId = crsbinding.data.addObject("test");
-        crsbinding.data.setProperty(bId, "value", 10);
+        const bId = crs.binding.data.addObject("test");
+        await crs.binding.data.setProperty(bId, "value", 10);
         process.parameters ||= {bId: bId};
 
         let result = await performCondition("$binding.value == 10", context, process, item, passStep, failStep);
@@ -143,8 +143,8 @@ describe("condition tests", async () => {
         assertEquals(logs.log, null);
         assertEquals(logs.error, null);
 
-        const bId = crsbinding.data.addObject("test");
-        crsbinding.data.setProperty(bId, "value", {property: [10]});
+        const bId = crs.binding.data.addObject("test");
+        await crs.binding.data.setProperty(bId, "value", {property: [10]});
         process.parameters ||= {bId: bId};
 
         let result = await performCondition("$binding.value.property.length == 1 && $context.isValid == true", context, process, item, passStep, failStep);
@@ -162,9 +162,9 @@ describe("condition tests", async () => {
         assertEquals(logs.log, null);
         assertEquals(logs.error, null);
 
-        const bId = crsbinding.data.addObject("test");
-        crsbinding.data.setProperty(bId, "value", {property: [10]});
-        crsbinding.data.setProperty(bId, "active", true);
+        const bId = crs.binding.data.addObject("test");
+        await crs.binding.data.setProperty(bId, "value", {property: [10]});
+        await crs.binding.data.setProperty(bId, "active", true);
 
         process.parameters ||= {bId: bId};
 

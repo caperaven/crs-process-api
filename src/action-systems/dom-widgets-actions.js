@@ -94,7 +94,7 @@ export class DomWidgetsActions {
             requestAnimationFrame(async () => {
                 await setWidgetContent(parts.widget.id, step.args.html, step.args.url, context, process, item);
 
-                let bc = crsbinding.data.getContext(process.parameters.bId);
+                let bc = crs.binding.data.getContext(process.parameters.bId);
 
                 const callback = async (next_step) => {
                     if (next_step === "pass_step") {
@@ -116,7 +116,7 @@ export class DomWidgetsActions {
 
                     const stepName = step[next_step];
                     if (stepName != null) {
-                        const nextStep = crsbinding.utils.getValueOnPath(process.steps, stepName);
+                        const nextStep = crs.binding.utils.getValueOnPath(process.steps, stepName);
 
                         if (nextStep != null) {
                             await crs.process.runStep(nextStep, context, process, item);

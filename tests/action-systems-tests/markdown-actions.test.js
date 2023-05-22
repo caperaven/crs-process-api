@@ -45,7 +45,7 @@ Deno.test("markdown tables", async () => {
 })
 
 Deno.test("markdown inflation", async () => {
-    await crsbinding.translations.add({
+    await crs.binding.translations.add({
         "title": "Hello World"
     }, "md")
 
@@ -72,7 +72,7 @@ Deno.test("markdown inflation", async () => {
     assert(parts[1].indexOf("<strong>Summary</strong>") != -1);
     assert(parts[2].indexOf('Work order: “WRK0001” has asset “ASSET12”') != -1);
 
-    await crsbinding.translations.delete("md");
+    await crs.binding.translations.delete("md");
 })
 
 Deno.test("js injection", async () => {

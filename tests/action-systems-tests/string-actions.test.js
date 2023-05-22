@@ -295,7 +295,7 @@ Deno.test("inflate string", async () => {
 })
 
 Deno.test("translate string", async () => {
-    await crsbinding.translations.add({
+    await crs.binding.translations.add({
         "hello": "Hello",
         "world": "World"
     }, "md")
@@ -305,7 +305,7 @@ Deno.test("translate string", async () => {
 
     assertEquals(result, "say Hello to the World.")
 
-    await crsbinding.translations.delete("md");
+    await crs.binding.translations.delete("md");
 })
 
 Deno.test("template string", async () => {

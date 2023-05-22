@@ -488,7 +488,7 @@ async function translate_string(value) {
     const si = value.indexOf("&{");
     const ei = value.indexOf("}", si + 1);
     const key = value.substring(si + 2, ei);
-    const trans = await crsbinding.translations.get(key);
+    const trans = await crs.binding.translations.get(key);
     value = value.split(`&{${key}}`).join(trans);
 
     if (value.indexOf("&{") != -1) {

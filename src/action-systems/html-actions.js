@@ -191,7 +191,7 @@ export class HtmlActions {
     static async #from_template(step, context, process, item) {
         const template = await crs.process.getValue(step.args.template, context, process, item);
         const url = await crs.process.getValue(step.args.url, context, process, item);
-        return await crsbinding.templates.get(template, url);
+        return await crs.binding.templates.get(template, url);
     }
 
     /**

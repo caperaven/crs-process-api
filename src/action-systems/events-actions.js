@@ -50,11 +50,11 @@ export class EventsActions {
             parameters[key] = await crs.process.getValue(parameters[key], context, process, item);
         }
 
-        await crsbinding.events.emitter.postMessage(step.args.query, parameters);
+        await crs.binding.events.emitter.postMessage(step.args.query, parameters);
     }
 
     /**
-     * @method emit -perform a crsbinding.events.emitter.emit
+     * @method emit -perform a crs.binding.events.emitter.emit
      * @param step {object} - step to perform
      * @param context {object} - context of the action
      * @param process {object} - process that is performing the action
@@ -96,7 +96,7 @@ export class EventsActions {
         }
 
         const event = await crs.process.getValue(step.args.event, context, process, item);
-        const result = await crsbinding.events.emitter.emit(event, parameters);
+        const result = await crs.binding.events.emitter.emit(event, parameters);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

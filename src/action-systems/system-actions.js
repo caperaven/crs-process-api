@@ -122,7 +122,7 @@ export class SystemActions {
             }
 
             if (process.parameters?.bId != null) {
-                bc = crsbinding.data.getContext(process.parameters.bId);
+                bc = crs.binding.data.getContext(process.parameters.bId);
                 bc.resume = resume;
             }
 

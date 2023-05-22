@@ -24,4 +24,4 @@ There are a number of default prefixes that is defined by the system.
 | $parameters  | $process.parameters      | if a process has parameters and, you want to access a parameter in a step |
 | $bId         | $process.parameters.bId  | crs-binding context id that was passed on as a parameter                  |
 | $global      | globalThis               | certain systems allow access to global objects                            |
-| $translation | crs.binding.translations | allows you access to the crsbinding translations in your process          |
+| $translation | crs.binding.translations | allows you access to the crs.binding translations in your process         |
