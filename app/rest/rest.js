@@ -1,4 +1,4 @@
-export default class Rest extends crsbinding.classes.ViewBase {
+export default class Rest extends crs.binding.classes.ViewBase {
     async get() {
         await crs.call("rest_services", "get", {
             url: "https://gorest.co.in/public/v1/users",

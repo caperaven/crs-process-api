@@ -1,5 +1,5 @@
 import "./../test-components/test-component.js";
-export default class Resize extends crsbinding.classes.ViewBase {
+export default class Resize extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
 

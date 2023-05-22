@@ -1,7 +1,7 @@
 import {schema} from "./schema.js";
 import "./my-component.js";
 
-export default class Events extends crsbinding.classes.ViewBase {
+export default class Events extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);

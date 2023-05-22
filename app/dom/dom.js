@@ -1,4 +1,4 @@
-export default class Dom extends crsbinding.classes.ViewBase {
+export default class Dom extends crs.binding.classes.ViewBase {
     get typeId() {
         return "MyTypeIdValue"
     }

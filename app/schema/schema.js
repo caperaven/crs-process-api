@@ -1,6 +1,6 @@
 import "/packages/crs-schema/crs-schema.js"
 
-export default class Schema extends crsbinding.classes.ViewBase {
+export default class Schema extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
         const json = await fetch(import.meta.url.replace(".js", ".json")).then(result => result.json());
@@ -15,8 +15,8 @@ export default class Schema extends crsbinding.classes.ViewBase {
             schema: json
         });
 
-        await crsbinding.parsers.parseElements(this.target.children, this._dataId);
-        await crsbinding.parsers.parseElements(this.target2.children, this._dataId);
+        await crs.binding.parsers.parseElements(this.target.children, this._dataId);
+        await crs.binding.parsers.parseElements(this.target2.children, this._dataId);
     }
 
     async greeting() {

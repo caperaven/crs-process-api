@@ -1,7 +1,7 @@
 import {schema} from "./schema.js";
 import "./list-component/list-component.js";
 
-export default class DragDrop extends crsbinding.classes.ViewBase {
+export default class DragDrop extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);

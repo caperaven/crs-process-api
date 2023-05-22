@@ -1,4 +1,4 @@
-export default class Data extends crsbinding.classes.ViewBase {
+export default class Data extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
     }

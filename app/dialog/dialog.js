@@ -1,6 +1,6 @@
 import {schema} from "./schema.js";
 
-export default class Input extends crsbinding.classes.ViewBase {
+export default class Input extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         crs.processSchemaRegistry.add(schema);
         await super.connectedCallback();

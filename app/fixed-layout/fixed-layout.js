@@ -1,4 +1,4 @@
-export default class FixedPositionVM extends crsbinding.classes.ViewBase {
+export default class FixedPositionVM extends crs.binding.classes.ViewBase {
     get middle() {
         const isMiddle = this.getProperty("middle");
         return isMiddle == true ? "middle" : null;

@@ -1,6 +1,6 @@
 import {schema} from "./schema.js";
 
-export default class Welcome extends crsbinding.classes.ViewBase {
+export default class Welcome extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);
@@ -11,7 +11,7 @@ export default class Welcome extends crsbinding.classes.ViewBase {
     }
 
     async printProcess() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

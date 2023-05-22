@@ -1,7 +1,7 @@
-export default class Observer extends crsbinding.classes.ViewBase {
+export default class Observer extends crs.binding.classes.ViewBase {
     set data(newValue) {
         this._data = newValue;
-        crsbinding.data.setProperty(this, "data-observer", true);
+        crs.binding.data.setProperty(this, "data-observer", true);
     }
 
     get data() {

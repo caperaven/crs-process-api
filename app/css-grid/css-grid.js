@@ -1,6 +1,6 @@
 import "./../../src/action-systems/css-grid-actions.js";
 
-export default class CssGrid extends crsbinding.classes.ViewBase {
+export default class CssGrid extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
 

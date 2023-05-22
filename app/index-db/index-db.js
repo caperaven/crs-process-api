@@ -1,6 +1,6 @@
 import "./../../src/action-systems/managers/indexdb-manager.js"
 
-export default class IndexDbViewModel extends crsbinding.classes.ViewBase {
+export default class IndexDbViewModel extends crs.binding.classes.ViewBase {
     #data1;
     #data2;
 

@@ -1,4 +1,4 @@
-export default class Html extends crsbinding.classes.ViewBase {
+export default class Html extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
         this.html.value = "<div><span>${test}</span>&nbsp;<span>${test2}</span></div>";

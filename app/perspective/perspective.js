@@ -1,7 +1,7 @@
 import "./../../src/action-systems/data-actions.js";
 import {createData} from "./../data-factory.js";
 
-export default class Perspective extends crsbinding.classes.ViewBase {
+export default class Perspective extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
     }

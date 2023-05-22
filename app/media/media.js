@@ -1,6 +1,6 @@
 import "./../../src/action-systems/media-actions.js";
 
-export default class Media extends crsbinding.classes.ViewBase {
+export default class Media extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
 

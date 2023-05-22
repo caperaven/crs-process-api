@@ -1,4 +1,4 @@
-export default class Styles extends crsbinding.classes.ViewBase {
+export default class Styles extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
     }

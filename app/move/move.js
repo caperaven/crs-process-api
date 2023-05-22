@@ -1,5 +1,5 @@
 import "./../test-components/test-component.js";
-export default class Move extends crsbinding.classes.ViewBase {
+export default class Move extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
 

@@ -1,6 +1,6 @@
 import "./../../src/action-systems/fs-actions.js";
 
-export default class Files extends crsbinding.classes.ViewBase {
+export default class Files extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
         await this._setupDropzone();
