@@ -101,7 +101,7 @@ function processBinding(exp, bId) {
     const parts = sub.split(".");
     const property = parts[1];
 
-    const code = [`crsbinding.data.getProperty(${bId}, "${property}")`];
+    const code = [`crs.binding.data.getProperty(${bId}, "${property}")`];
 
     if (parts.length > 2) {
         parts.splice(0, 2);

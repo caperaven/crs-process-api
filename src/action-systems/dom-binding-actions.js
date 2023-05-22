@@ -50,7 +50,7 @@ export class DomBindingActions {
         const html = await getHTML(step, context, process, item);
         const ctx = (await crs.process.getValue(step.args.context, context, process, item)) || process?.parameters?.bId;
 
-        await crsbinding.events.emitter.postMessage(element, {
+        await crs.binding.events.emitter.postMessage(element, {
             context: ctx,
             html: html
         })
@@ -99,13 +99,13 @@ export class DomBindingActions {
     static async clear_widget(step, context, process, item) {
         const element = step.args.element;
 
-        await crsbinding.events.emitter.postMessage(element, {
+        await crs.binding.events.emitter.postMessage(element, {
             context: null,
             html: ""
         });
 
         if (process?.bindable == true) {
-            let bc = crsbinding.data.getContext(process.parameters.bId);
+            let bc = crs.binding.data.getContext(process.parameters.bId);
             delete bc.pass;
             delete bc.fail;
         }
@@ -193,7 +193,7 @@ export class DomBindingActions {
             }
         }
 
-        await crsbinding.inflationManager.register(id, template, ctxName || "context");
+        await crs.binding.inflation.manager.register(id, template, ctxName || "context");
     }
 
     /**
@@ -269,14 +269,14 @@ export class DomBindingActions {
             }
         }
 
-        const fragment = crsbinding.inflationManager.get(id, data, elements, row_index || 0);
+        const fragment = await crs.binding.inflation.manager.get(id, data, elements, row_index || 0);
 
         if (fragment != null) {
             parent?.appendChild(fragment);
         }
 
         if (remove_template == true) {
-            crsbinding.inflationManager.unregister(id);
+            await crs.binding.inflation.manager.unregister(id);
         }
 
         return fragment;
@@ -349,13 +349,13 @@ async function getHTML(step, context) {
         const id = step.args.html.split(".")[1];
 
         template.innerHTML = html;
-        crsbinding.templates.add(id, template);
+        crs.binding.templates.add(id, template);
         return html;
     }
 
     if (step.args.html.indexOf("$template") == 0) {
         const id = step.args.html.split(".")[1];
-        const template = await crsbinding.templates.get(id, step.args.url);
+        const template = await crs.binding.templates.get(id, step.args.url);
         return template;
     }
 }
@@ -379,7 +379,7 @@ async function load_template(template, id, context) {
         templateElement = document.querySelector(template);
     }
 
-    await crsbinding.inflationManager.register(id, templateElement);
+    await crs.binding.inflation.manager.register(id, templateElement);
 }
 
 crs.intent.dom_binding = DomBindingActions;

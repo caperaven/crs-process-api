@@ -1,7 +1,7 @@
 export class SchemaRegistry {
     constructor() {
         this._schemas = {};
-        crsbinding.events.emitter.on("run-process", this._runProcess.bind(this));
+        crs.binding.events.emitter.on("run-process", this._runProcess.bind(this));
     }
 
     _runProcess(args) {
@@ -28,7 +28,7 @@ export class SchemaRegistry {
             const result = await crs.process.run(args.context, process, args.item, null, args.prefixes).catch(error => {
                 let event = process.aborted == true ? "crs-process-aborted" : "crs-process-error";
 
-                crsbinding.events.emitter.emit(event, {
+                crs.binding.events.emitter.emit(event, {
                     step: process.currentStep,
                     error: error
                 })

@@ -80,9 +80,9 @@ globalThis.crs.modules.enableBinding = async (modules) => {
         await globalThis.crs.modules.add(module[0], module[1]);
     }
 
-    if (globalThis.crsbinding != null) {
-        globalThis.crs.modules._parseElement = globalThis.crsbinding.parsers.parseElement;
-        globalThis.crsbinding.parsers.parseElement = async (element, context, options) => {
+    if (globalThis.crs.binding != null) {
+        globalThis.crs.modules._parseElement = globalThis.crs.binding.parsers.parseElement;
+        globalThis.crs.binding.parsers.parseElement = async (element, context, options) => {
             await globalThis.crs.modules._parseElement(element, context, options);
             globalThis.crs.modules.get(element.nodeName.toLowerCase());
         }
