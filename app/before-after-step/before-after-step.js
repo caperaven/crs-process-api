@@ -1,13 +1,13 @@
 import {schema} from "./schema.js";
 
-export default class BeforeAfterStep extends crsbinding.classes.ViewBase {
+export default class BeforeAfterStep extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         crs.processSchemaRegistry.add(schema);
         await super.connectedCallback();
     }
 
     async performStep() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

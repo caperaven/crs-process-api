@@ -51,7 +51,7 @@ export class CompileActions {
      */
     static async if_value(step, context, process, item) {
         const exp = await crs.process.getValue(step.args.exp, context, process, item);
-        const fn = await crsbinding.expression.ifFunction(exp);
+        const fn = await crs.binding.expression.ifFactory(exp);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, fn, context, process, item);
@@ -90,7 +90,7 @@ export class CompileActions {
      */
     static async case_value(step, context, process, item) {
         let exp = await crs.process.getValue(step.args.exp, context, process, item);
-        const fn = await crsbinding.expression.caseFunction(exp);
+        const fn = await crs.binding.expression.caseFactory(exp);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, fn, context, process, item);

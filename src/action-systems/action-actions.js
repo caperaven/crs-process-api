@@ -104,14 +104,14 @@ export async function callFunctionOnPath(source, step, context, process, item) {
     const action = await crs.process.getValue(step.args.action, context, process, item);
 
     const args = await getParameters(step, context, process, item);
-    const fn = await crsbinding.utils.getValueOnPath(source, action);
+    const fn = await crs.binding.utils.getValueOnPath(source, action);
 
     let callContext = source;
     if(action.indexOf(".") !== -1) {
         const parts = action.split(".");
         parts.pop();
         const contextPath = parts.join(".");
-        callContext = await crsbinding.utils.getValueOnPath(source, contextPath);
+        callContext = await crs.binding.utils.getValueOnPath(source, contextPath);
     }
 
     return fn.call(callContext, ...args);

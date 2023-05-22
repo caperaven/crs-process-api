@@ -13,8 +13,8 @@ const externalCodes = [
 
 export async function createData(count, bId) {
     return new Promise(async resolve => {
-        crsbinding.data.setProperty(bId, "progressMax", count - 1);
-        crsbinding.data.setProperty(bId, "progress", 0);
+        await crs.binding.data.setProperty(bId, "progressMax", count - 1);
+        await crs.binding.data.setProperty(bId, "progress", 0);
         let result = [];
 
         for (let i = 0; i < count; i++) {
@@ -36,7 +36,7 @@ export async function createData(count, bId) {
                 externalCode: externalCode
             });
 
-            crsbinding.data.setProperty(bId, "progress", i);
+            await crs.binding.data.setProperty(bId, "progress", i);
         }
 
         resolve(result);

@@ -31,11 +31,11 @@ export default class Observer extends crs.binding.classes.ViewBase {
     }
 
     callback() {
-        crsbinding.data.setProperty(this, "title", "observer is ready");
+        crs.binding.data.setProperty(this, "title", "observer is ready");
     }
 
     async callback2() {
-        crsbinding.data.setProperty(this, "title2", "observer2 is ready");
+        crs.binding.data.setProperty(this, "title2", "observer2 is ready");
 
         await crs.call("component", "unobserve", {
             element: this,
@@ -44,10 +44,10 @@ export default class Observer extends crs.binding.classes.ViewBase {
     }
 
     ready() {
-        crsbinding.data.setProperty(this, "loaded-observer", true);
+        crs.binding.data.setProperty(this, "loaded-observer", true);
     }
 
     ready2() {
-        crsbinding.data.setProperty(this, "loaded2-observer", true);
+        crs.binding.data.setProperty(this, "loaded2-observer", true);
     }
 }

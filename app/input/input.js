@@ -13,7 +13,7 @@ export default class Input extends crs.binding.classes.ViewBase {
     }
 
     async getInput() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

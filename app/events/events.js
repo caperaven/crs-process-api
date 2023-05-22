@@ -12,7 +12,7 @@ export default class Events extends crs.binding.classes.ViewBase {
     }
 
     async emit(event) {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "emit_message",
@@ -22,7 +22,7 @@ export default class Events extends crs.binding.classes.ViewBase {
     }
 
     async post(event) {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "post_message",
@@ -32,7 +32,7 @@ export default class Events extends crs.binding.classes.ViewBase {
     }
 
     async on(event) {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "on_message",

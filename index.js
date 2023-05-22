@@ -1,7 +1,7 @@
-export default class IndexViewModel extends crsbinding.classes.ViewBase {
+export default class IndexViewModel extends crs.binding.classes.ViewBase {
     async connectedCallback() {
         await super.connectedCallback();
-        crsbinding.data.updateUI(this, "routes");
+        await crs.binding.data.updateUI(this, "routes");
     }
 
     async preLoad() {
@@ -22,7 +22,7 @@ export default class IndexViewModel extends crsbinding.classes.ViewBase {
                     }
                 }
 
-                crsbinding.data.setProperty(this, "routes", result);
+                crs.binding.data.setProperty(this, "routes", result);
                 resolve();
             };
 

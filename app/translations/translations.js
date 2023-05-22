@@ -7,7 +7,7 @@ export default class Welcome extends crs.binding.classes.ViewBase {
     }
 
     preLoad() {
-        crsbinding.translations.add({message: "Hello World"}, "myprocess");
+        crs.binding.translations.add({message: "Hello World"}, "myprocess");
     }
 
     async printProcess() {
