@@ -1,0 +1,1 @@
+function u(n,s){const e=n.ownerElement,i=s(n.value,e.__bid),t=n.name.split(".")[0],o=e.__uuid;crs.binding.eventStore.register(t,o,i),e.removeAttribute(n.name),e.__events||=[],e.__events.push(t)}export{u as parseEvent};

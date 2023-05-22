@@ -1,0 +1,1 @@
+function f(t,r){const p=a(t),i=["","."],o=r.split("./"),n=p.split("/");n.pop();let e=0;for(let s=0;s<o.length;s++){const c=o[s];if(i.indexOf(c)===-1)break;c=="."&&n.pop(),e+=1}o.splice(0,e);const u=o.join("/");return`${n.join("/")}/${u}`}function a(t){if(t==null||t[t.length-1]=="/")return t;const r=t.split("/");return r.pop(),`${r.join("/")}/`}export{f as relativePathFrom};

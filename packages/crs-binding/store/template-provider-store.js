@@ -1,0 +1,1 @@
+class h{#t=[];#e={};add(t,e){this.#t.push(t),this.#e[t]=e}remove(t){this.#t.splice(this.#t.indexOf(t),1),delete this.#e[t]}async executeTemplateAction(t,e){if(t.attributes.length!==0){for(const i of this.#t)if(t.getAttribute(i)!=null){const s=this.#e[i];await s(t,e)}}}}export{h as TemplateProviderStore};

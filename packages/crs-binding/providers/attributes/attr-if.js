@@ -1,0 +1,1 @@
+import"../../expressions/code-factories/if.js";import{AttrBase as a}from"./attr-base.js";class s extends a{get providerKey(){return".if"}async parse(r,e){await super.parse(r,e,async t=>await crs.binding.expression.ifFactory(t))}}export{s as default};

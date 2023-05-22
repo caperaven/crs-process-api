@@ -1,0 +1,1 @@
+import"../../expressions/code-factories/case.js";import{AttrBase as s}from"./attr-base.js";class t extends s{get providerKey(){return".case"}async parse(r,e){await super.parse(r,e,async a=>await crs.binding.expression.caseFactory(a))}}export{t as default};

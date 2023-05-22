@@ -1,0 +1,1 @@
+class o{constructor(){this._converters=new Map}add(e,r){this._converters.set(e,r)}get(e){return this._converters.get(e)}remove(e){this._converters.delete(e)}convert(e,r,n,s){const t=this._converters.get(r);return t==null?null:t[n](e,s)}}crs.binding.valueConvertersManager=new o;export{o as ValueConvertersManager};

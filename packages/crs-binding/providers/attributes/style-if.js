@@ -1,0 +1,1 @@
+import"../../expressions/code-factories/if.js";import{StyleBase as s}from"./style-base.js";class a extends s{get providerKey(){return"^style..*.if$"}async parse(e,r){await super.parse(e,r,async t=>await crs.binding.expression.ifFactory(t))}}export{a as default};

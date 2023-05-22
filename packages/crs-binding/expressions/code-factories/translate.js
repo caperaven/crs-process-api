@@ -1,0 +1,1 @@
+async function e(n){return n?.length>0&&n.indexOf("&{")==-1?n:c(n.split("")).join("")}function c(n){const t=n.indexOf("&");if(t==-1||n[t+1]!="{")return n;const o=n.indexOf("}",t),i=n.slice(t+2,o).join(""),s=["${await crs.binding.translations.get('",i.replace("context.",""),"')}"].join("");return n.splice(t,i.length+3,s),c(n)}export{e as translateFactory};

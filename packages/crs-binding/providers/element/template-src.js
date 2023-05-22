@@ -1,0 +1,1 @@
+class r{async parse(t){const c=t.getAttribute("src"),n=await fetch(c).then(a=>a.text()),e=document.createElement("template");e.innerHTML=n,t.replaceWith(e.content.cloneNode(!0))}}export{r as default};

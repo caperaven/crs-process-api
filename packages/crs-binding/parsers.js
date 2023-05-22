@@ -1,0 +1,1 @@
+import{parseElement as t}from"./parsers/element.js";import{parseElements as p}from"./parsers/elements.js";import{parseAttribute as s}from"./parsers/attribute.js";import{parseAttributes as f}from"./parsers/attributes.js";export{s as parseAttribute,f as parseAttributes,t as parseElement,p as parseElements};

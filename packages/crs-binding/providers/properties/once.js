@@ -1,0 +1,1 @@
+class l{async parse(e,t){const n=e.name.split("."),r=o(n[0]),a=await crs.binding.data.getProperty(t.bid,e.value);e.ownerElement[r]=a,e.ownerElement.removeAttribute(e.name)}}function o(i){if(i.indexOf("-")==-1)return i;const e=i.split("-");for(let n=1;n<e.length;n++)e[n]=e[n].capitalize();let t=e.join("");return t==="innerHtml"&&(t="innerHTML"),t}export{l as default};

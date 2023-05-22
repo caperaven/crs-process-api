@@ -1,0 +1,1 @@
+function u(n,r){if(n==null||(r||"").length==0)return;if(r.indexOf(".")==-1)return n[r];const t=r.split("."),e=t.pop();for(const l of t)if(n=n[l],n==null)return null;return n[e]}export{u as getValueOnPath};
