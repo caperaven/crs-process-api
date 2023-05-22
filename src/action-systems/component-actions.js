@@ -62,7 +62,7 @@ export class ComponentActions {
         const callback = await crs.process.getValue(step.args.callback, context, process, item);
 
         if (element._dataId == null) {
-            element._dataId = crsbinding.data.addObject(element.id);
+            element._dataId = crs.binding.data.addObject(element.id);
         }
 
         let dataId = element._dataId;
@@ -79,7 +79,7 @@ export class ComponentActions {
         }
 
         for (let property of properties) {
-            crsbinding.data.addCallback(dataId, property, element._processObserver[id].eval);
+            await crs.binding.data.addCallback(dataId, property, element._processObserver[id].eval);
         }
 
         return id;
@@ -122,7 +122,7 @@ export class ComponentActions {
         for (const id of ids) {
             const def = element._processObserver[id];
             for (const property of def.properties) {
-                crsbinding.data.removeCallback(element._dataId, property, def.eval);
+                await crs.binding.data.removeCallback(element._dataId, property, def.eval);
             }
             def.properties = null;
             def.eval = null;
@@ -242,7 +242,7 @@ function getNextId(element) {
 function createPropertiesEvaluation(context, properties, id) {
     let script = ["if ( "];
     for (const property of properties) {
-        script.push(`crsbinding.data.getProperty(this._dataId, "${property}")  != null && `)
+        script.push(`(await crs.binding.data.getProperty(this._dataId, "${property}"))  != null && `)
     }
     script.push(`) { this._processObserver[${id}].callback.call(this) };`)
     script = script.join("").replace("&& )", ")");

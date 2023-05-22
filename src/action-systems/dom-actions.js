@@ -669,8 +669,7 @@ export class DomActions {
     static async remove_element(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element?.parentElement?.removeChild(element);
-
-        await crsbinding.providerManager.releaseElement(element);
+        await crs.binding.utils.unmarkElement(element);
     }
 
     /**
@@ -701,7 +700,7 @@ export class DomActions {
     static async clear_element(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         if (element != null) {
-            await crsbinding.observation.releaseChildBinding(element);
+            await crs.binding.utils.unmarkElement(element);
             while (element.firstElementChild != null) {
                 element.removeChild(element.firstElementChild);
             }
