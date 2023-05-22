@@ -116,7 +116,7 @@ export class ProcessRunner {
         if (expr.indexOf("$") == -1) return expr;
 
         if (expr.indexOf("$binding") != -1) {
-            return crs.binding.data.getValue(process.parameters.bId, expr.replace("$binding.", ""));
+            return await crs.binding.data.getProperty(process.parameters.bId, expr.replace("$binding.", ""));
         }
 
         if (expr.indexOf("$fn") != -1) {
