@@ -1,7 +1,7 @@
 # Translation
 
 Use the binding engine's translation features as part of your process or code.  
-Read the [crsbinding translation](https://github.com/caperaven/crs-binding-documentation/blob/master/18.%20Translations.md) documentation.
+Read the [crs.binding translation](https://github.com/caperaven/crs-binding-documentation/blob/master/18.%20Translations.md) documentation.
 
 ## Actions
 

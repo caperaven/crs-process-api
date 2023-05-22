@@ -88,7 +88,7 @@ function compileExpression(condition, process) {
 }
 
 /**
- * @function processBinding - It takes an expression and replaces all instances of `$binding.property` with `crsbinding.data.getProperty(bindingId,
+ * @function processBinding - It takes an expression and replaces all instances of `$binding.property` with `crs.binding.data.getProperty(bindingId,
  * "property")`
  * @param exp {String} - The expression to process
  * @param bId {String} - The binding id of the element.

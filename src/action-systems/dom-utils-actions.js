@@ -95,7 +95,7 @@ export class DomUtilsActions {
      */
     static async get_property(step, context, process, item) {
         const element = await crs.dom.get_element(step, context, process, item);
-        const value = await crsbinding.utils.getValueOnPath(element, step.args.property);
+        const value = await crs.binding.utils.getValueOnPath(element, step.args.property);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, value, context, process, item);

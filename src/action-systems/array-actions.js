@@ -377,7 +377,7 @@ export class ArrayActions {
         let result = [];
 
         for (const item of collection) {
-            const res = await Promise.all(fields.map(f => crsbinding.utils.getValueOnPath(item, f)));
+            const res = await Promise.all(fields.map(f => crs.binding.utils.getValueOnPath(item, f)));
             result.push(...res);
         }
 

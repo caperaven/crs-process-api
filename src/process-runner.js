@@ -27,9 +27,9 @@ export class ProcessRunner {
                 await crs.intent.binding.create_context(null, context, process, null);
             }
 
-            await crsbinding.events.emitter.emit("process-starting", process);
+            await crs.binding.events.emitter.emit("process-starting", process);
 
-            crsbinding.idleTaskManager.add(async () => {
+            await crs.binding.idleTaskManager.add(async () => {
                 let result;
 
                 await validateParameters(context, process, item).catch(error => {
@@ -116,7 +116,7 @@ export class ProcessRunner {
         if (expr.indexOf("$") == -1) return expr;
 
         if (expr.indexOf("$binding") != -1) {
-            return crsbinding.data.getValue(process.parameters.bId, expr.replace("$binding.", ""));
+            return crs.binding.data.getValue(process.parameters.bId, expr.replace("$binding.", ""));
         }
 
         if (expr.indexOf("$fn") != -1) {
@@ -159,7 +159,7 @@ export class ProcessRunner {
         if (expr.indexOf("$binding") != -1) {
             const bId = process.parameters?.bId;
             const property = expr.split(".")[1];
-            return crsbinding.data.setProperty(bId, property, value);
+            return crs.binding.data.setProperty(bId, property, value);
         }
 
         if (expr.indexOf("$item") != -1) {
@@ -195,7 +195,7 @@ export class ProcessRunner {
 
     static async cleanProcess(process) {
         if (process.bindable == true) {
-            crsbinding.data.removeObject(process.parameters.bId);
+            crs.binding.data.remove(process.parameters.bId);
         }
 
         await this.cleanObject(process.data);
@@ -210,7 +210,7 @@ export class ProcessRunner {
         delete process.prefixes;
         delete process.expCache;
 
-        await crsbinding.events.emitter.emit("process-ended", process);
+        await crs.binding.events.emitter.emit("process-ended", process);
     }
 
     static async cleanObject(obj) {
@@ -282,7 +282,7 @@ export function populatePrefixes(prefixes, process) {
     process.prefixes["$parameters"] = "$process.parameters";
     process.prefixes["$bId"]        = "$process.parameters.bId";
     process.prefixes["$global"]     = "globalThis";
-    process.prefixes["$translation"]= 'crsbinding.translations.get("$0")';
+    process.prefixes["$translation"]= 'crs.binding.translations.get("$0")';
 }
 
 function getFromCache(expr, process) {
