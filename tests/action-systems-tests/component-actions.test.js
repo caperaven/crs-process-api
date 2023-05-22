@@ -30,7 +30,7 @@ describe("component actions tests", async () => {
         const id = await crs.call("component", "observe", {
             element: element,
             properties: ["p1", "p2"],
-            callback: () => isCalled = true
+            callback: async () => isCalled = true
         })
 
         assert(element._dataId != null);

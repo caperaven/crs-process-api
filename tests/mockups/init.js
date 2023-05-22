@@ -16,6 +16,9 @@ export async function init() {
     globalThis.requestAnimationFrame = (callback) => callback();
 
     await import("./../../packages/crs-binding/crs-binding.js");
+    await import("./../../packages/crs-binding/events/event-emitter.js");
+    await import("./../../packages/crs-binding/expressions/code-factories/if.js");
+    await import("./../../packages/crs-binding/expressions/code-factories/case.js");
     await import("./../../packages/crs-modules/crs-modules.js");
 
     const processModule = await import("./../../src/index.js");

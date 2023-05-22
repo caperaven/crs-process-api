@@ -72,11 +72,9 @@ export class ComponentActions {
         };
 
         const id = getNextId(element);
-        element._processObserver[id] = {
-            properties: properties,
-            eval: createPropertiesEvaluation(element, properties, id),
-            callback: callback
-        }
+        const evalResult = await createPropertiesEvaluation(element, properties, id);
+
+        element._processObserver[id] = { properties, eval: evalResult, callback }
 
         for (let property of properties) {
             await crs.binding.data.addCallback(dataId, property, element._processObserver[id].eval);
@@ -239,7 +237,7 @@ function getNextId(element) {
  * @param id {String|Number} - The id of the observer.
  * @returns A function that will be called when the properties are available.
  */
-function createPropertiesEvaluation(context, properties, id) {
+async function createPropertiesEvaluation(context, properties, id) {
     let script = ["if ( "];
     for (const property of properties) {
         script.push(`(await crs.binding.data.getProperty(this._dataId, "${property}"))  != null && `)
@@ -247,8 +245,8 @@ function createPropertiesEvaluation(context, properties, id) {
     script.push(`) { this._processObserver[${id}].callback.call(this) };`)
     script = script.join("").replace("&& )", ")");
 
-    const fn = new Function(script);
-    return fn.bind(context);
+    const fn = new crs.classes.AsyncFunction(script);
+    return await fn.bind(context);
 }
 
 crs.intent.component = ComponentActions;

@@ -54,10 +54,10 @@ export class CompileActions {
         const fn = await crs.binding.expression.ifFactory(exp);
 
         if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, fn, context, process, item);
+            await crs.process.setValue(step.args.target, fn.function, context, process, item);
         }
 
-        return fn;
+        return fn.function;
     }
 
     /**
@@ -93,10 +93,10 @@ export class CompileActions {
         const fn = await crs.binding.expression.caseFactory(exp);
 
         if (step.args.target != null) {
-            await crs.process.setValue(step.args.target, fn, context, process, item);
+            await crs.process.setValue(step.args.target, fn.function, context, process, item);
         }
 
-        return fn;
+        return fn.function;
     }
 }
 
