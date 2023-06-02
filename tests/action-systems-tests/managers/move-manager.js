@@ -1,9 +1,15 @@
+/**
+ * JHR: Skipping these tests for now until I get can my deno fixed.
+ */
+
 import {MoveManager} from "../../../src/action-systems/managers/move-manager.js";
 import {assertEquals} from "https://deno.land/std@0.147.0/testing/asserts.ts";
 import {init} from "./../../mockups/init.js";
 import {ElementMock} from "../../mockups/element-mock.js";
 
 await init();
+
+globalThis.requestAnimationFrame = (callback) => callback();
 
 Deno.test("move-manager - clicked element matches the move query", async () => {
     // Arrange
