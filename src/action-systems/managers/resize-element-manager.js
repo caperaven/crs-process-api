@@ -1,4 +1,5 @@
 import {getDraggable} from "./dragdrop-manager/drag-utils.js";
+import {getMouseInputMap, clientX, clientY} from "./input-mapping.js";
 
 export class ResizeElementManager {
     #element;
@@ -11,6 +12,7 @@ export class ResizeElementManager {
     #targetElement;
     #bounds;
     #startPos;
+    #inputMap;
 
     constructor(element, resizeQuery, options) {
         this.#element = element;
@@ -22,12 +24,14 @@ export class ResizeElementManager {
         this.#mouseMoveHandler = this.#mouseMove.bind(this);
         this.#mouseUpHandler = this.#mouseUp.bind(this);
 
-        this.#element.addEventListener("mousedown", this.#mouseDownHandler);
+        this.#inputMap = getMouseInputMap();
+
+        this.#element.addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
         element.__resizeManager = this;
     }
 
     dispose() {
-        this.#element.removeEventListener("mousedown", this.#mouseDownHandler);
+        this.#element.removeEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
         this.#mouseUpHandler = null;
@@ -37,6 +41,7 @@ export class ResizeElementManager {
         this.#resizeQuery = null;
         this.#options = null;
         this.#region = null;
+        this.#inputMap = null;
 
         delete this.#element.__resizeManager;
         this.#element = null;
@@ -60,7 +65,7 @@ export class ResizeElementManager {
         }
 
         this.#bounds = this.#targetElement.getBoundingClientRect();
-        this.#startPos = {x: event.clientX, y: event.clientY};
+        this.#startPos = {x: clientX(event), y: clientY(event)};
 
         this.#options.min = this.#options.min || {};
         this.#options.min.width = this.#options.min.width || this.#bounds.width;
@@ -70,13 +75,13 @@ export class ResizeElementManager {
         this.#options.max.width = this.#options.max.width || Number.MAX_VALUE;
         this.#options.max.height = this.#options.max.height || Number.MAX_VALUE;
 
-        document.addEventListener("mousemove", this.#mouseMoveHandler);
-        document.addEventListener("mouseup", this.#mouseUpHandler);
+        document.addEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
+        document.addEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
     }
 
     #mouseMove(event) {
-        let offsetX = event.clientX - this.#startPos.x;
-        let offsetY = event.clientY - this.#startPos.y;
+        let offsetX = clientX(event) - this.#startPos.x;
+        let offsetY = clientY(event) - this.#startPos.y;
 
         if (this.#options.lock_axis == "x") {
             offsetY = 0;
@@ -107,8 +112,8 @@ export class ResizeElementManager {
 
         let targetElement = this.#targetElement;
 
-        document.removeEventListener("mousemove", this.#mouseMoveHandler);
-        document.removeEventListener("mouseup", this.#mouseUpHandler);
+        document.removeEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
+        document.removeEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
 
         this.#targetElement = null;
         this.#bounds = null;
