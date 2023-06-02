@@ -10,6 +10,11 @@
       "view": "welcome"
     },
     {
+      "title": "Mobile",
+      "hash": "#mobile",
+      "view": "mobile"
+    },
+    {
       "title": "Files",
       "hash": "#files",
       "view": "files"
