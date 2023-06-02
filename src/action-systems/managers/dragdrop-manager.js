@@ -5,6 +5,7 @@ import {startDrag, updateDrag} from "./dragdrop-manager/drag.js";
 import {getDraggable} from "./dragdrop-manager/drag-utils.js";
 import {updateMarker} from "./dragdrop-manager/marker.js";
 import {startMarker} from "./dragdrop-manager/marker.js";
+import {getMouseInputMap, clientX, clientY} from "./input-mapping.js";
 
 /**
  * @class DragDropManager - enable drag and drop operations on an element
@@ -109,6 +110,8 @@ export class DragDropManager {
      */
     #composedPath;
 
+    #inputMap;
+
     get element() {
         return this.#element;
     }
@@ -172,13 +175,14 @@ export class DragDropManager {
         this.#mouseMoveHandler = this.#mouseMove.bind(this);
         this.#mouseUpHandler = this.#mouseUp.bind(this);
 
+        this.#inputMap = getMouseInputMap();
         this.#eventElement = this.#element.shadowRoot == null ? this.#element : this.#element.shadowRoot;
-        this.#eventElement.addEventListener("mousedown", this.#mouseDownHandler);
+        this.#eventElement.addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler, { passive: false });
         this.#element.__dragDropManager = this;
     }
 
     dispose() {
-        this.#eventElement.removeEventListener("mousedown", this.#mouseDownHandler);
+        this.#eventElement.removeEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
 
         this.#eventElement = null;
         this.#element = null;
@@ -198,6 +202,7 @@ export class DragDropManager {
         this.#marker = null;
         this.#composedPath = null;
         this.#boundsCache = null;
+        this.#inputMap = null;
     }
 
     /**
@@ -212,8 +217,10 @@ export class DragDropManager {
 
         if (this.#isBusy == true) return;
 
-        this.#startPoint = {x: event.clientX, y: event.clientY};
-        this.#movePoint = {x: event.clientX, y: event.clientY};
+        const x = clientX(event);
+        const y = clientY(event);
+        this.#startPoint = {x, y};
+        this.#movePoint = {x, y};
 
         const element = getDraggable(event, this.#options);
         if (element == null) return;
@@ -224,8 +231,8 @@ export class DragDropManager {
         this.#dragElement = await startDrag(element, this.#options);
         this.#target = this.#placeholder;
 
-        document.addEventListener("mousemove", this.#mouseMoveHandler);
-        document.addEventListener("mouseup", this.#mouseUpHandler);
+        document.addEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler, { passive: false });
+        document.addEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler, { passive: false });
 
         this.#updateDragHandler = updateDrag.bind(this);
         this.#updateDragHandler();
@@ -246,8 +253,8 @@ export class DragDropManager {
         event.preventDefault();
         this.#composedPath = event.composedPath();
 
-        this.#movePoint.x = event.clientX;
-        this.#movePoint.y = event.clientY;
+        this.#movePoint.x = clientX(event);
+        this.#movePoint.y = clientY(event);
         this.#target = event.target || event.composedPath()[0];
     }
 
@@ -267,8 +274,8 @@ export class DragDropManager {
         this.#movePoint = null;
         this.#startPoint = null;
 
-        document.removeEventListener("mousemove", this.#mouseMoveHandler);
-        document.removeEventListener("mouseup", this.#mouseUpHandler);
+        document.removeEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
+        document.removeEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
 
         if (this.#marker) {
             this.#marker.remove();

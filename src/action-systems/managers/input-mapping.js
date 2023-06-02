@@ -21,9 +21,29 @@ export function getMouseInputMap() {
 }
 
 export function clientX(event) {
-    return event.clientX || event.touches?.[0].pageX;
+    let x = event.clientX;
+
+    if (x == null) {
+        x = event.touches?.[0]?.pageX;
+    }
+
+    if (x == null) {
+        x = event.changedTouches?.[0]?.pageX;
+    }
+
+    return x;
 }
 
 export function clientY(event) {
-    return event.clientY || event.touches?.[0].pageY;
+    let y = event.clientX;
+
+    if (y == null) {
+        y = event.touches?.[0]?.pageX;
+    }
+
+    if (y == null) {
+        y = event.changedTouches?.[0]?.pageX;
+    }
+
+    return y;
 }

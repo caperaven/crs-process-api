@@ -11,7 +11,6 @@ export class MoveManager {
     #animateMovingHandler = this.#animateMoving.bind(this);
     #offsetX;
     #offsetY;
-
     #inputMap;
 
     constructor(element, moveQuery) {

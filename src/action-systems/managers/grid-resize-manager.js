@@ -1,3 +1,5 @@
+import {getMouseInputMap, clientX, clientY} from "./input-mapping.js";
+
 /**
  * Options
  *      columns, define this array of indexes if you only want to resize certain columns
@@ -19,16 +21,18 @@ export class CSSGridResizeManager {
     #startPos;
     #movePos;
     #dragElement;
+    #inputMap;
 
     constructor(element, options) {
         this.#element = element;
         this.#bounds = element.getBoundingClientRect();
         this.#element.__cssGridResizeMananger = this;
         this.#options = options;
+        this.#inputMap = getMouseInputMap();
     }
 
     dispose() {
-        (this.#element.shadowRoot || this.#element).removeEventListener("mousedown", this.#mouseDownHandler);
+        (this.#element.shadowRoot || this.#element).removeEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
 
         this.#element.__cssGridResizeMananger = null;
         this.#element = null;
@@ -46,6 +50,7 @@ export class CSSGridResizeManager {
         this.#movePos = null;
         this.#dragElement = null;
         this.#bounds = null;
+        this.#inputMap = null;
     }
 
     async initialize() {
@@ -58,7 +63,7 @@ export class CSSGridResizeManager {
         await this.#setColumnsInPx();
         await this.#createModifiers();
 
-        (this.#element.shadowRoot || this.#element).addEventListener("mousedown", this.#mouseDownHandler);
+        (this.#element.shadowRoot || this.#element).addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler, { passive: false });
     }
 
     async #setColumnsInPx() {
@@ -88,33 +93,39 @@ export class CSSGridResizeManager {
     async #mouseDown(event) {
         if (event.target.dataset.type != "resize-column") return;
 
-        this.#startPos = {x: event.clientX - this.#bounds.x, y: event.clientY - this.#bounds.y};
-        this.#movePos = {x: event.clientX - this.#bounds.x, y: event.clientY - this.#bounds.y};
+        const x = clientX(event);
+        const y = clientY(event);
+
+        this.#startPos = {x: x - this.#bounds.x, y: y - this.#bounds.y};
+        this.#movePos = {x: x - this.#bounds.x, y: y - this.#bounds.y};
         this.#dragElement = event.target;
 
         event.target.style.background = "silver";
 
-        document.addEventListener("mousemove", this.#mouseMoveHandler);
-        document.addEventListener("mouseup", this.#mouseUpHandler);
+        document.addEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler, { passive: false });
+        document.addEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler, { passive: false });
 
         event.preventDefault();
         this.#animateHandler();
     }
 
     async #mouseMove(event) {
-        this.#movePos.x = event.clientX - this.#bounds.x - 4;
-        this.#movePos.y = event.clientY - this.#bounds.y - 4;
+        this.#movePos.x = clientX(event) - this.#bounds.x - 4;
+        this.#movePos.y = clientY(event) - this.#bounds.y - 4;
         event.preventDefault();
     }
 
     async #mouseUp(event) {
-        const difference = { x: event.clientX - this.#startPos.x - this.#bounds.x - 4, y: event.clientY - this.#startPos.y - this.#bounds.y - 4 };
+        const x = clientX(event);
+        const y = clientY(event);
+
+        const difference = { x: x - this.#startPos.x - this.#bounds.x - 4, y: y - this.#startPos.y - this.#bounds.y - 4 };
         const column = Number(this.#dragElement.dataset.column);
 
         this.#dragElement.style.background = "transparent";
 
-        document.removeEventListener("mousemove", this.#mouseMoveHandler);
-        document.removeEventListener("mouseup", this.#mouseUpHandler);
+        document.removeEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
+        document.removeEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
 
         this.#dragElement = null;
         this.#startPos = null;

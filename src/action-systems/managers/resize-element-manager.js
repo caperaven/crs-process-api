@@ -26,7 +26,7 @@ export class ResizeElementManager {
 
         this.#inputMap = getMouseInputMap();
 
-        this.#element.addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
+        this.#element.addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler, { passive: false });
         element.__resizeManager = this;
     }
 
@@ -75,8 +75,8 @@ export class ResizeElementManager {
         this.#options.max.width = this.#options.max.width || Number.MAX_VALUE;
         this.#options.max.height = this.#options.max.height || Number.MAX_VALUE;
 
-        document.addEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
-        document.addEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
+        document.addEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler, { passive: false });
+        document.addEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler, { passive: false });
     }
 
     #mouseMove(event) {
