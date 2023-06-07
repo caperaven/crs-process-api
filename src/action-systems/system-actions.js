@@ -26,6 +26,7 @@ export class SystemActions {
      * @param item {object} - The current item being processed.
      *
      * @param step.args.source {string} - The source to copy to the clipboard.
+     * @param [step.args.shouldStringify {boolean}] - JSON stringify the value default is true.
      *
      * @returns {Promise<void>}
      *
@@ -44,8 +45,10 @@ export class SystemActions {
      */
     static async copy_to_clipboard(step, context, process, item) {
         let value = await crs.process.getValue(step.args.source, context, process, item);
-        let str = JSON.stringify(value);
-        navigator.clipboard.writeText(str);
+        const shouldStringify = await crs.process.getValue(step.args.shouldStringify, context, process, item) ?? true;
+
+        const str = shouldStringify === true ? JSON.stringify(value) : value;
+        await navigator.clipboard.writeText(str);
     }
 
     /**
