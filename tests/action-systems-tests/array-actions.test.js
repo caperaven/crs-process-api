@@ -347,7 +347,7 @@ Deno.test("delete_properties: delete a multiple properties from an array of obje
     //Act
     await crs.call("array", "delete_properties", {
         source: testData,
-        properties: ["id","id1","field1"]
+        properties: ["id", "id1", "field1"]
     });
 
     //Assert
