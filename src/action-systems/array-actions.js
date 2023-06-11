@@ -650,6 +650,22 @@ export class ArrayActions {
      * @param step.args.source {string|[]} - source array objects to delete properties from
      * @param step.args.properties {string|[]} - array of properties to delete
      *
+     * @example <caption>javascript example</caption>
+     * await crs.call("array", "delete_properties", {
+     *      source: arrayOfObjects,
+     *      properties: ["field1", "field2"]
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "array",
+     *      "action": "delete_properties",
+     *      "args": {
+     *          "source": "$data.arrayOfObjects",
+     *          "properties": ["propertyName1", "propertyName2"]
+     *      }
+     * }
+     *
      * @return {Promise<void>}
      */
     static async delete_properties(step, context, process, item) {
