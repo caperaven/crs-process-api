@@ -322,14 +322,14 @@ export class ObjectActions {
      * @returns The newValue is being returned.
      *
      * @example <caption>javascript example</caption>
-     * const newValue =  await crs.call("object", "clone", {
+     * const newValue =  await crs.call("object", "json_clone", {
      *     source: "$context.obj1",
      * }, context, process, item);
      *
      * @example <caption>json example</caption>
      * {
      *    "type": "object",
-     *    "action": "clone",
+     *    "action": "json_clone",
      *     "args": {
      *         "source": "$context.obj1",
      *         "target": "$context.result"
