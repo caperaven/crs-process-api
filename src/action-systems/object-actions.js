@@ -138,7 +138,7 @@ export class ObjectActions {
             }
 
             if (property.indexOf("$item") != -1) {
-                target = process;
+                target = item;
             }
 
             await deleteOnPath(target, property);
@@ -483,7 +483,7 @@ async function getValueOnPath(obj, path) {
  */
 async function deleteOnPath(obj, path) {
     if (obj == null) return;
-    const parts = path.split("$context.").join("").split(".").join("/").split("/");
+    const parts = path.replace(/\$context\.|\$process\.|\$item\./g, "").replace(/\./g, "/").split("/");
     let target = obj;
 
     const collection = [obj];
