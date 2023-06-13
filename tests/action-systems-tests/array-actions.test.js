@@ -310,6 +310,50 @@ Deno.test("map_assign_data: map b and add d", async () => {
     assertEquals(context.result, expected);
 });
 
+Deno.test("delete_properties: delete a single property from an array of objects", async () => {
+    //Arrange
+    const testData = [
+        {id: 'xx', field1: 'xx', field2: 'xx'},
+        {id: 'yy', field1: 'yy', field2: 'yy'},
+        {id: 'zz', field1: 'zz', field2: 'zz'}
+    ]
+    const assertData = [
+        {field1: 'xx', field2: 'xx'},
+        {field1: 'yy', field2: 'yy'},
+        {field1: 'zz', field2: 'zz'}
+    ]
+    //Act
+    await crs.call("array", "delete_properties", {
+        source: testData,
+        properties: ["id"]
+    });
+
+    //Assert
+    assertEquals(testData, assertData);
+});
+
+Deno.test("delete_properties: delete a multiple properties from an array of objects", async () => {
+    //Arrange
+    const testData = [
+        {id: 'xx', id1: 'xx', field1: 'xx', field2: 'xx'},
+        {id: 'yy', id1: 'yy', field1: 'yy', field2: 'yy'},
+        {id: 'zz', id1: 'zz', field1: 'zz', field2: 'zz'}
+    ]
+    const assertData = [
+        {field2: 'xx'},
+        {field2: 'yy'},
+        {field2: 'zz'}
+    ]
+    //Act
+    await crs.call("array", "delete_properties", {
+        source: testData,
+        properties: ["id", "id1", "field1"]
+    });
+
+    //Assert
+    assertEquals(testData, assertData);
+});
+
 // Edge case test: empty input
 Deno.test("map_assign_data: empty input", async () => {
     const step = {
@@ -354,3 +398,48 @@ Deno.test("map_assign_data: map from a null value", async () => {
     assertEquals(result, [{a: null, b: null}]);
 });
 
+//Edge case test: delete a property that does not exist
+Deno.test("delete_properties:delete a property that does not exist", async () => {
+    //Arrange
+    const testData = [
+        {id: 'xx', field1: 'xx', field2: 'xx'},
+        {id: 'yy', field1: 'yy', field2: 'yy'},
+        {id: 'zz', field1: 'zz', field2: 'zz'}
+    ]
+    const assertData = [
+        {id: 'xx', field1: 'xx', field2: 'xx'},
+        {id: 'yy', field1: 'yy', field2: 'yy'},
+        {id: 'zz', field1: 'zz', field2: 'zz'}
+    ]
+    //Act
+    await crs.call("array", "delete_properties", {
+        source: testData,
+        properties: ["name"]
+    });
+
+    //Assert
+    assertEquals(testData, assertData);
+});
+
+//Edge case test: delete a null property
+Deno.test("delete_properties: delete a null property", async () => {
+    //Arrange
+    const testData = [
+        {id: 'xx', field1: 'xx', field2: 'xx'},
+        {id: 'yy', field1: 'yy', field2: 'yy'},
+        {id: 'zz', field1: 'zz', field2: 'zz'}
+    ]
+    const assertData = [
+        {id: 'xx', field1: 'xx', field2: 'xx'},
+        {id: 'yy', field1: 'yy', field2: 'yy'},
+        {id: 'zz', field1: 'zz', field2: 'zz'}
+    ]
+    //Act
+    await crs.call("array", "delete_properties", {
+        source: testData,
+        properties: [null]
+    });
+
+    //Assert
+    assertEquals(testData, assertData);
+});
