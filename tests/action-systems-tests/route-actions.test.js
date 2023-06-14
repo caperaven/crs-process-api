@@ -124,4 +124,15 @@ describe("route actions tests", async () => {
         assertEquals(parameters.environment, "new_environment");
         assertEquals(parameters.view, "new_view");
     })
+
+    it ("set_queries", async () => {
+        await crs.call("route", "set_queries", {
+            queries: {
+                id: "2000"
+            }
+        })
+
+        const queries = globalThis.routeManager.routeDefinition.query;
+        assertEquals(queries.id, "2000");
+    })
 })

@@ -276,6 +276,41 @@ export class RouteActions {
 
         globalThis.routeManager?.setParameters(parameters);
     }
+
+    /**
+     * @method set_queries - set the queries for a route definition
+     * @param step {object} - step object from the process
+     * @param context {object} - context object from the process
+     * @param process {object} - process object from the process
+     * @param item {object} - item object from the process
+     *
+     * @param step.args.queries {object} - route queries and values to date
+     * @returns {Promise<void>}
+     *
+     * @example <caption>Javascript</caption>
+     * await crs.call("route", "set_queries", {
+     *     queries: {
+     *          "id": "2000"
+     *     }
+     * })
+     *
+     * @example <caption>JSON</caption>
+     * {
+     *    "type": "route",
+     *    "action": "set_queries",
+     *    "args": {
+     *        "queries": {
+     *            "id": "2000"
+     *        }
+     *    }
+     * }
+     */
+    static async set_queries(step, context, process, item) {
+        const queries = await crs.process.getValue(step.args.queries, context, process, item);
+        if (queries == null) return;
+
+        globalThis.routeManager?.setQueries(queries);
+    }
 }
 
 crs.intent.route = RouteActions;

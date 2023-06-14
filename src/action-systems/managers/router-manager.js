@@ -113,4 +113,12 @@ export class RouteManager {
             this.#routeDefinition.params[key] = parameters[key];
         }
     }
+
+    setQueries(queries) {
+        if (this.#routeDefinition == null) return;
+
+        for (const key of Object.keys(queries)) {
+            this.#routeDefinition.query[key] = queries[key];
+        }
+    }
 }
