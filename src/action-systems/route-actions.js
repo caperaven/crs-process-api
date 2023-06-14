@@ -146,6 +146,136 @@ export class RouteActions {
 
         return result;
     }
+
+    /**
+     * @method createUrl - create a url from a route definition
+     * @param step {object} - step object from the process
+     * @param context {object} - context object from the process
+     * @param process {object} - process object from the process
+     * @param item {object} - item object from the process
+     *
+     * @param step.args.definition {string} - route name
+     * @returns {Promise<void>}
+     */
+    static async create_url(step, context, process, item) {
+        const definition = await crs.process.getValue(step.args.definition, context, process, item);
+        if (definition == null) return;
+
+        const protocol = [definition.protocol || "http", "://"].join("");
+        const host = definition.host;
+
+        const parameters = [];
+        const query = [];
+
+        if (definition.params) {
+            for (const key in definition.params) {
+                parameters.push(definition.params[key]);
+            }
+        }
+
+        if (definition.query) {
+            for (const key in definition.query) {
+                query.push([`${key}=${definition.query[key]}`]);
+            }
+        }
+
+        const paramString = parameters.join("/");
+        const queryString = query.join("&");
+
+        return `${protocol}${host}/${paramString}?${queryString}`;
+    }
+
+    /**
+     * @method goto - navigate to a route based on a route definition
+     * @param step {object} - step object from the process
+     * @param context {object} - context object from the process
+     * @param process {object} - process object from the process
+     * @param item {object} - item object from the process
+     *
+     * @param step.args.definition {object} - route definition
+     * @returns {Promise<void>}
+     *
+     * @example <caption>Javascript</caption>
+     * await crs.call("route", "goto", {
+     *     definition: {
+     *         protocol: "https",
+     *         host: "www.google.com",
+     *         params: {
+     *             "connection"  : "connection",
+     *             "environment" : "en-us",
+     *             "view"        : "search"
+     *         },
+     *         query: {
+     *              "q": "crs",
+     *              "id": "1000"
+     *         }
+     *     }
+     * });
+     *
+     * @example <caption>JSON</caption>
+     * {
+     *    "type": "route",
+     *    "action": "goto",
+     *    "args": {
+     *        "definition": {
+     *        "protocol": "https",
+     *        "host": "www.google.com",
+     *        "params": {
+     *            "connection": "connection",
+     *            "environment": "en-us",
+     *            "view": "search"
+     *        },
+     *        "query": {
+     *            "q": "crs",
+     *            "id": "1000"
+     *        }
+     *    }
+     * }
+     */
+    static async goto(step, context, process, item) {
+        await globalThis.routeManager?.goto(step.args.definition);
+    }
+
+    /**
+     * @method set_parameters - set the parameters for a route definition
+     * You must have defined the parameter in the definition you registered
+     * Use refresh when you are ready to update the URL again
+     * @param step {object} - step object from the process
+     * @param context {object} - context object from the process
+     * @param process {object} - process object from the process
+     * @param item {object} - item object from the process
+     *
+     * @param step.args.parameters {object} - route parameters and values to date
+     * @returns {Promise<void>}
+     *
+     * @example <caption>Javascript</caption>
+     * await crs.call("route", "set_parameters", {
+     *    parameters: {
+     *      "connection": "contoso",
+     *      "environment": "en-us",
+     *      "view": "search"
+     *    }
+     * });
+     *
+     * @example <caption>JSON</caption>
+     * {
+     *     "type": "route",
+     *     "action": "set_parameters",
+     *     "args": {
+     *         "parameters": {
+     *             "connection": "contoso",
+     *             "environment": "en-us",
+     *             "view": "search"
+     *         }
+     *     }
+     * }
+     */
+    static async set_parameters(step, context, process, item) {
+        const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
+        if (parameters == null) return;
+
+        globalThis.routeManager?.setParameters(parameters);
+    }
 }
 
 crs.intent.route = RouteActions;

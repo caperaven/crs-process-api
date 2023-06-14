@@ -4,6 +4,12 @@ import {init} from "./../mockups/init.js";
 
 await init();
 
+globalThis.location = {
+    href: ""
+}
+
+globalThis.requestAnimationFrame = (callback) => callback();
+
 beforeAll(async () => {
     await import("./../../src/action-systems/route-actions.js");
     await import("./../../src/action-systems/dom-observer-actions.js");
@@ -29,7 +35,7 @@ describe("route actions tests", async () => {
 
     it ("parse", async () => {
         const result = await crs.call("route", "parse", {
-            url: "https://www.google.com/connection/en-us/search?q=crs"
+            url: "https://www.google.com/connection/en-us/search?q=crs&id=1000"
         });
 
         assertEquals(result, {
@@ -41,8 +47,81 @@ describe("route actions tests", async () => {
                 "view"        : "search"
             },
             query: {
-                "q": "crs"
+                "q": "crs",
+                "id": "1000"
             }
         })
+    })
+
+    it ("create_url", async () => {
+        const result = await crs.call("route", "create_url", {
+            definition: {
+                protocol: "https",
+                host: "www.google.com",
+                params: {
+                    "connection"  : "connection",
+                    "environment" : "en-us",
+                    "view"        : "search"
+                },
+                query: {
+                    "q": "crs",
+                    "id": "1000"
+                }
+            }
+        });
+
+        assertEquals(result, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
+    })
+
+    it ("goto", async () => {
+        await crs.call("route", "goto", {
+            definition: {
+                protocol: "https",
+                host: "www.google.com",
+                params: {
+                    "connection"  : "connection",
+                    "environment" : "en-us",
+                    "view"        : "search"
+                },
+                query: {
+                    "q": "crs",
+                    "id": "1000"
+                }
+            }
+        });
+
+        const setLocation = globalThis.location.href;
+        assertEquals(setLocation, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
+    })
+
+    it ("set_parameters", async () => {
+        await crs.call("route", "goto", {
+            definition: {
+                protocol: "https",
+                host: "www.google.com",
+                params: {
+                    "connection"  : "connection",
+                    "environment" : "en-us",
+                    "view"        : "search"
+                },
+                query: {
+                    "q": "crs",
+                    "id": "1000"
+                }
+            }
+        });
+
+        await crs.call("route", "set_parameters", {
+            parameters: {
+                "connection"  : "new_connection",
+                "environment" : "new_environment",
+                "view"        : "new_view"
+            }
+        })
+
+        const parameters = globalThis.routeManager.routeDefinition.params;
+        assertEquals(parameters.connection, "new_connection");
+        assertEquals(parameters.environment, "new_environment");
+        assertEquals(parameters.view, "new_view");
     })
 })

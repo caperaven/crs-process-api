@@ -59,10 +59,24 @@
 // }
 
 export class RouteManager {
+    /**
+     * @field #definition - this defines how to interpret the url
+     */
     #definition;
+
+    /**
+     * @field #routeDefinition - this defines the current route
+     */
+    #routeDefinition;
+
+    #updatingRoute = false;
 
     get definition() {
         return this.#definition;
+    }
+
+    get routeDefinition() {
+        return Object.freeze(this.#routeDefinition);
     }
 
     constructor(definition) {
@@ -71,5 +85,32 @@ export class RouteManager {
 
     dispose() {
         this.#definition = null;
+    }
+
+    goto(routeDefinition) {
+        this.#routeDefinition = routeDefinition;
+        return this.refresh();
+    }
+
+    refresh() {
+        return new Promise(async resolve => {
+            const url = await crs.call("route", "create_url", { definition: this.#routeDefinition });
+
+            this.#updatingRoute = true;
+            window.location.href = url;
+
+            requestAnimationFrame(() => {
+                this.#updatingRoute = false;
+                resolve();
+            })
+        })
+    }
+
+    setParameters(parameters) {
+        if (this.#routeDefinition == null) return;
+
+        for (const key of Object.keys(parameters)) {
+            this.#routeDefinition.params[key] = parameters[key];
+        }
     }
 }
