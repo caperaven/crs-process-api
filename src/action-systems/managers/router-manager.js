@@ -65,11 +65,18 @@ export class RouteManager {
     #definition;
 
     /**
+     * @field #callback - this is the callback that will be called when the route changes
+     */
+    #callback;
+
+    /**
      * @field #routeDefinition - this defines the current route
      */
     #routeDefinition;
 
     #updatingRoute = false;
+
+    #onpopstateChangedHandler = this.#onpopstate.bind(this);
 
     get definition() {
         return this.#definition;
@@ -79,12 +86,27 @@ export class RouteManager {
         return Object.freeze(this.#routeDefinition);
     }
 
-    constructor(definition) {
+    constructor(definition, callback) {
         this.#definition = definition;
+        this.#callback = callback;
+
+        window.addEventListener("popstate", this.#onpopstateChangedHandler);
     }
 
     dispose() {
+        window.removeEventListener("popstate", this.#onpopstateChangedHandler);
+
         this.#definition = null;
+        this.#callback = null;
+        this.#routeDefinition = null;
+        this.#onpopstateChangedHandler = null;
+    }
+
+    async #onpopstate(event) {
+        const url = window.location.href;
+        this.#routeDefinition = crs.call("route", "parse", { url });
+
+        await this.#callback?.(this.#routeDefinition);
     }
 
     async goto(routeDefinition) {
@@ -100,13 +122,11 @@ export class RouteManager {
         return new Promise(async resolve => {
             const url = await crs.call("route", "create_url", { definition: this.#routeDefinition });
 
-            this.#updatingRoute = true;
-            window.location.href = url;
+            history.pushState({ search: this.#routeDefinition.query }, null, url);
 
-            requestAnimationFrame(() => {
-                this.#updatingRoute = false;
-                resolve();
-            })
+            await this.#callback?.(this.#routeDefinition);
+
+            resolve();
         })
     }
 

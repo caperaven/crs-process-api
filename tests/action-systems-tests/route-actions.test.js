@@ -4,15 +4,24 @@ import {init} from "./../mockups/init.js";
 
 await init();
 
+let changeDef = null;
+let stateDef = null;
+
 globalThis.location = {
     href: ""
 }
 
 globalThis.requestAnimationFrame = (callback) => callback();
+globalThis.history = {
+    pushState: (state, title, url) => {
+        stateDef = {state, url}
+    }
+}
 
 beforeAll(async () => {
     await import("./../../src/action-systems/route-actions.js");
     await import("./../../src/action-systems/dom-observer-actions.js");
+
     await crs.call("route", "register", {
         definition: {
             parameters: {
@@ -20,7 +29,8 @@ beforeAll(async () => {
                 1: "environment",
                 2: "view"
             }
-        }
+        },
+        callback: async (def) => changeDef = def
     });
 })
 
@@ -74,33 +84,34 @@ describe("route actions tests", async () => {
     })
 
     it ("goto", async () => {
-        await crs.call("route", "goto", {
-            definition: {
-                protocol: "https",
-                host: "www.google.com",
-                params: {
-                    "connection"  : "connection",
+        const definition = {
+            protocol: "https",
+            host: "www.google.com",
+            params: {
+                "connection"  : "connection",
                     "environment" : "en-us",
                     "view"        : "search"
-                },
-                query: {
-                    "q": "crs",
-                    "id": "1000"
-                }
+            },
+            query: {
+                "q": "crs",
+                "id": "1000"
             }
-        });
+        }
 
-        const setLocation = globalThis.location.href;
-        assertEquals(setLocation, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
+        await crs.call("route", "goto", { definition });
+
+        assertEquals(changeDef, definition);
+        assertEquals(stateDef.url, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
+        assertEquals(stateDef.state, { search: { q: "crs", id: "1000" } });
     })
 
     it ("goto using string path", async () => {
         await crs.call("route", "goto", {
-            definition: "https://www.google.com/connection/en-us/search?q=crs&id=1000"
+            definition: "https://www.google.com/connection/en-us/search?q=crs&id=2000"
         })
 
-        const setLocation = globalThis.location.href;
-        assertEquals(setLocation, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
+        assertEquals(stateDef.url, "https://www.google.com/connection/en-us/search?q=crs&id=2000");
+        assertEquals(stateDef.state, { search: { q: "crs", id: "2000" } });
     })
 
     it ("set_parameters", async () => {

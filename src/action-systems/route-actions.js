@@ -40,7 +40,8 @@ export class RouteActions {
      */
     static async register(step, context, process, item) {
         const definition = await crs.process.getValue(step.args.definition, context, process, item);
-        globalThis.routeManager = new RouteManager(definition);
+        const callback = await crs.process.getValue(step.args.callback, context, process, item);
+        globalThis.routeManager = new RouteManager(definition, callback);
     }
 
     /**
@@ -246,6 +247,28 @@ export class RouteActions {
     }
 
     /**
+     * @method refresh - refresh the current route
+     * @param step {object} - step object from the process
+     * @param context {object} - context object from the process
+     * @param process {object} - process object from the process
+     * @param item {object} - item object from the process
+     * @returns {Promise<void>}
+     *
+     * @example <caption>Javascript</caption>
+     * await crs.call("route", "refresh");
+     *
+     * @example <caption>JSON</caption>
+     * {
+     *   "type": "route",
+     *   "action": "refresh"
+     *   "args": {}
+     * }
+     */
+    static async refresh(step, context, process, item) {
+        await globalThis.routeManager?.refresh();
+    }
+
+    /**
      * @method set_parameters - set the parameters for a route definition
      * You must have defined the parameter in the definition you registered
      * Use refresh when you are ready to update the URL again
@@ -283,7 +306,13 @@ export class RouteActions {
         const parameters = await crs.process.getValue(step.args.parameters, context, process, item);
         if (parameters == null) return;
 
-        globalThis.routeManager?.setParameters(parameters);
+        const refresh = await crs.process.getValue(step.args.refresh || false, context, process, item);
+
+        globalThis.routeManager.setParameters(parameters);
+
+        if (refresh) {
+            await globalThis.routeManager.refresh();
+        }
     }
 
     /**
@@ -320,7 +349,15 @@ export class RouteActions {
         const queries = await crs.process.getValue(step.args.queries, context, process, item);
         if (queries == null) return;
 
+        const refresh = await crs.process.getValue(step.args.refresh || false, context, process, item);
+
+
         globalThis.routeManager?.setQueries(queries);
+
+        if (refresh) {
+            await globalThis.routeManager.refresh();
+        }
+
     }
 }
 
