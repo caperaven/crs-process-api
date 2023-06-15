@@ -129,7 +129,8 @@ describe("route actions tests", async () => {
         await crs.call("route", "set_queries", {
             queries: {
                 id: "2000"
-            }
+            },
+            refresh: true
         })
 
         const queries = globalThis.routeManager.routeDefinition.query;

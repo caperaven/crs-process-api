@@ -517,6 +517,24 @@ export class IndexDBManager {
         return await this.#performWorkerAction("updateById", [name, store, models], crypto.randomUUID());
     }
 
+    async change_by_index(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const index = await crs.process.getValue(step.args.index, context, process, item);
+        const changes = await crs.process.getValue(step.args.changes, context, process, item);
+
+        return await this.#performWorkerAction("changeByIndex", [name, store, index, changes], crypto.randomUUID());
+    }
+
+    async change_by_id(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const id = await crs.process.getValue(step.args.id, context, process, item);
+        const changes = await crs.process.getValue(step.args.changes, context, process, item);
+
+        return await this.#performWorkerAction("changeById", [name, store, id, changes], crypto.randomUUID());
+    }
+
     /**
      * @method delete_old-db - delete old databases, this checks the meta database and deletes databases that exceed the defined duration
      * @param step {object} - step to process
@@ -611,6 +629,44 @@ export class IndexDBManager {
         const ids = await crs.process.getValue(step.args.ids, context, process, item);
 
         return await this.#performWorkerAction("deleteById", [name, store, ids], crypto.randomUUID());
+    }
+
+    /**
+     * @method delete_by_index - delete a record from the database by its index or collection of indexes
+     * @param step {object} - step to process
+     * @param context {object} - context of the process
+     * @param process {object} - process to run
+     * @param item {object} - item to process
+     *
+     * @param step.args.name {string} - name of the database to work with
+     * @param step.args.store {string} - store to get the records from
+     * @param step.args.index {number|array[number]} - index field value of the record to get
+     * @returns {Promise<unknown>}
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("idb", "delete_by_index", {
+     *   "name": "data-manager",
+     *   "store": "table_01",
+     *   "index": [1, 101]
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *    "type": "idb",
+     *    "action": "delete_by_index",
+     *    "args": {
+     *        "name": "data-manager",
+     *        "store": "table_01",
+     *        "index": [1, 101]
+     *    }
+     * }
+     */
+    async delete_by_index(step, context, process, item) {
+        const name = await crs.process.getValue(step.args.name, context, process, item);
+        const store = await crs.process.getValue(step.args.store, context, process, item);
+        const index = await crs.process.getValue(step.args.index, context, process, item);
+
+        return await this.#performWorkerAction("deleteByIndex", [name, store, index], crypto.randomUUID());
     }
 }
 

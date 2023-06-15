@@ -156,6 +156,9 @@ export class RouteActions {
      *
      * @param step.args.definition {string} - route name
      * @returns {Promise<void>}
+     *
+     * todo:
+     * 1. add url encode on the result string
      */
     static async create_url(step, context, process, item) {
         const definition = await crs.process.getValue(step.args.definition, context, process, item);
@@ -228,9 +231,15 @@ export class RouteActions {
      *        "query": {
      *            "q": "crs",
      *            "id": "1000"
-     *        }
+     *        },
+     *        "tab_id": "edit",
+     *        "target": "$context.routeResult"
      *    }
      * }
+     *
+     * Todo:
+     * 1. Add support to provide string instead
+     * 2. Add new tab support
      */
     static async goto(step, context, process, item) {
         await globalThis.routeManager?.goto(step.args.definition);
@@ -291,7 +300,9 @@ export class RouteActions {
      * await crs.call("route", "set_queries", {
      *     queries: {
      *          "id": "2000"
-     *     }
+     *     },
+     *     "tab_id": "edit",
+     *     "refresh": true
      * })
      *
      * @example <caption>JSON</caption>
