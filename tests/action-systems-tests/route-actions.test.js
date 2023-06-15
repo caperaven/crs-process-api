@@ -94,6 +94,15 @@ describe("route actions tests", async () => {
         assertEquals(setLocation, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
     })
 
+    it ("goto using string path", async () => {
+        await crs.call("route", "goto", {
+            definition: "https://www.google.com/connection/en-us/search?q=crs&id=1000"
+        })
+
+        const setLocation = globalThis.location.href;
+        assertEquals(setLocation, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
+    })
+
     it ("set_parameters", async () => {
         await crs.call("route", "goto", {
             definition: {

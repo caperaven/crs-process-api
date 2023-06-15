@@ -87,12 +87,16 @@ export class RouteManager {
         this.#definition = null;
     }
 
-    goto(routeDefinition) {
+    async goto(routeDefinition) {
+        if (typeof routeDefinition === "string") {
+            routeDefinition = await crs.call("route", "parse", { url: routeDefinition })
+        }
+
         this.#routeDefinition = routeDefinition;
-        return this.refresh();
+        return await this.refresh();
     }
 
-    refresh() {
+    async refresh() {
         return new Promise(async resolve => {
             const url = await crs.call("route", "create_url", { definition: this.#routeDefinition });
 
