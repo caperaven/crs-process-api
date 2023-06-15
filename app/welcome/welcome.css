@@ -1,0 +1,21 @@
+:host {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+ul {
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 0.25rem;
+    border-bottom: 1px solid silver;
+}
+
+li[aria-hidden] {
+    display: none;
+}

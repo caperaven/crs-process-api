@@ -12,6 +12,48 @@
     border: solid 1px blue;
 }
 
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 100%;
+    font-display: swap;
+    src: url(/fonts/OpenSans-Regular.ttf) format('truetype');
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+html, body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    fill: var(--text);
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overscroll-behavior: none;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 3rem auto 2rem;
+}
+
+header, footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+nav {
+    overflow-y: auto;
+}
+
+.hide {
+    display: none;
+}
+
 .drag-marker {
     position: relative;
     height: 0.5rem;
@@ -40,4 +82,10 @@
     height: 0.5rem;
     background-color: #0055bb;
     border-radius: 50%;
+}
+
+view-loader {
+    display: block;
+    width: 100%;
+    height: 100%;
 }

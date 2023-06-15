@@ -59,6 +59,8 @@
 // }
 
 export class RouteManager {
+    #routes;
+
     /**
      * @field #definition - this defines how to interpret the url
      */
@@ -86,16 +88,20 @@ export class RouteManager {
         return Object.freeze(this.#routeDefinition);
     }
 
-    constructor(definition, callback) {
+    constructor(routes, definition, callback) {
+        this.#routes = routes;
         this.#definition = definition;
         this.#callback = callback;
 
-        window.addEventListener("popstate", this.#onpopstateChangedHandler);
+        this.goto(window.location.href).then(() => {
+            addEventListener("popstate", this.#onpopstateChangedHandler);
+        })
     }
 
     dispose() {
-        window.removeEventListener("popstate", this.#onpopstateChangedHandler);
+        removeEventListener("popstate", this.#onpopstateChangedHandler);
 
+        this.#routes = null;
         this.#definition = null;
         this.#callback = null;
         this.#routeDefinition = null;
@@ -103,6 +109,8 @@ export class RouteManager {
     }
 
     async #onpopstate(event) {
+        event.preventDefault();
+
         const url = window.location.href;
         this.#routeDefinition = crs.call("route", "parse", { url });
 
@@ -115,7 +123,7 @@ export class RouteManager {
         }
 
         this.#routeDefinition = routeDefinition;
-        return await this.refresh();
+        await this.refresh();
     }
 
     async refresh() {

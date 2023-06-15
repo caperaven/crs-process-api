@@ -1,4 +1,4 @@
-export default class Welcome extends crsbinding.classes.ViewBase {
+export default class Welcome extends HTMLElement {
     async connectedCallback() {
         await super.connectedCallback();
         await this.buildItems();

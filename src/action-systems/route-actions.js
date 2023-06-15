@@ -1,7 +1,9 @@
 import {RouteManager} from "./managers/router-manager.js";
 
 /**
- * @class RouteActions - manage URL and navigation in application
+ * @class RouteActions - manage URL and navigation in application.
+ * Note: you need to set your caddy file to redirect all requests to index.html
+ * add this to the caddy file (copy and past as is): try_files {path} /index.html
  */
 export class RouteActions {
     static async perform(step, context, process, item) {
@@ -40,8 +42,9 @@ export class RouteActions {
      */
     static async register(step, context, process, item) {
         const definition = await crs.process.getValue(step.args.definition, context, process, item);
+        const routes = await crs.process.getValue(step.args.routes, context, process, item);
         const callback = await crs.process.getValue(step.args.callback, context, process, item);
-        globalThis.routeManager = new RouteManager(definition, callback);
+        globalThis.routeManager = new RouteManager(routes, definition, callback);
     }
 
     /**
@@ -184,9 +187,9 @@ export class RouteActions {
         }
 
         const paramString = parameters.join("/");
-        const queryString = query.join("&");
+        const queryString = query.length === 0 ? "" : `?${query.join("&")}`;
 
-        return `${protocol}${host}/${paramString}?${queryString}`;
+        return `${protocol}${host}/${paramString}${queryString}`;
     }
 
     /**
