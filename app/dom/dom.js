@@ -1,10 +1,21 @@
-export default class Dom extends crsbinding.classes.ViewBase {
+export default class Dom extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return false;
+    }
+
     get typeId() {
         return "MyTypeIdValue"
     }
 
     async connectedCallback() {
         await super.connectedCallback();
+    }
+
+    async preLoad() {
         crs.processSchemaRegistry.add((await (import("./schemas/elements.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/attributes.js"))).schema);
         crs.processSchemaRegistry.add((await (import("./schemas/styles.js"))).schema);
@@ -19,7 +30,7 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async createAnimationLayer() {
-        const template = document.querySelector("#highlight-template");
+        const template = this.shadowRoot.querySelector("#highlight-template");
 
         crs.call("dom", "get_animation_layer");
 
@@ -393,19 +404,19 @@ export default class Dom extends crsbinding.classes.ViewBase {
     }
 
     async getElementInstance() {
-        const target = document.querySelector("#get-element-target");
-        const element = await crs.dom.get_element(target);
+        const target = this.shadowRoot.querySelector("#get-element-target");
+        const element = this.shadowRoot.querySelector(target);
         element.textContent = "element instance";
     }
 
     async getElementQuery() {
-        const element = await crs.dom.get_element("#get-element-target");
+        const element = this.shadowRoot.querySelector("#get-element-target");
         element.textContent = "element query";
     }
 
     async getElementStep() {
         const context = {
-            element: document.querySelector("#get-element-target")
+            element: this.shadowRoot.querySelector("#get-element-target")
         }
 
         const element = await crs.call("dom", "get_element", {

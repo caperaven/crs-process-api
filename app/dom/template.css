@@ -1,0 +1,7 @@
+ul.summary li {
+    padding: 0.5rem;
+}
+
+ul.summary li span {
+    margin-right: 1rem;
+}

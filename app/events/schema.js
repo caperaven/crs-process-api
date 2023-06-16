@@ -22,7 +22,7 @@ export const schema = {
                 type: "events",
                 action: "post_message",
                 args: {
-                    element: "my-component",
+                    query: "my-component",
                     parameters: {
                         message: "Hello from post message"
                     }

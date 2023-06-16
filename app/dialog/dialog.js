@@ -1,9 +1,20 @@
 import {schema} from "./schema.js";
 
-export default class Input extends crsbinding.classes.ViewBase {
+export default class Input extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
-        crs.processSchemaRegistry.add(schema);
         await super.connectedCallback();
+    }
+
+    async preLoad() {
+        crs.processSchemaRegistry.add(schema);
     }
 
     async showDialog() {

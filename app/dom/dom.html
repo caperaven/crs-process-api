@@ -1,69 +1,5 @@
-<style>
-    #container {
-        padding: 0.5rem;
-    }
+<link rel="stylesheet" href="/app/dom/dom.css">
 
-    #container div {
-        margin: 0.5rem;
-        height: 2rem;
-        padding-left: 0.5rem;
-        display: flex;
-        align-items: center;
-    }
-
-    .toolbar {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 1rem;
-    }
-
-    .toolbar h2 {
-        flex: 1;
-        margin: 0;
-        padding: 0;
-    }
-
-    .toolbar button {
-        height: 2rem;
-    }
-
-    .bg_red {
-        background: red;
-    }
-
-    .fg_white {
-        color: white;
-    }
-
-    .card {
-        padding: 1rem;
-        background: #e6e6e6;
-        border: silver 1px solid;
-    }
-
-    .highlight {
-        background: #0055bb22;
-        color: #0055bb;
-        border: solid 1px #0055bb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    h2#css-properties {
-        --mybackground: hotpink;
-        --mycolor: white;
-        background-color: var(--mybackground);
-        color: var(--mycolor);
-    }
-
-    #resize-container {
-        width: 100px;
-        height: 100px;
-        background: hotpink;
-     }
-</style>
 <h2>Dom Example</h2>
 
 <template id="highlight-template">
@@ -117,7 +53,7 @@
         <h2>Styles</h2>
         <button id="btnGetStyle" click.call="getStyle">Get Style</button>
     </div>
-    <input id="edtStyle" value.bind="styleValue" style="background: #dadada"/>
+    <input id="edtStyle" value.bind="styleValue" />
     <button id="btnSetStyle" click.call="setStyle">Set Style</button>
 </section>
 
@@ -170,16 +106,16 @@
     </div>
 
     <strong>List 1</strong>
-    <ul id="list1" style="background: #dadada; border-radius: 5px; padding: 0.5rem; list-style: none">
+    <ul id="list1">
         <li id="item1">Item 1</li>
-        <li id="item2" style="background: #ff0090; color: white; padding :0.2rem">Item 2</li>
+        <li id="item2">Item 2</li>
         <li id="item3">Item 3</li>
         <li id="item4">Item 4</li>
         <li id="item5">Item 5</li>
     </ul>
 
     <strong>List 2</strong>
-    <ul id="list2" style="background: #dadada; border-radius: 5px; padding: 0.5rem"></ul>
+    <ul id="list2"></ul>
 </section>
 
 <section>
@@ -208,7 +144,7 @@
     </div>
 </section>
 
-<selection id="cloneTarget" style="position: relative">
+<selection id="cloneTarget">
     <button id="clickClone" click.call="clone">Clone</button>
 </selection>
 
