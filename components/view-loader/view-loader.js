@@ -3,11 +3,14 @@ import "./../../src/action-systems/route-actions.js";
 class ViewLoader extends HTMLElement {
     #rootFolder;
     #callbackHandler = this.#callback.bind(this);
+    #clickHandler = this.#click.bind(this);
     #currentView = "";
     #defaultView = "";
     #viewModel;
 
     async connectedCallback() {
+        document.querySelector("nav").addEventListener("click", this.#clickHandler);
+
         const routesPath = this.dataset.routes;
         const json = await fetch(routesPath).then(response => response.json());
 
@@ -22,10 +25,15 @@ class ViewLoader extends HTMLElement {
     }
 
     async disconnectedCallback() {
+        document.querySelector("nav").removeEventListener("click", this.#clickHandler);
         await crs.call("route", "unregister", {});
 
         this.#rootFolder = null;
         this.#callbackHandler = null;
+        this.#clickHandler = null;
+        this.#currentView = null;
+        this.#defaultView = null;
+        this.#viewModel = null;
     }
 
     async #callback(args) {
@@ -42,6 +50,14 @@ class ViewLoader extends HTMLElement {
         }
         else {
             this.#viewModel.routeChanged?.(args);
+        }
+    }
+
+    async #click(event) {
+        const target = event.composedPath()[0].closest('a');
+        if (target && target.href.startsWith(window.location.origin)) {
+            event.preventDefault();
+            await crs.call("route", "goto", { definition: target.href })
         }
     }
 }

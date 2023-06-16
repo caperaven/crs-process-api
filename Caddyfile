@@ -17,9 +17,9 @@ localhost:1100 {
 		X-XSS-Protection "1; mode=block"
 		Permission-Policy " accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=(), clipboard-read=(self), clipboard-write=(self)"
 	}
-    try_files {path} /index.html
 	uri strip_prefix /contoso/test
 	uri strip_prefix /system/admin
-	file_server browse
+	try_files {path} /index.html
+	file_server
 	encode gzip
 }

@@ -106,14 +106,12 @@ export class RouteManager {
         this.#callback = null;
         this.#routeDefinition = null;
         this.#onpopstateChangedHandler = null;
+        this.#updatingRoute = null;
     }
 
     async #onpopstate(event) {
         event.preventDefault();
-
-        const url = window.location.href;
-        this.#routeDefinition = crs.call("route", "parse", { url });
-
+        this.#routeDefinition = await crs.call("route", "parse", { url: window.location.href })
         await this.#callback?.(this.#routeDefinition);
     }
 
@@ -123,17 +121,16 @@ export class RouteManager {
         }
 
         this.#routeDefinition = routeDefinition;
-        await this.refresh();
+
+        const url = await crs.call("route", "create_url", { definition: this.#routeDefinition });
+        history.pushState(null, null, url);
+
+        await this.#callback?.(this.#routeDefinition);
     }
 
     async refresh() {
         return new Promise(async resolve => {
-            const url = await crs.call("route", "create_url", { definition: this.#routeDefinition });
-
-            history.pushState({ search: this.#routeDefinition.query }, null, url);
-
             await this.#callback?.(this.#routeDefinition);
-
             resolve();
         })
     }

@@ -16,7 +16,7 @@ export default class Files extends crsbinding.classes.BindableElement {
 
     async disconnectedCallback() {
         await crs.call("files", "disable_dropzone", {
-            element: "#dropzone"
+            element: this.shadowRoot.querySelector("#dropzone")
         });
         await super.disconnectedCallback();
     }

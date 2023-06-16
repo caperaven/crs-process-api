@@ -19,6 +19,10 @@ export class IndexViewModel {
             providers: []
         })
     }
+
+    dispose() {
+        this.#bid = null;
+    }
 }
 
 globalThis.indexViewModel = new IndexViewModel();
