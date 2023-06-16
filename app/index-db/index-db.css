@@ -1,0 +1,56 @@
+.animation-bar {
+    border: 1px solid silver;
+    padding: 0.5rem;
+}
+
+.rect {
+    width: 25px;
+    height: 25px;
+    background-color: red;
+    animation: move 1s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(300px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+[role="toolbar"] {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem;
+    border: silver 1px solid;
+}
+
+.form {
+    border: 1px solid silver;
+    padding: 0.5rem;
+}
+
+.form label {
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem;
+}
+
+.form label div {
+    width: 100px;
+}
+
+.form-toolbar {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem;
+    border: silver 1px solid;
+}
+
+.form-toolbar div {
+    width: 100px;
+}
