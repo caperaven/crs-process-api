@@ -1,4 +1,12 @@
-export default class Styles extends crsbinding.classes.ViewBase {
+export default class Styles extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
     }
