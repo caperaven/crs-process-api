@@ -1,0 +1,75 @@
+:host {
+    user-select: none;
+}
+
+.parent {
+    width: 200px;
+    height: 200px;
+    border: solid silver 1px;
+    position: relative;
+}
+
+.parent .resize {
+    width: 32px;
+    height: 32px;
+    background: #ff0090;
+    cursor: nw-resize;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.columns-bar {
+    display: flex;
+    border: solid 1px silver;
+    padding: 0.5rem;
+    align-items: center;
+    margin: 1rem;
+}
+
+.columns-bar .column {
+    display: flex;
+    align-items: center;
+    margin-right: 0.2rem;
+}
+
+.columns-bar .column .title {
+    flex: 1;
+}
+
+.columns-bar .resize {
+    width: 5px;
+    height: 24px;
+    background: silver;
+    margin-left: 0.2rem;
+    cursor: col-resize;
+}
+
+.row-bar {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px silver;
+    padding: 0.5rem;
+    justify-content: center;
+    margin: 1rem;
+    width: 200px;
+}
+
+.row-bar .row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 0.2rem;
+    height: 2rem;
+}
+
+.row-bar .resize {
+    height: 5px;
+    background: silver;
+    margin-left: 0.2rem;
+    cursor: row-resize;
+}
+
+.row-bar .row .title {
+    flex: 1;
+}

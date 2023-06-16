@@ -1,7 +1,16 @@
-export default class Welcome extends HTMLElement {
-    async connectedCallback() {
-        await super.connectedCallback();
-        await this.buildItems();
+export default class Welcome extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
+    async load() {
+        requestAnimationFrame(async () => {
+            await this.buildItems();
+        })
     }
 
     async buildItems() {
@@ -15,7 +24,7 @@ export default class Welcome extends HTMLElement {
             const cls = crs.intent[system];
             for (const action of Object.getOwnPropertyNames(cls)) {
                 if (typeof cls[action] == "function") {
-                    const li = await crs.call("dom", "create_element", {
+                    await crs.call("dom", "create_element", {
                         parent: fragment,
                         tag_name: "li",
                         dataset: {
@@ -36,7 +45,7 @@ export default class Welcome extends HTMLElement {
             }
         }
 
-        this._element.querySelector("ul").appendChild(fragment);
+        this.shadowRoot.querySelector("ul").appendChild(fragment);
     }
 
     async filter(event) {
