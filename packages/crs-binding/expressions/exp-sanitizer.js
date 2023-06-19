@@ -1,1 +1,83 @@
-import{tokenize as u}from"./exp-tokenizer.js";const d=["false","true","null"];async function O(e,n="context"){let s=!1;if(typeof e=="string"&&e.indexOf("$html")!=-1&&(s=!0,e=e.split("$html.").join("")),e==null||e=="null"||e=="undefined"||d.indexOf(e.toString())!=-1||isNaN(e)==!1||e.trim()==n)return{isLiteral:!0,expression:e,isHTML:s};if(n!="context"==!0&&e==["${",n,"}"].join(""))return{isLiteral:!0,expression:e};const a=new Set,l=e.indexOf("${")!=-1||e.indexOf("&{")!=-1,f=u(e,l),i=[];for(let t of f)t.type=="property"?(t.value.indexOf("$globals")!=-1?i.push(t.value.replace("$globals","crs.binding.data.globals")):t.value.indexOf("$event")!=-1?i.push(t.value.replace("$event","event")):t.value.indexOf("$context")!=-1?i.push(t.value.replace("$context","context")):t.value.indexOf("$data")!=-1?i.push(t.value.replace("$data","crs.binding.data.getValue")):t.value.indexOf("$parent")!=-1?i.push(t.value.replace("$parent","parent")):n!=="context"&&t.value.indexOf(`${n}.`)!=-1?i.push(t.value):i.push(`${n}.${t.value}`),$(a,t.value,n)):i.push(t.value);let o=i.join("").replaceAll("context.[","[").replaceAll("context.]","]");return o=await crs.binding.expression.translateFactory(o),{isLiteral:l,isHTML:s,expression:o,properties:Array.from(a)}}const c=[".trim",".toLowerCase","toUpperCase"],p=["$data","$event","[","]"];function $(e,n,s){if(n.length==0)return;for(let l of p)if(n.indexOf(l)!=-1)return;let r=n;const a=`${s}.`;r.indexOf(a)==0&&(r=r.replace(a,""));for(let l of c)r.indexOf(l)!=-1&&(r=r.split(l).join(""));e.add(r)}export{O as sanitize};
+import { tokenize } from "./exp-tokenizer.js";
+const sanitizeKeywords = ["false", "true", "null"];
+async function sanitize(exp, ctxName = "context") {
+  let isHTML = false;
+  if (typeof exp == "string" && exp.indexOf("$html") != -1) {
+    isHTML = true;
+    exp = exp.split("$html.").join("");
+  }
+  if (exp == null || exp == "null" || exp == "undefined" || sanitizeKeywords.indexOf(exp.toString()) != -1 || isNaN(exp) == false || exp.trim() == ctxName) {
+    return {
+      isLiteral: true,
+      expression: exp,
+      isHTML
+    };
+  }
+  const namedExp = ctxName != "context";
+  if (namedExp == true && exp == ["${", ctxName, "}"].join("")) {
+    return {
+      isLiteral: true,
+      expression: exp
+    };
+  }
+  const properties = /* @__PURE__ */ new Set();
+  const isLiteral = exp.indexOf("${") != -1 || exp.indexOf("&{") != -1;
+  const tokens = tokenize(exp, isLiteral);
+  const expression = [];
+  for (let token of tokens) {
+    if (token.type == "property") {
+      if (token.value.indexOf("$globals") != -1) {
+        expression.push(token.value.replace("$globals", "crs.binding.data.globals"));
+      } else if (token.value.indexOf("$event") != -1) {
+        expression.push(token.value.replace("$event", "event"));
+      } else if (token.value.indexOf("$context") != -1) {
+        expression.push(token.value.replace("$context", "context"));
+      } else if (token.value.indexOf("$data") != -1) {
+        expression.push(token.value.replace("$data", "crs.binding.data.getValue"));
+      } else if (token.value.indexOf("$parent") != -1) {
+        expression.push(token.value.replace("$parent", "parent"));
+      } else if (ctxName !== "context" && token.value.indexOf(`${ctxName}.`) != -1) {
+        expression.push(token.value);
+      } else if (token.value === "new") {
+        expression.push(token.value);
+      } else {
+        expression.push(`${ctxName}.${token.value}`);
+      }
+      addProperty(properties, token.value, ctxName);
+    } else {
+      expression.push(token.value);
+    }
+  }
+  let expr = expression.join("").replaceAll("context.[", "[").replaceAll("context.]", "]");
+  expr = await crs.binding.expression.translateFactory(expr);
+  return {
+    isLiteral,
+    isHTML,
+    expression: expr,
+    properties: Array.from(properties)
+  };
+}
+const fnNames = [".trim", ".toLowerCase", "toUpperCase"];
+const ignoreProperties = ["$data", "$event", "[", "]"];
+function addProperty(set, property, ctxName) {
+  if (property.length == 0)
+    return;
+  for (let ignore of ignoreProperties) {
+    if (property.indexOf(ignore) != -1)
+      return;
+  }
+  let propertyValue = property;
+  const ctxPrefix = `${ctxName}.`;
+  if (propertyValue.indexOf(ctxPrefix) == 0) {
+    propertyValue = propertyValue.replace(ctxPrefix, "");
+  }
+  for (let fnName of fnNames) {
+    if (propertyValue.indexOf(fnName) != -1) {
+      propertyValue = propertyValue.split(fnName).join("");
+    }
+  }
+  set.add(propertyValue);
+}
+export {
+  sanitize
+};

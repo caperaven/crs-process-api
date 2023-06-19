@@ -1,6 +1,6 @@
 import "/packages/crs-schema/crs-schema.js"
 
-export default class Schema extends crsbinding.classes.BindableElement {
+export default class Schema extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

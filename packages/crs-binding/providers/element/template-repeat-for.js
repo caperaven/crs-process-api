@@ -1,1 +1,32 @@
-import"./../../expressions/code-factories/inflation.js";class d{async parse(t,n){const e=t.getAttribute("for").split(" "),a=crs.binding.utils.markElement(t.parentElement,n);t.parentElement.__path=e[2],t.parentElement.removeChild(t);const i=await crs.binding.expression.inflationFactory(t,e[0]);crs.binding.inflation.store.add(a,t,i),crs.binding.data.setCallback(a,n.bid,[e[2]],"template[for]")}async update(t){const n=crs.binding.elements[t],r=n.__path,e=crs.binding.data.getDataForElement(n),a=crs.binding.utils.getValueOnPath(e,r);if(a==null)return;const i=crs.binding.inflation.store.get(t),o=document.createDocumentFragment();for(const c of a){const s=i.template.content.cloneNode(!0).firstElementChild;i.fn(s,c),o.appendChild(s)}n.appendChild(o)}}export{d as default};
+import "./../../expressions/code-factories/inflation.js";
+class TemplateRepeatForProvider {
+  async parse(element, context) {
+    const forExp = element.getAttribute("for");
+    const forExpParts = forExp.split(" ");
+    const uuid = crs.binding.utils.markElement(element.parentElement, context);
+    element.parentElement["__path"] = forExpParts[2];
+    element.parentElement.removeChild(element);
+    const fn = await crs.binding.expression.inflationFactory(element, forExpParts[0]);
+    crs.binding.inflation.store.add(uuid, element, fn);
+    crs.binding.data.setCallback(uuid, context.bid, [forExpParts[2]], "template[for]");
+  }
+  async update(uuid) {
+    const element = crs.binding.elements[uuid];
+    const path = element["__path"];
+    const data = crs.binding.data.getDataForElement(element);
+    const collection = crs.binding.utils.getValueOnPath(data, path);
+    if (collection == null)
+      return;
+    const storeItem = crs.binding.inflation.store.get(uuid);
+    const fragment = document.createDocumentFragment();
+    for (const item of collection) {
+      const instance = storeItem.template.content.cloneNode(true).firstElementChild;
+      storeItem.fn(instance, item);
+      fragment.appendChild(instance);
+    }
+    element.appendChild(fragment);
+  }
+}
+export {
+  TemplateRepeatForProvider as default
+};

@@ -1,1 +1,25 @@
-class h{#t=[];#e={};add(t,e){this.#t.push(t),this.#e[t]=e}remove(t){this.#t.splice(this.#t.indexOf(t),1),delete this.#e[t]}async executeTemplateAction(t,e){if(t.attributes.length!==0){for(const i of this.#t)if(t.getAttribute(i)!=null){const s=this.#e[i];await s(t,e)}}}}export{h as TemplateProviderStore};
+class TemplateProviderStore {
+  #keys = [];
+  #items = {};
+  add(key, fn) {
+    this.#keys.push(key);
+    this.#items[key] = fn;
+  }
+  remove(key) {
+    this.#keys.splice(this.#keys.indexOf(key), 1);
+    delete this.#items[key];
+  }
+  async executeTemplateAction(element, context) {
+    if (element.attributes.length === 0)
+      return;
+    for (const key of this.#keys) {
+      if (element.getAttribute(key) != null) {
+        const fn = this.#items[key];
+        await fn(element, context);
+      }
+    }
+  }
+}
+export {
+  TemplateProviderStore
+};

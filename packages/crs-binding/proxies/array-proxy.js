@@ -1,1 +1,51 @@
-import"./../utils/dom-collection-manager.js";class r{static push(...i){this.push(...i),s.call(this,t=>{crs.binding.dom.collection.append(t,...i)})}static splice(i,t,...n){this.splice(i,t,...n),s.call(this,o=>{crs.binding.dom.collection.splice(o,i,t,...n)})}static shift(){this.shift(),s.call(this,i=>{crs.binding.dom.collection.shift(i)})}static pop(){this.pop(),s.call(this,i=>{crs.binding.dom.collection.pop(i)})}}function s(c){const i=this.__bid,t=this.__property;if(i==null||t==null)return;const n=crs.binding.data.getCallbacks(i,t);for(const o of n)c(o)}const l={get(c,i,t){return r[i]?r[i].bind(c):c[i]}};function a(c){return new Proxy(c,l)}export{a as default};
+import "./../utils/dom-collection-manager.js";
+class ArrayProxyFunctions {
+  static push(...items) {
+    this.push(...items);
+    updateDom.call(this, (uuid) => {
+      crs.binding.dom.collection.append(uuid, ...items);
+    });
+  }
+  static splice(start, deleteCount, ...items) {
+    this.splice(start, deleteCount, ...items);
+    updateDom.call(this, (uuid) => {
+      crs.binding.dom.collection.splice(uuid, start, deleteCount, ...items);
+    });
+  }
+  static shift() {
+    this.shift();
+    updateDom.call(this, (uuid) => {
+      crs.binding.dom.collection.shift(uuid);
+    });
+  }
+  static pop() {
+    this.pop();
+    updateDom.call(this, (uuid) => {
+      crs.binding.dom.collection.pop(uuid);
+    });
+  }
+}
+function updateDom(callback) {
+  const bid = this["__bid"];
+  const property = this["__property"];
+  if (bid == null || property == null)
+    return;
+  const uuids = crs.binding.data.getCallbacks(bid, property);
+  for (const uuid of uuids) {
+    callback(uuid);
+  }
+}
+const arrayHandler = {
+  get(target, prop, receiver) {
+    if (ArrayProxyFunctions[prop]) {
+      return ArrayProxyFunctions[prop].bind(target);
+    }
+    return target[prop];
+  }
+};
+function wrapArrayForUpdate(array) {
+  return new Proxy(array, arrayHandler);
+}
+export {
+  wrapArrayForUpdate as default
+};

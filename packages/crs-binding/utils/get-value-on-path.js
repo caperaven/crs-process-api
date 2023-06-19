@@ -1,1 +1,18 @@
-function u(n,r){if(n==null||(r||"").length==0)return;if(r.indexOf(".")==-1)return n[r];const t=r.split("."),e=t.pop();for(const l of t)if(n=n[l],n==null)return null;return n[e]}export{u as getValueOnPath};
+function getValueOnPath(obj, path) {
+  if (obj == null || (path || "").length == 0)
+    return;
+  if (path.indexOf(".") == -1) {
+    return obj[path];
+  }
+  const parts = path.split(".");
+  const property = parts.pop();
+  for (const part of parts) {
+    obj = obj[part];
+    if (obj == null)
+      return null;
+  }
+  return obj[property];
+}
+export {
+  getValueOnPath
+};

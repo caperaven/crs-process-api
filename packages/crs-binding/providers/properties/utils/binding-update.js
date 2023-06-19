@@ -1,1 +1,19 @@
-async function a(e,...n){const t=crs.binding.elements[e];if(t==null)return;const r=t.__bid,i=crs.binding.eventStore.getIntent("change",e);n.length===0&&(n=Object.keys(i.value));for(const c of n){const o=i.value[c];o!=null&&(t[o]=await crs.binding.data.getProperty(r,c)||"")}}export{a as bindingUpdate};
+async function bindingUpdate(uuid, ...properties) {
+  const element = crs.binding.elements[uuid];
+  if (element == null)
+    return;
+  const bid = element["__bid"];
+  const intent = crs.binding.eventStore.getIntent("change", uuid);
+  if (properties.length === 0) {
+    properties = Object.keys(intent.value);
+  }
+  for (const property of properties) {
+    const targetProperty = intent.value[property];
+    if (targetProperty == null)
+      continue;
+    element[targetProperty] = await crs.binding.data.getProperty(bid, property) || "";
+  }
+}
+export {
+  bindingUpdate
+};

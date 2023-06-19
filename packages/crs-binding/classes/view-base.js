@@ -1,1 +1,59 @@
-class s{#t;#e;get title(){return this.getProperty("title")}set title(t){this.setProperty("title",t)}get bid(){return this.#e}get element(){return this.#t}set element(t){this.#t=t,this.#t.dataset.ready="false",this.#t.__bid=this.#e}constructor(){this.#e=crs.binding.data.addObject(this.constructor.name),crs.binding.data.addContext(this.#e,this)}async connectedCallback(){return new Promise(async t=>{this.preLoad!=null&&await this.preLoad();const e=crs.binding.utils.getPathOfFile(this.html);requestAnimationFrame(async()=>{await crs.binding.parsers.parseElements(this.element.children,this,e?{folder:e}:null),await crs.binding.data.updateContext(this.#e),await this.load()}),t()})}async disconnectedCallback(){await crs.binding.data.remove(this.#e),crs.binding.utils.unmarkElement(this.#t),this.#t=null}getProperty(t,e=!0){return crs.binding.data.getProperty(this,t,e)}setProperty(t,e,i=!0){crs.binding.data.setProperty(this,t,e,i)}async load(){this.#t.style.visibility="",this.#t.dataset.ready="true"}}crs.classes.ViewBase=s;export{s as ViewBase};
+class ViewBase {
+  #element;
+  #bid;
+  get title() {
+    return this.getProperty("title");
+  }
+  set title(newValue) {
+    this.setProperty("title", newValue);
+  }
+  get bid() {
+    return this.#bid;
+  }
+  get element() {
+    return this.#element;
+  }
+  set element(newValue) {
+    this.#element = newValue;
+    this.#element.dataset.ready = "false";
+    this.#element["__bid"] = this.#bid;
+  }
+  constructor(element) {
+    this.#element = element;
+    this.#bid = crs.binding.data.addObject(this.constructor.name);
+    crs.binding.data.addContext(this.#bid, this);
+  }
+  async connectedCallback() {
+    return new Promise(async (resolve) => {
+      if (this["preLoad"] != null) {
+        await this["preLoad"]();
+      }
+      const path = crs.binding.utils.getPathOfFile(this.html);
+      requestAnimationFrame(async () => {
+        await crs.binding.parsers.parseElements(this.element.children, this, path ? { folder: path } : null);
+        await crs.binding.data.updateContext(this.#bid);
+        await this.load();
+      });
+      resolve();
+    });
+  }
+  async disconnectedCallback() {
+    await crs.binding.data.remove(this.#bid);
+    crs.binding.utils.unmarkElement(this.#element);
+    this.#element = null;
+  }
+  getProperty(property) {
+    return crs.binding.data.getProperty(this, property);
+  }
+  setProperty(property, value) {
+    crs.binding.data.setProperty(this, property, value);
+  }
+  async load() {
+    this.#element.style.visibility = "";
+    this.#element.dataset.ready = "true";
+  }
+}
+crs.classes.ViewBase = ViewBase;
+export {
+  ViewBase
+};

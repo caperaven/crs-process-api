@@ -1,1 +1,15 @@
-import"../../expressions/code-factories/case.js";import{StyleBase as a}from"./style-base.js";class t extends a{get providerKey(){return"^style..*.case$"}async parse(e,r){await super.parse(e,r,async s=>await crs.binding.expression.caseFactory(s))}}export{t as default};
+import "../../expressions/code-factories/case.js";
+import { StyleBase } from "./style-base.js";
+class StyleCaseProvider extends StyleBase {
+  get providerKey() {
+    return "^style..*.case$";
+  }
+  async parse(attr, context) {
+    await super.parse(attr, context, async (value) => {
+      return await crs.binding.expression.caseFactory(value);
+    });
+  }
+}
+export {
+  StyleCaseProvider as default
+};

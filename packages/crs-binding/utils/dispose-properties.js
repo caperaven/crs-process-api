@@ -1,1 +1,52 @@
-const f=["_element"];function s(e){if(e==null||e.autoDispose==!1||typeof e!="object"||Object.isFrozen(e))return;if(Array.isArray(e))return i(e);if(e.constructor.name==="Set"||e.constructor.name==="Map")return o(e);const r=Object.getOwnPropertyNames(e).filter(n=>f.indexOf(n)==-1);for(let n of r){let t=e[n];typeof t=="object"&&(Array.isArray(t)?i(t):t.constructor.name==="Set"||t.constructor.name==="Map"?o(t):(t.dispose!=null&&t.dispose(),s(t))),t=null,delete e[n]}}function i(e){if(e.length!==0){for(const r of e)s(r);e=null}}function o(e){e.forEach(r=>s(r)),e.clear(),e=null}export{s as disposeProperties};
+const ignoreDispose = ["_element"];
+function disposeProperties(obj) {
+  if (obj == null || obj.autoDispose == false)
+    return;
+  if (typeof obj != "object")
+    return;
+  if (Object.isFrozen(obj))
+    return;
+  if (Array.isArray(obj)) {
+    return disposeArray(obj);
+  }
+  if (obj.constructor.name === "Set" || obj.constructor.name === "Map") {
+    return disposeMapSet(obj);
+  }
+  const properties = Object.getOwnPropertyNames(obj).filter((name) => ignoreDispose.indexOf(name) == -1);
+  for (let property of properties) {
+    let pObj = obj[property];
+    if (typeof pObj == "object") {
+      if (Array.isArray(pObj)) {
+        disposeArray(pObj);
+      } else if (pObj.constructor.name === "Set" || pObj.constructor.name === "Map") {
+        disposeMapSet(pObj);
+      } else {
+        if (pObj.dispose != null) {
+          pObj.dispose();
+        }
+        disposeProperties(pObj);
+      }
+    }
+    try {
+      pObj = null;
+      delete obj[property];
+    } catch {
+    }
+  }
+}
+function disposeArray(array) {
+  if (array.length === 0)
+    return;
+  for (const item of array) {
+    disposeProperties(item);
+  }
+  array = null;
+}
+function disposeMapSet(obj) {
+  obj.forEach((item) => disposeProperties(item));
+  obj.clear();
+  obj = null;
+}
+export {
+  disposeProperties
+};

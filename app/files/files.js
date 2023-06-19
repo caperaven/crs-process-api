@@ -1,6 +1,6 @@
 import "./../../src/action-systems/fs-actions.js";
 
-export default class Files extends crsbinding.classes.BindableElement {
+export default class Files extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

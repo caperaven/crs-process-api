@@ -1,6 +1,6 @@
 import "./../../src/action-systems/media-actions.js";
 
-export default class Media extends crsbinding.classes.BindableElement {
+export default class Media extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

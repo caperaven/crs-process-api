@@ -1,1 +1,28 @@
-class s{#e=[];#t;get events(){return Object.freeze(this.#e)}constructor(){this.#t=new EventTarget}dispose(){for(const{event:e,listener:t}of this.#e)this.#t.removeEventListener(e,t);this.#e.length=0}addEventListener(e,t){this.#t.addEventListener(e,t),this.#e.push({event:e,listener:t})}removeEventListener(e,t){this.#t.removeEventListener(e,t),this.#e.splice(this.#e.indexOf({event:e,listener:t}),1)}notify(e,t){this.#t.dispatchEvent(new CustomEvent(e,{detail:t}))}}crs.classes.Observable=s;export{s as Observable};
+class Observable {
+  #events = [];
+  #eventEmitter = new EventTarget();
+  get events() {
+    return Object.freeze(this.#events);
+  }
+  dispose() {
+    for (const { event, listener } of this.#events) {
+      this.#eventEmitter.removeEventListener(event, listener);
+    }
+    this.#events.length = 0;
+  }
+  addEventListener(event, listener) {
+    this.#eventEmitter.addEventListener(event, listener);
+    this.#events.push({ event, listener });
+  }
+  removeEventListener(event, listener) {
+    this.#eventEmitter.removeEventListener(event, listener);
+    this.#events.splice(this.#events.indexOf({ event, listener }), 1);
+  }
+  notify(event, detail) {
+    this.#eventEmitter.dispatchEvent(new CustomEvent(event, { detail }));
+  }
+}
+crs.classes.Observable = Observable;
+export {
+  Observable
+};

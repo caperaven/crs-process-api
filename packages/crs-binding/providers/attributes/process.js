@@ -1,1 +1,136 @@
-import{parseEvent as m}from"./utils/parse-event.js";class g{async onEvent(r,e,s){const n=await crs.binding.data.getContext(e);await v(s.value,r,n)}async parse(r){m(r,this.getIntent)}getIntent(r){return r.startsWith("{")?y(r):h(r)}async clear(r){crs.binding.eventStore.clear(r)}}function y(t){const r=t.split(",").map(c=>c.trim()),e=r[0].replace("type:","").replaceAll("'","").replace("{","").trim(),s=r[1].replace("action:","").replaceAll("'","").trim(),n=r.slice(2).join(","),a=o(n.slice(0,-1));return{provider:".process",value:{type:e,action:s,args:a}}}function h(t){const r=t.split("[").map(c=>c.trim()),e=r[0].trim(),s=r[1].split("(").map(c=>c.trim()),n=s[0].trim(),a=o(`{${s[1].replace(")]","")}}`);return{provider:".process",value:{schema:e,process:n,args:a}}}function o(t){let r=t.slice(1,-1).trim();if(r.length==0)return{};r=l(r);const e=r.split(","),s={};for(const n of e){const a=n.split(":").map(p=>p.trim()),i=a[0],c=d(a[1]);s[i]=c}return s}function d(t){return t.startsWith("[")?t.slice(1,-1).split("&44").map(r=>r.replaceAll("'","").trim()):t}function l(t,r=0){if(t.indexOf("[")===-1)return t;let e=t.indexOf("[",r);if(e===-1)return t;let s=t.indexOf("]",e);const n=t.substring(e,s+1),a=n.replaceAll(",","&44");return t=t.replace(n,a),l(t,s+1)}async function u(t,r,e){const s={};for(const[n,a]of Object.entries(t))if(Array.isArray(a)){const i=[];for(let c=0;c<a.length;c++)i[c]=await f(a[c],r,e);s[n]=i}else s[n]=await f(a,r,e);return s}async function f(t,r,e){if(typeof t!="string")return t;if(t=="$event")return r;if(t=="$context")return e;if(t.startsWith("$event.")){const s=t.replace("$event.","");return crs.binding.utils.getValueOnPath(r,s)}if(t.startsWith("$context.")){const s=t.replace("$context.","");return crs.binding.utils.getValueOnPath(e,s)}return t.startsWith("'")&&t.endsWith("'")&&(t=t.slice(1,-1)),t}async function v(t,r,e){if(t.schema!=null)return await A(t,r,e);const s=await u(t.args,r,e);await crs.call(t.type,t.action,s)}async function A(t,r,e){const s=await u(t.args,r,e),n={context:e,step:{action:t.process,args:{schema:t.schema}}};s!=null&&(n.parameters=s),await crs.binding.events.emitter.emit("run-process",n)}export{g as default};
+import { parseEvent } from "./utils/parse-event.js";
+class ProcessProvider {
+  async onEvent(event, bid, intent) {
+    const context = await crs.binding.data.getContext(bid);
+    await callProcess(intent.value, event, context);
+  }
+  async parse(attr) {
+    parseEvent(attr, this.getIntent);
+  }
+  getIntent(attrValue) {
+    if (attrValue.startsWith("{")) {
+      return createStepIntent(attrValue);
+    }
+    return createSchemaIntent(attrValue);
+  }
+  async clear(uuid) {
+    crs.binding.eventStore.clear(uuid);
+  }
+}
+function createStepIntent(exp) {
+  const parts = exp.split(",").map((item) => item.trim());
+  const type = parts[0].replace("type:", "").replaceAll("'", "").replace("{", "").trim();
+  const action = parts[1].replace("action:", "").replaceAll("'", "").trim();
+  const argsExp = parts.slice(2).join(",");
+  const args = createArgs(argsExp.slice(0, -1));
+  const value = { type, action, args };
+  return { provider: ".process", value };
+}
+function createSchemaIntent(exp) {
+  const schemaParts = exp.split("[").map((item) => item.trim());
+  const schema = schemaParts[0].trim();
+  const stepParts = schemaParts[1].split("(").map((item) => item.trim());
+  const process = stepParts[0].trim();
+  const args = createArgs(`{${stepParts[1].replace(")]", "")}}`);
+  const value = { schema, process, args };
+  return { provider: ".process", value };
+}
+function createArgs(exp) {
+  let trimmedString = exp.slice(1, -1).trim();
+  if (trimmedString.length == 0) {
+    return {};
+  }
+  trimmedString = markArrays(trimmedString);
+  const properties = trimmedString.split(",");
+  const obj = {};
+  for (const property of properties) {
+    const propertyParts = property.split(":").map((item) => item.trim());
+    const name = propertyParts[0];
+    const value = processPropertyValue(propertyParts[1]);
+    obj[name] = value;
+  }
+  return obj;
+}
+function processPropertyValue(exp) {
+  if (exp.startsWith("[")) {
+    return exp.slice(1, -1).split("&44").map((item) => item.replaceAll("'", "").trim());
+  }
+  return exp;
+}
+function markArrays(exp, lookStart = 0) {
+  if (exp.indexOf("[") === -1) {
+    return exp;
+  }
+  let startIndex = exp.indexOf("[", lookStart);
+  if (startIndex === -1) {
+    return exp;
+  }
+  let endIndex = exp.indexOf("]", startIndex);
+  const oldArray = exp.substring(startIndex, endIndex + 1);
+  const newArray = oldArray.replaceAll(",", "&44");
+  exp = exp.replace(oldArray, newArray);
+  return markArrays(exp, endIndex + 1);
+}
+async function parseArgsForCalling(args, event, context) {
+  const newArgs = {};
+  for (const [key, value] of Object.entries(args)) {
+    if (Array.isArray(value)) {
+      const newArray = [];
+      for (let i = 0; i < value.length; i++) {
+        newArray[i] = await getValue(value[i], event, context);
+      }
+      newArgs[key] = newArray;
+    } else {
+      newArgs[key] = await getValue(value, event, context);
+    }
+  }
+  return newArgs;
+}
+async function getValue(exp, event, context) {
+  if (typeof exp !== "string")
+    return exp;
+  if (exp == "$event") {
+    return event;
+  }
+  if (exp == "$context") {
+    return context;
+  }
+  if (exp.startsWith("$event.")) {
+    const path = exp.replace("$event.", "");
+    return crs.binding.utils.getValueOnPath(event, path);
+  }
+  if (exp.startsWith("$context.")) {
+    const path = exp.replace("$context.", "");
+    return crs.binding.utils.getValueOnPath(context, path);
+  }
+  if (exp.startsWith("'") && exp.endsWith("'")) {
+    exp = exp.slice(1, -1);
+  }
+  return exp;
+}
+async function callProcess(intent, event, context) {
+  if (intent.schema != null) {
+    return await callSchema(intent, event, context);
+  }
+  const args = await parseArgsForCalling(intent.args, event, context);
+  await crs.call(intent.type, intent.action, args);
+}
+async function callSchema(intent, event, context) {
+  const parameters = await parseArgsForCalling(intent.args, event, context);
+  const args = {
+    context,
+    step: {
+      action: intent.process,
+      args: {
+        schema: intent.schema
+      }
+    }
+  };
+  if (parameters != null) {
+    args.parameters = parameters;
+  }
+  await crs.binding.events.emitter.emit("run-process", args);
+}
+export {
+  ProcessProvider as default
+};

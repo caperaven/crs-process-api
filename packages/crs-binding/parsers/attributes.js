@@ -1,1 +1,11 @@
-async function e(t,r,s,a){if(t.attributes==null)return;const i=Array.from(t.attributes);for(const u of i)await crs.binding.parsers.parseAttribute(u,r,s,a)}export{e as parseAttributes};
+async function parseAttributes(element, context, ctxName, parentId) {
+  if (element.attributes == null)
+    return;
+  const attributes = Array.from(element.attributes);
+  for (const attribute of attributes) {
+    await crs.binding.parsers.parseAttribute(attribute, context, ctxName, parentId);
+  }
+}
+export {
+  parseAttributes
+};

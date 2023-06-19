@@ -1,1 +1,41 @@
-function d(e){e._domEvents=[],e.registerEvent=l,e.unregisterEvent=r}function i(e){if(e._domEvents!=null){for(let t of e._domEvents)e.removeEventListener(t.event,t.callback),delete t.element,delete t.callback,delete t.event;e._domEvents.length=0,delete e._domEvents,delete e.registerEvent,delete e.unregisterEvent}}function l(e,t,s,n=null){e.addEventListener(t,s,n),this._domEvents.push({element:e,event:t,callback:s})}function r(e,t,s){const n=this._domEvents.find(v=>v.element==e&&v.event==t&&v.callback==s);n!=null&&(e.removeEventListener(n.event,n.callback),this._domEvents.splice(this._domEvents.indexOf(n),1),delete n.element,delete n.callback,delete n.event)}export{i as disableEvents,d as enableEvents};
+function enableEvents(element) {
+  element._domEvents = [];
+  element.registerEvent = registerEvent;
+  element.unregisterEvent = unregisterEvent;
+}
+function disableEvents(element) {
+  if (element._domEvents == null)
+    return;
+  for (let event of element._domEvents) {
+    element.removeEventListener(event.event, event.callback);
+    delete event.element;
+    delete event.callback;
+    delete event.event;
+  }
+  element._domEvents.length = 0;
+  delete element._domEvents;
+  delete element.registerEvent;
+  delete element.unregisterEvent;
+}
+function registerEvent(element, event, callback, eventOptions = null) {
+  element.addEventListener(event, callback, eventOptions);
+  this._domEvents.push({
+    element,
+    event,
+    callback
+  });
+}
+function unregisterEvent(element, event, callback) {
+  const item = this._domEvents.find((item2) => item2.element == element && item2.event == event && item2.callback == callback);
+  if (item == null)
+    return;
+  element.removeEventListener(item.event, item.callback);
+  this._domEvents.splice(this._domEvents.indexOf(item), 1);
+  delete item.element;
+  delete item.callback;
+  delete item.event;
+}
+export {
+  disableEvents,
+  enableEvents
+};

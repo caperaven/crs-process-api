@@ -1,1 +1,41 @@
-async function a(n,r="context"){const s=`${r}:${n}`;if(crs.binding.functions.has(s)){const c=crs.binding.functions.get(s);return c.count+=1,c}const t=[],i=await crs.binding.expression.sanitize(n);if(n=i.expression.replaceAll("context.[","["),n.indexOf("?")==-1)return u(s,i,`return ${n}`,r);const e=n.split("?").map(c=>c.trim()),f=e[0],o=e[1].split(":");return t.push(`if (${f}) {`),t.push(`    return ${o[0].trim()};`),t.push("}"),o.length>1&&(t.push("else {"),t.push(`    return ${o[1].trim()};`),t.push("}")),u(s,i,t.join("\r"),r)}function u(n,r,s,t){const i={key:n,function:new crs.classes.AsyncFunction(t,s),parameters:r,count:1};return crs.binding.functions.set(n,i),i}crs.binding.expression.ifFactory=a;export{a as ifFactory};
+async function ifFactory(exp, ctxName = "context") {
+  const key = `${ctxName}:${exp}`;
+  if (crs.binding.functions.has(key)) {
+    const result = crs.binding.functions.get(key);
+    result.count += 1;
+    return result;
+  }
+  const code = [];
+  const expo = await crs.binding.expression.sanitize(exp);
+  exp = expo.expression.replaceAll("context.[", "[");
+  if (exp.indexOf("?") == -1) {
+    return setFunction(key, expo, `return ${exp}`, ctxName);
+  }
+  const parts = exp.split("?").map((item) => item.trim());
+  const left = parts[0];
+  const right = parts[1];
+  const rightParts = right.split(":");
+  code.push(`if (${left}) {`);
+  code.push(`    return ${rightParts[0].trim()};`);
+  code.push("}");
+  if (rightParts.length > 1) {
+    code.push("else {");
+    code.push(`    return ${rightParts[1].trim()};`);
+    code.push("}");
+  }
+  return setFunction(key, expo, code.join("\r"), ctxName);
+}
+function setFunction(key, exp, src, ctxName) {
+  const result = {
+    key,
+    function: new crs.classes.AsyncFunction(ctxName, src),
+    parameters: exp,
+    count: 1
+  };
+  crs.binding.functions.set(key, result);
+  return result;
+}
+crs.binding.expression.ifFactory = ifFactory;
+export {
+  ifFactory
+};

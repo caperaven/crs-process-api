@@ -1,6 +1,6 @@
 import {schema} from "./schema.js";
 
-export default class BeforeAfterStep extends crs.binding.classes.BindableElement {
+export default class BeforeAfterStep extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

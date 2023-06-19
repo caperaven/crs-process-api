@@ -1,1 +1,13 @@
-async function s(e,n,i,t){if(e.ownerElement==null)return;const r=await crs.binding.providers.getAttrProvider(e.name);if(r==null)return;const l=e.ownerElement;crs.binding.utils.markElement(l,n),await r.parse(e,n,i,t)}export{s as parseAttribute};
+async function parseAttribute(attr, context, ctxName, parentId) {
+  if (attr.ownerElement == null)
+    return;
+  const provider = await crs.binding.providers.getAttrProvider(attr.name);
+  if (provider == null)
+    return;
+  const element = attr.ownerElement;
+  crs.binding.utils.markElement(element, context);
+  await provider.parse(attr, context, ctxName, parentId);
+}
+export {
+  parseAttribute
+};

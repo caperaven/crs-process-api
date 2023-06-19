@@ -1,1 +1,20 @@
-import{bindingUpdate as a}from"./utils/binding-update.js";import{bindingParse as r}from"./utils/binding-parse.js";class i{#e={};get store(){return this.#e}async parse(e,t){await r(e,t,this.#e,".one-way")}async update(e,...t){await a(e,this.#e,...t)}async clear(e){delete this.#e[e]}}export{i as default};
+import { bindingUpdate } from "./utils/binding-update.js";
+import { bindingParse } from "./utils/binding-parse.js";
+class OneWayProvider {
+  #store = {};
+  get store() {
+    return this.#store;
+  }
+  async parse(attr, context) {
+    await bindingParse(attr, context, this.#store, ".one-way");
+  }
+  async update(uuid, ...properties) {
+    await bindingUpdate(uuid, this.#store, ...properties);
+  }
+  async clear(uuid) {
+    delete this.#store[uuid];
+  }
+}
+export {
+  OneWayProvider as default
+};

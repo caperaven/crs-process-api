@@ -1,1 +1,55 @@
-class m{static append(t,...e){const c=crs.binding.elements[t];if(c==null)return;const o=crs.binding.inflation.store.get(t),n=document.createDocumentFragment();for(const s of e){const l=o.template.content.cloneNode(!0);o.fn(l,s),n.appendChild(l)}c.appendChild(n)}static splice(t,e,c,...o){const n=crs.binding.elements[t];if(n==null)return;for(let i=e;i<e+c&&!(i>n.children.length);i++)n.children[i]&&n.removeChild(n.children[i]);const s=crs.binding.inflation.store.get(t),l=document.createDocumentFragment();for(const i of o||[]){const r=s.template.content.cloneNode(!0);s.fn(r,i),l.appendChild(r)}const d=n.children[e];n.insertBefore(l,d)}static pop(t){const e=crs.binding.elements[t];e!=null&&e.lastElementChild&&e.removeChild(e.lastElementChild)}static shift(t){const e=crs.binding.elements[t];e!=null&&e.firstElementChild&&e.removeChild(e.firstElementChild)}}crs.binding.dom||={},crs.binding.dom.collection=m;
+class DomCollection {
+  static append(uuid, ...items) {
+    const element = crs.binding.elements[uuid];
+    if (element == null)
+      return;
+    const details = crs.binding.inflation.store.get(uuid);
+    const fragment = document.createDocumentFragment();
+    for (const item of items) {
+      const instance = details.template.content.cloneNode(true);
+      details.fn(instance, item);
+      fragment.appendChild(instance);
+    }
+    element.appendChild(fragment);
+  }
+  static splice(uuid, start, deleteCount, ...items) {
+    const element = crs.binding.elements[uuid];
+    if (element == null)
+      return;
+    for (let i = start; i < start + deleteCount; i++) {
+      if (i > element.children.length) {
+        break;
+      }
+      if (element.children[i]) {
+        element.removeChild(element.children[i]);
+      }
+    }
+    const details = crs.binding.inflation.store.get(uuid);
+    const fragment = document.createDocumentFragment();
+    for (const item of items || []) {
+      const instance = details.template.content.cloneNode(true);
+      details.fn(instance, item);
+      fragment.appendChild(instance);
+    }
+    const target = element.children[start];
+    element.insertBefore(fragment, target);
+  }
+  static pop(uuid) {
+    const element = crs.binding.elements[uuid];
+    if (element == null)
+      return;
+    if (element.lastElementChild) {
+      element.removeChild(element.lastElementChild);
+    }
+  }
+  static shift(uuid) {
+    const element = crs.binding.elements[uuid];
+    if (element == null)
+      return;
+    if (element.firstElementChild) {
+      element.removeChild(element.firstElementChild);
+    }
+  }
+}
+crs.binding.dom ||= {};
+crs.binding.dom.collection = DomCollection;

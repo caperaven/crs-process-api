@@ -1,6 +1,6 @@
 import {schema} from "./schema.js";
 
-export default class Input extends crsbinding.classes.BindableElement {
+export default class Input extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

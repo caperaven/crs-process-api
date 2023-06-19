@@ -1,1 +1,25 @@
-class l{async parse(e,t){const n=e.name.split("."),r=o(n[0]),a=await crs.binding.data.getProperty(t.bid,e.value);e.ownerElement[r]=a,e.ownerElement.removeAttribute(e.name)}}function o(i){if(i.indexOf("-")==-1)return i;const e=i.split("-");for(let n=1;n<e.length;n++)e[n]=e[n].capitalize();let t=e.join("");return t==="innerHtml"&&(t="innerHTML"),t}export{l as default};
+class OnceProvider {
+  async parse(attr, context) {
+    const parts = attr.name.split(".");
+    const property = capitalizePropertyPath(parts[0]);
+    const value = await crs.binding.data.getProperty(context.bid, attr.value);
+    attr.ownerElement[property] = value;
+    attr.ownerElement.removeAttribute(attr.name);
+  }
+}
+function capitalizePropertyPath(str) {
+  if (str.indexOf("-") == -1)
+    return str;
+  const parts = str.split("-");
+  for (let i = 1; i < parts.length; i++) {
+    parts[i] = parts[i].capitalize();
+  }
+  let result = parts.join("");
+  if (result === "innerHtml") {
+    result = "innerHTML";
+  }
+  return result;
+}
+export {
+  OnceProvider as default
+};

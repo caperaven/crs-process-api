@@ -1,6 +1,6 @@
 import {schema} from "./schema.js";
 
-export default class Input extends crsbinding.classes.BindableElement {
+export default class Input extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }
@@ -18,7 +18,7 @@ export default class Input extends crsbinding.classes.BindableElement {
     }
 
     async showDialog() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

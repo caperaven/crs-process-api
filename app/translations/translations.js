@@ -1,6 +1,6 @@
 import {schema} from "./schema.js";
 
-export default class Welcome extends crsbinding.classes.BindableElement {
+export default class Welcome extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }
@@ -15,11 +15,11 @@ export default class Welcome extends crsbinding.classes.BindableElement {
     }
 
     preLoad() {
-        crsbinding.translations.add({message: "Hello World"}, "myprocess");
+        crs.binding.translations.add({message: "Hello World"}, "myprocess");
     }
 
     async printProcess() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

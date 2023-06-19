@@ -1,1 +1,51 @@
-const d={call:".call",emit:".emit",post:".post",process:".process",setvalue:".setvalue"};class p{async onEvent(e,n,t){const s=[];e.ctrlKey&&s.push("ctrl"),e.altKey&&s.push("alt"),e.shiftKey&&s.push("shift"),s.push(e.key.toLowerCase());const r=s.join("_");if(t=t.find(i=>i.keys==r),!t)return;const o=t.value;await(await crs.binding.providers.getAttrModule(o.provider)).onEvent(e,n,o),e.preventDefault(),e.stopPropagation()}async parse(e){const n=e.name,t=e.value,s=n.split("."),r=s[0],o=s[1],a=s[2],c=await(await crs.binding.providers.getAttrModule(d[a])).getIntent(t),u={provider:"^(keydown|keyup)\\..+\\..*$",keys:o,value:c},l=e.ownerElement.__uuid;crs.binding.eventStore.register(r,l,u,!0),e.ownerElement.removeAttribute(e.name)}async clear(e){}}export{p as default};
+const providersMap = {
+  "call": ".call",
+  "emit": ".emit",
+  "post": ".post",
+  "process": ".process",
+  "setvalue": ".setvalue"
+};
+class KeyboardEventProvider {
+  async onEvent(event, bid, intent) {
+    const keys = [];
+    if (event.ctrlKey)
+      keys.push("ctrl");
+    if (event.altKey)
+      keys.push("alt");
+    if (event.shiftKey)
+      keys.push("shift");
+    keys.push(event.key.toLowerCase());
+    const key = keys.join("_");
+    intent = intent.filter((i) => i.keys == key || i.keys == "");
+    if (intent.length == 0)
+      return;
+    for (const i of intent) {
+      const executeIntent = i.value;
+      const module = await crs.binding.providers.getAttrModule(executeIntent.provider);
+      await module.onEvent(event, bid, executeIntent);
+    }
+  }
+  async parse(attr) {
+    const name = attr.name;
+    const value = attr.value;
+    const nameParts = name.split(".");
+    const event = nameParts[0];
+    const keys = nameParts.length == 3 ? nameParts[1] : "";
+    const provider = nameParts.length == 3 ? nameParts[2] : nameParts[1];
+    const module = await crs.binding.providers.getAttrModule(providersMap[provider]);
+    const intentValue = await module.getIntent(value);
+    const intentObj = {
+      provider: "^(keydown|keyup)\\..+\\..*$",
+      keys,
+      value: intentValue
+    };
+    const uuid = attr.ownerElement["__uuid"];
+    crs.binding.eventStore.register(event, uuid, intentObj, true);
+    attr.ownerElement.removeAttribute(attr.name);
+  }
+  async clear(uuid) {
+  }
+}
+export {
+  KeyboardEventProvider as default
+};

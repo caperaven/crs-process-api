@@ -1,7 +1,15 @@
 import "./../../src/action-systems/data-actions.js";
 import {createData} from "./../data-factory.js";
 
-export default class Perspective extends crs.binding.classes.ViewBase {
+export default class Perspective extends crs.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
     }

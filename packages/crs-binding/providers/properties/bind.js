@@ -1,1 +1,32 @@
-import"../../expressions/code-factories/if.js";import{bindingUpdate as i}from"./utils/binding-update.js";import{bindingParse as r}from"./utils/binding-parse.js";class s{async onEvent(n,a,l,e){const t=e.dataset.field;a==null||t==null||await crs.binding.data.setProperty(a,t,e.value)}async parse(n,a){await r(n,a)}async update(n,...a){await i(n,...a)}async clear(n){crs.binding.eventStore.clear(n)}}export{s as default};
+import "../../expressions/code-factories/if.js";
+import { bindingUpdate } from "./utils/binding-update.js";
+import { bindingParse } from "./utils/binding-parse.js";
+class BindProvider {
+  async onEvent(event, bid, intent, target) {
+    const field = target.dataset.field;
+    if (bid == null || field == null)
+      return;
+    let value = target.value;
+    if (target.nodeName === "INPUT") {
+      if (target.type === "checkbox") {
+        value = target.checked;
+      }
+      if (target.type === "number") {
+        value = Number(value);
+      }
+    }
+    await crs.binding.data.setProperty(bid, field, value);
+  }
+  async parse(attr, context) {
+    await bindingParse(attr, context);
+  }
+  async update(uuid, ...properties) {
+    await bindingUpdate(uuid, ...properties);
+  }
+  async clear(uuid) {
+    crs.binding.eventStore.clear(uuid);
+  }
+}
+export {
+  BindProvider as default
+};

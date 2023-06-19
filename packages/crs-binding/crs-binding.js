@@ -1,4 +1,1473 @@
-var nt=Object.defineProperty;var D=(e,t)=>()=>(e&&(t=e(e=0)),t);var it=(e,t)=>{for(var r in t)nt(e,r,{get:t[r],enumerable:!0})};var C,Y=D(()=>{C=class{static append(t,...r){let n=crs.binding.elements[t];if(n==null)return;let i=crs.binding.inflation.store.get(t),s=document.createDocumentFragment();for(let l of r){let o=i.template.content.cloneNode(!0);i.fn(o,l),s.appendChild(o)}n.appendChild(s)}static splice(t,r,n,...i){let s=crs.binding.elements[t];if(s==null)return;for(let a=r;a<r+n&&!(a>s.children.length);a++)s.children[a]&&s.removeChild(s.children[a]);let l=crs.binding.inflation.store.get(t),o=document.createDocumentFragment();for(let a of i||[]){let f=l.template.content.cloneNode(!0);l.fn(f,a),o.appendChild(f)}let u=s.children[r];s.insertBefore(o,u)}static pop(t){let r=crs.binding.elements[t];r!=null&&r.lastElementChild&&r.removeChild(r.lastElementChild)}static shift(t){let r=crs.binding.elements[t];r!=null&&r.firstElementChild&&r.removeChild(r.firstElementChild)}};crs.binding.dom||={};crs.binding.dom.collection=C});var B={};it(B,{default:()=>U});function g(e){let t=this.__bid,r=this.__property;if(t==null||r==null)return;let n=crs.binding.data.getCallbacks(t,r);for(let i of n)e(i)}function U(e){return new Proxy(e,ot)}var m,ot,V=D(()=>{Y();m=class{static push(...t){this.push(...t),g.call(this,r=>{crs.binding.dom.collection.append(r,...t)})}static splice(t,r,...n){this.splice(t,r,...n),g.call(this,i=>{crs.binding.dom.collection.splice(i,t,r,...n)})}static shift(){this.shift(),g.call(this,t=>{crs.binding.dom.collection.shift(t)})}static pop(){this.pop(),g.call(this,t=>{crs.binding.dom.collection.pop(t)})}};ot={get(e,t,r){return m[t]?m[t].bind(e):e[t]}}});var h=class{#t={};#e={};#n={};#r=[];#i=[];#o=[];get attrProviders(){return this.#e}get textProviders(){return this.#r}get elementProviders(){return this.#n}constructor(t,r){for(let n of Object.keys(t))this.addAttributeProvider(n,t[n]);for(let n of Object.keys(r))this.addElementProvider(n,r[n])}async#s(t){return t=t.replace("$root",crs.binding.root),new(await import(t)).default}async getAttrModule(t){let r=this.#e[t];return typeof r!="string"?r:(this.#e[t]=await this.#s(r),this.#e[t])}addAttributeProvider(t,r){this.#e[t]=r,t.indexOf(".")!=-1&&this.#i.push(t)}addElementProvider(t,r){this.#n[t]=r,this.#o.push(t)}async addTextProvider(t){this.#r.push(await this.#s(t))}async getAttrProvider(t){if(t==="ref")return await this.getAttrModule("ref");if(t.indexOf(".")==-1)return null;if(this.#e[t]!=null)return await this.getAttrModule(t);for(let r of this.#i){if(r[0]==="^"){let n=this.#t[r];if(n==null&&(n=new RegExp(r),this.#t[r]=n),n.test(t))return await this.getAttrModule(r)}if(t.indexOf(r)!=-1)return await this.getAttrModule(r)}}async getElementProvider(t){for(let r of this.#o)if(t.matches(r))return typeof this.#n[r]=="object"?this.#n[r]:(this.#n[r]=await this.#s(this.#n[r]),this.#n[r])}async getTextProviders(){return this.#r}async update(t,...r){let n=crs.binding.elements[t];n.__events!=null&&n.__events.indexOf("change")!=-1&&this.#e[".bind"].update(t);for(let i of this.#r)i.store[t]!=null&&i.update(t);for(let i of this.#i){let s=this.#e[i];typeof s!="string"&&s.store?.[t]!=null&&s.update?.(t,...r)}}async updateProviders(t,...r){for(let n of r){let i;n===".textContent"?i=this.#r[0]:i=this.#e[n]||this.#n[n],i.update(t)}}async clear(t){for(let r of this.#r)r.clear(t);for(let r of this.#i)this.#e[r].clear?.(t)}};var st=["STYLE","CRS-ROUTER"];async function w(e,t,r){if(e.__inflated===!0||st.indexOf(e.nodeName)!=-1)return;e.dataset.ref!=null&&(t[e.dataset.ref]=e);let n=r?.ctxName||"context",i=await crs.binding.providers.getElementProvider(e);if(i!=null)return i.parse(e,t,n);if(!M(e,crs.binding.ignore)&&(await crs.binding.parsers.parseAttributes(e,t,n),!M(e,crs.binding.ignoreChildren))){if(e.children?.length>0)return await crs.binding.parsers.parseElements(e.children,t,r);for(let s of crs.binding.providers.textProviders)await s.parseElement(e,t,n)}}function M(e,t){for(let r of t)if(e.matches(r))return!0;return!1}async function T(e,t,r){if(e!=null)for(let n of e)await crs.binding.parsers.parseElement(n,t,r)}async function $(e,t,r,n){if(e.ownerElement==null)return;let i=await crs.binding.providers.getAttrProvider(e.name);if(i==null)return;let s=e.ownerElement;crs.binding.utils.markElement(s,t),await i.parse(e,t,r,n)}async function _(e,t,r,n){if(e.attributes==null)return;let i=Array.from(e.attributes);for(let s of i)await crs.binding.parsers.parseAttribute(s,t,r,n)}var b=class{#t=1;#e={};#n={0:{name:"global",type:"data",data:{}}};#r={};#i={};#o(){let t=this.#t;return this.#t+=1,t}#s(t){return typeof t=="object"?t.bid:t}get globals(){return this.#n[0].data}async#a(t,r){if(this.#r[t]==null)return;let n=this.#r[t]?.[r];if(n!=null){for(let i of n.values())typeof i=="function"?await i():await crs.binding.providers.update(i,r);return}for(let i of Object.keys(this.#r[t]))i.indexOf(r)==0&&await this.#a(t,i)}setCallback(t,r,n,i){let s=this.#r[r]||={};for(let l of n){if(l.indexOf(GLOBALS)!==-1){this.setCallback(t,0,[l.replace(GLOBALS,"")],i);continue}s[l]==null&&(s[l]=new Set),s[l].add(t),this.#i[t]||=new Set,this.#i[t].add(i)}}addObject(t,r={}){let n=this.#o();return this.#n[n]={name:t,type:"data",data:r},this.#r[n]={},n}addContext(t,r){this.#e[t]=r}getContext(t){return this.#e[t]}getData(t){return t=this.#s(t),this.#n[t]}getCallbacks(t,r){let n=this.#r[t]?.[r];return n==null?[]:Array.from(n)}getDataForElement(t){let r=t?.__bid;return r==null?void 0:crs.binding.data.getData(r).data}remove(t){t=this.#s(t);let r=this.#e[t];if(r.boundElements!=null){for(let n of r.boundElements)delete this.#i[n];delete r.boundElements}crs.binding.utils.disposeProperties(this.#n[t]),crs.binding.utils.disposeProperties(this.#e[t]),crs.binding.utils.disposeProperties(this.#r[t]),delete this.#n[t],delete this.#e[t],delete this.#r[t]}getProperty(t,r){return r.indexOf(GLOBALS)!==-1&&(t=0,r=r.replace(GLOBALS,"")),t=this.#s(t),crs.binding.utils.getValueOnPath(this.getData(t)?.data,r)}async setProperty(t,r,n){let i=r;i.indexOf(GLOBALS)!==-1&&(t=0,i=r.replace(GLOBALS,"")),t=this.#s(t),Array.isArray(n)&&(n.__bid=t,n.__property=i,n=(await Promise.resolve().then(()=>(V(),B))).default(n)),crs.binding.utils.setValueOnPath(this.getData(t)?.data,i,n),await this.#a(t,i)}setName(t,r){t=this.#s(t);let n=crs.binding.data.getData(t);n.name=r}async updateElement(t){let r=t.__bid,n=t.__uuid;if(!(r==null||n==null))for(let i of Object.keys(this.#r[r]))await crs.binding.providers.update(n,i)}async updateContext(t){let r=this.getContext(t);if(!(r==null||r.boundElements==null))for(let n of r.boundElements){let i=this.#i[n];if(i==null)continue;let s=Array.from(i);await crs.binding.providers.updateProviders(n,...s)}}async updateUI(t,r){let n=this.getContext(t);n==null||n.boundElements==null||await this.#a(t,r)}async addCallback(t,r,n){let i=this.#r[t];i[r]==null&&(i[r]=new Set),i[r].add(n)}async removeCallback(t,r,n){let i=this.#r[t];i[r]!=null&&i[r].delete(n)}};var c=Object.freeze({WORD:"word",LITERAL:"literal",FUNCTION:"function",PROPERTY:"property",OBJECT:"object",KEYWORD:"keyword",OPERATOR:"operator",NUMBER:"number",SPACE:"space",STRING:"string"});function G(e,t){let r=[],n=[],i=0;function s(o,u){if(n.length>0){let a=n.join("");l(a)}r.push({type:o,value:u})}function l(o){let u=c.WORD;z.indexOf(o)!=-1&&(u=c.KEYWORD),isNaN(Number(o))==!1&&(u=c.NUMBER),r.push({type:u,value:o}),n.length=0}for(i;i<e.length;i++){let o=e[i];if(o==" "){s(c.SPACE," ");continue}if(o=="`"){s(c.LITERAL,"`");continue}if(o=="$"&&e[i+1]=="{"){s(c.KEYWORD,"${"),i++;continue}if(o=="'"||o=='"'){let u=i+e.length-i,a=!1;if(e[i+1]==null){s(c.STRING,o);break}let f=i+1;for(f;f<u;f++){if(e[f]=="$"&&e[f+1]=="{"){a=!0;break}if(e[f]==o){let rt=e.substring(i,f+1);s(c.STRING,rt);break}}a==!0?s(c.STRING,o):i=f;continue}if(z.indexOf(o)!=-1){s(c.KEYWORD,o);continue}if(q.indexOf(o)!=-1){for(let u=i;u<i+4;u++){let a=e[u];if(q.indexOf(a)==-1){let f=e.substring(i,u);s(c.OPERATOR,f),i=u-1;break}}continue}n.push(o)}return n.length>0&&l(n.join("")),at(r,t)}function at(e,t){if(e.length==1&&e[0].type==c.WORD)return e[0].type=c.PROPERTY,e;let r=[],n=0;for(;e[n]!=null;){let i=e[n],s=r.length==0?"none":r[r.length-1],l=i.value.indexOf(".");if(i.type==c.WORD)if(s==c.LITERAL){if(i.value[0]=="."&&e[n+1].value=="("){i.type=c.FUNCTION,n++;continue}i.type=c.PROPERTY}else l!=-1?e[n-1]?.value===")"&&l===0?i.type=c.FUNCTION:i.type=c.PROPERTY:v(e[n+1])||v(e[n+2])?t!==!0&&s!==c.OBJECT&&(i.type=c.PROPERTY):t!==!0&&v(e[n-1])||v(e[n-2])?s!==c.OBJECT&&(i.type=c.PROPERTY):n===0&&e[n+1]?.value==="("&&(i.type=c.PROPERTY);if(i.type==c.KEYWORD&&i.value=="("&&e[n-1]&&e[n-1].type==c.PROPERTY&&e[n-1].value[0]!="$"){let o=e[n-1].value;if(o.indexOf(".")==-1)e[n-1].type=c.FUNCTION;else{let u=o.length-1;for(let a=o.length-1;a>=0;a--)if(o[a]=="."){u=a;break}if(u>0){let a=o.substring(0,u),f=o.substring(u,o.length);e[n-1].value=a,e.splice(n,0,{type:c.FUNCTION,value:f}),n++}else e[n-1].type=c.FUNCTION}}i.value=="${"?r.push(c.LITERAL):i.value=="{"?r.push(c.OBJECT):i.value=="}"&&r.pop(),n++}return e[0].type===c.FUNCTION&&(e[0].type=c.PROPERTY),e}function v(e){return e==null?!1:e.type==c.OPERATOR}var q=["=","!","<",">","+","-","*","/","&","|","?",":"],z=["{","}","(",")",",","true","false","null","undefined","[]"];var lt=["false","true","null"];async function A(e,t="context"){let r=!1;if(typeof e=="string"&&e.indexOf("$html")!=-1&&(r=!0,e=e.split("$html.").join("")),e==null||e=="null"||e=="undefined"||lt.indexOf(e.toString())!=-1||isNaN(e)==!1||e.trim()==t)return{isLiteral:!0,expression:e,isHTML:r};if(t!="context"==!0&&e==["${",t,"}"].join(""))return{isLiteral:!0,expression:e};let i=new Set,s=e.indexOf("${")!=-1||e.indexOf("&{")!=-1,l=G(e,s),o=[];for(let a of l)a.type=="property"?(a.value.indexOf("$globals")!=-1?o.push(a.value.replace("$globals","crs.binding.data.globals")):a.value.indexOf("$event")!=-1?o.push(a.value.replace("$event","event")):a.value.indexOf("$context")!=-1?o.push(a.value.replace("$context","context")):a.value.indexOf("$data")!=-1?o.push(a.value.replace("$data","crs.binding.data.getValue")):a.value.indexOf("$parent")!=-1?o.push(a.value.replace("$parent","parent")):t!=="context"&&a.value.indexOf(`${t}.`)!=-1?o.push(a.value):o.push(`${t}.${a.value}`),ft(i,a.value,t)):o.push(a.value);let u=o.join("").replaceAll("context.[","[").replaceAll("context.]","]");return u=await crs.binding.expression.translateFactory(u),{isLiteral:s,isHTML:r,expression:u,properties:Array.from(i)}}var ct=[".trim",".toLowerCase","toUpperCase"],ut=["$data","$event","[","]"];function ft(e,t,r){if(t.length==0)return;for(let s of ut)if(t.indexOf(s)!=-1)return;let n=t,i=`${r}.`;n.indexOf(i)==0&&(n=n.replace(i,""));for(let s of ct)n.indexOf(s)!=-1&&(n=n.split(s).join(""));e.add(n)}async function R(e){return e?.length>0&&e.indexOf("&{")==-1?e:W(e.split("")).join("")}function W(e){let t=e.indexOf("&");if(t==-1||e[t+1]!="{")return e;let r=e.indexOf("}",t),n=e.slice(t+2,r).join(""),i=["${await crs.binding.translations.get('",n.replace("context.",""),"')}"].join("");return e.splice(t,n.length+3,i),W(e)}async function j(e,t,r){let n=r?.ctxName||"context",i=`${n}:${e}`;if(crs.binding.functions.has(i)){let a=crs.binding.functions.get(i);return a.count+=1,a}t=t||[];let s=r?.sanitize??!0,l,o=e;s==!0?(l=await crs.binding.expression.sanitize(e,n),o=l.isLiteral===!0?["return `",l.expression,"`"].join(""):["return ",l.expression].join("")):l={expression:e};let u={key:i,function:new crs.classes.AsyncFunction(n,...t,o),parameters:l,count:1};return crs.binding.functions.set(i,u),u}function S(e){if(e==null||typeof e!="object")return;let t=e.key;if(crs.binding.functions.has(t)){let r=crs.binding.functions.get(t);r.count-=1,r.count==0&&(crs.binding.utils.disposeProperties(r),crs.binding.functions.delete(t))}}var dt=["_element"];function d(e){if(e==null||e.autoDispose==!1||typeof e!="object"||Object.isFrozen(e))return;if(Array.isArray(e))return K(e);if(e.constructor.name==="Set"||e.constructor.name==="Map")return H(e);let t=Object.getOwnPropertyNames(e).filter(r=>dt.indexOf(r)==-1);for(let r of t){let n=e[r];typeof n=="object"&&(Array.isArray(n)?K(n):n.constructor.name==="Set"||n.constructor.name==="Map"?H(n):(n.dispose!=null&&n.dispose(),d(n))),n=null,delete e[r]}}function K(e){if(e.length!==0){for(let t of e)d(t);e=null}}function H(e){e.forEach(t=>d(t)),e.clear(),e=null}function L(e,t){if(e==null||(t||"").length==0)return;if(t.indexOf(".")==-1)return e[t];let r=t.split("."),n=r.pop();for(let i of r)if(e=e[i],e==null)return null;return e[n]}function k(e){if(e==null)return;if(e.endsWith("/"))return e;let t=e.split("/");return t.pop(),`${t.join("/")}/`}function I(e,t,r){if(e==null||(t||"").length==0)return;let n=t.split("."),i=n.pop();for(let s of n)e=e[s]||={};e[i]=r}var p=class{#t={};async add(t,r){J(r||"",t,this.#t)}async delete(t){let r=`${t}.`,n=Object.keys(this.#t).filter(i=>i.indexOf(r)===0);for(let i of n)delete this.#t[i]}async parseElement(t){t.children.length==0&&t.textContent.indexOf("&{")!=-1&&(t.textContent=await this.get_with_markup(t.textContent.trim()));for(let r of t.attributes)await this.parseAttribute(r);for(let r of t.children)await this.parseElement(r)}async parseAttribute(t){t.value.indexOf("&{")!==-1&&(t.value=await this.get_with_markup(t.value))}async get(t){let r=this.#t[t];return r!=null||(r=this.fetch==null?null:await this.fetch(t),r!=null&&(this.#t[t]=r)),r}async get_with_markup(t){return t=t.split("&{").join("").split("}").join(""),await this.get(t)}};function J(e,t,r){if(typeof t=="string")e[0]==="."&&(e=e.substring(1)),r[e]=t;else{let n=Object.keys(t);for(let i of n)J(`${e}.${i}`,t[i],r)}}function Q(e,t){if(e.__uuid)return e.__uuid;let r=t.bid;return e.__uuid==null&&(e.__uuid||=crypto.randomUUID(),crs.binding.elements[e.__uuid]=e),e.__bid||=r,t.boundElements||=new Set,t.boundElements.add(e.__uuid),e.__uuid}function N(e){if(e.nodeName==="STYLE")return;e.children.length>0&&pt(e.children);let t=e.__uuid;t!=null&&(crs.binding.providers.clear(t).catch(r=>console.error(r)),crs.binding.elements[t]&&delete crs.binding.elements[t],crs.binding.utils.disposeProperties(e))}function pt(e){for(let t of e)N(t)}function X(e){e._domEvents=[],e.registerEvent=ht,e.unregisterEvent=gt}function Z(e){if(e._domEvents!=null){for(let t of e._domEvents)e.removeEventListener(t.event,t.callback),delete t.element,delete t.callback,delete t.event;e._domEvents.length=0,delete e._domEvents,delete e.registerEvent,delete e.unregisterEvent}}function ht(e,t,r,n=null){e.addEventListener(t,r,n),this._domEvents.push({element:e,event:t,callback:r})}function gt(e,t,r){let n=this._domEvents.find(i=>i.element==e&&i.event==t&&i.callback==r);n!=null&&(e.removeEventListener(n.event,n.callback),this._domEvents.splice(this._domEvents.indexOf(n),1),delete n.element,delete n.callback,delete n.event)}var y=class{#t={};get(t,r){return new Promise(async n=>{if(this.#t[t]||={count:0,queue:[],loading:!1,template:null},this.#t[t].count+=1,this.#t[t].template==null&&this.#t[t].loading===!1){this.#t[t].loading=!0;let i=await fetch(r).then(l=>l.text()),s=document.createElement("template");s.innerHTML=i,this.#t[t].template=s;for(let l of this.#t[t].queue)l();delete this.#t[t].loading,delete this.#t[t].queue,n(F(this.#t[t].template))}this.#t[t].template==null?this.#t[t].queue.push(()=>{n(F(this.#t[t].template))}):n(F(this.#t[t].template))})}async createStoreFromElement(t,r){let n=this.#t[t]||={count:0,template:{}},i=r.querySelectorAll("template"),s=null;for(let l of i){let o=l.id||l.dataset.id;n.template[o]=l,l.dataset.default==="true"&&(s=o)}return s}async getStoreTemplate(t,r){return this.#t[t]?.template[r]?.content.cloneNode(!0)}async remove(t){this.#t[t]!=null&&(this.#t[t].count-=1,this.#t[t].count===0&&(this.#t[t].count=null,this.#t[t].template=null,delete this.#t[t]))}};function F(e){let t=e.content.cloneNode(!0);return t.innerHTML||t.textContent}var O=class{#t={};add(t,r,n){this.#t[t]={template:r,fn:n}}get(t){return this.#t[t]}remove(t){let r=this.#t[t];delete this.#t[t],r.template=null,r.fn=null}};globalThis.requestIdleCallback=globalThis.requestIdleCallback||function(e){let t=Date.now();return setTimeout(function(){e({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-t))}})},1)};globalThis.cancelIdleCallback=globalThis.cancelIdleCallback||function(e){clearTimeout(e)};var E=class{#t=[];constructor(){this.processing=!1}dispose(){this.#t=null}async#e(){this.processing=!0;try{requestIdleCallback(async()=>{for(;this.#t.length>0;){let t=this.#t.shift();try{await t()}catch(r){console.error(r)}}},{timeout:1e3})}finally{this.processing=!1}}async add(t){if(typeof t=="function"){if(requestIdleCallback==null)return await t();this.#t.push(t),this.processing!=!0&&await this.#e()}}};var x=class{#t={};#e=this.#n.bind(this);async#n(t){let r=t.composedPath()[0]||t.target,n=r.__uuid;if(n==null)return;let s=this.#t[t.type][n];if(s!=null){let l=r.__bid,o=Array.isArray(s)?s[0].provider:s.provider;o=o.replaceAll("\\",""),await crs.binding.providers.attrProviders[o].onEvent(t,l,s,r)}}getIntent(t,r){return this.#t[t]?.[r]}register(t,r,n,i=!1){if(this.#t[t]==null&&(document.addEventListener(t,this.#e),this.#t[t]={}),i){this.#t[t][r]||=[],this.#t[t][r].push(n);return}this.#t[t][r]=n}clear(t){let r=crs.binding.elements[t];if(r?.__events==null)return;let n=r.__events;for(let i of n)delete this.#t[i][t]}};function tt(e){let t={path:e.trim()};return mt(t),bt(t),vt(t),t}function mt(e){e.path[0]=="$"&&e.path[1]=="{"&&(e.path=e.path.substring(2,e.path.length-1))}function bt(e){let t=yt(e.path,":");e.path=t[0],e.converter=t[1]}function vt(e){let t=e.converter.indexOf("("),r=e.converter.indexOf(")"),n=e.converter.substring(t+1,r).split("'").join('"'),i=e.converter.substring(0,t),s=e.converter.substring(r+1,e.converter.length);e.converter=i,e.parameter=n.length==0?null:JSON.parse(n),e.postExp=s}function yt(e,t){let r=e.indexOf(t),n=[];return n.push(e.substring(0,r)),n.push(e.substring(r+1,e.length)),n}function et(e,t){let r=Ot(e),n=["","."],i=t.split("./"),s=r.split("/");s.pop();let l=0;for(let a=0;a<i.length;a++){let f=i[a];if(n.indexOf(f)===-1)break;f=="."&&s.pop(),l+=1}i.splice(0,l);let o=i.join("/");return`${s.join("/")}/${o}`}function Ot(e){if(e==null||e[e.length-1]=="/")return e;let t=e.split("/");return t.pop(),`${t.join("/")}/`}var P=class{#t=[];#e={};add(t,r){this.#t.push(t),this.#e[t]=r}remove(t){this.#t.splice(this.#t.indexOf(t),1),delete this.#e[t]}async executeTemplateAction(t,r){if(t.attributes.length!==0){for(let n of this.#t)if(t.getAttribute(n)!=null){let i=this.#e[n];await i(t,r)}}}};globalThis.GLOBALS="$globals.";globalThis.crs||={};globalThis.crs.classes||={};globalThis.crs.classes.AsyncFunction=Object.getPrototypeOf(async function(){}).constructor;globalThis.crs.binding={root:import.meta.url.replace("/crs-binding.js",""),idleTaskManager:new E,eventStore:new x,templateProviders:new P,ignore:["TEMPLATE","SCRIPT","STYLE"],ignoreChildren:["PERSPECTIVE-ELEMENT"],data:new b,translations:new p,functions:new Map,elements:{},dom:{enableEvents:X,disableEvents:Z},providers:new h({"^style..*.if$":"$root/providers/attributes/style-if.js","^style..*.case$":"$root/providers/attributes/style-case.js","^(keydown|keyup)..+..*$":"$root/providers/events/keyboard-event.js","classlist.if":"$root/providers/attributes/classlist-if.js","classlist.case":"$root/providers/attributes/classlist-case.js",".bind":"$root/providers/properties/bind.js",".two-way":"$root/providers/properties/bind.js",".one-way":"$root/providers/properties/one-way.js",".once":"$root/providers/properties/once.js",".setvalue":"$root/providers/attributes/set-value.js",".attr":"$root/providers/attributes/attr.js",".if":"$root/providers/attributes/attr-if.js",".case":"$root/providers/attributes/attr-case.js","style.":"$root/providers/attributes/style-property.js",ref:"$root/providers/attributes/ref.js",".call":"$root/providers/attributes/call.js",".emit":"$root/providers/attributes/emit.js",".post":"$root/providers/attributes/post.js",".process":"$root/providers/attributes/process.js"},{"template[for]":"$root/providers/element/template-repeat-for.js","template[src]":"$root/providers/element/template-src.js",template:"$root/providers/element/template.js"}),parsers:{parseElement:w,parseElements:T,parseAttribute:$,parseAttributes:_},expression:{sanitize:A,compile:j,release:S,translateFactory:R},utils:{disposeProperties:d,getValueOnPath:L,setValueOnPath:I,getPathOfFile:k,markElement:Q,unmarkElement:N,getConverterParts:tt,relativePathFrom:et},inflation:{store:new O},templates:new y};Object.defineProperty(globalThis.crs.binding,"$global",{value:0,writable:!1});await crs.binding.providers.addTextProvider("$root/providers/text/text.js");
+var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+
+// src/utils/dom-collection-manager.js
+var DomCollection;
+var init_dom_collection_manager = __esm({
+  "src/utils/dom-collection-manager.js"() {
+    DomCollection = class {
+      static append(uuid, ...items) {
+        const element = crs.binding.elements[uuid];
+        if (element == null)
+          return;
+        const details = crs.binding.inflation.store.get(uuid);
+        const fragment = document.createDocumentFragment();
+        for (const item of items) {
+          const instance = details.template.content.cloneNode(true);
+          details.fn(instance, item);
+          fragment.appendChild(instance);
+        }
+        element.appendChild(fragment);
+      }
+      static splice(uuid, start, deleteCount, ...items) {
+        const element = crs.binding.elements[uuid];
+        if (element == null)
+          return;
+        for (let i = start; i < start + deleteCount; i++) {
+          if (i > element.children.length) {
+            break;
+          }
+          if (element.children[i]) {
+            element.removeChild(element.children[i]);
+          }
+        }
+        const details = crs.binding.inflation.store.get(uuid);
+        const fragment = document.createDocumentFragment();
+        for (const item of items || []) {
+          const instance = details.template.content.cloneNode(true);
+          details.fn(instance, item);
+          fragment.appendChild(instance);
+        }
+        const target = element.children[start];
+        element.insertBefore(fragment, target);
+      }
+      static pop(uuid) {
+        const element = crs.binding.elements[uuid];
+        if (element == null)
+          return;
+        if (element.lastElementChild) {
+          element.removeChild(element.lastElementChild);
+        }
+      }
+      static shift(uuid) {
+        const element = crs.binding.elements[uuid];
+        if (element == null)
+          return;
+        if (element.firstElementChild) {
+          element.removeChild(element.firstElementChild);
+        }
+      }
+    };
+    crs.binding.dom ||= {};
+    crs.binding.dom.collection = DomCollection;
+  }
+});
+
+// src/proxies/array-proxy.js
+var array_proxy_exports = {};
+__export(array_proxy_exports, {
+  default: () => wrapArrayForUpdate
+});
+function updateDom(callback) {
+  const bid = this["__bid"];
+  const property = this["__property"];
+  if (bid == null || property == null)
+    return;
+  const uuids = crs.binding.data.getCallbacks(bid, property);
+  for (const uuid of uuids) {
+    callback(uuid);
+  }
+}
+function wrapArrayForUpdate(array) {
+  return new Proxy(array, arrayHandler);
+}
+var ArrayProxyFunctions, arrayHandler;
+var init_array_proxy = __esm({
+  "src/proxies/array-proxy.js"() {
+    init_dom_collection_manager();
+    ArrayProxyFunctions = class {
+      static push(...items) {
+        this.push(...items);
+        updateDom.call(this, (uuid) => {
+          crs.binding.dom.collection.append(uuid, ...items);
+        });
+      }
+      static splice(start, deleteCount, ...items) {
+        this.splice(start, deleteCount, ...items);
+        updateDom.call(this, (uuid) => {
+          crs.binding.dom.collection.splice(uuid, start, deleteCount, ...items);
+        });
+      }
+      static shift() {
+        this.shift();
+        updateDom.call(this, (uuid) => {
+          crs.binding.dom.collection.shift(uuid);
+        });
+      }
+      static pop() {
+        this.pop();
+        updateDom.call(this, (uuid) => {
+          crs.binding.dom.collection.pop(uuid);
+        });
+      }
+    };
+    arrayHandler = {
+      get(target, prop, receiver) {
+        if (ArrayProxyFunctions[prop]) {
+          return ArrayProxyFunctions[prop].bind(target);
+        }
+        return target[prop];
+      }
+    };
+  }
+});
+
+// src/providers.js
+var Providers = class {
+  #regex = {};
+  #attrProviders = {};
+  #elementProviders = {};
+  #textProviders = [];
+  #attrPartialKeys = [];
+  #elementQueries = [];
+  get attrProviders() {
+    return this.#attrProviders;
+  }
+  get textProviders() {
+    return this.#textProviders;
+  }
+  get elementProviders() {
+    return this.#elementProviders;
+  }
+  constructor(attrProviders, elementProviders) {
+    for (const key of Object.keys(attrProviders)) {
+      this.addAttributeProvider(key, attrProviders[key]);
+    }
+    for (const key of Object.keys(elementProviders)) {
+      this.addElementProvider(key, elementProviders[key]);
+    }
+  }
+  async #loadModule(file) {
+    file = file.replace("$root", crs.binding.root);
+    return new (await import(file)).default();
+  }
+  async getAttrModule(key) {
+    const module = this.#attrProviders[key];
+    if (typeof module !== "string")
+      return module;
+    this.#attrProviders[key] = await this.#loadModule(module);
+    return this.#attrProviders[key];
+  }
+  addAttributeProvider(key, file) {
+    this.#attrProviders[key] = file;
+    if (key.indexOf(".") != -1) {
+      this.#attrPartialKeys.push(key);
+    }
+  }
+  addElementProvider(key, file) {
+    this.#elementProviders[key] = file;
+    this.#elementQueries.push(key);
+  }
+  async addTextProvider(file) {
+    this.#textProviders.push(await this.#loadModule(file));
+  }
+  async getAttrProvider(attrName) {
+    if (attrName === "ref")
+      return await this.getAttrModule("ref");
+    if (attrName.indexOf(".") == -1)
+      return null;
+    if (this.#attrProviders[attrName] != null)
+      return await this.getAttrModule(attrName);
+    for (const key of this.#attrPartialKeys) {
+      if (key[0] === "^") {
+        let regex = this.#regex[key];
+        if (regex == null) {
+          regex = new RegExp(key);
+          this.#regex[key] = regex;
+        }
+        if (regex.test(attrName)) {
+          return await this.getAttrModule(key);
+        }
+      }
+      if (attrName.indexOf(key) != -1) {
+        return await this.getAttrModule(key);
+      }
+    }
+  }
+  async getElementProvider(element) {
+    for (const query of this.#elementQueries) {
+      if (element.matches(query)) {
+        if (typeof this.#elementProviders[query] === "object") {
+          return this.#elementProviders[query];
+        }
+        this.#elementProviders[query] = await this.#loadModule(this.#elementProviders[query]);
+        return this.#elementProviders[query];
+      }
+    }
+  }
+  async getTextProviders() {
+    return this.#textProviders;
+  }
+  async update(uuid, ...properties) {
+    const element = crs.binding.elements[uuid];
+    if (element.__events != null && element.__events.indexOf("change") != -1) {
+      this.#attrProviders[".bind"].update(uuid);
+    }
+    for (const textProvider of this.#textProviders) {
+      if (textProvider.store[uuid] != null) {
+        textProvider.update(uuid);
+      }
+    }
+    for (const key of this.#attrPartialKeys) {
+      const provider = this.#attrProviders[key];
+      if (typeof provider === "string")
+        continue;
+      if (provider.store?.[uuid] != null) {
+        provider.update?.(uuid, ...properties);
+      }
+    }
+  }
+  async updateProviders(uuid, ...providerKeys) {
+    for (const providerKey of providerKeys) {
+      let provider;
+      if (providerKey === ".textContent") {
+        provider = this.#textProviders[0];
+      } else {
+        provider = this.#attrProviders[providerKey] || this.#elementProviders[providerKey];
+      }
+      provider.update(uuid);
+    }
+  }
+  async clear(uuid) {
+    for (const textProvider of this.#textProviders) {
+      textProvider.clear(uuid);
+    }
+    for (const key of this.#attrPartialKeys) {
+      this.#attrProviders[key].clear?.(uuid);
+    }
+  }
+};
+
+// src/parsers/element.js
+var ignoreElements = ["STYLE", "CRS-ROUTER", "SCRIPT"];
+async function parseElement(element, context, options) {
+  if (element["__inflated"] === true || ignoreElements.indexOf(element.nodeName) != -1)
+    return;
+  if (element.dataset.ref != null) {
+    context[element.dataset.ref] = element;
+  }
+  let ctxName = options?.ctxName || "context";
+  const elementProvider = await crs.binding.providers.getElementProvider(element);
+  if (elementProvider != null) {
+    return elementProvider.parse(element, context, ctxName);
+  }
+  if (ignore(element, crs.binding.ignore)) {
+    return;
+  }
+  await crs.binding.parsers.parseAttributes(element, context, ctxName);
+  if (ignore(element, crs.binding.ignoreChildren)) {
+    return;
+  }
+  if (element.children?.length > 0) {
+    return await crs.binding.parsers.parseElements(element.children, context, options);
+  }
+  for (const provider of crs.binding.providers.textProviders) {
+    await provider.parseElement(element, context, ctxName);
+  }
+}
+function ignore(element, options) {
+  for (const query of options) {
+    if (element.matches(query)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// src/parsers/elements.js
+async function parseElements(collection, context, options) {
+  if (collection == null)
+    return;
+  for (let element of collection) {
+    await crs.binding.parsers.parseElement(element, context, options);
+  }
+}
+
+// src/parsers/attribute.js
+async function parseAttribute(attr, context, ctxName, parentId) {
+  if (attr.ownerElement == null)
+    return;
+  const provider = await crs.binding.providers.getAttrProvider(attr.name);
+  if (provider == null)
+    return;
+  const element = attr.ownerElement;
+  crs.binding.utils.markElement(element, context);
+  await provider.parse(attr, context, ctxName, parentId);
+}
+
+// src/parsers/attributes.js
+async function parseAttributes(element, context, ctxName, parentId) {
+  if (element.attributes == null)
+    return;
+  const attributes = Array.from(element.attributes);
+  for (const attribute of attributes) {
+    await crs.binding.parsers.parseAttribute(attribute, context, ctxName, parentId);
+  }
+}
+
+// src/store/binding-data.js
+var BindingData = class {
+  #nextId = 1;
+  #context = {};
+  #data = {
+    0: {
+      name: "global",
+      type: "data",
+      data: {}
+    }
+  };
+  #callbacks = {};
+  #contextCallbacks = {};
+  #elementProviders = {};
+  #getNextId() {
+    const result = this.#nextId;
+    this.#nextId += 1;
+    return result;
+  }
+  #getContextId(id) {
+    if (typeof id == "object") {
+      return id.bid;
+    }
+    return id;
+  }
+  get globals() {
+    return this.#data[0].data;
+  }
+  async #performUpdate(bid, property) {
+    if (this.#callbacks[bid] == null)
+      return;
+    const uuids = this.#callbacks[bid]?.[property];
+    if (uuids != null) {
+      for (const uuid of uuids.values()) {
+        if (typeof uuid === "function") {
+          await uuid();
+        } else {
+          await crs.binding.providers.update(uuid, property);
+        }
+      }
+      return;
+    }
+    for (const dataProperty of Object.keys(this.#callbacks[bid])) {
+      if (dataProperty.indexOf(property) == 0) {
+        await this.#performUpdate(bid, dataProperty);
+      }
+    }
+  }
+  setCallback(uuid, bid, properties, provider) {
+    const obj = this.#callbacks[bid] ||= {};
+    for (const property of properties) {
+      if (property.indexOf(GLOBALS) !== -1) {
+        this.setCallback(uuid, 0, [property.replace(GLOBALS, "")], provider);
+        continue;
+      }
+      if (obj[property] == null) {
+        obj[property] = /* @__PURE__ */ new Set();
+      }
+      obj[property].add(uuid);
+      this.#elementProviders[uuid] ||= /* @__PURE__ */ new Set();
+      this.#elementProviders[uuid].add(provider);
+    }
+  }
+  addContextCallback(bid, callback) {
+    if (this.#contextCallbacks[bid] == null) {
+      this.#contextCallbacks[bid] = /* @__PURE__ */ new Set();
+    }
+    this.#contextCallbacks[bid].add(callback);
+  }
+  removeContextCallback(bid, callback) {
+    if (this.#contextCallbacks[bid] == null) {
+      return;
+    }
+    this.#contextCallbacks[bid].delete(callback);
+    if (this.#contextCallbacks[bid].size == 0) {
+      delete this.#contextCallbacks[bid];
+    }
+  }
+  addObject(name, struct = {}) {
+    const id = this.#getNextId();
+    this.#data[id] = {
+      name,
+      type: "data",
+      data: struct
+    };
+    this.#callbacks[id] = {};
+    return id;
+  }
+  addContext(id, obj) {
+    this.#context[id] = obj;
+  }
+  getContext(id) {
+    return this.#context[id];
+  }
+  getData(id) {
+    id = this.#getContextId(id);
+    return this.#data[id];
+  }
+  getCallbacks(id, property) {
+    const set = this.#callbacks[id]?.[property];
+    return set == null ? [] : Array.from(set);
+  }
+  getDataForElement(element) {
+    const bid = element?.["__bid"];
+    if (bid == null)
+      return;
+    const data = crs.binding.data.getData(bid);
+    return data.data;
+  }
+  remove(id) {
+    id = this.#getContextId(id);
+    const context = this.#context[id];
+    if (context == null)
+      return;
+    if (context.boundElements != null) {
+      for (const uuid of context.boundElements) {
+        delete this.#elementProviders[uuid];
+      }
+      delete context.boundElements;
+    }
+    crs.binding.utils.disposeProperties(this.#data[id]);
+    crs.binding.utils.disposeProperties(this.#context[id]);
+    crs.binding.utils.disposeProperties(this.#callbacks[id]);
+    delete this.#data[id];
+    delete this.#context[id];
+    delete this.#callbacks[id];
+    delete this.#contextCallbacks[id];
+    if (crs.binding.dataDef != null) {
+      crs.binding.dataDef.remove(id);
+    }
+  }
+  getProperty(id, property) {
+    if (property === "bid") {
+      return id;
+    }
+    if (property.indexOf(GLOBALS) !== -1) {
+      id = 0;
+      property = property.replace(GLOBALS, "");
+    }
+    id = this.#getContextId(id);
+    return crs.binding.utils.getValueOnPath(this.getData(id)?.data, property);
+  }
+  async setProperty(id, property, value) {
+    const oldValue = this.getProperty(id, property);
+    let setProperty = property;
+    if (setProperty.indexOf(GLOBALS) !== -1) {
+      id = 0;
+      setProperty = property.replace(GLOBALS, "");
+    }
+    id = this.#getContextId(id);
+    if (Array.isArray(value)) {
+      value.__bid = id;
+      value.__property = setProperty;
+      value = (await Promise.resolve().then(() => (init_array_proxy(), array_proxy_exports))).default(value);
+    }
+    crs.binding.utils.setValueOnPath(this.getData(id)?.data, setProperty, value);
+    await this.#performUpdate(id, setProperty);
+    if (id !== 0) {
+      const context = this.#context[id];
+      if (context != null) {
+        context["propertyChanged"]?.(property, value, oldValue);
+        context[`${property}Changed`]?.(value, oldValue);
+      }
+    }
+    if (this.#contextCallbacks[id] != null) {
+      for (const callback of this.#contextCallbacks[id]) {
+        callback?.(property, value, oldValue);
+      }
+    }
+    if (crs.binding.dataDef != null) {
+      await crs.binding.dataDef.automateValues(id, property);
+      await crs.binding.dataDef.automateValidations(id, property);
+    }
+  }
+  setName(id, name) {
+    id = this.#getContextId(id);
+    const data = crs.binding.data.getData(id);
+    data.name = name;
+  }
+  async updateElement(element) {
+    const bid = element["__bid"];
+    const uuid = element["__uuid"];
+    if (bid == null || uuid == null)
+      return;
+    for (const property of Object.keys(this.#callbacks[bid])) {
+      await crs.binding.providers.update(uuid, property);
+    }
+  }
+  async updateContext(bid) {
+    const context = this.getContext(bid);
+    if (context == null || context.boundElements == null)
+      return;
+    for (const uuid of context.boundElements) {
+      const providers = this.#elementProviders[uuid];
+      if (providers == null)
+        continue;
+      const providersCollection = Array.from(providers);
+      await crs.binding.providers.updateProviders(uuid, ...providersCollection);
+    }
+  }
+  async updateUI(bid, property) {
+    const context = this.getContext(bid);
+    if (context == null || context.boundElements == null)
+      return;
+    await this.#performUpdate(bid, property);
+  }
+  async addCallback(bid, property, callback) {
+    const obj = this.#callbacks[bid];
+    if (obj[property] == null) {
+      obj[property] = /* @__PURE__ */ new Set();
+    }
+    obj[property].add(callback);
+  }
+  async removeCallback(bid, property, callback) {
+    const obj = this.#callbacks[bid];
+    if (obj[property] == null)
+      return;
+    obj[property].delete(callback);
+  }
+};
+
+// src/expressions/exp-tokenizer.js
+var TokenTypes = Object.freeze({
+  WORD: "word",
+  LITERAL: "literal",
+  FUNCTION: "function",
+  PROPERTY: "property",
+  OBJECT: "object",
+  KEYWORD: "keyword",
+  OPERATOR: "operator",
+  NUMBER: "number",
+  SPACE: "space",
+  STRING: "string"
+});
+function tokenize(exp, isLiteral) {
+  const result = [];
+  let word = [];
+  let i = 0;
+  function step(type, value) {
+    if (word.length > 0) {
+      const value2 = word.join("");
+      pushWord(value2);
+    }
+    result.push({ type, value });
+  }
+  function pushWord(value) {
+    let wordType = TokenTypes.WORD;
+    if (keywords.indexOf(value) != -1) {
+      wordType = TokenTypes.KEYWORD;
+    }
+    if (isNaN(Number(value)) == false) {
+      wordType = TokenTypes.NUMBER;
+    }
+    result.push({ type: wordType, value });
+    word.length = 0;
+  }
+  for (i; i < exp.length; i++) {
+    const char = exp[i];
+    if (char == " ") {
+      step(TokenTypes.SPACE, " ");
+      continue;
+    }
+    if (char == "`") {
+      step(TokenTypes.LITERAL, "`");
+      continue;
+    }
+    if (char == "$") {
+      if (exp[i + 1] == "{") {
+        step(TokenTypes.KEYWORD, "${");
+        i++;
+        continue;
+      }
+    }
+    if (char == "'" || char == '"') {
+      const lastIndex = i + exp.length - i;
+      let hasLiteral = false;
+      if (exp[i + 1] == void 0) {
+        step(TokenTypes.STRING, char);
+        break;
+      }
+      let j = i + 1;
+      for (j; j < lastIndex; j++) {
+        if (exp[j] == "$" && exp[j + 1] == "{") {
+          hasLiteral = true;
+          break;
+        }
+        if (exp[j] == char) {
+          const value = exp.substring(i, j + 1);
+          step(TokenTypes.STRING, value);
+          break;
+        }
+      }
+      if (hasLiteral == true) {
+        step(TokenTypes.STRING, char);
+      } else {
+        i = j;
+      }
+      continue;
+    }
+    if (keywords.indexOf(char) != -1) {
+      step(TokenTypes.KEYWORD, char);
+      continue;
+    }
+    if (operatorStart.indexOf(char) != -1) {
+      for (let j = i; j < i + 4; j++) {
+        const charNext = exp[j];
+        if (operatorStart.indexOf(charNext) == -1) {
+          const value = exp.substring(i, j);
+          step(TokenTypes.OPERATOR, value);
+          i = j - 1;
+          break;
+        }
+      }
+      continue;
+    }
+    word.push(char);
+  }
+  if (word.length > 0) {
+    pushWord(word.join(""));
+  }
+  return postProcessTokens(result, isLiteral);
+}
+function postProcessTokens(tokens, isLiteral) {
+  if (tokens.length == 1 && tokens[0].type == TokenTypes.WORD) {
+    tokens[0].type = TokenTypes.PROPERTY;
+    return tokens;
+  }
+  let state = [];
+  let i = 0;
+  while (tokens[i] != void 0) {
+    const token = tokens[i];
+    const currentState = state.length == 0 ? "none" : state[state.length - 1];
+    const index = token.value.indexOf(".");
+    if (token.type == TokenTypes.WORD) {
+      if (currentState == TokenTypes.LITERAL) {
+        if (token.value[0] == "." && tokens[i + 1].value == "(") {
+          token.type = TokenTypes.FUNCTION;
+          i++;
+          continue;
+        }
+        token.type = TokenTypes.PROPERTY;
+      } else if (index != -1) {
+        if (tokens[i - 1]?.value === ")" && index === 0) {
+          token.type = TokenTypes.FUNCTION;
+        } else {
+          token.type = TokenTypes.PROPERTY;
+        }
+      } else if (isOperator(tokens[i + 1]) || isOperator(tokens[i + 2])) {
+        if (isLiteral !== true && currentState !== TokenTypes.OBJECT) {
+          token.type = TokenTypes.PROPERTY;
+        }
+      } else if (isLiteral !== true && isOperator(tokens[i - 1]) || isOperator(tokens[i - 2])) {
+        if (currentState !== TokenTypes.OBJECT) {
+          token.type = TokenTypes.PROPERTY;
+        }
+      } else if (i === 0 && tokens[i + 1]?.value === "(") {
+        token.type = TokenTypes.PROPERTY;
+      }
+    }
+    if (token.type == TokenTypes.KEYWORD && token.value == "(" && (tokens[i - 1] && tokens[i - 1].type == TokenTypes.PROPERTY && tokens[i - 1].value[0] != "$")) {
+      const path = tokens[i - 1].value;
+      if (path.indexOf(".") == -1) {
+        tokens[i - 1].type = TokenTypes.FUNCTION;
+      } else {
+        let dotIndex = path.length - 1;
+        for (let i2 = path.length - 1; i2 >= 0; i2--) {
+          if (path[i2] == ".") {
+            dotIndex = i2;
+            break;
+          }
+        }
+        if (dotIndex > 0) {
+          const property = path.substring(0, dotIndex);
+          const fnName = path.substring(dotIndex, path.length);
+          tokens[i - 1].value = property;
+          tokens.splice(i, 0, { type: TokenTypes.FUNCTION, value: fnName });
+          i++;
+        } else {
+          tokens[i - 1].type = TokenTypes.FUNCTION;
+        }
+      }
+    }
+    if (token.value == "${") {
+      state.push(TokenTypes.LITERAL);
+    } else if (token.value == "{") {
+      state.push(TokenTypes.OBJECT);
+    } else if (token.value == "}") {
+      state.pop();
+    }
+    i++;
+  }
+  if (tokens[0].type === TokenTypes.FUNCTION) {
+    tokens[0].type = TokenTypes.PROPERTY;
+  }
+  return tokens;
+}
+function isOperator(token) {
+  if (token == null)
+    return false;
+  return token.type == TokenTypes.OPERATOR;
+}
+var operatorStart = ["=", "!", "<", ">", "+", "-", "*", "/", "&", "|", "?", ":"];
+var keywords = ["{", "}", "(", ")", ",", "true", "false", "null", "undefined", "[]"];
+
+// src/expressions/exp-sanitizer.js
+var sanitizeKeywords = ["false", "true", "null"];
+async function sanitize(exp, ctxName = "context") {
+  let isHTML = false;
+  if (typeof exp == "string" && exp.indexOf("$html") != -1) {
+    isHTML = true;
+    exp = exp.split("$html.").join("");
+  }
+  if (exp == null || exp == "null" || exp == "undefined" || sanitizeKeywords.indexOf(exp.toString()) != -1 || isNaN(exp) == false || exp.trim() == ctxName) {
+    return {
+      isLiteral: true,
+      expression: exp,
+      isHTML
+    };
+  }
+  const namedExp = ctxName != "context";
+  if (namedExp == true && exp == ["${", ctxName, "}"].join("")) {
+    return {
+      isLiteral: true,
+      expression: exp
+    };
+  }
+  const properties = /* @__PURE__ */ new Set();
+  const isLiteral = exp.indexOf("${") != -1 || exp.indexOf("&{") != -1;
+  const tokens = tokenize(exp, isLiteral);
+  const expression = [];
+  for (let token of tokens) {
+    if (token.type == "property") {
+      if (token.value.indexOf("$globals") != -1) {
+        expression.push(token.value.replace("$globals", "crs.binding.data.globals"));
+      } else if (token.value.indexOf("$event") != -1) {
+        expression.push(token.value.replace("$event", "event"));
+      } else if (token.value.indexOf("$context") != -1) {
+        expression.push(token.value.replace("$context", "context"));
+      } else if (token.value.indexOf("$data") != -1) {
+        expression.push(token.value.replace("$data", "crs.binding.data.getValue"));
+      } else if (token.value.indexOf("$parent") != -1) {
+        expression.push(token.value.replace("$parent", "parent"));
+      } else if (ctxName !== "context" && token.value.indexOf(`${ctxName}.`) != -1) {
+        expression.push(token.value);
+      } else if (token.value === "new") {
+        expression.push(token.value);
+      } else {
+        expression.push(`${ctxName}.${token.value}`);
+      }
+      addProperty(properties, token.value, ctxName);
+    } else {
+      expression.push(token.value);
+    }
+  }
+  let expr = expression.join("").replaceAll("context.[", "[").replaceAll("context.]", "]");
+  expr = await crs.binding.expression.translateFactory(expr);
+  return {
+    isLiteral,
+    isHTML,
+    expression: expr,
+    properties: Array.from(properties)
+  };
+}
+var fnNames = [".trim", ".toLowerCase", "toUpperCase"];
+var ignoreProperties = ["$data", "$event", "[", "]"];
+function addProperty(set, property, ctxName) {
+  if (property.length == 0)
+    return;
+  for (let ignore2 of ignoreProperties) {
+    if (property.indexOf(ignore2) != -1)
+      return;
+  }
+  let propertyValue = property;
+  const ctxPrefix = `${ctxName}.`;
+  if (propertyValue.indexOf(ctxPrefix) == 0) {
+    propertyValue = propertyValue.replace(ctxPrefix, "");
+  }
+  for (let fnName of fnNames) {
+    if (propertyValue.indexOf(fnName) != -1) {
+      propertyValue = propertyValue.split(fnName).join("");
+    }
+  }
+  set.add(propertyValue);
+}
+
+// src/expressions/code-factories/translate.js
+async function translateFactory(exp) {
+  if (exp?.length > 0 && exp.indexOf("&{") == -1)
+    return exp;
+  return replaceTranslation(exp.split("")).join("");
+}
+function replaceTranslation(expArray) {
+  const start = expArray.indexOf("&");
+  if (start == -1 || expArray[start + 1] != "{")
+    return expArray;
+  const end = expArray.indexOf("}", start);
+  const exp = expArray.slice(start + 2, end).join("");
+  const code = ["${await crs.binding.translations.get('", exp.replace("context.", ""), "')}"].join("");
+  expArray.splice(start, exp.length + 3, code);
+  return replaceTranslation(expArray);
+}
+
+// src/expressions/compiler.js
+async function compile(exp, parameters, options) {
+  const ctxName = options?.ctxName || "context";
+  const key = `${ctxName}:${exp}`;
+  if (crs.binding.functions.has(key)) {
+    const result2 = crs.binding.functions.get(key);
+    result2.count += 1;
+    return result2;
+  }
+  parameters = parameters || [];
+  const sanitize2 = options?.sanitize ?? true;
+  let san;
+  let src = exp;
+  if (sanitize2 == true) {
+    san = await crs.binding.expression.sanitize(exp, ctxName);
+    src = san.isLiteral === true ? ["return `", san.expression, "`"].join("") : ["return ", san.expression].join("");
+  } else {
+    san = {
+      expression: exp
+    };
+  }
+  const result = {
+    key,
+    function: new crs.classes.AsyncFunction(ctxName, ...parameters, src),
+    parameters: san,
+    count: 1
+  };
+  crs.binding.functions.set(key, result);
+  return result;
+}
+function release(exp) {
+  if (exp == null || typeof exp != "object")
+    return;
+  const key = exp.key;
+  if (crs.binding.functions.has(key)) {
+    const x = crs.binding.functions.get(key);
+    x.count -= 1;
+    if (x.count == 0) {
+      crs.binding.utils.disposeProperties(x);
+      crs.binding.functions.delete(key);
+    }
+  }
+}
+
+// src/utils/dispose-properties.js
+var ignoreDispose = ["_element"];
+function disposeProperties(obj) {
+  if (obj == null || obj.autoDispose == false)
+    return;
+  if (typeof obj != "object")
+    return;
+  if (Object.isFrozen(obj))
+    return;
+  if (Array.isArray(obj)) {
+    return disposeArray(obj);
+  }
+  if (obj.constructor.name === "Set" || obj.constructor.name === "Map") {
+    return disposeMapSet(obj);
+  }
+  const properties = Object.getOwnPropertyNames(obj).filter((name) => ignoreDispose.indexOf(name) == -1);
+  for (let property of properties) {
+    let pObj = obj[property];
+    if (typeof pObj == "object") {
+      if (Array.isArray(pObj)) {
+        disposeArray(pObj);
+      } else if (pObj.constructor.name === "Set" || pObj.constructor.name === "Map") {
+        disposeMapSet(pObj);
+      } else {
+        if (pObj.dispose != null) {
+          pObj.dispose();
+        }
+        disposeProperties(pObj);
+      }
+    }
+    try {
+      pObj = null;
+      delete obj[property];
+    } catch {
+    }
+  }
+}
+function disposeArray(array) {
+  if (array.length === 0)
+    return;
+  for (const item of array) {
+    disposeProperties(item);
+  }
+  array = null;
+}
+function disposeMapSet(obj) {
+  obj.forEach((item) => disposeProperties(item));
+  obj.clear();
+  obj = null;
+}
+
+// src/utils/get-value-on-path.js
+function getValueOnPath(obj, path) {
+  if (obj == null || (path || "").length == 0)
+    return;
+  if (path.indexOf(".") == -1) {
+    return obj[path];
+  }
+  const parts = path.split(".");
+  const property = parts.pop();
+  for (const part of parts) {
+    obj = obj[part];
+    if (obj == null)
+      return null;
+  }
+  return obj[property];
+}
+
+// src/utils/get-path-of-file.js
+function getPathOfFile(file) {
+  if (file == null)
+    return;
+  if (file.endsWith("/"))
+    return file;
+  const parts = file.split("/");
+  parts.pop();
+  return `${parts.join("/")}/`;
+}
+
+// src/utils/set-value-on-path.js
+function setValueOnPath(obj, path, value) {
+  if (obj == null || (path || "").length == 0)
+    return;
+  const parts = path.split(".");
+  const field = parts.pop();
+  for (const part of parts) {
+    obj = obj[part] ||= {};
+  }
+  obj[field] = value;
+}
+
+// src/managers/translations-manager.js
+var TranslationsManager = class {
+  #dictionary = {};
+  async add(obj, context) {
+    flattenPropertyPath(context || "", obj, this.#dictionary);
+  }
+  async delete(context) {
+    const filterKey = `${context}.`;
+    const keys = Object.keys(this.#dictionary).filter((item) => item.indexOf(filterKey) === 0);
+    for (let key of keys) {
+      delete this.#dictionary[key];
+    }
+  }
+  async parseElement(element) {
+    if (element.children.length == 0 && element.textContent.indexOf("&{") != -1) {
+      element.textContent = await this.get_with_markup(element.textContent.trim());
+    }
+    for (let attribute of element.attributes || []) {
+      await this.parseAttribute(attribute);
+    }
+    for (let child of element.children || []) {
+      await this.parseElement(child);
+    }
+  }
+  async parseAttribute(attribute) {
+    if (attribute.value.indexOf("&{") !== -1) {
+      attribute.value = await this.get_with_markup(attribute.value);
+    }
+  }
+  async get(key) {
+    let result = this.#dictionary[key];
+    if (result != null) {
+      return result;
+    }
+    result = this.fetch == null ? null : await this.fetch(key);
+    if (result != null) {
+      this.#dictionary[key] = result;
+    }
+    return result;
+  }
+  async get_with_markup(key) {
+    key = key.split("&{").join("").split("}").join("");
+    return await this.get(key);
+  }
+};
+function flattenPropertyPath(prefix, obj, target) {
+  if (typeof obj === "string") {
+    if (prefix[0] === ".") {
+      prefix = prefix.substring(1);
+    }
+    target[prefix] = obj;
+  } else {
+    const keys = Object.keys(obj);
+    for (let key of keys) {
+      flattenPropertyPath(`${prefix}.${key}`, obj[key], target);
+    }
+  }
+}
+
+// src/utils/mark-element.js
+function markElement(element, context) {
+  if (element["__uuid"])
+    return element["__uuid"];
+  const bid = context.bid;
+  if (element["__uuid"] == null) {
+    element["__uuid"] ||= crypto.randomUUID();
+    crs.binding.elements[element["__uuid"]] = element;
+  }
+  element["__bid"] ||= bid;
+  context.boundElements ||= /* @__PURE__ */ new Set();
+  context.boundElements.add(element["__uuid"]);
+  return element["__uuid"];
+}
+function unmarkElement(element) {
+  if (element.nodeName === "STYLE")
+    return;
+  if (element.children.length > 0) {
+    unmarkElements(element.children);
+  }
+  const uuid = element["__uuid"];
+  if (uuid == null)
+    return;
+  crs.binding.providers.clear(uuid).catch((error) => console.error(error));
+  if (crs.binding.elements[uuid]) {
+    delete crs.binding.elements[uuid];
+  }
+  crs.binding.utils.disposeProperties(element);
+}
+function unmarkElements(elements) {
+  for (const element of elements) {
+    unmarkElement(element);
+  }
+}
+
+// src/events/dom-events.js
+function enableEvents(element) {
+  element._domEvents = [];
+  element.registerEvent = registerEvent;
+  element.unregisterEvent = unregisterEvent;
+}
+function disableEvents(element) {
+  if (element._domEvents == null)
+    return;
+  for (let event of element._domEvents) {
+    element.removeEventListener(event.event, event.callback);
+    delete event.element;
+    delete event.callback;
+    delete event.event;
+  }
+  element._domEvents.length = 0;
+  delete element._domEvents;
+  delete element.registerEvent;
+  delete element.unregisterEvent;
+}
+function registerEvent(element, event, callback, eventOptions = null) {
+  element.addEventListener(event, callback, eventOptions);
+  this._domEvents.push({
+    element,
+    event,
+    callback
+  });
+}
+function unregisterEvent(element, event, callback) {
+  const item = this._domEvents.find((item2) => item2.element == element && item2.event == event && item2.callback == callback);
+  if (item == null)
+    return;
+  element.removeEventListener(item.event, item.callback);
+  this._domEvents.splice(this._domEvents.indexOf(item), 1);
+  delete item.element;
+  delete item.callback;
+  delete item.event;
+}
+
+// src/managers/templates-manager.js
+var TemplatesManager = class {
+  #store = {};
+  get(name, path) {
+    return new Promise(async (resolve) => {
+      this.#store[name] ||= {
+        count: 0,
+        queue: [],
+        loading: false,
+        template: null
+      };
+      this.#store[name].count += 1;
+      if (this.#store[name].template == null && this.#store[name].loading === false) {
+        this.#store[name].loading = true;
+        const html = await fetch(path).then((result) => result.text());
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        this.#store[name].template = { template, html };
+        for (const callback of this.#store[name].queue) {
+          callback();
+        }
+        delete this.#store[name].loading;
+        delete this.#store[name].queue;
+        resolve(html);
+      }
+      if (this.#store[name].template == null) {
+        this.#store[name].queue.push(() => {
+          resolve(this.#store[name].template.html);
+        });
+      } else {
+        resolve(this.#store[name].template.html);
+      }
+    });
+  }
+  async createStoreFromElement(store, element) {
+    const targetStore = this.#store[store] ||= {
+      count: 0,
+      template: {}
+    };
+    const templates = element.querySelectorAll("template");
+    let defaultView = null;
+    for (const template of templates) {
+      const id = template.id || template.dataset.id;
+      targetStore.template[id] = template;
+      if (template.dataset.default === "true") {
+        defaultView = id;
+      }
+    }
+    return defaultView;
+  }
+  async getStoreTemplate(store, name) {
+    const targetStore = this.#store[store];
+    const template = targetStore?.template[name];
+    return template?.content.cloneNode(true);
+  }
+  async remove(name) {
+    if (this.#store[name] == null)
+      return;
+    this.#store[name].count -= 1;
+    if (this.#store[name].count === 0) {
+      this.#store[name].count = null;
+      this.#store[name].template.template = null;
+      this.#store[name].template.html = null;
+      this.#store[name].template = null;
+      delete this.#store[name];
+    }
+  }
+};
+
+// src/store/template-inflation-store.js
+var TemplateInflationStore = class {
+  #store = {};
+  add(name, template, fn) {
+    this.#store[name] = {
+      template,
+      fn
+    };
+  }
+  get(name) {
+    return this.#store[name];
+  }
+  remove(name) {
+    const item = this.#store[name];
+    delete this.#store[name];
+    item.template = null;
+    item.fn = null;
+  }
+};
+
+// src/idle/idleCallback.js
+globalThis.requestIdleCallback = globalThis.requestIdleCallback || function(cb) {
+  const start = Date.now();
+  return setTimeout(function() {
+    cb({
+      didTimeout: false,
+      timeRemaining: function() {
+        return Math.max(0, 50 - (Date.now() - start));
+      }
+    });
+  }, 1);
+};
+globalThis.cancelIdleCallback = globalThis.cancelIdleCallback || function(id) {
+  clearTimeout(id);
+};
+
+// src/idle/idleTaskManager.js
+var IdleTaskManager = class {
+  #list = [];
+  constructor() {
+    this.processing = false;
+  }
+  dispose() {
+    this.#list = null;
+  }
+  async #processQueue() {
+    this.processing = true;
+    try {
+      requestIdleCallback(async () => {
+        while (this.#list.length > 0) {
+          const fn = this.#list.shift();
+          try {
+            await fn();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }, { timeout: 1e3 });
+    } finally {
+      this.processing = false;
+    }
+  }
+  async add(fn) {
+    if (typeof fn != "function")
+      return;
+    if (requestIdleCallback == null)
+      return await fn();
+    this.#list.push(fn);
+    if (this.processing == true)
+      return;
+    await this.#processQueue();
+  }
+};
+
+// src/store/event-store.js
+var EventStore = class {
+  #store = {};
+  #eventHandler = this.#onEvent.bind(this);
+  get store() {
+    return this.#store;
+  }
+  async #onEvent(event) {
+    const targets = getTargets(event);
+    if (targets.length === 0)
+      return;
+    for (const target of targets) {
+      const uuid = target["__uuid"];
+      const data = this.#store[event.type];
+      const intent = data[uuid];
+      if (intent != null) {
+        const bid = target["__bid"];
+        let provider = Array.isArray(intent) ? intent[0].provider : intent.provider;
+        provider = provider.replaceAll("\\", "");
+        const providerInstance = crs.binding.providers.attrProviders[provider];
+        await providerInstance.onEvent(event, bid, intent, target);
+      }
+    }
+  }
+  getIntent(event, uuid) {
+    return this.#store[event]?.[uuid];
+  }
+  register(event, uuid, intent, isCollection = false) {
+    if (this.#store[event] == null) {
+      document.addEventListener(event, this.#eventHandler, {
+        capture: true,
+        passive: true
+      });
+      this.#store[event] = {};
+    }
+    if (isCollection) {
+      this.#store[event][uuid] ||= [];
+      this.#store[event][uuid].push(intent);
+      return;
+    }
+    this.#store[event][uuid] = intent;
+  }
+  clear(uuid) {
+    const element = crs.binding.elements[uuid];
+    if (element?.__events == null)
+      return;
+    const events = element.__events;
+    for (const event of events) {
+      delete this.#store[event][uuid];
+    }
+  }
+};
+function getTargets(event) {
+  return event.composedPath().filter((element) => element["__uuid"] != null);
+}
+
+// src/utils/converter-parts.js
+function getConverterParts(exp) {
+  const result = {
+    path: exp.trim()
+  };
+  clean(result);
+  parseConverter(result);
+  parseParameter(result);
+  return result;
+}
+function clean(result) {
+  if (result.path[0] == "$" && result.path[1] == "{") {
+    result.path = result.path.substring(2, result.path.length - 1);
+  }
+}
+function parseConverter(result) {
+  const parts = subDivide(result.path, ":");
+  result.path = parts[0];
+  result.converter = parts[1];
+}
+function parseParameter(result) {
+  const index1 = result.converter.indexOf("(");
+  const index2 = result.converter.indexOf(")");
+  const parameter = result.converter.substring(index1 + 1, index2).split("'").join('"');
+  const converter = result.converter.substring(0, index1);
+  const postExp = result.converter.substring(index2 + 1, result.converter.length);
+  result.converter = converter;
+  result.parameter = parameter.length == 0 ? null : JSON.parse(parameter);
+  result.postExp = postExp;
+}
+function subDivide(str, sep) {
+  const index = str.indexOf(sep);
+  const result = [];
+  result.push(str.substring(0, index));
+  result.push(str.substring(index + 1, str.length));
+  return result;
+}
+
+// src/utils/relative-path.js
+function relativePathFrom(source, target) {
+  const folder = getPathOfFile2(source);
+  const processParts = ["", "."];
+  const targetParts = target.split("./");
+  const sourceParts = folder.split("/");
+  sourceParts.pop();
+  let count = 0;
+  for (let i = 0; i < targetParts.length; i++) {
+    const str = targetParts[i];
+    if (processParts.indexOf(str) === -1) {
+      break;
+    }
+    if (str == ".") {
+      sourceParts.pop();
+    }
+    count += 1;
+  }
+  targetParts.splice(0, count);
+  const targetStr = targetParts.join("/");
+  const sourceStr = sourceParts.join("/");
+  return `${sourceStr}/${targetStr}`;
+}
+function getPathOfFile2(file) {
+  if (file == null)
+    return file;
+  if (file[file.length - 1] == "/") {
+    return file;
+  }
+  const parts = file.split("/");
+  parts.pop();
+  return `${parts.join("/")}/`;
+}
+
+// src/store/template-provider-store.js
+var TemplateProviderStore = class {
+  #keys = [];
+  #items = {};
+  add(key, fn) {
+    this.#keys.push(key);
+    this.#items[key] = fn;
+  }
+  remove(key) {
+    this.#keys.splice(this.#keys.indexOf(key), 1);
+    delete this.#items[key];
+  }
+  async executeTemplateAction(element, context) {
+    if (element.attributes.length === 0)
+      return;
+    for (const key of this.#keys) {
+      if (element.getAttribute(key) != null) {
+        const fn = this.#items[key];
+        await fn(element, context);
+      }
+    }
+  }
+};
+
+// src/crs-binding.js
+globalThis.GLOBALS = "$globals.";
+globalThis.crs ||= {};
+globalThis.crs.classes ||= {};
+globalThis.crs.classes.AsyncFunction = Object.getPrototypeOf(async function() {
+}).constructor;
+globalThis.crs.binding = {
+  root: import.meta.url.replace("/crs-binding.js", ""),
+  idleTaskManager: new IdleTaskManager(),
+  eventStore: new EventStore(),
+  templateProviders: new TemplateProviderStore(),
+  ignore: ["TEMPLATE", "SCRIPT", "STYLE"],
+  ignoreChildren: ["PERSPECTIVE-ELEMENT"],
+  data: new BindingData(),
+  translations: new TranslationsManager(),
+  functions: /* @__PURE__ */ new Map(),
+  elements: {},
+  dom: {
+    enableEvents,
+    disableEvents
+  },
+  providers: new Providers(
+    {
+      "^style..*.if$": "$root/providers/attributes/style-if.js",
+      "^style..*.case$": "$root/providers/attributes/style-case.js",
+      "^(keydown|keyup)..+..*$": "$root/providers/events/keyboard-event.js",
+      "classlist.if": "$root/providers/attributes/classlist-if.js",
+      "classlist.case": "$root/providers/attributes/classlist-case.js",
+      ".bind": "$root/providers/properties/bind.js",
+      ".two-way": "$root/providers/properties/bind.js",
+      ".one-way": "$root/providers/properties/one-way.js",
+      ".once": "$root/providers/properties/once.js",
+      ".setvalue": "$root/providers/attributes/set-value.js",
+      ".attr": "$root/providers/attributes/attr.js",
+      ".if": "$root/providers/attributes/attr-if.js",
+      ".case": "$root/providers/attributes/attr-case.js",
+      "style.": "$root/providers/attributes/style-property.js",
+      "ref": "$root/providers/attributes/ref.js",
+      ".call": "$root/providers/attributes/call.js",
+      ".emit": "$root/providers/attributes/emit.js",
+      ".post": "$root/providers/attributes/post.js",
+      ".process": "$root/providers/attributes/process.js"
+    },
+    {
+      "template[for]": "$root/providers/element/template-repeat-for.js",
+      "template[src]": "$root/providers/element/template-src.js",
+      "template": "$root/providers/element/template.js"
+    }
+  ),
+  parsers: {
+    parseElement,
+    parseElements,
+    parseAttribute,
+    parseAttributes
+  },
+  expression: {
+    sanitize,
+    compile,
+    release,
+    translateFactory
+  },
+  utils: {
+    disposeProperties,
+    getValueOnPath,
+    setValueOnPath,
+    getPathOfFile,
+    markElement,
+    unmarkElement,
+    getConverterParts,
+    relativePathFrom
+  },
+  inflation: {
+    store: new TemplateInflationStore()
+  },
+  templates: new TemplatesManager()
+};
+Object.defineProperty(globalThis.crs.binding, "$global", {
+  value: 0,
+  writable: false
+});
+await crs.binding.providers.addTextProvider("$root/providers/text/text.js");
 /**
  * @file crs-binding.js - This is the main file of the binding engine.
  * All the core features are defined here and exported to the global scope.

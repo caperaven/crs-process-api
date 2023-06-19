@@ -1,6 +1,6 @@
 import "./../../src/action-systems/managers/indexdb-manager.js"
 
-export default class IndexDbViewModel extends crsbinding.classes.BindableElement {
+export default class IndexDbViewModel extends crs.classes.BindableElement {
     #data1;
     #data2;
 

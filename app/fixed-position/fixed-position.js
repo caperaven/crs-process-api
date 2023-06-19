@@ -1,4 +1,4 @@
-export default class FixedPositionVM extends crsbinding.classes.BindableElement {
+export default class FixedPositionVM extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

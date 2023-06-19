@@ -1,4 +1,13 @@
-export default class Data extends crs.binding.classes.ViewBase {
+export default class Data extends crs.classes.BindableElement {
+
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
     }

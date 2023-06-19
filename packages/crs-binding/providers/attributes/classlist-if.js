@@ -1,1 +1,22 @@
-import{ClassListBase as c}from"./classlist-base.js";class i extends c{get providerKey(){return"classlist.if"}async parse(s,l){const e=n(s.value);await super.parse(s,l,e,async r=>await crs.binding.expression.ifFactory(r))}}function n(t){const e=t.split("?")[1].replaceAll("[","").replaceAll("]",":").replaceAll(",",":").replaceAll("'","").split(":").map(a=>a.trim()).filter(a=>a.length>0),r=new Set(e);return Array.from(r)}export{i as default};
+import { ClassListBase } from "./classlist-base.js";
+class ClassListIfProvider extends ClassListBase {
+  get providerKey() {
+    return "classlist.if";
+  }
+  async parse(attr, context) {
+    const classes = getIfClasses(attr.value);
+    await super.parse(attr, context, classes, async (value) => {
+      return await crs.binding.expression.ifFactory(value);
+    });
+  }
+}
+function getIfClasses(exp) {
+  const parts = exp.split("?");
+  const valuesPart = parts[1].replaceAll("[", "").replaceAll("]", ":").replaceAll(",", ":").replaceAll("'", "").split(":").map((item) => item.trim()).filter((item) => item.length > 0);
+  const classes = valuesPart;
+  const set = new Set(classes);
+  return Array.from(set);
+}
+export {
+  ClassListIfProvider as default
+};

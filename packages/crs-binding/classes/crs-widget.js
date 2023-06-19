@@ -1,1 +1,27 @@
-class s extends HTMLElement{async disconnectedCallback(){this.#e()}#e(){this.dataset.ready="false";for(let e of this.children)crs.binding.utils.unmarkElement(e),e.remove()}async onMessage(e){this.#e();let t=e.context;typeof t!="object"&&(t=crs.binding.data.getContext(t)),this.innerHTML=e.html||await fetch(e.url).then(n=>n.text()).catch(n=>console.error(n)),await crs.binding.parsers.parseElements(this.children,t,{}),await crs.binding.data.updateContext(t.bid),this.dataset.ready="true"}}customElements.define("crs-widget",s);export{s as Widget};
+class Widget extends HTMLElement {
+  async disconnectedCallback() {
+    this.#clearElements();
+  }
+  #clearElements() {
+    this.dataset.ready = "false";
+    for (let child of this.children) {
+      crs.binding.utils.unmarkElement(child);
+      child.remove();
+    }
+  }
+  async onMessage(args) {
+    this.#clearElements();
+    let context = args.context;
+    if (typeof context != "object") {
+      context = crs.binding.data.getContext(context);
+    }
+    this.innerHTML = args.html || await fetch(args.url).then((response) => response.text()).catch((err) => console.error(err));
+    await crs.binding.parsers.parseElements(this.children, context, {});
+    await crs.binding.data.updateContext(context.bid);
+    this.dataset.ready = "true";
+  }
+}
+customElements.define("crs-widget", Widget);
+export {
+  Widget
+};

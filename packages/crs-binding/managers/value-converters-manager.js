@@ -1,1 +1,24 @@
-class o{constructor(){this._converters=new Map}add(e,r){this._converters.set(e,r)}get(e){return this._converters.get(e)}remove(e){this._converters.delete(e)}convert(e,r,n,s){const t=this._converters.get(r);return t==null?null:t[n](e,s)}}crs.binding.valueConvertersManager=new o;export{o as ValueConvertersManager};
+class ValueConvertersManager {
+  constructor() {
+    this._converters = /* @__PURE__ */ new Map();
+  }
+  add(key, converter) {
+    this._converters.set(key, converter);
+  }
+  get(key) {
+    return this._converters.get(key);
+  }
+  remove(key) {
+    this._converters.delete(key);
+  }
+  convert(value, key, direction, args) {
+    const converter = this._converters.get(key);
+    if (converter == null)
+      return null;
+    return converter[direction](value, args);
+  }
+}
+crs.binding.valueConvertersManager = new ValueConvertersManager();
+export {
+  ValueConvertersManager
+};

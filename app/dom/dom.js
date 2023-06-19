@@ -1,4 +1,4 @@
-export default class Dom extends crsbinding.classes.BindableElement {
+export default class Dom extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }
@@ -55,7 +55,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async performUIProcess() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",
@@ -65,7 +65,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async clearChildren() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "clear",
@@ -75,7 +75,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async createComposite() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "composite",
@@ -85,7 +85,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async getAttribute() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",
@@ -98,7 +98,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async setAttribute() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "set_attribute",
@@ -111,7 +111,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async getStyle() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "get_style",
@@ -124,7 +124,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async setStyle() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "set_style",
@@ -137,7 +137,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async getText() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "get_text",
@@ -150,7 +150,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async setText() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "set_text",
@@ -178,7 +178,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async moveToList() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "move_to_list",
@@ -188,7 +188,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async moveInDeck() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "move_in_deck",
@@ -198,7 +198,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async moveToFirst() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "move_to_first",
@@ -208,7 +208,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async moveToLast() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "move_to_last",
@@ -218,7 +218,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async moveDown() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "move_down",
@@ -228,7 +228,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async moveUp() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "move_up",
@@ -245,7 +245,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async clearFilter() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "clear",
@@ -257,7 +257,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async openGoogle() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "google",
@@ -269,7 +269,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async openInput() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "input",
@@ -281,7 +281,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async openParameters() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "parameters",
@@ -293,7 +293,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async addClass() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "add_class",
@@ -306,7 +306,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async addMClass() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "add_classes",
@@ -319,7 +319,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async removeClass() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "remove_class",
@@ -332,7 +332,7 @@ export default class Dom extends crsbinding.classes.BindableElement {
     }
 
     async clone() {
-        await crsbinding.events.emitter.emit("run-process", {
+        await crs.binding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "clone",

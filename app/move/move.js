@@ -1,5 +1,5 @@
 import "./../test-components/test-component.js";
-export default class Move extends crsbinding.classes.BindableElement {
+export default class Move extends crs.classes.BindableElement {
     #toolbarElement;
     #blockElement;
     #componentElement;

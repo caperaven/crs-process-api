@@ -1,1 +1,35 @@
-function f(t,r){const p=a(t),i=["","."],o=r.split("./"),n=p.split("/");n.pop();let e=0;for(let s=0;s<o.length;s++){const c=o[s];if(i.indexOf(c)===-1)break;c=="."&&n.pop(),e+=1}o.splice(0,e);const u=o.join("/");return`${n.join("/")}/${u}`}function a(t){if(t==null||t[t.length-1]=="/")return t;const r=t.split("/");return r.pop(),`${r.join("/")}/`}export{f as relativePathFrom};
+function relativePathFrom(source, target) {
+  const folder = getPathOfFile(source);
+  const processParts = ["", "."];
+  const targetParts = target.split("./");
+  const sourceParts = folder.split("/");
+  sourceParts.pop();
+  let count = 0;
+  for (let i = 0; i < targetParts.length; i++) {
+    const str = targetParts[i];
+    if (processParts.indexOf(str) === -1) {
+      break;
+    }
+    if (str == ".") {
+      sourceParts.pop();
+    }
+    count += 1;
+  }
+  targetParts.splice(0, count);
+  const targetStr = targetParts.join("/");
+  const sourceStr = sourceParts.join("/");
+  return `${sourceStr}/${targetStr}`;
+}
+function getPathOfFile(file) {
+  if (file == null)
+    return file;
+  if (file[file.length - 1] == "/") {
+    return file;
+  }
+  const parts = file.split("/");
+  parts.pop();
+  return `${parts.join("/")}/`;
+}
+export {
+  relativePathFrom
+};

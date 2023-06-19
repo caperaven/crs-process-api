@@ -1,1 +1,13 @@
-function f(t,n,l){if(t==null||(n||"").length==0)return;const e=n.split("."),r=e.pop();for(const s of e)t=t[s]||={};t[r]=l}export{f as setValueOnPath};
+function setValueOnPath(obj, path, value) {
+  if (obj == null || (path || "").length == 0)
+    return;
+  const parts = path.split(".");
+  const field = parts.pop();
+  for (const part of parts) {
+    obj = obj[part] ||= {};
+  }
+  obj[field] = value;
+}
+export {
+  setValueOnPath
+};

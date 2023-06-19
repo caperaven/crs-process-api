@@ -1,1 +1,60 @@
-class l{#t={};async add(t,i){n(i||"",t,this.#t)}async delete(t){const i=`${t}.`,a=Object.keys(this.#t).filter(s=>s.indexOf(i)===0);for(let s of a)delete this.#t[s]}async parseElement(t){t.children.length==0&&t.textContent.indexOf("&{")!=-1&&(t.textContent=await this.get_with_markup(t.textContent.trim()));for(let i of t.attributes)await this.parseAttribute(i);for(let i of t.children)await this.parseElement(i)}async parseAttribute(t){t.value.indexOf("&{")!==-1&&(t.value=await this.get_with_markup(t.value))}async get(t){let i=this.#t[t];return i!=null||(i=this.fetch==null?null:await this.fetch(t),i!=null&&(this.#t[t]=i)),i}async get_with_markup(t){return t=t.split("&{").join("").split("}").join(""),await this.get(t)}}function n(e,t,i){if(typeof t=="string")e[0]==="."&&(e=e.substring(1)),i[e]=t;else{const a=Object.keys(t);for(let s of a)n(`${e}.${s}`,t[s],i)}}export{l as TranslationsManager};
+class TranslationsManager {
+  #dictionary = {};
+  async add(obj, context) {
+    flattenPropertyPath(context || "", obj, this.#dictionary);
+  }
+  async delete(context) {
+    const filterKey = `${context}.`;
+    const keys = Object.keys(this.#dictionary).filter((item) => item.indexOf(filterKey) === 0);
+    for (let key of keys) {
+      delete this.#dictionary[key];
+    }
+  }
+  async parseElement(element) {
+    if (element.children.length == 0 && element.textContent.indexOf("&{") != -1) {
+      element.textContent = await this.get_with_markup(element.textContent.trim());
+    }
+    for (let attribute of element.attributes || []) {
+      await this.parseAttribute(attribute);
+    }
+    for (let child of element.children || []) {
+      await this.parseElement(child);
+    }
+  }
+  async parseAttribute(attribute) {
+    if (attribute.value.indexOf("&{") !== -1) {
+      attribute.value = await this.get_with_markup(attribute.value);
+    }
+  }
+  async get(key) {
+    let result = this.#dictionary[key];
+    if (result != null) {
+      return result;
+    }
+    result = this.fetch == null ? null : await this.fetch(key);
+    if (result != null) {
+      this.#dictionary[key] = result;
+    }
+    return result;
+  }
+  async get_with_markup(key) {
+    key = key.split("&{").join("").split("}").join("");
+    return await this.get(key);
+  }
+}
+function flattenPropertyPath(prefix, obj, target) {
+  if (typeof obj === "string") {
+    if (prefix[0] === ".") {
+      prefix = prefix.substring(1);
+    }
+    target[prefix] = obj;
+  } else {
+    const keys = Object.keys(obj);
+    for (let key of keys) {
+      flattenPropertyPath(`${prefix}.${key}`, obj[key], target);
+    }
+  }
+}
+export {
+  TranslationsManager
+};

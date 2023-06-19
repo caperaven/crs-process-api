@@ -1,4 +1,12 @@
-export default class Rest extends crs.binding.classes.ViewBase {
+export default class Rest extends crs.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async get() {
         await crs.call("rest_services", "get", {
             url: "https://gorest.co.in/public/v1/users",

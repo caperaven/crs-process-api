@@ -1,1 +1,11 @@
-class a{async parse(e,o){const n=e.ownerElement,s=e.value;n.removeAttribute(e.name),o[s]=n}}export{a as default};
+class RefProvider {
+  async parse(attr, context) {
+    const element = attr.ownerElement;
+    const name = attr.value;
+    element.removeAttribute(attr.name);
+    context[name] = element;
+  }
+}
+export {
+  RefProvider as default
+};

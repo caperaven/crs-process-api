@@ -1,7 +1,7 @@
 import {schema} from "./schema.js";
 import "./my-component.js";
 
-export default class Events extends crsbinding.classes.BindableElement {
+export default class Events extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

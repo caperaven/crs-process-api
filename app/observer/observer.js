@@ -1,4 +1,4 @@
-export default class Observer extends crsbinding.classes.BindableElement {
+export default class Observer extends crs.classes.BindableElement {
 
     get html() {
         return import.meta.url.replace(".js", ".html");
@@ -10,7 +10,7 @@ export default class Observer extends crsbinding.classes.BindableElement {
 
     set data(newValue) {
         this._data = newValue;
-        crsbinding.data.setProperty(this, "data-observer", true);
+        crs.binding.data.setProperty(this, "data-observer", true);
     }
 
     get data() {
@@ -40,11 +40,11 @@ export default class Observer extends crsbinding.classes.BindableElement {
     }
 
     callback() {
-        crsbinding.data.setProperty(this, "title", "observer is ready");
+        crs.binding.data.setProperty(this, "title", "observer is ready");
     }
 
     async callback2() {
-        crsbinding.data.setProperty(this, "title2", "observer2 is ready");
+        crs.binding.data.setProperty(this, "title2", "observer2 is ready");
 
         await crs.call("component", "unobserve", {
             element: this,
@@ -53,10 +53,10 @@ export default class Observer extends crsbinding.classes.BindableElement {
     }
 
     ready() {
-        crsbinding.data.setProperty(this, "loaded-observer", true);
+        crs.binding.data.setProperty(this, "loaded-observer", true);
     }
 
     ready2() {
-        crsbinding.data.setProperty(this, "loaded2-observer", true);
+        crs.binding.data.setProperty(this, "loaded2-observer", true);
     }
 }

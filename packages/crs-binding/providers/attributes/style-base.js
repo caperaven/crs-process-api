@@ -1,1 +1,41 @@
-class l{#e={};get store(){return this.#e}async parse(e,s,n){const r=e.name.split("."),t=e.ownerElement;t.removeAttribute(e.name);const o=r[1];crs.binding.utils.markElement(t,s);const i=await n(e.value),c=this.#e[t.__uuid]||={};c[o]=i.key,crs.binding.data.setCallback(t.__uuid,s.bid,i.parameters.properties,this.providerKey)}async update(e){if(this.#e[e]==null)return;const s=crs.binding.elements[e],n=crs.binding.data.getDataForElement(s);for(const[r,t]of Object.entries(this.#e[e])){const i=await crs.binding.functions.get(t).function(n);s.style[r]=i}}async clear(e){const s=this.#e[e];if(s!=null){for(const n of Object.values(s)){const r=crs.binding.functions.get(n);crs.binding.expression.release(r)}delete this.#e[e]}}}export{l as StyleBase};
+class StyleBase {
+  #store = {};
+  get store() {
+    return this.#store;
+  }
+  async parse(attr, context, callback) {
+    const parts = attr.name.split(".");
+    const element = attr.ownerElement;
+    element.removeAttribute(attr.name);
+    const cssProperty = parts[1];
+    crs.binding.utils.markElement(element, context);
+    const expo = await callback(attr.value);
+    const obj = this.#store[element["__uuid"]] ||= {};
+    obj[cssProperty] = expo.key;
+    crs.binding.data.setCallback(element["__uuid"], context.bid, expo.parameters.properties, this.providerKey);
+  }
+  async update(uuid) {
+    if (this.#store[uuid] == null)
+      return;
+    const element = crs.binding.elements[uuid];
+    const data = crs.binding.data.getDataForElement(element);
+    for (const [cssProperty, fnKey] of Object.entries(this.#store[uuid])) {
+      const expo = crs.binding.functions.get(fnKey);
+      const result = await expo.function(data);
+      element.style[cssProperty] = result;
+    }
+  }
+  async clear(uuid) {
+    const obj = this.#store[uuid];
+    if (obj == null)
+      return;
+    for (const fnKey of Object.values(obj)) {
+      const exp = crs.binding.functions.get(fnKey);
+      crs.binding.expression.release(exp);
+    }
+    delete this.#store[uuid];
+  }
+}
+export {
+  StyleBase
+};

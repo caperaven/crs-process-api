@@ -1,4 +1,4 @@
-export default class Html extends crsbinding.classes.BindableElement {
+export default class Html extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

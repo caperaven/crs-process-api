@@ -1,1 +1,49 @@
-class l{#e={};get events(){return this.#e}async on(t,s){let e=this.#e[t]||=[];e.indexOf(s)==-1&&e.push(s)}async emit(t,s){if(this.#e[t]){const e=this.#e[t];if(e.length==1)return await e[0](s);for(let i of e)await i(s)}}async remove(t,s){if(this.#e[t]){const e=this.#e[t],i=e.indexOf(s);i!=-1&&e.splice(i,1),e.length===0&&delete this.#e[t]}}async postMessage(t,s,e){const i=e||document,r=Array.from(i.querySelectorAll(t)),n=[];for(let o of r)n.push(o.onMessage.call(o,s));await Promise.all(n)}}(crs.binding.events||={}).emitter=new l;export{l as EventEmitter};
+class EventEmitter {
+  #events = {};
+  get events() {
+    return this.#events;
+  }
+  async on(event, callback) {
+    let events = this.#events[event] ||= [];
+    if (events.indexOf(callback) == -1) {
+      events.push(callback);
+    }
+  }
+  async emit(event, args) {
+    if (this.#events[event]) {
+      const events = this.#events[event];
+      if (events.length == 1) {
+        return await events[0](args);
+      } else {
+        for (let e of events) {
+          await e(args);
+        }
+      }
+    }
+  }
+  async remove(event, callback) {
+    if (this.#events[event]) {
+      const events = this.#events[event];
+      const index = events.indexOf(callback);
+      if (index != -1) {
+        events.splice(index, 1);
+      }
+      if (events.length === 0) {
+        delete this.#events[event];
+      }
+    }
+  }
+  async postMessage(query, args, scope) {
+    const element = scope || document;
+    const items = Array.from(element.querySelectorAll(query));
+    const promises = [];
+    for (let item of items) {
+      promises.push(item.onMessage.call(item, args));
+    }
+    await Promise.all(promises);
+  }
+}
+(crs.binding.events ||= {}).emitter = new EventEmitter();
+export {
+  EventEmitter
+};

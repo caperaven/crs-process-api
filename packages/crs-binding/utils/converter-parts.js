@@ -1,1 +1,39 @@
-function h(n){const t={path:n.trim()};return i(t),p(t),a(t),t}function i(n){n.path[0]=="$"&&n.path[1]=="{"&&(n.path=n.path.substring(2,n.path.length-1))}function p(n){const t=s(n.path,":");n.path=t[0],n.converter=t[1]}function a(n){const t=n.converter.indexOf("("),r=n.converter.indexOf(")"),e=n.converter.substring(t+1,r).split("'").join('"'),o=n.converter.substring(0,t),c=n.converter.substring(r+1,n.converter.length);n.converter=o,n.parameter=e.length==0?null:JSON.parse(e),n.postExp=c}function s(n,t){const r=n.indexOf(t),e=[];return e.push(n.substring(0,r)),e.push(n.substring(r+1,n.length)),e}export{h as getConverterParts};
+function getConverterParts(exp) {
+  const result = {
+    path: exp.trim()
+  };
+  clean(result);
+  parseConverter(result);
+  parseParameter(result);
+  return result;
+}
+function clean(result) {
+  if (result.path[0] == "$" && result.path[1] == "{") {
+    result.path = result.path.substring(2, result.path.length - 1);
+  }
+}
+function parseConverter(result) {
+  const parts = subDivide(result.path, ":");
+  result.path = parts[0];
+  result.converter = parts[1];
+}
+function parseParameter(result) {
+  const index1 = result.converter.indexOf("(");
+  const index2 = result.converter.indexOf(")");
+  const parameter = result.converter.substring(index1 + 1, index2).split("'").join('"');
+  const converter = result.converter.substring(0, index1);
+  const postExp = result.converter.substring(index2 + 1, result.converter.length);
+  result.converter = converter;
+  result.parameter = parameter.length == 0 ? null : JSON.parse(parameter);
+  result.postExp = postExp;
+}
+function subDivide(str, sep) {
+  const index = str.indexOf(sep);
+  const result = [];
+  result.push(str.substring(0, index));
+  result.push(str.substring(index + 1, str.length));
+  return result;
+}
+export {
+  getConverterParts
+};

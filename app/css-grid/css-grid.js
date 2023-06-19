@@ -1,6 +1,6 @@
 import "./../../src/action-systems/css-grid-actions.js";
 
-export default class CssGrid extends crsbinding.classes.BindableElement {
+export default class CssGrid extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

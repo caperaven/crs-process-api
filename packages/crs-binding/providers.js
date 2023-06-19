@@ -1,1 +1,127 @@
-class n{#o={};#t={};#e={};#r=[];#i=[];#n=[];get attrProviders(){return this.#t}get textProviders(){return this.#r}get elementProviders(){return this.#e}constructor(t,e){for(const r of Object.keys(t))this.addAttributeProvider(r,t[r]);for(const r of Object.keys(e))this.addElementProvider(r,e[r])}async#s(t){return t=t.replace("$root",crs.binding.root),new(await import(t)).default}async getAttrModule(t){const e=this.#t[t];return typeof e!="string"?e:(this.#t[t]=await this.#s(e),this.#t[t])}addAttributeProvider(t,e){this.#t[t]=e,t.indexOf(".")!=-1&&this.#i.push(t)}addElementProvider(t,e){this.#e[t]=e,this.#n.push(t)}async addTextProvider(t){this.#r.push(await this.#s(t))}async getAttrProvider(t){if(t==="ref")return await this.getAttrModule("ref");if(t.indexOf(".")==-1)return null;if(this.#t[t]!=null)return await this.getAttrModule(t);for(const e of this.#i){if(e[0]==="^"){let r=this.#o[e];if(r==null&&(r=new RegExp(e),this.#o[e]=r),r.test(t))return await this.getAttrModule(e)}if(t.indexOf(e)!=-1)return await this.getAttrModule(e)}}async getElementProvider(t){for(const e of this.#n)if(t.matches(e))return typeof this.#e[e]=="object"?this.#e[e]:(this.#e[e]=await this.#s(this.#e[e]),this.#e[e])}async getTextProviders(){return this.#r}async update(t,...e){const r=crs.binding.elements[t];r.__events!=null&&r.__events.indexOf("change")!=-1&&this.#t[".bind"].update(t);for(const i of this.#r)i.store[t]!=null&&i.update(t);for(const i of this.#i){const s=this.#t[i];typeof s!="string"&&s.store?.[t]!=null&&s.update?.(t,...e)}}async updateProviders(t,...e){for(const r of e){let i;r===".textContent"?i=this.#r[0]:i=this.#t[r]||this.#e[r],i.update(t)}}async clear(t){for(const e of this.#r)e.clear(t);for(const e of this.#i)this.#t[e].clear?.(t)}}export{n as Providers};
+class Providers {
+  #regex = {};
+  #attrProviders = {};
+  #elementProviders = {};
+  #textProviders = [];
+  #attrPartialKeys = [];
+  #elementQueries = [];
+  get attrProviders() {
+    return this.#attrProviders;
+  }
+  get textProviders() {
+    return this.#textProviders;
+  }
+  get elementProviders() {
+    return this.#elementProviders;
+  }
+  constructor(attrProviders, elementProviders) {
+    for (const key of Object.keys(attrProviders)) {
+      this.addAttributeProvider(key, attrProviders[key]);
+    }
+    for (const key of Object.keys(elementProviders)) {
+      this.addElementProvider(key, elementProviders[key]);
+    }
+  }
+  async #loadModule(file) {
+    file = file.replace("$root", crs.binding.root);
+    return new (await import(file)).default();
+  }
+  async getAttrModule(key) {
+    const module = this.#attrProviders[key];
+    if (typeof module !== "string")
+      return module;
+    this.#attrProviders[key] = await this.#loadModule(module);
+    return this.#attrProviders[key];
+  }
+  addAttributeProvider(key, file) {
+    this.#attrProviders[key] = file;
+    if (key.indexOf(".") != -1) {
+      this.#attrPartialKeys.push(key);
+    }
+  }
+  addElementProvider(key, file) {
+    this.#elementProviders[key] = file;
+    this.#elementQueries.push(key);
+  }
+  async addTextProvider(file) {
+    this.#textProviders.push(await this.#loadModule(file));
+  }
+  async getAttrProvider(attrName) {
+    if (attrName === "ref")
+      return await this.getAttrModule("ref");
+    if (attrName.indexOf(".") == -1)
+      return null;
+    if (this.#attrProviders[attrName] != null)
+      return await this.getAttrModule(attrName);
+    for (const key of this.#attrPartialKeys) {
+      if (key[0] === "^") {
+        let regex = this.#regex[key];
+        if (regex == null) {
+          regex = new RegExp(key);
+          this.#regex[key] = regex;
+        }
+        if (regex.test(attrName)) {
+          return await this.getAttrModule(key);
+        }
+      }
+      if (attrName.indexOf(key) != -1) {
+        return await this.getAttrModule(key);
+      }
+    }
+  }
+  async getElementProvider(element) {
+    for (const query of this.#elementQueries) {
+      if (element.matches(query)) {
+        if (typeof this.#elementProviders[query] === "object") {
+          return this.#elementProviders[query];
+        }
+        this.#elementProviders[query] = await this.#loadModule(this.#elementProviders[query]);
+        return this.#elementProviders[query];
+      }
+    }
+  }
+  async getTextProviders() {
+    return this.#textProviders;
+  }
+  async update(uuid, ...properties) {
+    const element = crs.binding.elements[uuid];
+    if (element.__events != null && element.__events.indexOf("change") != -1) {
+      this.#attrProviders[".bind"].update(uuid);
+    }
+    for (const textProvider of this.#textProviders) {
+      if (textProvider.store[uuid] != null) {
+        textProvider.update(uuid);
+      }
+    }
+    for (const key of this.#attrPartialKeys) {
+      const provider = this.#attrProviders[key];
+      if (typeof provider === "string")
+        continue;
+      if (provider.store?.[uuid] != null) {
+        provider.update?.(uuid, ...properties);
+      }
+    }
+  }
+  async updateProviders(uuid, ...providerKeys) {
+    for (const providerKey of providerKeys) {
+      let provider;
+      if (providerKey === ".textContent") {
+        provider = this.#textProviders[0];
+      } else {
+        provider = this.#attrProviders[providerKey] || this.#elementProviders[providerKey];
+      }
+      provider.update(uuid);
+    }
+  }
+  async clear(uuid) {
+    for (const textProvider of this.#textProviders) {
+      textProvider.clear(uuid);
+    }
+    for (const key of this.#attrPartialKeys) {
+      this.#attrProviders[key].clear?.(uuid);
+    }
+  }
+}
+export {
+  Providers
+};

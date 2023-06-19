@@ -1,1 +1,39 @@
-import{createEventPacket as i,createEventParameters as l}from"./utils/create-event-parameters.js";import{parseEvent as p}from"./utils/parse-event.js";class u{async onEvent(e,t,r){await v(r.value,e)}async parse(e){p(e,this.getIntent)}getIntent(e){const t=e.split("("),r=t[0].split("["),a=r[0].trim(),o=r[1].replace("]","").split(",").map(c=>c.trim().replaceAll("'","")),s=l(a,t[1].replace(")",""));return s.queries=o,{provider:".post",value:s}}async clear(e){crs.binding.eventStore.clear(e)}}async function v(n,e){const t=Object.assign({},n),r=t.queries;delete t.queries;const a=i(n,e);a.key=n.event;for(const o of r)document.querySelectorAll(o).forEach(s=>{s.onMessage!=null&&s.onMessage(a)})}export{u as default};
+import { createEventPacket, createEventParameters } from "./utils/create-event-parameters.js";
+import { parseEvent } from "./utils/parse-event.js";
+class PostProvider {
+  async onEvent(event, bid, intent) {
+    await post(intent.value, event);
+  }
+  async parse(attr) {
+    parseEvent(attr, this.getIntent);
+  }
+  getIntent(attrValue) {
+    const parts = attrValue.split("(");
+    const queryParts = parts[0].split("[");
+    const event = queryParts[0].trim();
+    const queries = queryParts[1].replace("]", "").split(",").map((q) => q.trim().replaceAll("'", ""));
+    const value = createEventParameters(event, parts[1].replace(")", ""));
+    value.queries = queries;
+    return { provider: ".post", value };
+  }
+  async clear(uuid) {
+    crs.binding.eventStore.clear(uuid);
+  }
+}
+async function post(intent, event) {
+  const intentObj = Object.assign({}, intent);
+  const queries = intentObj.queries;
+  delete intentObj.queries;
+  const args = createEventPacket(intent, event);
+  args.key = intent.event;
+  for (const query of queries) {
+    document.querySelectorAll(query).forEach((element) => {
+      if (element.onMessage != null) {
+        element.onMessage(args);
+      }
+    });
+  }
+}
+export {
+  PostProvider as default
+};

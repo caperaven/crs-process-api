@@ -1,1 +1,40 @@
-import"./idleCallback.js";class r{#s=[];constructor(){this.processing=!1}dispose(){this.#s=null}async#t(){this.processing=!0;try{requestIdleCallback(async()=>{for(;this.#s.length>0;){const s=this.#s.shift();try{await s()}catch(t){console.error(t)}}},{timeout:1e3})}finally{this.processing=!1}}async add(s){if(typeof s=="function"){if(requestIdleCallback==null)return await s();this.#s.push(s),this.processing!=!0&&await this.#t()}}}export{r as IdleTaskManager};
+import "./idleCallback.js";
+class IdleTaskManager {
+  #list = [];
+  constructor() {
+    this.processing = false;
+  }
+  dispose() {
+    this.#list = null;
+  }
+  async #processQueue() {
+    this.processing = true;
+    try {
+      requestIdleCallback(async () => {
+        while (this.#list.length > 0) {
+          const fn = this.#list.shift();
+          try {
+            await fn();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }, { timeout: 1e3 });
+    } finally {
+      this.processing = false;
+    }
+  }
+  async add(fn) {
+    if (typeof fn != "function")
+      return;
+    if (requestIdleCallback == null)
+      return await fn();
+    this.#list.push(fn);
+    if (this.processing == true)
+      return;
+    await this.#processQueue();
+  }
+}
+export {
+  IdleTaskManager
+};

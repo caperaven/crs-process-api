@@ -1,7 +1,7 @@
 import {schema} from "./schema.js";
 import "./list-component/list-component.js";
 
-export default class DragDrop extends crsbinding.classes.BindableElement {
+export default class DragDrop extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

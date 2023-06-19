@@ -1,1 +1,37 @@
-const d=["STYLE","CRS-ROUTER"];async function f(r,i,n){if(r.__inflated===!0||d.indexOf(r.nodeName)!=-1)return;r.dataset.ref!=null&&(i[r.dataset.ref]=r);let s=n?.ctxName||"context";const a=await crs.binding.providers.getElementProvider(r);if(a!=null)return a.parse(r,i,s);if(!t(r,crs.binding.ignore)&&(await crs.binding.parsers.parseAttributes(r,i,s),!t(r,crs.binding.ignoreChildren))){if(r.children?.length>0)return await crs.binding.parsers.parseElements(r.children,i,n);for(const e of crs.binding.providers.textProviders)await e.parseElement(r,i,s)}}function t(r,i){for(const n of i)if(r.matches(n))return!0;return!1}export{f as parseElement};
+const ignoreElements = ["STYLE", "CRS-ROUTER", "SCRIPT"];
+async function parseElement(element, context, options) {
+  if (element["__inflated"] === true || ignoreElements.indexOf(element.nodeName) != -1)
+    return;
+  if (element.dataset.ref != null) {
+    context[element.dataset.ref] = element;
+  }
+  let ctxName = options?.ctxName || "context";
+  const elementProvider = await crs.binding.providers.getElementProvider(element);
+  if (elementProvider != null) {
+    return elementProvider.parse(element, context, ctxName);
+  }
+  if (ignore(element, crs.binding.ignore)) {
+    return;
+  }
+  await crs.binding.parsers.parseAttributes(element, context, ctxName);
+  if (ignore(element, crs.binding.ignoreChildren)) {
+    return;
+  }
+  if (element.children?.length > 0) {
+    return await crs.binding.parsers.parseElements(element.children, context, options);
+  }
+  for (const provider of crs.binding.providers.textProviders) {
+    await provider.parseElement(element, context, ctxName);
+  }
+}
+function ignore(element, options) {
+  for (const query of options) {
+    if (element.matches(query)) {
+      return true;
+    }
+  }
+  return false;
+}
+export {
+  parseElement
+};

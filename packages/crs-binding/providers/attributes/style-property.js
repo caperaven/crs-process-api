@@ -1,1 +1,41 @@
-class c{#e={};get store(){return this.#e}async parse(e,s){const n=e.name.split("."),t=e.ownerElement;t.removeAttribute(e.name);const r=n[1];crs.binding.utils.markElement(t,s);const i=await crs.binding.expression.compile(e.value),o=this.#e[t.__uuid]||={};o[r]=i.key,crs.binding.data.setCallback(t.__uuid,s.bid,i.parameters.properties,"style.")}async update(e){if(this.#e[e]==null)return;const s=crs.binding.elements[e],n=crs.binding.data.getDataForElement(s);for(const[t,r]of Object.entries(this.#e[e])){const o=await crs.binding.functions.get(r).function(n);s.style[t]=o}}async clear(e){const s=this.#e[e];if(s!=null){for(const n of Object.values(s)){const t=crs.binding.functions.get(n);crs.binding.expression.release(t)}delete this.#e[e]}}}export{c as default};
+class StyleProvider {
+  #store = {};
+  get store() {
+    return this.#store;
+  }
+  async parse(attr, context) {
+    const parts = attr.name.split(".");
+    const element = attr.ownerElement;
+    element.removeAttribute(attr.name);
+    const cssProperty = parts[1];
+    crs.binding.utils.markElement(element, context);
+    const expo = await crs.binding.expression.compile(attr.value);
+    const obj = this.#store[element["__uuid"]] ||= {};
+    obj[cssProperty] = expo.key;
+    crs.binding.data.setCallback(element["__uuid"], context.bid, expo.parameters.properties, "style.");
+  }
+  async update(uuid) {
+    if (this.#store[uuid] == null)
+      return;
+    const element = crs.binding.elements[uuid];
+    const data = crs.binding.data.getDataForElement(element);
+    for (const [cssProperty, fnKey] of Object.entries(this.#store[uuid])) {
+      const expo = crs.binding.functions.get(fnKey);
+      const result = await expo.function(data);
+      element.style[cssProperty] = result;
+    }
+  }
+  async clear(uuid) {
+    const obj = this.#store[uuid];
+    if (obj == null)
+      return;
+    for (const fnKey of Object.values(obj)) {
+      const exp = crs.binding.functions.get(fnKey);
+      crs.binding.expression.release(exp);
+    }
+    delete this.#store[uuid];
+  }
+}
+export {
+  StyleProvider as default
+};

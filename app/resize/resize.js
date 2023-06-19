@@ -1,5 +1,5 @@
 import "./../test-components/test-component.js";
-export default class Resize extends crsbinding.classes.BindableElement {
+export default class Resize extends crs.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
     }

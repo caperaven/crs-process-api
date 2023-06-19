@@ -1,1 +1,46 @@
-async function l(n,s,t){const c=t?.ctxName||"context",e=`${c}:${n}`;if(crs.binding.functions.has(e)){const u=crs.binding.functions.get(e);return u.count+=1,u}s=s||[];const f=t?.sanitize??!0;let i,o=n;f==!0?(i=await crs.binding.expression.sanitize(n,c),o=i.isLiteral===!0?["return `",i.expression,"`"].join(""):["return ",i.expression].join("")):i={expression:n};const r={key:e,function:new crs.classes.AsyncFunction(c,...s,o),parameters:i,count:1};return crs.binding.functions.set(e,r),r}function a(n){if(n==null||typeof n!="object")return;const s=n.key;if(crs.binding.functions.has(s)){const t=crs.binding.functions.get(s);t.count-=1,t.count==0&&(crs.binding.utils.disposeProperties(t),crs.binding.functions.delete(s))}}export{l as compile,a as release};
+async function compile(exp, parameters, options) {
+  const ctxName = options?.ctxName || "context";
+  const key = `${ctxName}:${exp}`;
+  if (crs.binding.functions.has(key)) {
+    const result2 = crs.binding.functions.get(key);
+    result2.count += 1;
+    return result2;
+  }
+  parameters = parameters || [];
+  const sanitize = options?.sanitize ?? true;
+  let san;
+  let src = exp;
+  if (sanitize == true) {
+    san = await crs.binding.expression.sanitize(exp, ctxName);
+    src = san.isLiteral === true ? ["return `", san.expression, "`"].join("") : ["return ", san.expression].join("");
+  } else {
+    san = {
+      expression: exp
+    };
+  }
+  const result = {
+    key,
+    function: new crs.classes.AsyncFunction(ctxName, ...parameters, src),
+    parameters: san,
+    count: 1
+  };
+  crs.binding.functions.set(key, result);
+  return result;
+}
+function release(exp) {
+  if (exp == null || typeof exp != "object")
+    return;
+  const key = exp.key;
+  if (crs.binding.functions.has(key)) {
+    const x = crs.binding.functions.get(key);
+    x.count -= 1;
+    if (x.count == 0) {
+      crs.binding.utils.disposeProperties(x);
+      crs.binding.functions.delete(key);
+    }
+  }
+}
+export {
+  compile,
+  release
+};

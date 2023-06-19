@@ -1,1 +1,10 @@
-async function t(e,n,r){if(e!=null)for(let s of e)await crs.binding.parsers.parseElement(s,n,r)}export{t as parseElements};
+async function parseElements(collection, context, options) {
+  if (collection == null)
+    return;
+  for (let element of collection) {
+    await crs.binding.parsers.parseElement(element, context, options);
+  }
+}
+export {
+  parseElements
+};
