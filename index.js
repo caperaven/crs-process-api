@@ -6,7 +6,7 @@ import "./packages/crs-modules/crs-modules.js";
 import './packages/crs-schema/crs-schema.js';
 import {HTMLParser} from "./packages/crs-schema/html/crs-html-parser.js";
 import {initialize} from "./src/index.js";
-import "./components/view-loader/view-loader.js";
+import "./src/components/view-loader/view-loader.js";
 await initialize("/src");
 
 export class IndexViewModel {

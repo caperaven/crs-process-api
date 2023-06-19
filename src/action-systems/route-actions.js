@@ -44,7 +44,8 @@ export class RouteActions {
         const definition = await crs.process.getValue(step.args.definition, context, process, item);
         const routes = await crs.process.getValue(step.args.routes, context, process, item);
         const callback = await crs.process.getValue(step.args.callback, context, process, item);
-        globalThis.routeManager = new RouteManager(routes, definition, callback);
+        const defaultView = await crs.process.getValue(step.args.defaultView, context, process, item);
+        globalThis.routeManager = new RouteManager(routes, definition, defaultView, callback);
     }
 
     /**

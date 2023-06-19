@@ -1,11 +1,10 @@
-import "./../../src/action-systems/route-actions.js";
+import "./../../action-systems/route-actions.js";
 
 class ViewLoader extends HTMLElement {
     #rootFolder;
     #callbackHandler = this.#callback.bind(this);
     #clickHandler = this.#click.bind(this);
     #currentView = "";
-    #defaultView = "";
     #viewModel;
 
     async connectedCallback() {
@@ -15,11 +14,11 @@ class ViewLoader extends HTMLElement {
         const json = await fetch(routesPath).then(response => response.json());
 
         this.#rootFolder = json.root || "app";
-        this.#defaultView = json.default;
 
         await crs.call("route", "register", {
             routes: json.routes,
             definition: json.definition,
+            defaultView: json.default,
             callback: this.#callbackHandler
         });
     }
@@ -32,25 +31,25 @@ class ViewLoader extends HTMLElement {
         this.#callbackHandler = null;
         this.#clickHandler = null;
         this.#currentView = null;
-        this.#defaultView = null;
         this.#viewModel = null;
     }
 
-    async #callback(args) {
+    async #callback(args, title) {
         let view = args.params.view;
-        if (view === "") {
-            view = this.#defaultView;
-        }
 
         if (view !== this.#currentView) {
             this.#viewModel?.remove();
             this.#currentView = view;
             this.#viewModel = await loadViewModel(this.#rootFolder, this.#currentView);
-            this.appendChild(this.#viewModel);
+
+            const target = this.querySelector("main") || this;
+            target.appendChild(this.#viewModel);
         }
         else {
             this.#viewModel.routeChanged?.(args);
         }
+
+        this.#viewModel.setProperty("title", title);
     }
 
     async #click(event) {

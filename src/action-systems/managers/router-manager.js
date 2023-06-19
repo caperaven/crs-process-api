@@ -79,6 +79,7 @@ export class RouteManager {
     #updatingRoute = false;
 
     #onpopstateChangedHandler = this.#onpopstate.bind(this);
+    #defaultView;
 
     get definition() {
         return this.#definition;
@@ -88,10 +89,11 @@ export class RouteManager {
         return Object.freeze(this.#routeDefinition);
     }
 
-    constructor(routes, definition, callback) {
+    constructor(routes, definition, defaultView, callback) {
         this.#routes = routes;
         this.#definition = definition;
         this.#callback = callback;
+        this.#defaultView = defaultView;
 
         this.goto(window.location.href).then(() => {
             addEventListener("popstate", this.#onpopstateChangedHandler);
@@ -107,6 +109,7 @@ export class RouteManager {
         this.#routeDefinition = null;
         this.#onpopstateChangedHandler = null;
         this.#updatingRoute = null;
+        this.#defaultView = null;
     }
 
     async #onpopstate(event) {
@@ -121,11 +124,22 @@ export class RouteManager {
         }
 
         this.#routeDefinition = routeDefinition;
+        if (this.#routeDefinition.params.view == null || this.#routeDefinition.params.view === "") {
+            this.#routeDefinition.params.view = this.#defaultView;
+        }
+
+        const route = this.#routes.find(route => route.view === this.#routeDefinition.params.view);
+
+        if (route == null) {
+            // todo redirect to 404
+            console.error("Route not found");
+            return;
+        }
 
         const url = await crs.call("route", "create_url", { definition: this.#routeDefinition });
         history.pushState(null, null, url);
 
-        await this.#callback?.(this.#routeDefinition);
+        await this.#callback?.(this.#routeDefinition, route.title);
     }
 
     async refresh() {
