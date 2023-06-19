@@ -1,10 +1,18 @@
 import "./../test-components/test-component.js";
-export default class Resize extends crs.binding.classes.ViewBase {
+export default class Resize extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
 
         await crs.call("dom_interactive", "enable_resize", {
-            element: this._element.querySelector(".parent"),
+            element: this.shadowRoot.querySelector(".parent"),
             resize_query: ".resize",
             options: {
                 min: {
@@ -19,7 +27,7 @@ export default class Resize extends crs.binding.classes.ViewBase {
         })
 
         await crs.call("dom_interactive", "enable_resize", {
-            element: this._element.querySelector(".columns-bar"),
+            element: this.shadowRoot.querySelector(".columns-bar"),
             resize_query: ".resize",
             options: {
                 lock_axis: "x"
@@ -27,7 +35,7 @@ export default class Resize extends crs.binding.classes.ViewBase {
         })
 
         await crs.call("dom_interactive", "enable_resize", {
-            element: this._element.querySelector(".row-bar"),
+            element: this.shadowRoot.querySelector(".row-bar"),
             resize_query: ".resize",
             options: {
                 lock_axis: "y"
@@ -35,7 +43,7 @@ export default class Resize extends crs.binding.classes.ViewBase {
         })
 
         await crs.call("dom_interactive", "enable_resize", {
-            element: this._element.querySelector("#shadowComponent"),
+            element: this.shadowRoot.querySelector("#shadowComponent"),
             resize_query: ".resize",
             options: {
 
@@ -45,15 +53,15 @@ export default class Resize extends crs.binding.classes.ViewBase {
 
     async disconnectedCallback() {
         await crs.call("dom_interactive", "disable_resize", {
-            element: this._element.querySelector(".parent")
+            element: this.shadowRoot.querySelector(".parent")
         })
 
         await crs.call("dom_interactive", "disable_resize", {
-            element: this._element.querySelector(".columns-bar")
+            element: this.shadowRoot.querySelector(".columns-bar")
         })
 
         await crs.call("dom_interactive", "disable_resize", {
-            element: this._element.querySelector(".row-bar")
+            element: this.shadowRoot.querySelector(".row-bar")
         })
 
         super.disconnectedCallback();

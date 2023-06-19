@@ -1,19 +1,23 @@
 import {schema} from "./schema.js";
 
-export default class Input extends crs.binding.classes.ViewBase {
-    async connectedCallback() {
-        crs.processSchemaRegistry.add(schema);
-        await super.connectedCallback();
+export default class Input extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
     }
 
     preLoad() {
+        crs.processSchemaRegistry.add(schema);
         this.setProperty("firstName", "John");
         this.setProperty("lastName", "Doe");
         this.setProperty("age", 30);
     }
 
     async getInput() {
-        await crs.binding.events.emitter.emit("run-process", {
+        await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

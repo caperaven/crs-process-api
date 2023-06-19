@@ -1,17 +1,25 @@
 import {schema} from "./schema.js";
 
-export default class Welcome extends crs.binding.classes.ViewBase {
+export default class Welcome extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return false;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);
     }
 
     preLoad() {
-        crs.binding.translations.add({message: "Hello World"}, "myprocess");
+        crsbinding.translations.add({message: "Hello World"}, "myprocess");
     }
 
     async printProcess() {
-        await crs.binding.events.emitter.emit("run-process", {
+        await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "main",

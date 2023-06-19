@@ -1,7 +1,16 @@
-export default class Observer extends crs.binding.classes.ViewBase {
+export default class Observer extends crsbinding.classes.BindableElement {
+
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     set data(newValue) {
         this._data = newValue;
-        crs.binding.data.setProperty(this, "data-observer", true);
+        crsbinding.data.setProperty(this, "data-observer", true);
     }
 
     get data() {
@@ -31,11 +40,11 @@ export default class Observer extends crs.binding.classes.ViewBase {
     }
 
     callback() {
-        crs.binding.data.setProperty(this, "title", "observer is ready");
+        crsbinding.data.setProperty(this, "title", "observer is ready");
     }
 
     async callback2() {
-        crs.binding.data.setProperty(this, "title2", "observer2 is ready");
+        crsbinding.data.setProperty(this, "title2", "observer2 is ready");
 
         await crs.call("component", "unobserve", {
             element: this,
@@ -44,10 +53,10 @@ export default class Observer extends crs.binding.classes.ViewBase {
     }
 
     ready() {
-        crs.binding.data.setProperty(this, "loaded-observer", true);
+        crsbinding.data.setProperty(this, "loaded-observer", true);
     }
 
     ready2() {
-        crs.binding.data.setProperty(this, "loaded2-observer", true);
+        crsbinding.data.setProperty(this, "loaded2-observer", true);
     }
 }

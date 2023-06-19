@@ -546,6 +546,30 @@ class Database {
         });
     }
 
+    delete_by_index(storeName, indexes) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = this.#db.transaction([storeName], "readwrite");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(storeName);
+
+            if (Array.isArray(indexes) === false) {
+                indexes = [indexes];
+            }
+
+            for (const index of indexes) {
+                store.delete(index);
+            }
+
+            transaction.oncomplete = () => {
+                resolve();
+            }
+        });
+    }
+
     getOldDatbaseNames() {
         return new Promise((resolve, reject) => {
             const transaction = self.db.transaction([META_TABLE_NAME], "readonly");
@@ -567,6 +591,64 @@ class Database {
                         }
                     } while (cursor.continue());
                 }
+                resolve();
+            }
+        });
+    }
+
+    changeByIndex(storeName, index, changes) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = this.#db.transaction([storeName], "readwrite");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(storeName);
+
+            if (Array.isArray(index) === false) {
+                index = [index];
+            }
+
+            const keys = Object.keys(changes);
+
+            for (const i of index) {
+                const request = store.get(i);
+                request.onsuccess = (event) => {
+                    const record = event.target.result;
+                    for (const key in keys) {
+                        record[key] = changes[key];
+                    }
+                    store.put(record);
+                }
+            }
+
+            transaction.oncomplete = () => {
+                resolve();
+            }
+        });
+    }
+
+    changeById(storeName, id, changes) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = this.#db.transaction([storeName], "readwrite");
+
+            transaction.onerror = (event) => {
+                reject(event.target.error);
+            };
+
+            const store = transaction.objectStore(storeName);
+
+            const request = store.get(id);
+            request.onsuccess = (event) => {
+                const record = event.target.result;
+                for (const key in changes) {
+                    record[key] = changes[key];
+                }
+                store.put(record);
+            }
+
+            transaction.oncomplete = () => {
                 resolve();
             }
         });

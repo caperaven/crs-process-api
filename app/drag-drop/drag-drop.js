@@ -1,7 +1,15 @@
 import {schema} from "./schema.js";
 import "./list-component/list-component.js";
 
-export default class DragDrop extends crs.binding.classes.ViewBase {
+export default class DragDrop extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);
@@ -9,7 +17,7 @@ export default class DragDrop extends crs.binding.classes.ViewBase {
         const context = {};
 
         await crs.call("dom_interactive", "enable_dragdrop", {
-            element: "#divStartStandard",
+            element: this.shadowRoot.querySelector("#divStartStandard"),
             options: {
                 drag: {
                     placeholderType: "standard",
@@ -18,7 +26,7 @@ export default class DragDrop extends crs.binding.classes.ViewBase {
         }, context)
 
         await crs.call("dom_interactive", "enable_dragdrop", {
-            element: "#divStartOpacity",
+            element: this.shadowRoot.querySelector("#divStartOpacity"),
             options: {
                 drag: {
                     placeholderType: "opacity",
@@ -51,7 +59,7 @@ export default class DragDrop extends crs.binding.classes.ViewBase {
         })
 
         await crs.call("dom_interactive", "enable_dragdrop", {
-            element: "#divStartNone",
+            element: this.shadowRoot.querySelector("#divStartNone"),
             options: {
                 drag: {
                     placeholderType: "none"
@@ -60,7 +68,7 @@ export default class DragDrop extends crs.binding.classes.ViewBase {
         })
 
         await crs.call("dom_interactive", "enable_dragdrop", {
-            element: "#divCloneTemplate",
+            element: this.shadowRoot.querySelector("#divCloneTemplate"),
             options: {
                 drag: {
                     placeholderType: "none",

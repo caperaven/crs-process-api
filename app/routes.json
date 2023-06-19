@@ -1,122 +1,108 @@
 {
   "default": "welcome",
   "root": "app",
-  "auto-nav": true,
-  "auto-hide": true,
+
+  "definition": {
+    "parameters": {
+      "0": "view"
+    }
+  },
+
   "routes": [
     {
       "title": "Welcome",
-      "hash": "#welcome",
       "view": "welcome"
     },
     {
+      "title": "Mobile",
+      "view": "mobile"
+    },
+    {
       "title": "Files",
-      "hash": "#files",
       "view": "files"
     },
     {
       "title": "Resize",
-      "hash": "#resize",
       "view": "resize"
     },
     {
       "title": "Move",
-      "hash": "#move",
       "view": "move"
     },
     {
       "title": "Media",
-      "hash": "#media",
       "view": "media"
     },
     {
       "title": "Dialog",
-      "hash": "#dialog",
       "view": "dialog"
     },
     {
       "title": "Dom",
-      "hash": "#dom",
       "view": "dom"
     },
     {
       "title": "Input",
-      "hash": "#input",
       "view": "input"
     },
     {
       "title": "Before and after step",
-      "hash": "#before_after_step",
       "view": "before-after-step"
     },
     {
       "title": "Events",
-      "hash": "#events",
       "view": "events"
     },
     {
       "title": "Rest Api",
-      "hash": "#rest",
       "view": "rest"
     },
     {
       "title": "Data Operations",
-      "hash": "#data",
       "view": "data"
     },
     {
       "title": "CSS Grid",
-      "hash": "#css-grid",
       "view": "css-grid"
     },
     {
       "title": "perspective",
-      "hash": "#perspective",
       "view": "perspective"
     },
     {
       "title": "observer",
-      "hash": "#observer",
       "view": "observer"
     },
     {
       "title": "fixed-layout",
-      "hash": "#fixed-layout",
       "view": "fixed-layout"
     },
     {
       "title": "fixed-position",
-      "hash": "#fixed-position",
       "view": "fixed-position"
     },
     {
       "title": "drag and drop",
-      "hash": "#drag-drop",
       "view": "drag-drop"
     },
     {
       "title": "styles",
-      "hash": "#styles",
       "view": "styles"
     },
     {
       "title": "Translations",
-      "hash": "#translations",
       "view": "translations"
     },
     {
       "title": "Schema",
-      "hash": "#schema",
       "view": "schema"
     },
     {
       "title": "Html",
-      "hash": "#html",
       "view": "html"
     },
     {
       "title": "IndexDB",
-      "hash": "#index-db",
       "view": "index-db"
     }
   ]

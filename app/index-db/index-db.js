@@ -1,11 +1,20 @@
 import "./../../src/action-systems/managers/indexdb-manager.js"
 
-export default class IndexDbViewModel extends crs.binding.classes.ViewBase {
+export default class IndexDbViewModel extends crsbinding.classes.BindableElement {
     #data1;
     #data2;
 
     #data1Store;
     #data2Store;
+
+
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
 
     async preLoad() {
         this.setProperty("index", 0);

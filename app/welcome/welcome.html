@@ -1,26 +1,4 @@
-<style>
-    crs-router {
-        display: grid;
-        grid-template-rows: auto 1fr;
-    }
-
-    crs-router ul {
-        overflow: auto;
-        margin: 0;
-        padding: 0;
-    }
-
-    crs-router li {
-        display: grid;
-        grid-template-columns: 200px 1fr;
-        padding: 0.25rem;
-        border-bottom: 1px solid silver;
-    }
-
-    crs-router li[aria-hidden] {
-        display: none;
-    }
-</style>
+<link rel="stylesheet" href="/app/welcome/welcome.css">
 
 <input keyup.call="filter"/>
 <ul ref="collection"></ul>

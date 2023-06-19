@@ -1,7 +1,15 @@
 import {schema} from "./schema.js";
 import "./my-component.js";
 
-export default class Events extends crs.binding.classes.ViewBase {
+export default class Events extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return false    ;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);
@@ -12,7 +20,7 @@ export default class Events extends crs.binding.classes.ViewBase {
     }
 
     async emit(event) {
-        await crs.binding.events.emitter.emit("run-process", {
+        await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "emit_message",
@@ -22,7 +30,7 @@ export default class Events extends crs.binding.classes.ViewBase {
     }
 
     async post(event) {
-        await crs.binding.events.emitter.emit("run-process", {
+        await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "post_message",
@@ -32,7 +40,7 @@ export default class Events extends crs.binding.classes.ViewBase {
     }
 
     async on(event) {
-        await crs.binding.events.emitter.emit("run-process", {
+        await crsbinding.events.emitter.emit("run-process", {
             context: this,
             step: {
                 action: "on_message",

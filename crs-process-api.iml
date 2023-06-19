@@ -3,7 +3,12 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/docs" />
+      <sourceFolder url="file://$MODULE_DIR$/wasm/data-processing/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wasm/excel/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wasm/markdown/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/wasm/markdown/target" />
+      <excludeFolder url="file://$MODULE_DIR$/wasm/excel/target" />
+      <excludeFolder url="file://$MODULE_DIR$/wasm/data-processing/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

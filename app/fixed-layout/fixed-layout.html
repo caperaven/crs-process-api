@@ -1,32 +1,10 @@
-<style>
-    .container  {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .center, .moved {
-        width: 100px;
-        height: 100px;
-        background: silver;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .moved {
-        width: 50px;
-        height: 50px;
-        background: #ff6666;
-    }
-</style>
+<link rel="stylesheet" href="/app/fixed-layout/fixed-layout.css">
 
 <label>
     <span>Middel</span>
     <input type="checkbox" checked.bind="middle" />
 </label>
+
 <button click.call="left">Left</button>
 <button click.call="right">Right</button>
 <button click.call="top">Top</button>

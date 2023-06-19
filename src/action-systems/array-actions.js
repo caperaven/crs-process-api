@@ -639,6 +639,45 @@ export class ArrayActions {
 
         return data;
     }
+
+    /***
+     * @method delete_properties - Delete properties from an array of objects
+     * @param step {object} - step to perform
+     * @param context {object} - context of the process
+     * @param process {object} - process to perform
+     * @param item {object} - item to perform the action on
+     *
+     * @param step.args.source {string|[]} - source array objects to delete properties from
+     * @param step.args.properties {string|[]} - array of properties to delete
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("array", "delete_properties", {
+     *      source: arrayOfObjects,
+     *      properties: ["field1", "field2"]
+     * }, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "array",
+     *      "action": "delete_properties",
+     *      "args": {
+     *          "source": "$data.arrayOfObjects",
+     *          "properties": ["propertyName1", "propertyName2"]
+     *      }
+     * }
+     *
+     * @return {Promise<void>}
+     */
+    static async delete_properties(step, context, process, item) {
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const properties = await crs.process.getValue(step.args.properties, context, process, item);
+
+        for (const object of source) {
+            for (const property of properties) {
+                 delete object[property];
+            }
+        }
+    }
 }
 
 /**

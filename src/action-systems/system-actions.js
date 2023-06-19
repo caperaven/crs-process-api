@@ -206,7 +206,7 @@ export class SystemActions {
      * }
      */
     static async is_mobile(step, context, process, item) {
-        return /Mobi/.test(navigator.userAgent);
+        return /Mobi|Android/i.test(navigator.userAgent);
     }
 
     /**

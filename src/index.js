@@ -47,6 +47,8 @@ export async function initialize(root) {
     await crs.modules.add("debug", `${root}/action-systems/debug-actions.js`);
 
     crs.dom = (await crs.modules.get("dom")).DomActions;
+
+    globalThis.isMobile = await crs.call("system", "is_mobile");
 }
 
 globalThis.crs = globalThis.crs || {};

@@ -1,11 +1,19 @@
 import "./../../src/action-systems/css-grid-actions.js";
 
-export default class CssGrid extends crs.binding.classes.ViewBase {
+export default class CssGrid extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
 
         requestAnimationFrame(async () => {
-            this.element = document.querySelector("#grid");
+            this.element = this.shadowRoot.querySelector("#grid");
             // crs.call("cssgrid", "init",         {element: this.element});
             // crs.call("cssgrid", "set_columns",  {element: this.element, columns: "1fr 1fr 1fr"});
             // crs.call("cssgrid", "set_rows",     {element: this.element, rows: "1fr 1fr 1fr"});
