@@ -15,7 +15,7 @@ export class IndexDBManager {
 
     constructor() {
         const workerUrl = new URL("./indexdb-manager/indexdb-worker.js", import.meta.url);
-        this.#worker = new Worker(workerUrl);
+        this.#worker = new Worker(workerUrl, { type: "module" });
         this.#worker.onmessage = this.onMessage.bind(this);
 
         // const cleanUrl = new URL("./indexdb-manager/indexdb-clean-worker.js", import.meta.url);
