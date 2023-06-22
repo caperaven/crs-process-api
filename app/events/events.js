@@ -1,7 +1,15 @@
 import {schema} from "./schema.js";
 import "./my-component.js";
 
-export default class Events extends crsbinding.classes.ViewBase {
+export default class Events extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return false    ;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);

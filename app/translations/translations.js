@@ -1,6 +1,14 @@
 import {schema} from "./schema.js";
 
-export default class Welcome extends crsbinding.classes.ViewBase {
+export default class Welcome extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return false;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         crs.processSchemaRegistry.add(schema);

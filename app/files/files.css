@@ -1,0 +1,12 @@
+#dropzone {
+    height: 10rem;
+    width: 30rem;
+    background-color: lightgrey;
+    text-align: center;
+    border: 0.2rem inset;
+}
+
+#dropzone span {
+    vertical-align: text-bottom;
+    line-height: 10rem;
+}
