@@ -95,8 +95,8 @@ describe("route actions tests", async () => {
             host: "www.google.com",
             params: {
                 "connection"  : "connection",
-                    "environment" : "en-us",
-                    "view"        : "search"
+                "environment" : "en-us",
+                "view"        : "search"
             },
             query: {
                 "q": "crs",
