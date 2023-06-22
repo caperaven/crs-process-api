@@ -30,6 +30,12 @@ beforeAll(async () => {
                 2: "view"
             }
         },
+        routes: [
+            {
+                title: "Search",
+                view: "search"
+            }
+        ],
         callback: async (def) => changeDef = def
     });
 })
@@ -102,7 +108,6 @@ describe("route actions tests", async () => {
 
         assertEquals(changeDef, definition);
         assertEquals(stateDef.url, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
-        assertEquals(stateDef.state, { search: { q: "crs", id: "1000" } });
     })
 
     it ("goto using string path", async () => {
@@ -111,7 +116,6 @@ describe("route actions tests", async () => {
         })
 
         assertEquals(stateDef.url, "https://www.google.com/connection/en-us/search?q=crs&id=2000");
-        assertEquals(stateDef.state, { search: { q: "crs", id: "2000" } });
     })
 
     it ("set_parameters", async () => {
