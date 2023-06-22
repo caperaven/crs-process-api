@@ -98,7 +98,13 @@ export class HtmlActions {
      */
     static async template_from_file(step, context, process, item) {
         const url = await crs.process.getValue(step.args.url, context, process, item);
-        const html = await fetch(url).then(result => result.text());
+        const has_css = await crs.process.getValue(step.args.has_css, context, process, item);
+
+        const css = has_css ? `<link rel="stylesheet" href="${url.replace(".html", ".css")}">` : "";
+        let html = await fetch(url).then(result => result.text());
+
+        html = `${css}${html}`
+
         const template = document.createElement("template");
         template.innerHTML = html;
 
