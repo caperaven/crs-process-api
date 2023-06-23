@@ -323,7 +323,7 @@ class Database {
      * @method delete - delete a record from the database
      * @returns {Promise<void>}
      */
-    deleteIndexes(storeName, indexes) {
+    deleteByIndex(storeName, indexes) {
         return this.#performTransaction((store) => {
             if (Array.isArray(indexes) === false) {
                 indexes = [indexes];
@@ -788,9 +788,9 @@ class IndexDBManager {
         });
     }
 
-    deleteIndexes(uuid, name, store, indexes) {
+    deleteByIndex(uuid, name, store, indexes) {
         return this.#performAction(uuid, name, async () => {
-            return await this.#store[name].deleteIndexes(store, indexes);
+            return await this.#store[name].deleteByIndex(store, indexes);
         });
     }
 
