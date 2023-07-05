@@ -60,6 +60,86 @@ export class ArrayActions {
     }
 
     /**
+     * @method move - move an item from one array to another or up and down in the same array
+     * If you are moving the item to a different array, you need to set the target.
+     * If you want to move the item to be above or below a particular item you need to set the target_item.
+     * If you don't define the target item, it will assume you are moving the item up or down in the same array based on its location.
+     *
+     * Actions are:
+     * - up - move the item up one in the array
+     * - down - move the item down one in the array
+     * - append - move the item to the end of the array
+     * - prepend - move the item to the beginning of the array
+     * - insert - insert the item at the given index
+     * - before - move the item before the target item (target item must be defined)
+     * - after - move the item after the target item (target item must be defined)
+     *
+     * @param step {object} - The step that contains the action to perform
+     * @param context {object} - The context of the process
+     * @param process {object} - The process
+     * @param item {object} - Current item in a process loop
+     *
+     * @param step.args.source {Array} - array that the item is currently in
+     * @param step.args.source_item {object} - the item in the source array that is being moved
+     * @param step.args.action {string} - action to perform, either "up", "down", "append", "prepend", "insert", "before", "after"
+     * @param step.args.target {Array} - array to move the item to
+     * @param step.args.target_item {object} - the item in the target array that the source item is being moved before or after
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * const result = await crs.call("array", "move", {
+     *   source: array,
+     *   source_item: item,
+     *   action: "up"
+     * });
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "array",
+     *    "action": "move",
+     *    "args": {
+     *      "source": "@process.array",
+     *      "source_item": "@process.item",
+     *      "action": "up"
+     *    }
+     * }
+     */
+    static async move(step, context, process, item) {
+        const action = await crs.process.getValue(step.args.action, context, process, item);
+        const source = await crs.process.getValue(step.args.source, context, process, item);
+        const source_item = await crs.process.getValue(step.args.source_item, context, process, item);
+        const source_index = source.indexOf(source_item);
+        // the target array is what you defined or the source array if you didn't define a target
+        const target = await crs.process.getValue(step.args.target || source, context, process, item);
+        const target_item = await crs.process.getValue(step.args.target_item, context, process, item);
+
+        source.splice(source_index, 1);
+
+        if (action === "append") {
+            return target.push(source_item);
+        }
+
+        if (action === "prepend") {
+            return target.unshift(source_item);
+        }
+
+        if (action === "insert") {
+            const index = await crs.process.getValue(step.args.index, context, process, item);
+            return target.splice(index, 0, source_item);
+        }
+
+        if (action === "up" || action === "before") {
+            const target_index = target_item != null ? target.indexOf(target_item) : source_index;
+            return target.splice(target_index - 1, 0, source_item);
+        }
+
+        if (action === "down" || action === "after") {
+            const target_index = target_item != null ? target.indexOf(target_item) : source_index;
+            return target.splice(target_index + 1, 0, source_item);
+        }
+    }
+
+    /**
      * @method remove - removes a value from a defined array
      * @param step {object} - The step that contains the action to perform
      * @param context {object} - The context of the process

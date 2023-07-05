@@ -443,3 +443,70 @@ Deno.test("delete_properties: delete a null property", async () => {
     //Assert
     assertEquals(testData, assertData);
 });
+
+Deno.test("move_item", async () => {
+    const sourceData = [
+        {id: 'a'},
+        {id: 'b'},
+        {id: 'c'}
+    ];
+
+    const targetData = [
+        {id: 'd'},
+        {id: 'e'},
+        {id: 'f'}
+    ];
+
+    await crs.call("array", "move", {
+        source: sourceData,
+        source_item: sourceData[1],
+        action: "up"
+    });
+
+    assertEquals(sourceData, [{id: 'b'}, {id: 'a'}, {id: 'c'}]);
+
+    await crs.call("array", "move", {
+        source: sourceData,
+        source_item: sourceData[0],
+        action: "down"
+    });
+
+    assertEquals(sourceData, [{id: 'a'}, {id: 'b'}, {id: 'c'}]);
+
+    await crs.call("array", "move", {
+        source: sourceData,
+        source_item: sourceData[0],
+        action: "append"
+    });
+
+    assertEquals(sourceData, [{id: 'b'}, {id: 'c'}, {id: 'a'}]);
+
+    await crs.call("array", "move", {
+        source: sourceData,
+        source_item: sourceData[2],
+        action: "prepend"
+    });
+
+    assertEquals(sourceData, [{id: 'a'}, {id: 'b'}, {id: 'c'}]);
+
+
+    await crs.call("array", "move", {
+        source: sourceData,
+        source_item: sourceData[0],
+        action: "insert",
+        index: 1
+    });
+
+    assertEquals(sourceData, [{id: 'b'}, {id: 'a'}, {id: 'c'}]);
+
+    await crs.call("array", "move", {
+        source: sourceData,
+        source_item: sourceData[0],
+        action: "after",
+        target: targetData,
+        target_item: targetData[0]
+    });
+
+    assertEquals(sourceData, [{id: 'a'}, {id: 'c'}]);
+    assertEquals(targetData, [{id: 'd'}, {id: 'b'}, {id: 'e'}, {id: 'f'}]);
+})
