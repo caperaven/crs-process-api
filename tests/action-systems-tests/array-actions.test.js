@@ -460,7 +460,7 @@ Deno.test("move_item", async () => {
     await crs.call("array", "move", {
         source: sourceData,
         source_item: sourceData[1],
-        action: "up"
+        action: "move_up"
     });
 
     assertEquals(sourceData, [{id: 'b'}, {id: 'a'}, {id: 'c'}]);
@@ -468,7 +468,7 @@ Deno.test("move_item", async () => {
     await crs.call("array", "move", {
         source: sourceData,
         source_item: sourceData[0],
-        action: "down"
+        action: "move_down"
     });
 
     assertEquals(sourceData, [{id: 'a'}, {id: 'b'}, {id: 'c'}]);

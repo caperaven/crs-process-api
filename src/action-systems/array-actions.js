@@ -128,12 +128,12 @@ export class ArrayActions {
             return target.splice(index, 0, source_item);
         }
 
-        if (action === "up" || action === "before") {
+        if (action === "move_up" || action === "before") {
             const target_index = target_item != null ? target.indexOf(target_item) : source_index;
             return target.splice(target_index - 1, 0, source_item);
         }
 
-        if (action === "down" || action === "after") {
+        if (action === "move_down" || action === "after") {
             const target_index = target_item != null ? target.indexOf(target_item) : source_index;
             return target.splice(target_index + 1, 0, source_item);
         }
