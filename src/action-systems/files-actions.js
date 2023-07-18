@@ -41,6 +41,7 @@ export class FilesActions {
      */
     static async load(step, context, process, item) {
         const dialog = await crs.process.getValue(step.args.dialog, context, process, item);
+        const return_content = await crs.process.getValue(step.args.return_content, context, process, item);
 
         if (dialog == true) {
             const files = await get_files_dialog(step);
@@ -49,12 +50,17 @@ export class FilesActions {
             for (const file of files) {
                 const fileDetails = await get_file_name(file.name);
 
+                let value = file;
+                if (return_content === true) {
+                    value = await get_file_content(file);
+                }
+
                 results.push({
                     name: fileDetails.name,
                     ext: fileDetails.ext,
                     type: file.type,
                     size: file.size,
-                    value: file
+                    value
                 })
             }
 
@@ -413,4 +419,21 @@ async function filedrop_handler(handler, event) {
     handler.call(this, results);
 }
 
-crs.intent.files = FilesActions;
+function get_file_content(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const content = event.target.result;
+            resolve(content);
+        };
+
+        reader.onerror = function(event) {
+            reject(event.target.error);
+        };
+
+        reader.readAsText(file);
+    })
+}
+
+crs.intent.files = FilesActions;1
