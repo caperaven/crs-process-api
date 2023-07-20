@@ -22,7 +22,8 @@ export default class Resize extends crs.classes.BindableElement {
                 max: {
                     width: 500,
                     height: 500
-                }
+                },
+                callback: (event) => console.log(event.detail)
             }
         })
 

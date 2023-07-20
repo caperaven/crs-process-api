@@ -17,7 +17,8 @@ export default class Move extends crs.classes.BindableElement {
 
         this.#blockElement = this.shadowRoot.querySelector("#block");
         await crs.call("dom_interactive", "enable_move", {
-            element: this.#blockElement
+            element: this.#blockElement,
+            callback: (event) => console.log(event.detail)
         })
 
         this.#toolbarElement = this.shadowRoot.querySelector("#toolbar");

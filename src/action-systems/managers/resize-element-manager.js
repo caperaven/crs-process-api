@@ -1,7 +1,7 @@
 import {getDraggable} from "./dragdrop-manager/drag-utils.js";
 import {getMouseInputMap, clientX, clientY} from "./input-mapping.js";
 
-export class ResizeElementManager {
+export class ResizeElementManager extends crs.classes.Observable {
     #element;
     #region;
     #resizeQuery;
@@ -15,6 +15,7 @@ export class ResizeElementManager {
     #inputMap;
 
     constructor(element, resizeQuery, options) {
+        super();
         this.#element = element;
         this.#region = element.getBoundingClientRect();
         this.#resizeQuery = resizeQuery;
@@ -28,6 +29,10 @@ export class ResizeElementManager {
 
         this.#element.addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler, { passive: false });
         element.__resizeManager = this;
+
+        if (this.#options.callback != null) {
+            this.addEventListener("resized", this.#options.callback);
+        }
     }
 
     dispose() {
@@ -45,6 +50,7 @@ export class ResizeElementManager {
 
         delete this.#element.__resizeManager;
         this.#element = null;
+        super.dispose();
     }
 
     #mouseDown(event) {
@@ -110,7 +116,9 @@ export class ResizeElementManager {
             this.#targetElement.style.filter = "";
         }
 
-        let targetElement = this.#targetElement;
+        const element = this.#targetElement;
+        const width = element.style.width;
+        const height = element.style.height;
 
         document.removeEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
         document.removeEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
@@ -119,8 +127,6 @@ export class ResizeElementManager {
         this.#bounds = null;
         this.#startPos = null;
 
-        if (this.#options.callback) {
-            this.#options.callback(targetElement);
-        }
+        this.notify("resized", { element, width, height });
     }
 }

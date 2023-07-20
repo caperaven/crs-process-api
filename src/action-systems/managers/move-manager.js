@@ -1,6 +1,6 @@
 import {getMouseInputMap, clientX, clientY} from "./input-mapping.js";
 
-export class MoveManager {
+export class MoveManager extends crs.classes.Observable {
     #element;
     #mouseDownHandler;
     #mouseMoveHandler;
@@ -13,7 +13,8 @@ export class MoveManager {
     #offsetY;
     #inputMap;
 
-    constructor(element, moveQuery) {
+    constructor(element, moveQuery, callback) {
+        super();
         this.#element = element;
         this.#moveQuery = moveQuery;
         this.#mouseDownHandler = this.#mouseDown.bind(this);
@@ -28,6 +29,10 @@ export class MoveManager {
         this.#element.addEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler, { passive: false });
 
         element.__moveManager = this;
+
+        if (callback != null) {
+            this.addEventListener("moved", callback);
+        }
     }
 
     dispose() {
@@ -45,6 +50,7 @@ export class MoveManager {
 
         delete this.#element.__moveManager;
         this.#element = null;
+        super.dispose();
     }
 
     /**
@@ -102,6 +108,10 @@ export class MoveManager {
     }
 
     async #mouseUp(event) {
+        const x = this.#offsetX;
+        const y = this.#offsetY;
+        const element = this.#element;
+
         document.removeEventListener(this.#inputMap["mousemove"], this.#mouseMoveHandler);
         document.removeEventListener(this.#inputMap["mouseup"], this.#mouseUpHandler);
         this.#startPos = null;
@@ -110,5 +120,7 @@ export class MoveManager {
         this.#offsetY = null;
         event.preventDefault();
         event.stopPropagation();
+
+        this.notify("moved", { element, x, y })
     }
 }

@@ -467,10 +467,11 @@ export class DomInteractiveActions {
     static async enable_move(step, context, process, item) {
         const moveQuery = await crs.process.getValue(step.args.move_query, context, process, item);
         const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const callback = await crs.process.getValue(step.args.callback, context, process, item);
 
         const file = import.meta.url.replace("dom-interactive-actions.js", "managers/move-manager.js");
         const module = await import(file);
-        new module.MoveManager(element, moveQuery);
+        new module.MoveManager(element, moveQuery, callback);
     }
 
     /**

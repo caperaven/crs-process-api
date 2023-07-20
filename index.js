@@ -1,6 +1,7 @@
 import "./packages/crs-binding/crs-binding.js";
 import "./packages/crs-binding/events/event-emitter.js";
 import "./packages/crs-binding/classes/bindable-element.js";
+import "./packages/crs-binding/classes/observable.js";
 import "./packages/crs-binding/expressions/code-factories/if.js";
 import "./packages/crs-modules/crs-modules.js";
 import './packages/crs-schema/crs-schema.js';
