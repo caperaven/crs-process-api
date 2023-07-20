@@ -36,6 +36,8 @@ export class ResizeElementManager extends crs.classes.Observable {
     }
 
     dispose() {
+        this.removeEventListener("resized", this.#options.callback);
+
         this.#element.removeEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;

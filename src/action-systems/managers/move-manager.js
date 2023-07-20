@@ -2,6 +2,7 @@ import {getMouseInputMap, clientX, clientY} from "./input-mapping.js";
 
 export class MoveManager extends crs.classes.Observable {
     #element;
+    #callback;
     #mouseDownHandler;
     #mouseMoveHandler;
     #mouseUpHandler;
@@ -17,6 +18,7 @@ export class MoveManager extends crs.classes.Observable {
         super();
         this.#element = element;
         this.#moveQuery = moveQuery;
+        this.#callback = callback;
         this.#mouseDownHandler = this.#mouseDown.bind(this);
         this.#mouseMoveHandler = this.#mouseMove.bind(this);
         this.#mouseUpHandler = this.#mouseUp.bind(this);
@@ -36,6 +38,7 @@ export class MoveManager extends crs.classes.Observable {
     }
 
     dispose() {
+        this.removeEventListener("moved", this.#callback);
         this.#element.removeEventListener(this.#inputMap["mousedown"], this.#mouseDownHandler);
         this.#mouseDownHandler = null;
         this.#mouseMoveHandler = null;
