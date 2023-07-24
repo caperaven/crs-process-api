@@ -99,7 +99,13 @@ export class MoveManager extends crs.classes.Observable {
 
     async #animateMoving() {
         if (this.#startPos == null) return;
+
+        this.#offsetX ||= 0;
+        this.#offsetY ||= 0;
+        this.#element.style.left = 0;
+        this.#element.style.top = 0;
         this.#element.style.translate = `${this.#bounds.x + this.#offsetX}px ${this.#bounds.y + this.#offsetY}px`;
+
         requestAnimationFrame(this.#animateMovingHandler);
     }
 
