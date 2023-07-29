@@ -575,7 +575,7 @@ export class DomActions {
      */
     static async create_element(step, context, process, item) {
         const parentElement = await crs.dom.get_element(step.args.parent, context, process, item);
-        const element = document.createElement(step.args.tag_name || "div");
+        const element = document.createElement(step.args.tag_name || step.args.tag || "div");
 
         const attributes = Object.keys(step.args.attributes || {});
         const styles = Object.keys(step.args.styles || {});
