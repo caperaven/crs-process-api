@@ -11,6 +11,7 @@ class NoContent extends HTMLElement {
     }
 
     async connectedCallback() {
+        this.style.display = "none";
         const title = globalThis.translations.noContent.title;
         const message = globalThis.translations.noContent.message;
 
@@ -23,6 +24,7 @@ class NoContent extends HTMLElement {
 
     async load() {
         requestAnimationFrame(() => {
+            this.style.display = "block";
             crs.call("component", "notify_ready", {element: this})
         })
     }
