@@ -1,0 +1,24 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+.svg-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 1rem;
+    text-align: center;
+}
+
+p {
+    font-size: 0.8rem;
+    margin: 0;
+    text-align: center;
+    padding: 0.5rem;
+}
