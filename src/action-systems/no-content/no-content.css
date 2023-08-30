@@ -11,6 +11,11 @@
     justify-content: center;
 }
 
+svg {
+    max-width: 25rem;
+    max-height: 25rem;
+}
+
 h1 {
     font-size: 1rem;
     text-align: center;
