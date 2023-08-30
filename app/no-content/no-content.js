@@ -1,5 +1,3 @@
-import "../../src/action-systems/no-content-actions.js";
-
 export default class NoContentModel extends crsbinding.classes.BindableElement {
     get html() {
         return import.meta.url.replace(".js", ".html");
