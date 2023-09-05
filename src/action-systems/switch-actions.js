@@ -23,9 +23,13 @@ export class SwitchActions {
         const cases = await crs.process.getValue(step.args.cases, context, process, item);
         const defaultStep = await crs.process.getValue(step.args.default, context, process, item);
 
+        // there is no default defined and the provided value is not in the cases
+        // then just stop processing
         const nextStepKey = cases[value] || defaultStep;
-        const nextStep = await crs.getNextStep(process, nextStepKey);
+        if (nextStepKey == null) return;
 
+        // we have a next step key, find the step in the process and run it
+        const nextStep = await crs.getNextStep(process, nextStepKey);
         if (nextStep != null) {
             await crs.process.runStep(nextStep, context, process, item);
         }
