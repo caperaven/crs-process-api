@@ -24,7 +24,7 @@ class NoContent extends HTMLElement {
 
     async load() {
         requestAnimationFrame(() => {
-            this.style.display = "block";
+            this.style.display = "flex"
             crs.call("component", "notify_ready", {element: this})
         })
     }
