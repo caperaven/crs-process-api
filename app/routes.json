@@ -108,6 +108,9 @@
     {
       "title": "IndexDB",
       "view": "index-db"
-    }
-  ]
+    },
+    {
+      "title": "Switch",
+      "view": "switch"
+    }]
 }
