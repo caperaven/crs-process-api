@@ -18,6 +18,43 @@ export class LoopActions {
      * @param [step.args.target == "$context.result"] {string} - The path to the target object to set the value of.
      *
      * @returns The result of the last step in the steps array
+     *
+     * @example <caption>json example</caption>
+     * {
+     *   type: "loop",
+     *   args: {
+     *       source: "$data.items",
+     *       steps: {
+     *           start: {
+     *               type: "array",
+     *               action: "add",
+     *               args: {
+     *                   target: "$item.value",
+     *                   value: 1
+     *               },
+     *               next_step: "add_second"
+     *           },
+                 add_second: {
+     *               type: "array",
+     *               action: "add",
+     *               args: {
+     *                   target: "$item.value",
+     *                   value: 2
+     *               },
+     *               next_step: "add_third"
+     *           }
+     *           add_third: {
+     *               type: "array",
+     *               action: "add",
+     *               args: {
+     *                   target: "$item.value",
+     *                   value: 3
+     *               }
+     *           },
+     *       }
+     *   },
+     *   next_step: "end"
+     * }
      */
     static async perform(step, context, process) {
         const source = await crs.process.getValue(step.args.source, context, process);
@@ -26,11 +63,10 @@ export class LoopActions {
             throw new Error(`object on path ${step.args.source} was not set`);
         }
 
-        const stepKeys  = Object.keys(step.args.steps);
         const target    = step.args.target;
 
         if (source.length <= BATCH_SIZE) {
-            await processBatch(step, stepKeys, source, target, context, process, 0, source.length);
+            await processBatch(step, source, target, context, process, 0, source.length);
         }
         else {
             for (let i = 0; i < source.length; i += BATCH_SIZE) {
@@ -42,7 +78,7 @@ export class LoopActions {
 
                 let promise = new Promise(resolve => {
                     let timeout = setTimeout(async () => {
-                        await processBatch(step, stepKeys, source, target, context, process, start, end);
+                        await processBatch(step, source, target, context, process, start, end);
                         clearTimeout(timeout);
                         timeout = null;
                         resolve();
@@ -69,7 +105,7 @@ export class LoopActions {
  *
  * @returns The result of the last step in the steps array
  */
-async function processBatch(step, stepKeys, collection, target, context, process, start, end) {
+async function processBatch(step, collection, target, context, process, start, end) {
     for (let i = start; i < end; i++) {
         const item = collection[i];
 
@@ -77,10 +113,7 @@ async function processBatch(step, stepKeys, collection, target, context, process
             await crs.process.setValue(target, item, context, process, item);
         }
 
-        for (let stepKey of stepKeys) {
-            const s = step.args.steps[stepKey];
-            await crs.process.runStep(s, context, process, item);
-        }
+        await crs.process.runStep(step.args.steps.start, context, process, item, step.args.steps);
     }
 }
 

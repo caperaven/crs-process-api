@@ -14,6 +14,10 @@
       "view": "welcome"
     },
     {
+      "title": "No Content",
+      "view": "no-content"
+    },
+    {
       "title": "Mobile",
       "view": "mobile"
     },
@@ -104,6 +108,9 @@
     {
       "title": "IndexDB",
       "view": "index-db"
-    }
-  ]
+    },
+    {
+      "title": "Switch",
+      "view": "switch"
+    }]
 }

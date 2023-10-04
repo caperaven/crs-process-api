@@ -60,7 +60,7 @@ export class ProcessRunner {
      * @param item {Object} items object $item
      * @returns {Promise<void>}
      */
-    static async runStep(step, context= null, process= null, item= null) {
+    static async runStep(step, context= null, process= null, item= null, steps = null) {
         if (step == null) return;
 
         await setBinding("binding_before", step, context, process, item)
@@ -82,14 +82,16 @@ export class ProcessRunner {
         await setBinding("binding_after", step, context, process, item)
 
         if (process?.aborted !== true && step.aborted !== true) {
-            const nextStep = process?.steps?.[step.alt_next_step || step.next_step];
+            steps ||= process.steps;
+
+            const nextStep = steps?.[step.alt_next_step || step.next_step];
 
             if (process != null) {
                 process.currentStep = step.next_step;
             }
 
             if (nextStep != null) {
-                return await this.runStep(nextStep, context, process, item);
+                return await this.runStep(nextStep, context, process, item, steps);
             }
         }
 

@@ -1,3 +1,0 @@
-cargo:rustc-cfg=rustc_has_pr45225
-cargo:rustc-cfg=has_std__mem__MaybeUninit
-cargo:rerun-if-changed=C:\Users\Johan\.cargo\registry\src\github.com-1ecc6299db9ec823\cssparser-0.25.9\src/tokenizer.rs
