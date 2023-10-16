@@ -162,7 +162,7 @@ export class ComponentActions {
     static async notify_ready(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.dataset.ready = "true";
-        element.dispatchEvent(new CustomEvent("ready", {bubbles:false}));
+        element.dispatchEvent(new CustomEvent("ready", {bubbles: true, composed: true}));
     }
 
 
