@@ -42,6 +42,57 @@ describe("data processing actions tests", () => {
         assertExists(result["root"]);
     })
 
+    it ("sort descending", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "sort", {
+            source: people,
+            intent: ["name:dec"]
+        });
+
+        assertEquals(result[0], 2);
+        assertEquals(result[1], 0);
+        assertEquals(result[2], 1);
+    })
+
+    it ("sort descending by lastname & name", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "sort", {
+            source: people,
+            intent: ["lastName:dec", "name:dec"]
+        });
+
+        assertEquals(result[0], 1);
+        assertEquals(result[1], 2);
+        assertEquals(result[2], 0);
+    })
+
+    it ("sort ascending", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "sort", {
+            source: people,
+            intent: ["name:asc"]
+        });
+
+        assertEquals(result[0], 1);
+        assertEquals(result[1], 0);
+        assertEquals(result[2], 2);
+    })
+
     it ("get_perspective", async () => {
         const people = [
             { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
