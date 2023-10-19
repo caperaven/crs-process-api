@@ -82,7 +82,7 @@ export class ProcessRunner {
         await setBinding("binding_after", step, context, process, item)
 
         if (process?.aborted !== true && step.aborted !== true) {
-            steps ||= process.steps;
+            steps ||= process?.steps;
 
             const nextStep = steps?.[step.alt_next_step || step.next_step];
 
