@@ -62,7 +62,7 @@ export class ComponentActions {
         const callback = await crs.process.getValue(step.args.callback, context, process, item);
 
         if (element._dataId == null) {
-            element._dataId = crsbinding.data.addObject(element.id);
+            element._dataId = crs.binding.data.addObject(element.id);
         }
 
         let dataId = element._dataId;
@@ -72,14 +72,12 @@ export class ComponentActions {
         };
 
         const id = getNextId(element);
-        element._processObserver[id] = {
-            properties: properties,
-            eval: createPropertiesEvaluation(element, properties, id),
-            callback: callback
-        }
+        const evalResult = await createPropertiesEvaluation(element, properties, id);
+
+        element._processObserver[id] = { properties, eval: evalResult, callback }
 
         for (let property of properties) {
-            crsbinding.data.addCallback(dataId, property, element._processObserver[id].eval);
+            await crs.binding.data.addCallback(dataId, property, element._processObserver[id].eval);
         }
 
         return id;
@@ -122,7 +120,7 @@ export class ComponentActions {
         for (const id of ids) {
             const def = element._processObserver[id];
             for (const property of def.properties) {
-                crsbinding.data.removeCallback(element._dataId, property, def.eval);
+                await crs.binding.data.removeCallback(element._dataId, property, def.eval);
             }
             def.properties = null;
             def.eval = null;
@@ -164,7 +162,36 @@ export class ComponentActions {
     static async notify_ready(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.dataset.ready = "true";
-        element.dispatchEvent(new CustomEvent("ready", {bubbles:false}));
+        delete element.dataset.loading;
+        element.dispatchEvent(new CustomEvent("ready", {bubbles: true, composed: true}));
+    }
+
+    /**
+     * @method notify_loading - Notify that the component is loading
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object that is running the script.
+     * @param item {Object} - The item that is being processed.
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("component", "notify_loading", {
+     *    element: "my-element"
+     *    };
+     *
+     * @example <caption>json</caption>
+     *    {
+     *       "type": "component",
+     *       "action": "notify_loading",
+     *       "args": {
+     *        "element": "my-element"
+     *       }
+     *    }
+     */
+    static async notify_loading(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        element.dataset.loading = "true";
+        element.dispatchEvent(new CustomEvent("loading", {bubbles: true, composed: true}));
     }
 
 
@@ -216,6 +243,54 @@ export class ComponentActions {
 
         element.addEventListener("ready", fn);
     }
+
+    /**
+     * @method on_loading - Get notified when the component is loading
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the process.
+     * @param process {Object} - The process that is currently running.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {String} - The element that is being observed.
+     * @param step.args.callback {String} - The callback function to execute when the element is ready.
+     * @param step.args.caller {String} - The caller of the callback function.
+     *
+     * @returns The return value of the callback function.
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("component", "on_loading", {
+     *   element: "my-element",
+     *   callback: function,
+     *   caller: this
+     *   };
+     *
+     * @example <caption>json</caption>
+     * {
+     *     "type": "component",
+     *     "action": "on_loading",
+     *     "args": {
+     *      "element": "my-element",
+     *      "callback": "$context.callback"
+     *      "caller": "$context"
+     *     }
+     * }
+     */
+    static async on_loading(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const callback = await crs.process.getValue(step.args.callback, context, process, item);
+        const caller = await crs.process.getValue(step.args.caller, context, process, item);
+
+        if (element.dataset.loading == "true") {
+            return await callback.call(caller);
+        }
+
+        const fn = async () => {
+            element.removeEventListener("loading", fn);
+            await callback.call(caller);
+        }
+
+        element.addEventListener("loading", fn);
+    }
 }
 
 
@@ -239,16 +314,16 @@ function getNextId(element) {
  * @param id {String|Number} - The id of the observer.
  * @returns A function that will be called when the properties are available.
  */
-function createPropertiesEvaluation(context, properties, id) {
+async function createPropertiesEvaluation(context, properties, id) {
     let script = ["if ( "];
     for (const property of properties) {
-        script.push(`crsbinding.data.getProperty(this._dataId, "${property}")  != null && `)
+        script.push(`(await crs.binding.data.getProperty(this._dataId, "${property}"))  != null && `)
     }
     script.push(`) { this._processObserver[${id}].callback.call(this) };`)
     script = script.join("").replace("&& )", ")");
 
-    const fn = new Function(script);
-    return fn.bind(context);
+    const fn = new crs.classes.AsyncFunction(script);
+    return await fn.bind(context);
 }
 
 crs.intent.component = ComponentActions;
