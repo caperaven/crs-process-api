@@ -293,6 +293,36 @@ export class ComponentActions {
 
         element.addEventListener("loading", fn);
     }
+
+    /**
+     * @method wait_for_element_render - Wait for an element to be rendered.
+     * We wait until the width of the height of the element is greater than 0.
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the process.
+     * @param process {Object} - The process that is currently running.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {HTMLElement} - The element that is being observed.
+     * @returns {Promise<unknown>}
+     */
+    static async wait_for_element_render(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+
+        if (element.offsetWidth > 0 && element.offsetHeight > 0) {
+            return true;
+        }
+
+        return new Promise(resolve => {
+            const observer = new ResizeObserver(() => {
+                if (element.offsetWidth > 0 && element.offsetHeight > 0) {
+                    observer.disconnect();
+                    resolve(true);
+                }
+            });
+
+            observer.observe(element);
+        });
+    }
 }
 
 
