@@ -71,7 +71,7 @@ export class ProcessRunner {
                 await crs.modules.get(step.type);
             }
 
-            result = await crs.intent[step.type].perform(step, context, process, item);
+            result = await crs.intent[step.type].perform(step, context, process, item, steps);
         }
 
         if (step.args?.log != null) {

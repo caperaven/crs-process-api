@@ -85,9 +85,10 @@ globalThis.crs.call = async (system, fn, args, context, process, item, prefixes 
     return await module[fn]({args: args}, context, process, item);
 }
 
-globalThis.crs.getNextStep = (process, step) => {
+globalThis.crs.getNextStep = (process, step, steps) => {
+    steps ||= process?.steps;
     if (typeof step == "object") return step;
-    return crsbinding.utils.getValueOnPath(process.steps, step);
+    return crsbinding.utils.getValueOnPath(steps, step);
 }
 
 crsbinding.events.emitter.on("crs-process-error", (message) => {

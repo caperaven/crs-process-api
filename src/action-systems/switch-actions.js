@@ -18,7 +18,7 @@
  * The default property is the step to run if none of the cases match, but is not required.
  */
 export class SwitchActions {
-    static async perform(step, context, process, item) {
+    static async perform(step, context, process, item, steps) {
         const value = await crs.process.getValue(step.args.check, context, process, item);
         const cases = await crs.process.getValue(step.args.cases, context, process, item);
         const defaultStep = await crs.process.getValue(step.args.default, context, process, item);
@@ -29,9 +29,9 @@ export class SwitchActions {
         if (nextStepKey == null) return;
 
         // we have a next step key, find the step in the process and run it
-        const nextStep = await crs.getNextStep(process, nextStepKey);
+        const nextStep = await crs.getNextStep(process, nextStepKey, steps);
         if (nextStep != null) {
-            await crs.process.runStep(nextStep, context, process, item);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
     }
 }
