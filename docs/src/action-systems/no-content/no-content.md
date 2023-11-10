@@ -1,0 +1,1 @@
+# class - NoContentA component that displays a message when there is no content to display. This is only used through the process api.   See no-content-actions.js for more information.  
