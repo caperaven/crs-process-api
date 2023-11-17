@@ -115,13 +115,72 @@ describe("dom attributes action test", async () => {
     });
 
     describe( "dom attributes action edge-cases", () => {
-        it("Test", async () => {
+        it("should not fail if empty add and remove array is passed through", async () => {
+           //Act
+            await crs.call("dom_attributes", "perform", {
+                add: [],
+                remove: []
+            });
+        });
+
+        it ("should not fail if empty object is passed through", async () => {
+            //Act
+            await crs.call("dom_attributes", "perform", {});
+        });
+
+        it ("should not fail if null is passed through", async () => {
+            //Act
+            await crs.call("dom_attributes", "perform", null);
+        });
+
+        it ("should not fail if remove = null is passed through", async () => {
+            //Arrange
             const element = await crs.call("dom", "create_element", {
                 tag_name: "div",
                 attributes: {
-                    id: "testElement"
+                    id: "testElement",
                 }
             });
+
+            //Act
+            await crs.call("dom_attributes", "perform", {
+                add: [
+                    {
+                        element: "#testElement",
+                        attr: "hidden",
+                        value: true
+                    }
+                ],
+                remove: null
+            });
+
+            //Assert
+            assertEquals(element.hidden, true);
+        });
+
+        it ("should not fail if add = null is passed through", async () => {
+            //Arrange
+            const element = await crs.call("dom", "create_element", {
+                tag_name: "div",
+                attributes: {
+                    id: "testElement",
+                    hidden: true
+                }
+            });
+
+            //Act
+            await crs.call("dom_attributes", "perform", {
+                add: null,
+                remove: [
+                    {
+                        element: "#testElement",
+                        attr: "hidden"
+                    }
+                ]
+            });
+
+            //Assert
+            assertEquals(element.hidden, null);
         });
     });
 });
