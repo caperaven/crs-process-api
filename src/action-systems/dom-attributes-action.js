@@ -93,14 +93,15 @@ async function setAndRemoveAttributes (args) {
         const element = item?.element;
         const attr = item?.attr;
         const value = item?.value;
+        const validateElementExists = await crs.dom.get_element(element);
 
-        if (element == null || attr == null) continue;
+        if (element == null || attr == null || validateElementExists == null) continue;
 
         let action;
         let options = {element, attr};
-        if (args.action === "add" && value != null) {
+        if (args.action === "add") {
             action = "set_attribute";
-            options.value = value;
+            options.value = value || attr;
         }else {
             action = "remove_attribute";
         }
