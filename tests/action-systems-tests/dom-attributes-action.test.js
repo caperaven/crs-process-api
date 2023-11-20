@@ -38,6 +38,7 @@ describe("dom attributes action test", async () => {
             //Assert
             assertEquals(actualValue, expectedValue);
         });
+
         it("should remove attribute from an element", async () => {
             //Arrange
             const expectedValue = undefined;
@@ -184,7 +185,7 @@ describe("dom attributes action test", async () => {
             //Assert
             assertEquals(element.getAttribute("hidden"), true);
         });
-        //
+       
         it ("should not fail if add = null is passed through", async () => {
             //Arrange
             const expectedValueRemove = undefined;
