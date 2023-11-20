@@ -297,7 +297,7 @@ export class SystemActions {
      * }
      */
     static async reload_page(step, context, process, item) {
-         globalThis.location.reload();
+         globalThis.location?.reload();
     }
 
 }
