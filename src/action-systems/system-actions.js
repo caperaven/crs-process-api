@@ -277,6 +277,29 @@ export class SystemActions {
 
         return result;
     }
+
+    /**
+     * @method reload_page - Reload the current page
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "reload_page", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "reload_page"
+     *     "args": {}
+     * }
+     */
+    static async reload_page(step, context, process, item) {
+         globalThis.location?.reload();
+    }
+
 }
 
 crs.intent.system = SystemActions;
