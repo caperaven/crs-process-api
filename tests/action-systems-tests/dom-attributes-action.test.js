@@ -243,7 +243,7 @@ describe("dom attributes action test", async () => {
             assertEquals(element.getAttribute("hidden"), expectedValueRemove);
         });
 
-        it('should not fail if the element passed it does not exist - add', async () => {
+        it('should not fail if the element passed in does not exist - add', async () => {
             //Arrange
             const expectedValueAdd = undefined;
             const element = await crs.call("dom", "create_element", {
@@ -268,7 +268,7 @@ describe("dom attributes action test", async () => {
             assertEquals(element.getAttribute("hidden"), expectedValueAdd);
         });
 
-        it('should not fail if the element passed it does not exist - remove', async () => {
+        it('should not fail if the element passed in does not exist - remove', async () => {
             //Arrange
             const expectedValueAdd = true;
             const element = await crs.call("dom", "create_element", {

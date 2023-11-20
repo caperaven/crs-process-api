@@ -71,11 +71,11 @@ export class DomAttributesAction {
         if (add.length === 0 && remove.length === 0) return;
 
         if (add.length > 0) {
-            await setAndRemoveAttributes({array: add, action: "add"});
+            await setAndRemoveAttributes(add, "add");
         }
 
         if (remove.length > 0) {
-            await setAndRemoveAttributes({array: remove, action: "remove"})
+            await setAndRemoveAttributes(remove, "remove")
         }
     }
 }
@@ -85,9 +85,9 @@ export class DomAttributesAction {
  * @param args {Object} - The arguments passed in.
  * @return {Promise<void>}
  */
-async function setAndRemoveAttributes (args) {
+async function setAndRemoveAttributes(attributes, domAction) {
 
-    for (const item of args.array) {
+    for (const item of attributes) {
         if (item === null) continue;
 
         const element = item?.element;
@@ -99,10 +99,10 @@ async function setAndRemoveAttributes (args) {
 
         let action;
         let options = {element, attr};
-        if (args.action === "add") {
+        if (domAction === "add") {
             action = "set_attribute";
             options.value = value || attr;
-        }else {
+        } else {
             action = "remove_attribute";
         }
 
