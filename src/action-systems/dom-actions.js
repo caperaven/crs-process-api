@@ -177,7 +177,25 @@ export class DomActions {
      * @param process {Object} - The process object
      * @param item {Object} - The item that is being processed.
      *
-     * @param element {String} - the
+     * @param element {String} - the id of the element to remove the attribute from.
+     * @param attr {String} - The name of the attribute to remove.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("dom", "remove_attribute", {
+     *     element: "#my-element",
+     *     attr: "my-attribute"
+     * });
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "dom"
+     *    "action": "remove_attribute",
+     *    "args": {
+     *        "element": "#my-element",
+     *        "attr": "my-attribute"
+     *    }
+     * }
+     * @returns {Promise<void>}
      */
     static async remove_attribute(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);

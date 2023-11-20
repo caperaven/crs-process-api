@@ -79,6 +79,12 @@ export class DomAttributesAction {
         }
     }
 }
+
+/**
+ * @method setAndRemoveAttributes - Sets or removes attributes from an element(s) based on the action passed in.
+ * @param args {Object} - The arguments passed in.
+ * @return {Promise<void>}
+ */
 async function setAndRemoveAttributes (args) {
 
     for (const  item of args.array) {
