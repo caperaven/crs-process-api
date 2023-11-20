@@ -64,10 +64,45 @@ export class DomAttributesAction {
      *  }
      * @return {Promise<void>}
      */
-    static async perform(step, context, process,item) {
-       const add = await crs.process.getValue(step.args.add, context, process, item) || [];
-       const remove = await crs.process.getValue(step.args.remove, context, process, item) || [];
+    static async perform(step, context, process, item) {
+        const add = await crs.process.getValue(step.args.add, context, process, item) || [];
+        const remove = await crs.process.getValue(step.args.remove, context, process, item) || [];
+
+        if (add.length === 0 && remove.length === 0) return;
+
+        //add attributes
+        if (add.length > 0) {
+            await setAndRemoveAttributes({array: add, action: "add"});
+        }
+
+        if (remove.length > 0) {
+            await setAndRemoveAttributes({array: remove, action: "remove"})
+        }
 
     }
 }
+async function setAndRemoveAttributes (args) {
+
+    for (const  item of args.array) {
+        if (item === null) continue;
+
+        const element = item?.element;
+        const attr = item?.attr;
+        const value = item?.value;
+
+        if (element == null || attr == null) continue;
+
+        let action;
+        let options = {element, attr};
+        if (args.action === "add" && value != null) {
+            action = "set_attribute";
+            options.value = value;
+        }else {
+            action = "remove_attribute";
+        }
+
+        await crs.call("dom", action, options);
+    }
+}
+
 crs.intent.dom_attributes = DomAttributesAction;
