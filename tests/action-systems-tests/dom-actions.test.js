@@ -276,3 +276,25 @@ Deno.test("css variables get and set multiple", async () => {
     assertEquals(result[0], "red");
     assertEquals(result[1], "green");
 })
+
+Deno.test("remove_attribute- removes an attribute off of an element", async () => {
+    //Arrange
+    const element = await crs.call("dom", "create_element", {
+        tag_name: "div",
+        id: "testElementRemove",
+        attributes: {
+            hidden: true
+        }
+    });
+
+    document.children[1].appendChild(element);
+
+    //Act
+    await crs.call("dom", "remove_attribute",{
+        element: "#testElementRemove",
+        attr: "hidden",
+    });
+
+    //Assert
+    assertEquals(element.getAttribute("hidden"), undefined);
+});
