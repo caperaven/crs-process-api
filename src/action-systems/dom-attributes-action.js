@@ -65,8 +65,8 @@ export class DomAttributesAction {
      * @return {Promise<void>}
      */
     static async perform(step, context, process, item) {
-        const add = await crs.process.getValue(step.args.add, context, process, item) || [];
-        const remove = await crs.process.getValue(step.args.remove, context, process, item) || [];
+        const add = await crs.process.getValue(step.args?.add, context, process, item) || [];
+        const remove = await crs.process.getValue(step.args?.remove, context, process, item) || [];
 
         if (add.length === 0 && remove.length === 0) return;
 
@@ -77,7 +77,6 @@ export class DomAttributesAction {
         if (remove.length > 0) {
             await setAndRemoveAttributes({array: remove, action: "remove"})
         }
-
     }
 }
 async function setAndRemoveAttributes (args) {

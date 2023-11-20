@@ -18,48 +18,50 @@ describe("dom attributes action test", async () => {
             const expectedValue = true;
             const element = await crs.call("dom", "create_element", {
                 tag_name: "div",
-                attributes: {
-                    id: "testElement"
-                }
+                id: "testElementAdd",
             });
+
+            document.children[1].appendChild(element);
 
             //Act
             await crs.call("dom_attributes", "perform", {
                 add: [
                     {
-                        element: "#testElement",
+                        element: "#testElementAdd",
                         attr: "hidden",
                         value: true
                     }
                 ]
             });
-            const actualValue = element.hidden;
+            const actualValue = element.getAttribute("hidden");
 
             //Assert
             assertEquals(actualValue, expectedValue);
         });
         it("should remove attribute from an element", async () => {
             //Arrange
-            const expectedValue = null;
+            const expectedValue = undefined;
             const element = await crs.call("dom", "create_element", {
                 tag_name: "div",
+                id: "testElementRemove",
                 attributes: {
-                    id: "testElement",
                     hidden: true
                 }
             });
+
+            document.children[1].appendChild(element);
 
             //Act
             await crs.call("dom_attributes", "perform", {
                remove: [
                     {
-                        element: "#testElement",
+                        element: "#testElementRemove",
                         attr: "hidden",
                     }
                 ]
             });
 
-            const actualValue = element.hidden;
+            const actualValue = element.getAttribute("hidden");
 
             //Assert
             assertEquals(actualValue, expectedValue);
@@ -68,7 +70,7 @@ describe("dom attributes action test", async () => {
         it ("should set certain elements attributes and remove others", async () => {
             //Arrange
             const expectedValueAdd = true;
-            const expectedValueRemove = null;
+            const expectedValueRemove = undefined;
             const element = await crs.call("dom", "create_element", {
                 tag_name: "div",
                 attributes: {
@@ -77,19 +79,18 @@ describe("dom attributes action test", async () => {
                 children: [
                     {
                         tag_name: "div",
-                        attributes: {
-                            id: "addElement"
-                        }
+                        id: "addElement"
                     },
                     {
                         tag_name: "div",
+                        id: "removeElement",
                         attributes: {
-                            id: "removeElement",
                             hidden: true
                         }
                     }
                 ]
             });
+            document.children[1].appendChild(element);
 
             //act
             await crs.call("dom_attributes", "perform", {
@@ -109,8 +110,8 @@ describe("dom attributes action test", async () => {
             });
 
             //Assert
-            assertEquals(element.querySelector("#addElement").hidden, expectedValueAdd);
-            assertEquals(element.querySelector("#removeElement").hidden, expectedValueRemove);
+            assertEquals(element.querySelector("#addElement").getAttribute("hidden"), expectedValueAdd);
+            assertEquals(element.querySelector("#removeElement").getAttribute("hidden"), expectedValueRemove);
         });
     });
 
@@ -133,20 +134,46 @@ describe("dom attributes action test", async () => {
             await crs.call("dom_attributes", "perform", null);
         });
 
-        it ("should not fail if remove = null is passed through", async () => {
+        it ("should not fail if remove = null or one of the values in the add array is null and is passed through", async () => {
             //Arrange
             const element = await crs.call("dom", "create_element", {
                 tag_name: "div",
-                attributes: {
-                    id: "testElement",
-                }
+                id: "testAdded",
             });
+
+            document.children[1].appendChild(element);
 
             //Act
             await crs.call("dom_attributes", "perform", {
                 add: [
                     {
-                        element: "#testElement",
+                        element: "#testAdded",
+                        attr: "hidden",
+                        value: true
+                    },
+                    null
+                ],
+                remove: null
+            });
+
+            //Assert
+            assertEquals(element.getAttribute("hidden"), true);
+        });
+
+        it ("should not fail if remove = null is passed through", async () => {
+            //Arrange
+            const element = await crs.call("dom", "create_element", {
+                tag_name: "div",
+                id: "testElementAdded",
+            });
+
+            document.children[1].appendChild(element);
+
+            //Act
+            await crs.call("dom_attributes", "perform", {
+                add: [
+                    {
+                        element: "#testElementAdded",
                         attr: "hidden",
                         value: true
                     }
@@ -155,32 +182,64 @@ describe("dom attributes action test", async () => {
             });
 
             //Assert
-            assertEquals(element.hidden, true);
+            assertEquals(element.getAttribute("hidden"), true);
         });
-
+        //
         it ("should not fail if add = null is passed through", async () => {
             //Arrange
+            const expectedValueRemove = undefined;
             const element = await crs.call("dom", "create_element", {
                 tag_name: "div",
+                id: "testRemoved",
                 attributes: {
-                    id: "testElement",
                     hidden: true
                 }
             });
+
+            document.children[1].appendChild(element);
 
             //Act
             await crs.call("dom_attributes", "perform", {
                 add: null,
                 remove: [
                     {
-                        element: "#testElement",
+                        element: "#testRemoved",
                         attr: "hidden"
                     }
                 ]
             });
 
             //Assert
-            assertEquals(element.hidden, null);
+            assertEquals(element.getAttribute("hidden"), expectedValueRemove);
+        });
+
+        it ("should not fail if add = null or one of the values in the remove array is null and is passed through", async () => {
+            //Arrange
+            const expectedValueRemove = undefined;
+            const element = await crs.call("dom", "create_element", {
+                tag_name: "div",
+                id: "removingAttribute",
+                attributes: {
+                    hidden: true
+                }
+            });
+
+            document.children[1].appendChild(element);
+
+            //Act
+            await crs.call("dom_attributes", "perform", {
+                add: null,
+                remove: [
+                    {
+                        element: "#removingAttribute",
+                        attr: "hidden"
+                    },
+                    null
+                ]
+            });
+
+            //Assert
+            assertEquals(element.getAttribute("hidden"), expectedValueRemove);
         });
     });
 });
