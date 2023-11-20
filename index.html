@@ -5,42 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="/styles/styles.css" rel="stylesheet">
     <title>Process Api</title>
-
-    <style>
-        html, body {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 16px;
-            color: var(--text);
-            fill: var(--text);
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            overscroll-behavior: none;
-        }
-
-        body {
-            display: grid;
-            grid-template-rows: 3rem auto 2rem;
-        }
-
-        header, footer {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-
-        nav {
-            overflow-y: auto;
-        }
-    </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+<svg xmlns="http://www.w3.org/2000/svg" class="hide">
     <symbol id="menu" viewBox="0 0 24 24">
         <path d="M0 0h24v24H0z" fill="none"/>
         <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
@@ -58,15 +27,38 @@
 </header>
 
 <main autofocus tabindex="0">
-    <crs-router routes="app/routes.json"></crs-router>
+    <view-loader data-routes="app/routes.json"></view-loader>
 </main>
 
 <aside classlist.if="$globals.isMenuOpen ==  true? 'open'" click.setValue="$globals.isMenuOpen = !$globals.isMenuOpen">
     <nav id="main-menu" aria-label="main menu">
         <ol>
-            <template for="route of routes">
-                <li><a href.one-way="route.hash">${route.title}</a></li>
-            </template>
+            <li><a href="/welcome">Welcome</a></li>
+            <li><a href="/no-content">No Content</a></li>
+            <li><a href="/mobile">Mobile</a></li>
+            <li><a href="/files">Files</a></li>
+            <li><a href="/resize">Resize</a></li>
+            <li><a href="/move">Move</a></li>
+            <li><a href="/media">Media</a></li>
+            <li><a href="/dom">Dom</a></li>
+            <li><a href="/dialog">Dialog</a></li>
+            <li><a href="/input">Input</a></li>
+            <li><a href="/before-after-step">Before and after step</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/rest">Rest Api</a></li>
+            <li><a href="/data">Data Operations</a></li>
+            <li><a href="/css-grid">CSS Grid</a></li>
+            <li><a href="/perspective">Perspective</a></li>
+            <li><a href="/observer">Observer</a></li>
+            <li><a href="/fixed-layout">Fixed Layout</a></li>
+            <li><a href="/fixed-position">Fixed Position</a></li>
+            <li><a href="/drag-drop">Drag and Drop</a></li>
+            <li><a href="/styles">Styles</a></li>
+            <li><a href="/translations">Translations</a></li>
+            <li><a href="/schema">Schema</a></li>
+            <li><a href="/html">HTML</a></li>
+            <li><a href="/index-db">Index DB</a></li>
+            <li><a href="/switch">Switch</a></li>
         </ol>
     </nav>
 </aside>
@@ -75,54 +67,6 @@
     <span>copyright @me</span>
 </footer>
 
-<script type="module">
-    import "./packages/crs-binding/crs-binding.js";
-    import "./packages/crs-router/crs-router.js";
-    import "./packages/crs-modules/crs-modules.js";
-    import './packages/crs-schema/crs-schema.js';
-
-    import IndexViewModel from "./index.js";
-
-    import {HTMLParser} from "./packages/crs-schema/html/crs-html-parser.js";
-    import {initialize} from "./src/index.js";
-
-    await initialize("/src");
-
-    await crs.call("schema", "register", {
-        id: "html",
-        parser: HTMLParser,
-        providers: []
-    })
-
-    const trans = {
-        buttons: {
-            save: "Save",
-            cancel: "Cancel",
-            ok: "Ok"
-        },
-        labels: {
-            firstName: "First Name",
-            lastName: "Last Name",
-            age: "Age"
-        }
-    }
-
-    crsbinding.translations.add(trans);
-
-    crs.process.onError = (error) => {
-        console.error(error);
-    }
-
-    async function load() {
-        document.viewModel = new IndexViewModel(document.body);
-
-        window.addEventListener("load", async (event) => {
-            document.viewModel.connectedCallback();
-            document.body.setAttribute("idle", true);
-        });
-    }
-
-    load();
-</script>
+<script type="module" src="./index.js"></script>
 </body>
 </html>

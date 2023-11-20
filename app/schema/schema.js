@@ -1,6 +1,14 @@
 import "/packages/crs-schema/crs-schema.js"
 
-export default class Schema extends crsbinding.classes.ViewBase {
+export default class Schema extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         const json = await fetch(import.meta.url.replace(".js", ".json")).then(result => result.json());

@@ -1,6 +1,14 @@
 import "./../../src/action-systems/fs-actions.js";
 
-export default class Files extends crsbinding.classes.ViewBase {
+export default class Files extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     async connectedCallback() {
         await super.connectedCallback();
         await this._setupDropzone();
@@ -8,7 +16,7 @@ export default class Files extends crsbinding.classes.ViewBase {
 
     async disconnectedCallback() {
         await crs.call("files", "disable_dropzone", {
-            element: "#dropzone"
+            element: this.shadowRoot.querySelector("#dropzone")
         });
         await super.disconnectedCallback();
     }
@@ -81,7 +89,7 @@ export default class Files extends crsbinding.classes.ViewBase {
     async _setupDropzone() {
         await crs.call("files", "enable_dropzone",
             {
-                element: "#dropzone",
+                element: this.shadowRoot.querySelector("#dropzone"),
                 handler: this.dropHandler.bind(this)
             })
     }

@@ -1,4 +1,13 @@
-export default class Observer extends crsbinding.classes.ViewBase {
+export default class Observer extends crsbinding.classes.BindableElement {
+
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+
     set data(newValue) {
         this._data = newValue;
         crsbinding.data.setProperty(this, "data-observer", true);

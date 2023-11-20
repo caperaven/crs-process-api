@@ -40,18 +40,18 @@ export class ConditionActions {
      *    "fail_step": "step2"
      * }
      */
-    static async perform(step, context, process, item) {
+    static async perform(step, context, process, item, steps) {
         const fn = compileExpression(step.args.condition, process);
 
         const success = fn(context, process, item);
 
         if (success && step.pass_step != null) {
-            const nextStep = await crs.getNextStep(process, step.pass_step);
-            await crs.process.runStep(nextStep, context, process, item);
+            const nextStep = await crs.getNextStep(process, step.pass_step, steps);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
         if (!success && step.fail_step != null) {
-            const nextStep = await crs.getNextStep(process, step.fail_step);
-            await crs.process.runStep(nextStep, context, process, item);
+            const nextStep = await crs.getNextStep(process, step.fail_step, steps);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
 
         if (step.args.target != null) {

@@ -1,0 +1,64 @@
+#container {
+    padding: 0.5rem;
+}
+
+#container div {
+    margin: 0.5rem;
+    height: 2rem;
+    padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+}
+
+.toolbar h2 {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.toolbar button {
+    height: 2rem;
+}
+
+.bg_red {
+    background: red;
+}
+
+.fg_white {
+    color: white;
+}
+
+.card {
+    padding: 1rem;
+    background: #e6e6e6;
+    border: silver 1px solid;
+}
+
+.highlight {
+    background: #0055bb22;
+    color: #0055bb;
+    border: solid 1px #0055bb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h2#css-properties {
+    --mybackground: hotpink;
+    --mycolor: white;
+    background-color: var(--mybackground);
+    color: var(--mycolor);
+}
+
+#resize-container {
+    width: 100px;
+    height: 100px;
+    background: hotpink;
+}

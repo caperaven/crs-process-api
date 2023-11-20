@@ -1,4 +1,12 @@
-export default class FixedPositionVM extends crsbinding.classes.ViewBase {
+export default class FixedPositionVM extends crsbinding.classes.BindableElement {
+    get html() {
+        return import.meta.url.replace(".js", ".html");
+    }
+
+    get shadowDom() {
+        return true;
+    }
+    
     get middle() {
         const isMiddle = this.getProperty("middle");
         return isMiddle == true ? "middle" : null;
@@ -8,11 +16,11 @@ export default class FixedPositionVM extends crsbinding.classes.ViewBase {
         await super.connectedCallback();
 
         this.clickHandler = this.click.bind(this);
-        this._element.addEventListener("click", this.clickHandler);
+        this.shadowRoot.addEventListener("click", this.clickHandler);
     }
 
     async disconnectedCallback() {
-        this._element.removeEventListener("click", this.clickHandler);
+        this.shadowRoot.removeEventListener("click", this.clickHandler);
         this.clickHandler = null;
     }
 

@@ -1,11 +1,25 @@
 {
-    admin off
+	http_port 8080
+	admin off
 }
 
-localhost {
-    header {
-        Cache-Control "no-cache, no-store, must-revalidate"
-    }
-    encode zstd gzip
-    file_server browse
+localhost:1100 {
+	header {
+		Cache-Control "no-cache, no-store, must-revalidate"
+		Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval'; script-src-elem 'self'; script-src-attr 'none'; style-src 'self'; style-src-elem 'self'; style-src-attr 'self'; img-src 'self'; font-src 'self'; connect-src *; frame-src 'self'; worker-src 'self'; block-all-mixed-content; manifest-src 'self'"
+	    Cross-Origin-Embedder-Policy "require-corp"
+		Cross-Origin-Opener-Policy "unsafe-none"
+		Cross-Origin-Resource-Policy "same-site"
+		Strict-Transport-Security max-age=31536000;includeSubDomains
+		Referrer-Policy "no-referrer"
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		X-XSS-Protection "1; mode=block"
+		Permission-Policy " accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=(), clipboard-read=(self), clipboard-write=(self)"
+	}
+	uri strip_prefix /contoso/test
+	uri strip_prefix /system/admin
+	try_files {path} /index.html
+	file_server
+	encode gzip
 }

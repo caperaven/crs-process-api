@@ -26,6 +26,7 @@ export class SystemActions {
      * @param item {object} - The current item being processed.
      *
      * @param step.args.source {string} - The source to copy to the clipboard.
+     * @param [step.args.shouldStringify {boolean}] - JSON stringify the value default is true.
      *
      * @returns {Promise<void>}
      *
@@ -44,8 +45,10 @@ export class SystemActions {
      */
     static async copy_to_clipboard(step, context, process, item) {
         let value = await crs.process.getValue(step.args.source, context, process, item);
-        let str = JSON.stringify(value);
-        navigator.clipboard.writeText(str);
+        const shouldStringify = await crs.process.getValue(step.args.shouldStringify, context, process, item) ?? true;
+
+        const str = shouldStringify === true ? JSON.stringify(value) : value;
+        await navigator.clipboard.writeText(str);
     }
 
     /**
@@ -274,6 +277,29 @@ export class SystemActions {
 
         return result;
     }
+
+    /**
+     * @method reload_page - Reload the current page
+     * @param step {object} - The step object
+     * @param context {object} - The context of the current step.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("system", "reload_page", {}, context, process, item);
+     *
+     * @example <caption>json example</caption>
+     * {
+     *     "type": "system",
+     *     "action": "reload_page"
+     *     "args": {}
+     * }
+     */
+    static async reload_page(step, context, process, item) {
+         globalThis.location?.reload();
+    }
+
 }
 
 crs.intent.system = SystemActions;

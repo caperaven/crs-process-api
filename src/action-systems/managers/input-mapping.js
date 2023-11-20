@@ -35,14 +35,14 @@ export function clientX(event) {
 }
 
 export function clientY(event) {
-    let y = event.clientX;
+    let y = event.clientY;
 
     if (y == null) {
-        y = event.touches?.[0]?.pageX;
+        y = event.touches?.[0]?.pageY;
     }
 
     if (y == null) {
-        y = event.changedTouches?.[0]?.pageX;
+        y = event.changedTouches?.[0]?.pageY;
     }
 
     return y;

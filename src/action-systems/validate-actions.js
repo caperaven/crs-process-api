@@ -114,17 +114,17 @@ export class ValidateActions {
      *      }
      * }
      */
-    static async required(step, context, process, item) {
+    static async required(step, context, process, item, steps) {
         const success = await crs.call("object", "assert", step.args, context, process, item);
 
         if (success && step.pass_step != null) {
-            const nextStep = await crs.getNextStep(process, step.pass_step);
-            await crs.process.runStep(nextStep, context, process, item);
+            const nextStep = await crs.getNextStep(process, step.pass_step, steps);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
 
         if (!success && step.fail_step != null) {
-            const nextStep = await crs.getNextStep(process, step.fail_step);
-            await crs.process.runStep(nextStep, context, process, item);
+            const nextStep = await crs.getNextStep(process, step.fail_step, steps);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
 
         return success;
