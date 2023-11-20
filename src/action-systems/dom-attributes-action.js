@@ -70,7 +70,6 @@ export class DomAttributesAction {
 
         if (add.length === 0 && remove.length === 0) return;
 
-        //add attributes
         if (add.length > 0) {
             await setAndRemoveAttributes({array: add, action: "add"});
         }
