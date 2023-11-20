@@ -87,7 +87,7 @@ export class DomAttributesAction {
  */
 async function setAndRemoveAttributes (args) {
 
-    for (const  item of args.array) {
+    for (const item of args.array) {
         if (item === null) continue;
 
         const element = item?.element;
