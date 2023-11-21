@@ -1,10 +1,10 @@
 /**
- * @class DomAttributesAction - The dom attributes action sets and removes attributes from an element based
+ * @class DomAttributesActions - The dom attributes action sets and removes attributes from an element based
  * on a specific condition
  * Features:
  * perform - Performs the dom attributes action
  */
-export class DomAttributesAction {
+export class DomAttributesActions {
 
     /**
      * @method perform - Takes in an add and/or remove array and adds or removes attributes from an element(s).
@@ -112,4 +112,4 @@ async function setAndRemoveAttributes(attributes, domAction) {
     }
 }
 
-crs.intent.dom_attributes = DomAttributesAction;
+crs.intent.dom_attributes = DomAttributesActions;

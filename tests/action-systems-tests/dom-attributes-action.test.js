@@ -9,7 +9,7 @@ await init();
 describe("dom attributes action test", async () => {
 
     beforeAll(async () => {
-        await import("./../../src/action-systems/dom-attributes-action.js");
+        await import("../../src/action-systems/dom-attributes-actions.js");
     });
 
     describe("dom attributes action", async () => {
@@ -33,6 +33,7 @@ describe("dom attributes action test", async () => {
                     }
                 ]
             });
+
             const actualValue = element.getAttribute("hidden");
 
             //Assert
