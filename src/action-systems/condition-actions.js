@@ -32,9 +32,8 @@ export class ConditionActions {
      * @example <caption>json example</caption>
      * {
      *    "type": "condition",
-     *    "action": "if",
      *    "args": {
-     *    "condition": "value == 10 ? true"
+     *      "condition": "value == 10 ? true"
      *    },
      *    "pass_step": "step1",
      *    "fail_step": "step2"
