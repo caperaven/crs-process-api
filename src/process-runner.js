@@ -71,6 +71,11 @@ export class ProcessRunner {
                 await crs.modules.get(step.type);
             }
 
+            // We are double-checking if the intent exist here because in some cases the module is not defined, and we want to surface those.
+            if (crs.intent[step.type] == null) {
+                throw new Error(`Process API module "${step.type}" not found.`);
+            }
+
             result = await crs.intent[step.type].perform(step, context, process, item, steps);
         }
 

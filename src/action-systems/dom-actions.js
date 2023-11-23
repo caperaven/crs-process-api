@@ -52,8 +52,6 @@ export class DomActions {
      */
 
 
-
-
     /**
      * @method set_attribute - It sets an attribute on an element
      * @param step {Object}- The step object.
@@ -88,7 +86,6 @@ export class DomActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
-
 
 
     /**
@@ -129,7 +126,6 @@ export class DomActions {
             element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
         }
     }
-
 
 
     /**
@@ -173,6 +169,38 @@ export class DomActions {
         return value;
     }
 
+
+    /**
+     * @method remove_attribute -  Removes the given attribute from the element.
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param element {String} - the id of the element to remove the attribute from.
+     * @param attr {String} - The name of the attribute to remove.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("dom", "remove_attribute", {
+     *     element: "#my-element",
+     *     attr: "my-attribute"
+     * });
+     *
+     * @example <caption>json example</caption>
+     * {
+     *    "type": "dom"
+     *    "action": "remove_attribute",
+     *    "args": {
+     *        "element": "#my-element",
+     *        "attr": "my-attribute"
+     *    }
+     * }
+     * @returns {Promise<void>}
+     */
+    static async remove_attribute(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        element.removeAttribute(step.args.attr);
+    }
 
     /**
      * @method add_class - It adds a class to the classList
@@ -629,8 +657,7 @@ export class DomActions {
 
         if (parentElement?.content != null) {
             parentElement.content.appendChild(element)
-        }
-        else {
+        } else {
             parentElement?.appendChild(element);
         }
 
@@ -886,7 +913,7 @@ export class DomActions {
         const variable = await crs.process.getValue(step.args.variable, context, process, item);
         const result = getComputedStyle(element).getPropertyValue(variable);
 
-        if(step.args.target != null) {
+        if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item)
         }
         return result;
@@ -929,7 +956,7 @@ export class DomActions {
     static async set_css_variables(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const variables = await crs.process.getValue(step.args.variables, context, process, item);
-        for(let key of Object.keys(variables)) {
+        for (let key of Object.keys(variables)) {
             const value = variables[key];
             element.style.setProperty(key, value);
         }
@@ -971,7 +998,7 @@ export class DomActions {
             const result = getComputedStyle(element).getPropertyValue(variables[item]);
             variableList.push(result)
         }
-        return variableList ;
+        return variableList;
     }
 }
 
