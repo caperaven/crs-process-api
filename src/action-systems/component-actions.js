@@ -82,6 +82,10 @@ export class ComponentActions {
             crsbinding.data.addCallback(dataId, property, element._processObserver[id].eval);
         }
 
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, id, context, process, item);
+        }
+
         return id;
     }
 
@@ -119,7 +123,8 @@ export class ComponentActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const ids = await crs.process.getValue(step.args.ids, context, process, item);
 
-        for (const id of ids) {
+        for (let id of ids) {
+            id = await crs.process.getValue(id, context, process, item);
             const def = element._processObserver[id];
             for (const property of def.properties) {
                 crsbinding.data.removeCallback(element._dataId, property, def.eval);
