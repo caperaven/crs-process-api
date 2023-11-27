@@ -44,7 +44,7 @@ export function filter(data: Array<any>, intent: any, case_sensitive: boolean): 
 **
 * @param {Array<any>} data
 * @param {Array<any>} intent
-* @param {Uint32Array | undefined} rows
+* @param {Uint32Array | undefined} [rows]
 * @returns {Uint32Array}
 */
 export function sort(data: Array<any>, intent: Array<any>, rows?: Uint32Array): Uint32Array;
@@ -54,7 +54,7 @@ export function sort(data: Array<any>, intent: Array<any>, rows?: Uint32Array): 
 **
 * @param {Array<any>} data
 * @param {Array<any>} intent
-* @param {Uint32Array | undefined} rows
+* @param {Uint32Array | undefined} [rows]
 * @returns {object}
 */
 export function group(data: Array<any>, intent: Array<any>, rows?: Uint32Array): object;
@@ -78,7 +78,7 @@ export function group(data: Array<any>, intent: Array<any>, rows?: Uint32Array):
 **
 * @param {Array<any>} data
 * @param {any[]} intent
-* @param {Uint32Array | undefined} rows
+* @param {Uint32Array | undefined} [rows]
 * @returns {any}
 */
 export function aggregate(data: Array<any>, intent: any[], rows?: Uint32Array): any;
@@ -98,7 +98,7 @@ export function aggregate(data: Array<any>, intent: any[], rows?: Uint32Array): 
 **
 * @param {Array<any>} data
 * @param {any[]} intent
-* @param {Uint32Array | undefined} rows
+* @param {Uint32Array | undefined} [rows]
 * @returns {any}
 */
 export function unique_values(data: Array<any>, intent: any[], rows?: Uint32Array): any;
@@ -122,10 +122,10 @@ export interface InitOutput {
   readonly aggregate: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly unique_values: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
   readonly get_perspective: (a: number, b: number, c: number) => void;
-  readonly __wbindgen_malloc: (a: number) => number;
-  readonly __wbindgen_realloc: (a: number, b: number, c: number) => number;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
+  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
-  readonly __wbindgen_free: (a: number, b: number) => void;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
 }
 
@@ -148,4 +148,4 @@ export function initSync(module: SyncInitInput): InitOutput;
 *
 * @returns {Promise<InitOutput>}
 */
-export default function init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;
+export default function __wbg_init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;

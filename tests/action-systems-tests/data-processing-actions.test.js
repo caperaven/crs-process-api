@@ -32,6 +32,164 @@ describe("data processing actions tests", () => {
         assertEquals(result[1], 3);
     })
 
+    it ("filter - neq", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "neq", value: 3},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 3);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 1);
+        assertEquals(result[2], 4);
+    })
+
+    it ("filter - gt", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "gt", value: 2},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 2);
+        assertEquals(result[1], 3);
+    })
+
+    it ("filter - lt", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "lt", value: 3},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 1);
+    })
+
+    it ("filter - ge", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "ge", value: 3},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 2);
+        assertEquals(result[1], 3);
+    })
+
+    it ("filter - le", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "le", value: 2},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 1);
+    })
+
+    it ("filter - is null", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "is_null"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 4);
+    })
+
+    it ("filter - not null", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}, {value: 3}, {value: null}],
+            intent: {field: "value", operator: "not_null"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 4);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 1);
+        assertEquals(result[2], 2);
+        assertEquals(result[3], 3);
+    })
+
+    it ("filter - like %value", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "like", value: "%a"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 0);
+    })
+
+    it ("filter - like value%", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "like", value: "a%"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 3);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 1);
+        assertEquals(result[2], 2);
+    })
+
+    it ("filter - like %value%", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "like", value: "%l%"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 2);
+    })
+
+    it ("filter - contains value", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "contains", value: "ta"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 1);
+        assertEquals(result[1], 2);
+    })
+
+    it ("filter - in value", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "in", value: ["test1", "alpha", "test2"]},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 0);
+    })
+
+    it ("filter - between", async () => {
+        await crs.call("data_processing", "init_panic_hook");
+
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: 1}, {value: 2}, {value: 3}],
+            intent: {field: "value", operator: "between", value: [1, 3]},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 1);
+    })
+
     it ("group", async () => {
         const result = await crs.call("data_processing", "group", {
             source: [{value: 1, value2: 0}, {value: 2, value2: 0}, {value: 3, value2: 1}, {value: 3, value2: 1}, {value: "null", value2: 0}],

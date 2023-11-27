@@ -1,4 +1,4 @@
-import init, {unique_values, filter, group, get_perspective} from "./../bin/data_processing.js";
+import init, {unique_values, filter, group, get_perspective, init_panic_hook} from "./../bin/data_processing.js";
 
 await init();
 
