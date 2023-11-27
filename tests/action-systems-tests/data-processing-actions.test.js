@@ -178,8 +178,6 @@ describe("data processing actions tests", () => {
     })
 
     it ("filter - between", async () => {
-        await crs.call("data_processing", "init_panic_hook");
-
         const result = await crs.call("data_processing", "filter", {
             source: [{value: 1}, {value: 2}, {value: 3}],
             intent: {field: "value", operator: "between", value: [1, 3]},
@@ -188,6 +186,29 @@ describe("data processing actions tests", () => {
 
         assertEquals(result.length, 1);
         assertEquals(result[0], 1);
+    })
+
+    it ("filter - starts_with", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "starts_with", value: "al"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 0);
+    })
+
+    it ("filter - ends_with", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha"}, {value: "beta"}, {value: "delta"}],
+            intent: {field: "value", operator: "ends_with", value: "ta"},
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 1);
+        assertEquals(result[1], 2);
     })
 
     it ("group", async () => {
