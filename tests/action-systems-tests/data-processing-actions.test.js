@@ -211,6 +211,94 @@ describe("data processing actions tests", () => {
         assertEquals(result[1], 2);
     })
 
+    it ("filter - simple and", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [
+                {value: "alpha", code: "a1"},
+                {value: "alpha", code: "a2"},
+                {value: "beta", code: "a1"},
+                {value: "delta", code: "a2"}
+            ],
+            intent: {
+                "operator": "and",
+                "expressions": [
+                    { "field": "value", "operator": "eq", "value": "alpha" },
+                    { "field": "code", "operator": "eq", "value": "a1" }
+                ]
+            },
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 0);
+    })
+
+    it ("filter - simple or", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha", code: "a1"}, {value: "beta", code: "a1"}, {value: "delta", code: "a2"}],
+            intent: {
+                "operator": "or",
+                "expressions": [
+                    { "field": "value", "operator": "eq", "value": "alpha" },
+                    { "field": "code", "operator": "eq", "value": "a2" }
+                ]
+            },
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 2);
+    })
+
+    it ("filter - simple not", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [{value: "alpha", code: "a1"}, {value: "beta", code: "a1"}, {value: "delta", code: "a2"}],
+            intent: {
+                "operator": "not",
+                "expressions": [
+                    { "field": "code", "operator": "eq", "value": "a1" }
+                ]
+            },
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 1);
+        assertEquals(result[0], 2);
+    });
+
+    it ("filter - complex", async () => {
+        const result = await crs.call("data_processing", "filter", {
+            source: [
+                {value: "alpha", code: "a1"},
+                {value: "alpha", code: "a2"},
+                {value: "beta", code: "a1"},
+                {value: "beta", code: "a2"},
+                {value: "delta", code: "a1"},
+                {value: "delta", code: "a2"}
+            ],
+            intent: {
+                "operator": "or",
+                "expressions": [
+                    {
+                        "operator": "and",
+                        "expressions": [
+                            { "field": "value", "operator": "eq", "value": "alpha" },
+                            { "field": "code", "operator": "eq", "value": "a1" }
+                        ]
+                    },
+                    { "field": "value", "operator": "eq", "value": "beta" },
+                ]
+            },
+            case_sensitive: false
+        });
+
+        assertEquals(result.length, 3);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 2);
+        assertEquals(result[2], 3);
+    });
+
     it ("group", async () => {
         const result = await crs.call("data_processing", "group", {
             source: [{value: 1, value2: 0}, {value: 2, value2: 0}, {value: 3, value2: 1}, {value: 3, value2: 1}, {value: "null", value2: 0}],
