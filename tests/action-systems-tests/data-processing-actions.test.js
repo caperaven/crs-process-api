@@ -302,11 +302,30 @@ describe("data processing actions tests", () => {
     it ("group", async () => {
         const result = await crs.call("data_processing", "group", {
             source: [{value: 1, value2: 0}, {value: 2, value2: 0}, {value: 3, value2: 1}, {value: 3, value2: 1}, {value: "null", value2: 0}],
-            intent: ["value", "value2"]
+            intent: ["va    lue", "value2"]
         });
 
         assertExists(result);
         assertExists(result["root"]);
+    })
+
+    it ("sort", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "sort", {
+            source: people,
+            intent: ["age:asc", "lastName:dec"]
+        });
+
+
+        assertEquals(result.length, 3);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 2);
+        assertEquals(result[2], 1);
     })
 
     it ("get_perspective", async () => {
