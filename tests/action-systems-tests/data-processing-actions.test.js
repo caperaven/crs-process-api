@@ -345,4 +345,23 @@ describe("data processing actions tests", () => {
 
         assertEquals(result, [2, 0]);
     });
+
+    it ("aggregate", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "aggregate", {
+            source: people,
+            intent: ["age"]
+        });
+
+        assertEquals(result.age.sum, 42);
+        assertEquals(result.age.min, 10);
+        assertEquals(result.age.max, 20);
+        assertEquals(result.age.ave, 14);
+        assertEquals(result.age.count, 3);
+    })
 })
