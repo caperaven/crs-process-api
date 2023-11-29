@@ -123,8 +123,12 @@ export class DebugActions {
         console.table(globalThis.__monitoredEvents.events);
         globalThis.__monitoredEvents = null;
         delete globalThis.__monitoredEvents;
-        return result;
 
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 }
 
