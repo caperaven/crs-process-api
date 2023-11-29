@@ -9,6 +9,7 @@ export async function initialize(root) {
     await crs.modules.add("compile", `${root}/action-systems/compile-actions.js`);
     await crs.modules.add("component", `${root}/action-systems/component-actions.js`);
     await crs.modules.add("condition", `${root}/action-systems/condition-actions.js`);
+    await crs.modules.add("contingent", `${root}/action-systems/contingent-actions`);
     await crs.modules.add("console", `${root}/action-systems/console-actions.js`);
     await crs.modules.add("cssgrid", `${root}/action-systems/css-grid-actions.js`);
     await crs.modules.add("data", `${root}/action-systems/data-actions.js`);

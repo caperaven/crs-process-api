@@ -69,7 +69,7 @@ export class ConditionActions {
  *
  * @returns A function that takes in a context, process, and item and returns the result of the expression.
  */
-function compileExpression(condition, process) {
+export function compileExpression(condition, process) {
     let exp = condition;
 
     for (const key of Object.keys(process.prefixes)) {
