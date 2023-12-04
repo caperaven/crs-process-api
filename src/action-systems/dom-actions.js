@@ -6,7 +6,9 @@ import {callFunctionOnPath} from "./action-actions.js";
  * -set_attribute - Set a element's attribute value
  * -set_attributes - Set multiple attributes on an element
  * -get_attribute - Get a element's attribute value
+ * -batch_modify_attributes - Sets and Removes multiple attributes from an element
  * -remove_attribute - Removes a elements attribute
+ * -remove_attributes - Removes multiple attributes from an element
  * -add_class - Add a class to an element
  * -remove_class - Remove a class from an element
  * -set_style - Set a style property on an element
