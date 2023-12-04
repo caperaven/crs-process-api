@@ -1135,7 +1135,7 @@ async function moveElement(element, target, position) {
 
 /**
  * @function modifyAttributes - It sets and removes attributes from an element
- * @param intentCollection {Array} - An array of attributes to set or remove
+ * @param intentCollection {Array} - An array of elements to set or remove
  * @param action {String} - "add" or "remove"
  * @return {Promise<void>}
  */
