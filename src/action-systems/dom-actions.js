@@ -1135,8 +1135,8 @@ async function moveElement(element, target, position) {
 
 /**
  * @function modifyAttributes - It sets and removes attributes from an element
- * @param attributes {Array} - An array of attributes to set or remove
- * @param domAction {String} - "add" or "remove"
+ * @param intentCollection {Array} - An array of attributes to set or remove
+ * @param action {String} - "add" or "remove"
  * @return {Promise<void>}
  */
 async function modifyAttributes(intentCollection, action) {
