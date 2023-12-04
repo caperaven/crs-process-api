@@ -181,7 +181,7 @@ export class DomBindingActions {
 
         for (let key of keys) {
             let args = obj[key];
-            args.tag_name = tag_name;
+            args.tag_name ||= tag_name;
             let child = await crs.call("dom","create_element", args, context, process, item);
             child.textContent = ["${", key, "}"].join("");
 
@@ -358,6 +358,8 @@ async function getHTML(step, context) {
         const template = await crsbinding.templates.get(id, step.args.url);
         return template;
     }
+
+    return await crs.process.getValue(step.args.html, context);
 }
 
 /**
