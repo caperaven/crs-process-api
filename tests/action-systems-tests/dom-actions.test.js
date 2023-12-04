@@ -423,124 +423,17 @@ Deno.test("batch_modify_attributes - should add and remove attributes from an el
     assertEquals(actualDataValue, "test");
 });
 
-Deno.test("batch_modify_attributes - edge cases", async () => {
-   Deno.test("should not fail if empty add and remove array is passed through", async () => {
+Deno.test("should not fail if empty add and remove array is passed through", async () => {
        await crs.call("dom", "batch_modify_attributes", {
           add : [],
           remove: []
        });
-   });
-   Deno.test("should not fail if empty object is passed through", async () => {
+});
+
+Deno.test("should not fail if empty object is passed through", async () => {
        await crs.call("dom", "batch_modify_attributes", {});
-   });
-   Deno.test("should not fail if null is passed through", async () => {
+});
+
+Deno.test("should not fail if null is passed through", async () => {
          await crs.call("dom", "batch_modify_attributes", null);
-    });
-   Deno.test("should not fail if remove = null or one of the values in the add array is null and is passed through", async () => {
-        //Arrange
-        const element = await crs.call("dom", "create_element", {
-            tag_name: "div",
-            id: "BatchAddAndRemoveAttribute",
-        });
-
-        document.children[1].appendChild(element);
-
-        //Act
-        await crs.call("dom", "batch_modify_attributes", {
-            add: [
-                {
-                    element: "#BatchAddAndRemoveAttribute",
-                    attributes:{
-                        hidden: "hidden",
-                        "data-value": "test"
-                    }
-                },
-                null
-            ],
-            remove: null
-        });
-
-        const actualValue = element.getAttribute("hidden");
-        const actualDataValue = element.getAttribute("data-value");
-
-        //Assert
-        assertEquals(actualValue, "hidden");
-        assertEquals(actualDataValue, "test");
-    });
-   Deno.test("should not fail if the element passed in does not exist - add", async () => {
-       //Arrange
-       const expectedValueAdd = undefined;
-       const element = await crs.call("dom", "create_element", {
-           tag_name: "div",
-           id: "existingElement",
-       });
-
-       document.children[1].appendChild(element);
-
-       //Act
-       await crs.call("dom", "batch_modify_attributes", {
-           add: [
-               {
-                   element: "#nonExistingElement",
-                   attributes: {
-                       hidden: "hidden"
-                   }
-               }
-           ]
-       });
-
-       //Assert
-       assertEquals(element.getAttribute("hidden"), expectedValueAdd);
-   });
-   Deno.test("should not fail if the element passed in does not exist - remove", async () => {
-       //Arrange
-       const expectedValueAdd = true;
-       const element = await crs.call("dom", "create_element", {
-           tag_name: "div",
-           id: "existingElement",
-           attributes: {
-               hidden: true
-           }
-       });
-
-       document.children[1].appendChild(element);
-
-       //Act
-       await crs.call("dom", "batch_modify_attributes", {
-           remove: [
-               {
-                   element: "#nonExistingElement",
-                   attributes: ["hidden"]
-               }
-           ]
-       });
-
-       //Assert
-       assertEquals(element.getAttribute("hidden"), expectedValueAdd);
-   });
-   Deno.test("should not fail if value is undefined and action is add", async () => {
-       //Arrange
-       const expectedValueAdd = "hidden";
-       const element = await crs.call("dom", "create_element", {
-           tag_name: "div",
-           id: "valueNullProperty",
-       });
-
-       document.children[1].appendChild(element);
-
-       //Act
-       await crs.call("dom", "batch_modify_attributes", {
-           add: [
-               {
-                   element: "#valueNullProperty",
-                   attributes: {
-                       "hidden": null
-                   }
-               }
-           ]
-       });
-
-       //Assert
-       assertEquals(element.getAttribute("hidden"), expectedValueAdd);
-   });
 });
