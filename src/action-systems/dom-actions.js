@@ -6,6 +6,9 @@ import {callFunctionOnPath} from "./action-actions.js";
  * -set_attribute - Set a element's attribute value
  * -set_attributes - Set multiple attributes on an element
  * -get_attribute - Get a element's attribute value
+ * -batch_modify_attributes - Sets and Removes multiple attributes from an element
+ * -remove_attribute - Removes a elements attribute
+ * -remove_attributes - Removes multiple attributes from an element
  * -add_class - Add a class to an element
  * -remove_class - Remove a class from an element
  * -set_style - Set a style property on an element
@@ -51,7 +54,6 @@ export class DomActions {
      * clone_for_movement -> dom-interactive
      */
 
-
     /**
      * @method set_attribute - It sets an attribute on an element
      * @param step {Object}- The step object.
@@ -86,7 +88,6 @@ export class DomActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.setAttribute(step.args.attr, await crs.process.getValue(step.args.value, context, process, item));
     }
-
 
     /**
      * @method set_attributes - It gets an element from the DOM, and then sets the attributes of that element to the values specified in the step
@@ -126,7 +127,6 @@ export class DomActions {
             element.setAttribute(attr, await crs.process.getValue(step.args.attributes[attr], context, process, item));
         }
     }
-
 
     /**
      * @method get_attribute - It gets the value of an attribute of an element
@@ -169,6 +169,73 @@ export class DomActions {
         return value;
     }
 
+    /**
+     * @method batch_modify_attributes - Takes in an add and remove array ,and adds or removes attributes from an element(s).
+     * @param step {object} - The step object from the process.
+     * @param context {object} - The context object that is passed to the process.
+     * @param process {object} - The process object
+     * @param item {object} - The item that is being processed.
+     *
+     * @param step.args.add {Array} - An array of objects that contain the element id, attribute dictionary to be added to an element(s).
+     * @param step.args.remove {Array} - An array of objects that contain the element id, and attribute names array to be removed from an element(s).
+     *
+     * @example <caption>javascript example</caption>
+     *  await crs.call("dom", "batch_modify_attributes", {
+     *      "add": [
+     *             {
+     *                 "element": "div",
+     *                 "attributes": {
+     *                     "id": "div_id",
+     *                     "hidden": "hidden"
+     *                 }
+     *            }
+     *       ],
+     *      "remove": [
+     *             {
+     *                 "element": "div",
+     *                 "attributes": ["id", "class", "style"]
+     *             }
+     *       ]
+     *  });
+     *
+     *  @example <caption>json example</caption>
+     * {
+     *     "type": "dom",
+     *     "action": "batch_modify_attributes",
+     *     "args": {
+     *         "add": [
+     *             {
+     *                 "element": "div",
+     *                 "attributes": {
+     *                     "id": "div_id",
+     *                     "hidden": "hidden"
+     *                 }
+     *             }
+     *         ],
+     *         "remove": [
+     *             {
+     *                 "element": "div",
+     *                 "attributes": ["id", "class", "style"]
+     *             }
+     *         ]
+     *     }
+     * }
+     * @return {Promise<void>}
+     */
+    static async batch_modify_attributes(step, context, process, item) {
+        const add = await crs.process.getValue(step.args?.add, context, process, item) || [];
+        const remove = await crs.process.getValue(step.args?.remove, context, process, item) || [];
+
+        if (add.length === 0 && remove.length === 0) return;
+
+        if (add.length > 0) {
+            await set_and_remove_attributes(add, "add");
+        }
+
+        if (remove.length > 0) {
+            await set_and_remove_attributes(remove, "remove")
+        }
+    }
 
     /**
      * @method remove_attribute -  Removes the given attribute from the element.
@@ -200,6 +267,41 @@ export class DomActions {
     static async remove_attribute(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.removeAttribute(step.args.attr);
+    }
+
+    /**
+     * @method remove_attributes - Removes the given attributes from the element.
+     * @param step {Object} - The step object from the process.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param element {String} - The id of the element to remove the attributes from.
+     * @param attributes {Array} - An array of attribute names to remove.
+     *
+     * @example <caption>javascript example</caption>
+     * await crs.call("dom", "remove_attributes", {
+     *    element: "#my-element",
+     *    attributes: ["data-value", "hidden"]
+     * });
+     *
+     * @example <caption>json example</caption>
+     * {
+     *      "type": "dom",
+     *      "action": "remove_attributes",
+     *      "args": {
+     *          "element": "#my-element",
+     *          "attributes": ["data-value", "hidden"]
+     *       }
+     * }
+     *
+     * @return {Promise<void>}
+     */
+    static async remove_attributes(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        for (let attr of step.args.attributes) {
+            element.removeAttribute(attr);
+        }
     }
 
     /**
@@ -237,7 +339,6 @@ export class DomActions {
         let collection = Array.isArray(cls) == true ? cls : [cls];
         element.classList.add(...collection);
     }
-
 
     /**
      * @method remove_class - Remove a class from the classList
@@ -1032,4 +1133,31 @@ async function move_element(element, target, position) {
     target.parentElement.insertBefore(element, target.nextElementSibling);
 }
 
+/**
+ * @function set_and_remove_attributes - It sets and removes attributes from an element
+ * @param attributes {Array} - An array of attributes to set or remove
+ * @param domAction {String} - "add" or "remove"
+ * @return {Promise<void>}
+ */
+async function set_and_remove_attributes(attributes, domAction) {
+    for (const item of attributes) {
+        if (item === null) continue;
+
+        const element = item?.element;
+        const attr = item?.attributes;
+        const validateElementExists = await crs.dom.get_element(element);
+
+        if (element == null || attr == null || validateElementExists == null) continue;
+
+        let action;
+        let options = {element, attributes: attr};
+        if (domAction === "add") {
+            action = "set_attributes";
+        }
+        else {
+            action = "remove_attributes";
+        }
+        await crs.call("dom", action, options);
+    }
+}
 crs.intent.dom = DomActions;
