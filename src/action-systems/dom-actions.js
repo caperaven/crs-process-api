@@ -1133,6 +1133,12 @@ async function move_element(element, target, position) {
     target.parentElement.insertBefore(element, target.nextElementSibling);
 }
 
+/**
+ * @function set_and_remove_attributes - It sets and removes attributes from an element
+ * @param attributes {Array} - An array of attributes to set or remove
+ * @param domAction {String} - "add" or "remove"
+ * @return {Promise<void>}
+ */
 async function set_and_remove_attributes(attributes, domAction) {
     for (const item of attributes) {
         if (item === null) continue;
