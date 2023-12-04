@@ -14,21 +14,20 @@ export class LoggerActions {
         ERROR: 'ERROR'
     };
 
+    static Order = {
+        DEBUG: 1,
+        INFO: 2,
+        WARNING: 3,
+        ERROR: 4
+    };
+
     get logs() {
         return this.#store;
     }
 
     #log(level, message) {
-        const levelOrder = {
-            DEBUG: 1,
-            INFO: 2,
-            WARNING: 3,
-            ERROR: 4
-        };
-
-        if (levelOrder[level] >= levelOrder[this.#store.currentLevel]) {
+        if (LoggerActions.Order[level] >= LoggerActions.Order[this.#store.currentLevel]) {
             const logMessage = `[${new Date().toISOString()}] ${level}: ${message}`;
-            console.log(logMessage);
             this.#store[level].push(logMessage);
         }
     }
