@@ -871,7 +871,7 @@ export class DomActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const parent = await crs.dom.get_element(step.args.target, context, process, item);
 
-        await move_element(element, parent, step.args.position);
+        await moveElement(element, parent, step.args.position);
     }
 
     /**
@@ -903,7 +903,7 @@ export class DomActions {
         const target = element.nextElementSibling;
 
         if (target != null) {
-            await move_element(element, target, "after");
+            await moveElement(element, target, "after");
         }
     }
 
@@ -936,7 +936,7 @@ export class DomActions {
         const target = element.previousElementSibling;
 
         if (target != null) {
-            await move_element(element, target, "before");
+            await moveElement(element, target, "before");
         }
     }
 
@@ -1111,7 +1111,7 @@ export class DomActions {
  * @param position {String} - "before" or "after"
  * @returns the result of the function call.
  */
-async function move_element(element, target, position) {
+async function moveElement(element, target, position) {
     if (element == null || target == null) {
         return console.error(`both element and parent must exist to move the element`);
     }
