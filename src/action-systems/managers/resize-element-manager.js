@@ -18,7 +18,7 @@ export class ResizeElementManager {
         this.#element = element;
         this.#region = element.getBoundingClientRect();
         this.#resizeQuery = resizeQuery;
-        this.#options = options;
+        this.#options = options || {};
 
         this.#mouseDownHandler = this.#mouseDown.bind(this);
         this.#mouseMoveHandler = this.#mouseMove.bind(this);
