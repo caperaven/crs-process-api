@@ -178,7 +178,7 @@ export class DomActions {
      * @param step.args.remove {Array} - An array of objects that contain the element id, and attribute names array to be removed from an element(s).
      *
      * @example <caption>javascript example</caption>
-     *  await crs.call("dom_attributes", "batch_modify_attributes", {
+     *  await crs.call("dom", "batch_modify_attributes", {
      *      "add": [
      *             {
      *                 "element": "div",
