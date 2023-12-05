@@ -229,11 +229,11 @@ export class DomActions {
         if (add.length === 0 && remove.length === 0) return;
 
         if (add.length > 0) {
-            await set_and_remove_attributes(add, "add");
+            await modifyAttributes(add, "set_attributes");
         }
 
         if (remove.length > 0) {
-            await set_and_remove_attributes(remove, "remove")
+            await modifyAttributes(remove, "remove_attributes");
         }
     }
 
@@ -871,7 +871,7 @@ export class DomActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const parent = await crs.dom.get_element(step.args.target, context, process, item);
 
-        await move_element(element, parent, step.args.position);
+        await moveElement(element, parent, step.args.position);
     }
 
     /**
@@ -903,7 +903,7 @@ export class DomActions {
         const target = element.nextElementSibling;
 
         if (target != null) {
-            await move_element(element, target, "after");
+            await moveElement(element, target, "after");
         }
     }
 
@@ -936,7 +936,7 @@ export class DomActions {
         const target = element.previousElementSibling;
 
         if (target != null) {
-            await move_element(element, target, "before");
+            await moveElement(element, target, "before");
         }
     }
 
@@ -1111,7 +1111,7 @@ export class DomActions {
  * @param position {String} - "before" or "after"
  * @returns the result of the function call.
  */
-async function move_element(element, target, position) {
+async function moveElement(element, target, position) {
     if (element == null || target == null) {
         return console.error(`both element and parent must exist to move the element`);
     }
@@ -1134,30 +1134,16 @@ async function move_element(element, target, position) {
 }
 
 /**
- * @function set_and_remove_attributes - It sets and removes attributes from an element
- * @param attributes {Array} - An array of attributes to set or remove
- * @param domAction {String} - "add" or "remove"
+ * @function modifyAttributes - It sets and removes attributes from an element
+ * @param intentCollection {Array} - An array of elements to set or remove
+ * @param action {String} - "add" or "remove"
  * @return {Promise<void>}
  */
-async function set_and_remove_attributes(attributes, domAction) {
-    for (const item of attributes) {
-        if (item === null) continue;
-
-        const element = item?.element;
-        const attr = item?.attributes;
-        const validateElementExists = await crs.dom.get_element(element);
-
-        if (element == null || attr == null || validateElementExists == null) continue;
-
-        let action;
-        let options = {element, attributes: attr};
-        if (domAction === "add") {
-            action = "set_attributes";
-        }
-        else {
-            action = "remove_attributes";
-        }
-        await crs.call("dom", action, options);
+async function modifyAttributes(intentCollection, action) {
+    for (const intent of intentCollection) {
+        const element = intent.element;
+        const attributes = intent.attributes;
+        await crs.call("dom", action, {element, attributes});
     }
 }
 crs.intent.dom = DomActions;
