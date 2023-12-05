@@ -42,6 +42,24 @@ Deno.test("Logger Actions - error log", async () => {
     assertEquals(crs.intent.logger.logs.ERROR.length, 1);
 });
 
+Deno.test("Logger Actions - fatal log", async () => {
+    // debug is a lower evel than info so don't log it.
+    await crs.call("logger", "fatal", { message: "fatal" });
+    assertEquals(crs.intent.logger.logs.FATAL.length, 1);
+});
+
+Deno.test("Logger Actions - has_errors", async () => {
+    // debug is a lower evel than info so don't log it.
+    await crs.call("logger", "error", { message: "error" });
+    assertEquals(await crs.call("logger", "has_errors"), true);
+});
+
+Deno.test("Logger Actions - has_fatal_errors", async () => {
+    // debug is a lower evel than info so don't log it.
+    await crs.call("logger", "fatal", { message: "fatal" });
+    assertEquals(await crs.call("logger", "has_fatal_errors"), true);
+});
+
 Deno.test("Logger Actions - print", async () => {
     // stub out console.log
     let message;

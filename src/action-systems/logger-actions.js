@@ -4,21 +4,24 @@ export class LoggerActions {
         DEBUG: [],
         INFO: [],
         WARNING: [],
-        ERROR: []
+        ERROR: [],
+        FATAL: []
     };
 
     static Levels = {
         DEBUG: 'DEBUG',
         INFO: 'INFO',
         WARNING: 'WARNING',
-        ERROR: 'ERROR'
+        ERROR: 'ERROR',
+        FATAL: 'FATAL'
     };
 
     static Order = {
         DEBUG: 1,
         INFO: 2,
         WARNING: 3,
-        ERROR: 4
+        ERROR: 4,
+        FATAL: 5
     };
 
     get logs() {
@@ -52,11 +55,24 @@ export class LoggerActions {
         this.#log(LoggerActions.Levels.ERROR, message);
     }
 
+    async fatal(step, context, process, item) {
+        const message = await crs.process.getValue(step.args.message, context, process, item);
+        this.#log(LoggerActions.Levels.FATAL, message);
+    }
+
     async clear() {
         this.#store.DEBUG = [];
         this.#store.INFO = [];
         this.#store.WARNING = [];
         this.#store.ERROR = [];
+    }
+
+    async has_errors(step, context, process, item) {
+        return this.#store.ERROR.length > 0 || this.#store.FATAL.length > 0
+    }
+
+    async has_fatal_errors(step, context, process, item) {
+        return this.#store.FATAL.length > 0;
     }
 
     async print() {
