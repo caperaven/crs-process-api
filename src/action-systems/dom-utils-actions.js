@@ -262,9 +262,9 @@ export class DomUtilsActions {
     static async find_parent_of_type(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const stopAtNodeName = await crs.process.getValue(step.args.stopAtNodeName, context, process, item);
-        const stopAtNodeQuery = await crs.process.getValue(step.args.stopAtNodeQuery, context, process, item);
+        const stopAtNodeQuery = await crs.process.getValue(step.args.stopAtNodeQuery || step.args.stop_query, context, process, item);
         const nodeName = await crs.process.getValue(step.args.nodeName, context, process, item);
-        const nodeQuery = await crs.process.getValue(step.args.nodeQuery, context, process, item);
+        const nodeQuery = await crs.process.getValue(step.args.nodeQuery || step.args.query, context, process, item);
 
         if (element == null || (nodeName == null && nodeQuery == null)) return;
 
