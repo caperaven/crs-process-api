@@ -45,7 +45,7 @@ export class SystemActions {
      */
     static async copy_to_clipboard(step, context, process, item) {
         let value = await crs.process.getValue(step.args.source, context, process, item);
-        const shouldStringify = await crs.process.getValue(step.args.shouldStringify, context, process, item) ?? true;
+        const shouldStringify = await crs.process.getValue(step.args.shouldStringify || step.args.stringify, context, process, item) ?? true;
 
         const str = shouldStringify === true ? JSON.stringify(value) : value;
         await navigator.clipboard.writeText(str);
