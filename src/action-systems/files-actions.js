@@ -186,7 +186,9 @@ export class FilesActions {
 
     /**
      * @method enable_dropzone - Sets the drag drop events necessary for handeling a file drop
-     * A handler should e passed in through the arguments to receive the file results.
+     * A dropHandler should be passed in through the arguments to receive the file results.
+     * A dragOverHandler should be passed in through the arguments to register a drag over event on the drop target.
+     * A dragLeaveHandler should be passed in through the arguments to register a drag leave event on the drop target.
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -194,12 +196,14 @@ export class FilesActions {
      * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {string} - The id of the element to set the drop events on.
-     * @param step.args.handler {string} - The name of the handler to call when a file is dropped.
+     * @param step.args.dropHandler {string} - The name of the handler to call when a file is dropped.
+     * @param step.args.dragOverHandler {string} - The name of the handler to call when a file is dragged over the drop target.
+     * @param step.args.dragLeaveHandler {string} - The name of the handler to call when a file is dragged over and the leaves the drop target.
      *
      * @example <caption>javascript</caption>
      * const result = await crs.call("files", "enable_dropzone", {
      *   element: "myElement",
-     *   handler: "myHandler"
+     *   dropHandler: "myDropHandler"
      * });
      *
      * @example <caption>json</caption>
@@ -208,19 +212,28 @@ export class FilesActions {
      *  "action": "enable_dropzone",
      *  "args": {
      *    "element": "myElement",
-     *    "handler": "myHandler"
+     *    "dropHandler": "myDropHandler"
      *   }
      * }
      * @returns {Promise<void>}
      */
     static async enable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
-        const handler = await crs.process.getValue(step.args.handler, context, process, item);
-        const fileDropHandler = filedrop_handler.bind(this, handler);
+        const dropHandler = await crs.process.getValue(step.args.dropHandler, context, process, item);
+        const dragOverHandler = await crs.process.getValue(step.args.dragOverHandler, context, process, item);
+        const dragLeaveHandler = await crs.process.getValue(step.args.dragLeaveHandler, context, process, item);
+
+        const fileDropHandler = file_drop_handler.bind(this, dropHandler);
+        const fileDragOverHandler = drag_over_handler.bind(this, dragOverHandler);
+        const fileDragLeaveHandler = drag_leave_handler.bind(this, dragLeaveHandler);
+
         element.addEventListener("drop", fileDropHandler);
-        element.addEventListener("dragover", dragover_handler)
-        element.__dropHandler = fileDropHandler
-        element.__dragoverHandler = dragover_handler;
+        element.addEventListener("dragover", fileDragOverHandler)
+        element.addEventListener("dragleave", fileDragLeaveHandler)
+
+        element.__dropHandler = fileDropHandler;
+        element.__dragoverHandler = fileDragOverHandler;
+        element.__dragleaveHandler = fileDragLeaveHandler;
     }
 
     /**
@@ -252,8 +265,10 @@ export class FilesActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.removeEventListener("drop", element.__dropHandler);
         element.removeEventListener("dragover", element.__dragoverHandler);
+        element.removeEventListener("dragleave", element.__dragleaveHandler);
         delete element.__dropHandler;
         delete element.__dragoverHandler;
+        delete element.__dragleaveHandler;
     }
 }
 
@@ -371,30 +386,49 @@ export async function get_files(step, context, process, item) {
 }
 
 /**
- * @function dragover_handler - The `dragover_handler` function is called when the user drags a file over the drop zone
+ * @function drag_over_handler - The `drag_over_handler` function is called when the user drags a file over the drop zone
+ * @param handler {Function} - The function to call when the file is dropped.
  * @param event {Object}- The event object.
  *
  * @example <caption>javascript</caption>
- * const result = await crs.call("files", "dragover_handler", {
+ * const result = await crs.call("files", "drag_over_handler", {
  *  event: event
  * });
  */
-async function dragover_handler(event) {
+async function drag_over_handler(handler, event) {
     event.preventDefault();
+
+    handler.call(this, event);
 }
 
 /**
- * @method filedrop_handler - It takes a handler function and an event object, and then it calls the handler function with an array of file objects
+ * @function drag_leave_handler - The `drag_leave_handler` function is called when the user drags a file over the drop zone and then leaves the drop zone
+ * @param handler {Function} - The function to call when the file is dropped.
+ * @param event {Object}- The event object.
+ *
+ * @example <caption>javascript</caption>
+ * const result = await crs.call("files", "drag_leave_handler", {
+ *  event: event
+ * });
+ */
+async function drag_leave_handler(handler, event) {
+    event.preventDefault();
+
+    handler.call(this, event);
+}
+
+/**
+ * @method file_drop_handler - It takes a handler function and an event object, and then it calls the handler function with an array of file objects
  * @param handler {Function} - The function to call when the file is dropped.
  * @param event {Object}- The event object that was triggered.
  *
  * @example <caption>javascript</caption>
- * const result = await crs.call("files", "filedrop_handler", {
+ * const result = await crs.call("files", "file_drop_handler", {
  *   handler: myHandler,
  *   event: event
  * });
  */
-async function filedrop_handler(handler, event) {
+async function file_drop_handler(handler, event) {
     event.preventDefault();
     const files = event.dataTransfer.files;
     const results = [];
