@@ -386,7 +386,7 @@ export async function get_files(step, context, process, item) {
 async function drag_over_handler(event) {
     event.preventDefault();
 
-    event.currentTarget.__callback.call(this, {action: "dragOver", event: event});
+    event.currentTarget.__callback({action: "dragOver", event: event});
 }
 
 /**
@@ -401,7 +401,7 @@ async function drag_over_handler(event) {
 async function drag_leave_handler(event) {
     event.preventDefault();
 
-    event.currentTarget.__callback.call(this, {action: "dragLeave", event: event});
+    event.currentTarget.__callback({action: "dragLeave", event: event});
 }
 
 /**
@@ -430,7 +430,7 @@ async function file_drop_handler(event) {
         });
     }
 
-    event.currentTarget.__callback.call(this, {action: "drop", event: event, results: results});
+    event.currentTarget.__callback({action: "drop", event: event, results: results});
 }
 
 crs.intent.files = FilesActions;
