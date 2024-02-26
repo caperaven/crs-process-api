@@ -219,21 +219,12 @@ export class FilesActions {
      */
     static async enable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
-        const dropHandler = await crs.process.getValue(step.args.dropHandler, context, process, item);
-        const dragOverHandler = await crs.process.getValue(step.args.dragOverHandler, context, process, item);
-        const dragLeaveHandler = await crs.process.getValue(step.args.dragLeaveHandler, context, process, item);
+        const callback = await crs.process.getValue(step.args.callback, context, process, item);
 
-        const fileDropHandler = file_drop_handler.bind(this, dropHandler);
-        const fileDragOverHandler = drag_over_handler.bind(this, dragOverHandler);
-        const fileDragLeaveHandler = drag_leave_handler.bind(this, dragLeaveHandler);
-
-        element.addEventListener("drop", fileDropHandler);
-        element.addEventListener("dragover", fileDragOverHandler)
-        element.addEventListener("dragleave", fileDragLeaveHandler)
-
-        element.__dropHandler = fileDropHandler;
-        element.__dragoverHandler = fileDragOverHandler;
-        element.__dragleaveHandler = fileDragLeaveHandler;
+        element.addEventListener("drop", file_drop_handler);
+        element.addEventListener("dragover", drag_over_handler);
+        element.addEventListener("dragleave", drag_leave_handler);
+        element.__callback = callback;
     }
 
     /**
@@ -263,12 +254,10 @@ export class FilesActions {
      */
     static async disable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
-        element.removeEventListener("drop", element.__dropHandler);
-        element.removeEventListener("dragover", element.__dragoverHandler);
-        element.removeEventListener("dragleave", element.__dragleaveHandler);
-        delete element.__dropHandler;
-        delete element.__dragoverHandler;
-        delete element.__dragleaveHandler;
+        element.removeEventListener("drop", file_drop_handler);
+        element.removeEventListener("dragover", drag_over_handler);
+        element.removeEventListener("dragleave", drag_leave_handler);
+        delete element.__callback;
     }
 }
 
@@ -387,7 +376,6 @@ export async function get_files(step, context, process, item) {
 
 /**
  * @function drag_over_handler - The `drag_over_handler` function is called when the user drags a file over the drop zone
- * @param handler {Function} - The function to call when the file is dropped.
  * @param event {Object}- The event object.
  *
  * @example <caption>javascript</caption>
@@ -395,15 +383,14 @@ export async function get_files(step, context, process, item) {
  *  event: event
  * });
  */
-async function drag_over_handler(handler, event) {
+async function drag_over_handler(event) {
     event.preventDefault();
 
-    handler.call(this, event);
+    event.currentTarget.__callback.call(this, {action: "dragOver", event: event});
 }
 
 /**
  * @function drag_leave_handler - The `drag_leave_handler` function is called when the user drags a file over the drop zone and then leaves the drop zone
- * @param handler {Function} - The function to call when the file is dropped.
  * @param event {Object}- The event object.
  *
  * @example <caption>javascript</caption>
@@ -411,15 +398,14 @@ async function drag_over_handler(handler, event) {
  *  event: event
  * });
  */
-async function drag_leave_handler(handler, event) {
+async function drag_leave_handler(event) {
     event.preventDefault();
 
-    handler.call(this, event);
+    event.currentTarget.__callback.call(this, {action: "dragLeave", event: event});
 }
 
 /**
- * @method file_drop_handler - It takes a handler function and an event object, and then it calls the handler function with an array of file objects
- * @param handler {Function} - The function to call when the file is dropped.
+ * @method file_drop_handler - It takes a callback function and an event object, and then it calls the callback function with an array of file objects
  * @param event {Object}- The event object that was triggered.
  *
  * @example <caption>javascript</caption>
@@ -428,7 +414,7 @@ async function drag_leave_handler(handler, event) {
  *   event: event
  * });
  */
-async function file_drop_handler(handler, event) {
+async function file_drop_handler(event) {
     event.preventDefault();
     const files = event.dataTransfer.files;
     const results = [];
@@ -444,7 +430,7 @@ async function file_drop_handler(handler, event) {
         });
     }
 
-    handler.call(this, results);
+    event.currentTarget.__callback.call(this, {action: "drop", event: event, results: results});
 }
 
 crs.intent.files = FilesActions;
