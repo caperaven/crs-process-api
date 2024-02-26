@@ -186,9 +186,7 @@ export class FilesActions {
 
     /**
      * @method enable_dropzone - Sets the drag drop events necessary for handeling a file drop
-     * A dropHandler should be passed in through the arguments to receive the file results.
-     * A dragOverHandler should be passed in through the arguments to register a drag over event on the drop target.
-     * A dragLeaveHandler should be passed in through the arguments to register a drag leave event on the drop target.
+     * A callback should be passed in through the arguments which based on the action (drop, drag over, drag leave) will pass in the event and any associated files on drop.
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -196,14 +194,12 @@ export class FilesActions {
      * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {string} - The id of the element to set the drop events on.
-     * @param step.args.dropHandler {string} - The name of the handler to call when a file is dropped.
-     * @param step.args.dragOverHandler {string} - The name of the handler to call when a file is dragged over the drop target.
-     * @param step.args.dragLeaveHandler {string} - The name of the handler to call when a file is dragged over and the leaves the drop target.
+     * @param step.args.callback {string} - The name of the callback to call when a file is dropped, dragged over the drop target, or dragged and the leaves the drop target.
      *
      * @example <caption>javascript</caption>
      * const result = await crs.call("files", "enable_dropzone", {
      *   element: "myElement",
-     *   dropHandler: "myDropHandler"
+     *   callback: "eventCallback"
      * });
      *
      * @example <caption>json</caption>
@@ -212,7 +208,7 @@ export class FilesActions {
      *  "action": "enable_dropzone",
      *  "args": {
      *    "element": "myElement",
-     *    "dropHandler": "myDropHandler"
+     *    "callback": "eventCallback"
      *   }
      * }
      * @returns {Promise<void>}
@@ -228,7 +224,7 @@ export class FilesActions {
     }
 
     /**
-     * @method disable_dropzone - Cleans up and removes file drop events and associated handlers, must be called after using enable_dropzone
+     * @method disable_dropzone - Cleans up and removes file drop events and associated callback, must be called after using enable_dropzone
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -376,7 +372,7 @@ export async function get_files(step, context, process, item) {
 
 /**
  * @function drag_over_handler - The `drag_over_handler` function is called when the user drags a file over the drop zone
- * @param event {Object}- The event object.
+ * @param event {Object} - The event object.
  *
  * @example <caption>javascript</caption>
  * const result = await crs.call("files", "drag_over_handler", {
