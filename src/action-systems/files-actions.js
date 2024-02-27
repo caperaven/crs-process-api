@@ -186,7 +186,7 @@ export class FilesActions {
 
     /**
      * @method enable_dropzone - Sets the drag drop events necessary for handeling a file drop
-     * A handler should e passed in through the arguments to receive the file results.
+     * A callback should be passed in through the arguments which based on the action (drop, drag over, drag leave) will pass in the event and any associated files on drop.
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -194,12 +194,12 @@ export class FilesActions {
      * @param item {Object} - The item that is being processed.
      *
      * @param step.args.element {string} - The id of the element to set the drop events on.
-     * @param step.args.handler {string} - The name of the handler to call when a file is dropped.
+     * @param step.args.callback {string} - The name of the callback to call when a file is dropped, dragged over the drop target, or dragged and the leaves the drop target.
      *
      * @example <caption>javascript</caption>
      * const result = await crs.call("files", "enable_dropzone", {
      *   element: "myElement",
-     *   handler: "myHandler"
+     *   callback: "eventCallback"
      * });
      *
      * @example <caption>json</caption>
@@ -208,23 +208,23 @@ export class FilesActions {
      *  "action": "enable_dropzone",
      *  "args": {
      *    "element": "myElement",
-     *    "handler": "myHandler"
+     *    "callback": "eventCallback"
      *   }
      * }
      * @returns {Promise<void>}
      */
     static async enable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
-        const handler = await crs.process.getValue(step.args.handler, context, process, item);
-        const fileDropHandler = filedrop_handler.bind(this, handler);
-        element.addEventListener("drop", fileDropHandler);
-        element.addEventListener("dragover", dragover_handler)
-        element.__dropHandler = fileDropHandler
-        element.__dragoverHandler = dragover_handler;
+        const callback = await crs.process.getValue(step.args.callback, context, process, item);
+
+        element.addEventListener("drop", file_drop_handler);
+        element.addEventListener("dragover", drag_over_handler);
+        element.addEventListener("dragleave", drag_leave_handler);
+        element.__callback = callback;
     }
 
     /**
-     * @method disable_dropzone - Cleans up and removes file drop events and associated handlers, must be called after using enable_dropzone
+     * @method disable_dropzone - Cleans up and removes file drop events and associated callback, must be called after using enable_dropzone
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -250,10 +250,10 @@ export class FilesActions {
      */
     static async disable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
-        element.removeEventListener("drop", element.__dropHandler);
-        element.removeEventListener("dragover", element.__dragoverHandler);
-        delete element.__dropHandler;
-        delete element.__dragoverHandler;
+        element.removeEventListener("drop", file_drop_handler);
+        element.removeEventListener("dragover", drag_over_handler);
+        element.removeEventListener("dragleave", drag_leave_handler);
+        delete element.__callback;
     }
 }
 
@@ -371,30 +371,46 @@ export async function get_files(step, context, process, item) {
 }
 
 /**
- * @function dragover_handler - The `dragover_handler` function is called when the user drags a file over the drop zone
- * @param event {Object}- The event object.
+ * @function drag_over_handler - The `drag_over_handler` function is called when the user drags a file over the drop zone
+ * @param event {Object} - The event object.
  *
  * @example <caption>javascript</caption>
- * const result = await crs.call("files", "dragover_handler", {
+ * const result = await crs.call("files", "drag_over_handler", {
  *  event: event
  * });
  */
-async function dragover_handler(event) {
+async function drag_over_handler(event) {
     event.preventDefault();
+
+    event.currentTarget.__callback({action: "dragOver", event: event});
 }
 
 /**
- * @method filedrop_handler - It takes a handler function and an event object, and then it calls the handler function with an array of file objects
- * @param handler {Function} - The function to call when the file is dropped.
+ * @function drag_leave_handler - The `drag_leave_handler` function is called when the user drags a file over the drop zone and then leaves the drop zone
+ * @param event {Object}- The event object.
+ *
+ * @example <caption>javascript</caption>
+ * const result = await crs.call("files", "drag_leave_handler", {
+ *  event: event
+ * });
+ */
+async function drag_leave_handler(event) {
+    event.preventDefault();
+
+    event.currentTarget.__callback({action: "dragLeave", event: event});
+}
+
+/**
+ * @method file_drop_handler - It takes a callback function and an event object, and then it calls the callback function with an array of file objects
  * @param event {Object}- The event object that was triggered.
  *
  * @example <caption>javascript</caption>
- * const result = await crs.call("files", "filedrop_handler", {
+ * const result = await crs.call("files", "file_drop_handler", {
  *   handler: myHandler,
  *   event: event
  * });
  */
-async function filedrop_handler(handler, event) {
+async function file_drop_handler(event) {
     event.preventDefault();
     const files = event.dataTransfer.files;
     const results = [];
@@ -410,7 +426,7 @@ async function filedrop_handler(handler, event) {
         });
     }
 
-    handler.call(this, results);
+    event.currentTarget.__callback({action: "drop", event: event, results: results});
 }
 
 crs.intent.files = FilesActions;
