@@ -189,7 +189,7 @@ export class DomUtilsActions {
         }, context, process, item);
 
         if (prefixHTTP === true && url.indexOf("://") === -1) {
-            url = "http://" + url;
+            url = `http://${url}`;
         }
 
         window.open(url, "_blank");
