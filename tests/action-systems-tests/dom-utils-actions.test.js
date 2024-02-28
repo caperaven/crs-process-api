@@ -112,3 +112,55 @@ Deno.test("find_parent_of_type - element not found", async () => {
     // Assert
     assertEquals(result, undefined);
 });
+
+Deno.test("open_tab, should prefix url with http if prefix_http equals true" , async () => {
+    // Arrange
+    const url = "www.google.com";
+    const expectedResult = "http://www.google.com";
+
+    // Assert
+    window.open = (url) => {
+        assertEquals(url, expectedResult);
+    }
+
+    // Act
+    await crs.call("dom_utils", "open_tab", {
+        url,
+        prefix_http: true
+    });
+});
+
+Deno.test("open_tab, should not prefix url with http if prefix_http equals false" , async () => {
+    // Arrange
+    const url = "www.google.com";
+    const expectedResult = "www.google.com";
+
+    // Assert
+    window.open = (url) => {
+        assertEquals(url, expectedResult);
+    }
+
+    // Act
+    await crs.call("dom_utils", "open_tab", {
+        url,
+        prefix_http: false
+    });
+});
+
+Deno.test("open_tab, should not prefix url with http if prefix_http equals true but already contains a protocol" , async () => {
+    // Arrange
+    const url = "http://www.google.com";
+    const expectedResult = "http://www.google.com";
+
+    // Assert
+    window.open = (url) => {
+        assertEquals(url, expectedResult);
+    }
+
+    // Act
+    await crs.call("dom_utils", "open_tab", {
+        url,
+        prefix_http: true
+    });
+});
+

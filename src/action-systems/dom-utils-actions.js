@@ -153,7 +153,7 @@ export class DomUtilsActions {
      * @param item {Object} - The item that is being processed.
      *
      * @param step.args.url {String} - The url to open in the new tab.
-     * @param step.args.prefixHTTP {Boolean} - If true, it will prefix the url with http:// if it doesn't have a protocol.
+     * @param step.args.prefix_http {Boolean} - If true, it will prefix the url with http:// if it doesn't have a protocol.
      * @param step.args.parameters {Object} - The parameters to inflate the url with.
      *
      *
@@ -163,7 +163,7 @@ export class DomUtilsActions {
      *      parameters: {
      *          query: "my query"
      *      },
-     *      prefixHTTP: true
+     *      prefix_http: true
      * });
      *
      * @example <caption>json</caption>
@@ -175,14 +175,14 @@ export class DomUtilsActions {
      *          "parameters": {
      *              "query": "my query"
      *          },
-     *          "prefixHTTP": true
+     *          "prefix_http": true
      *   }
      * }
      *
      * @returns {Promise<void>}
      */
     static async open_tab(step, context, process, item) {
-        const prefixHTTP = await crs.process.getValue(step.args.prefixHTTP, context, process, item) || false;
+        const prefixHTTP = await crs.process.getValue(step.args.prefix_http, context, process, item) || false;
         let url = await crs.call("string", "inflate", {
             template: step.args.url,
             parameters: step.args.parameters
