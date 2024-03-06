@@ -186,7 +186,10 @@ export class FilesActions {
 
     /**
      * @method enable_dropzone - Sets the drag drop events necessary for handeling a file drop
-     * A callback should be passed in through the arguments which based on the action (drop, drag over, drag leave) will pass in the event and any associated files on drop.
+     * A callback should be passed in through the arguments which based on the action (drop, drag over, drag leave)
+     * will pass in the event and any associated files on drop.
+     * A dropTemplate should also be passed in which will be used to highlight the drop zone when a file is dragged over it.
+     * Any dropClasses will be added to the dropTemplate in order to style it as needed.
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -195,11 +198,15 @@ export class FilesActions {
      *
      * @param step.args.element {string} - The id of the element to set the drop events on.
      * @param step.args.callback {string} - The name of the callback to call when a file is dropped, dragged over the drop target, or dragged and the leaves the drop target.
+     * @param step.args.dropTemplate {HTMLTemplateElement} - The template which will be added to the animation layer when a file is dragged over the drop target.
+     * @param step.args.dropClasses {[]} - The classes to add to the dropTemplate when a file is dragged over the drop target in order to style it appropriately.
      *
      * @example <caption>javascript</caption>
      * const result = await crs.call("files", "enable_dropzone", {
      *   element: "myElement",
      *   callback: "eventCallback"
+     *   drop_template: dropTemplate,
+     *   drop_classes: ["drop-area"]
      * });
      *
      * @example <caption>json</caption>
@@ -209,6 +216,8 @@ export class FilesActions {
      *  "args": {
      *    "element": "myElement",
      *    "callback": "eventCallback"
+     *    "drop_template": dropTemplate,
+     *    "drop_classes": ["drop-area"]
      *   }
      * }
      * @returns {Promise<void>}
@@ -216,15 +225,21 @@ export class FilesActions {
     static async enable_dropzone(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const callback = await crs.process.getValue(step.args.callback, context, process, item);
+        const dropTemplate = await crs.process.getValue(step.args.drop_template, context, process, item);
+        const dropClasses = await crs.process.getValue(step.args.drop_classes, context, process, item);
 
         element.addEventListener("drop", file_drop_handler);
         element.addEventListener("dragover", drag_over_handler);
         element.addEventListener("dragleave", drag_leave_handler);
         element.__callback = callback;
+        element.__highlightActive = false;
+        element.__dropTemplate = dropTemplate;
+        element.__dropClasses = dropClasses;
     }
 
     /**
-     * @method disable_dropzone - Cleans up and removes file drop events and associated callback, must be called after using enable_dropzone
+     * @method disable_dropzone - Cleans up and removes file drop events, associated callback, and any properties required during the drag process.
+     * Must be called after using enable_dropzone
      *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
@@ -253,7 +268,14 @@ export class FilesActions {
         element.removeEventListener("drop", file_drop_handler);
         element.removeEventListener("dragover", drag_over_handler);
         element.removeEventListener("dragleave", drag_leave_handler);
+
+        await crs.call("dom_interactive", "remove_animation_layer");
+
         delete element.__callback;
+        delete element.__highlightActive;
+        delete element.__dropTemplate;
+        delete element.__dropClasses;
+        delete element.__dropBounds;
     }
 }
 
@@ -372,6 +394,8 @@ export async function get_files(step, context, process, item) {
 
 /**
  * @function drag_over_handler - The `drag_over_handler` function is called when the user drags a file over the drop zone
+ * Will enable the animation layer and highlight the drop zone via the drop template and drop classes supplied in the enable_dropzone action
+ *
  * @param event {Object} - The event object.
  *
  * @example <caption>javascript</caption>
@@ -382,11 +406,25 @@ export async function get_files(step, context, process, item) {
 async function drag_over_handler(event) {
     event.preventDefault();
 
-    event.currentTarget.__callback({action: "dragOver", event: event});
+    const element = event.currentTarget;
+
+    if (element.__highlightActive !== true) {
+        await crs.call("dom_interactive", "highlight", {
+            target: element,
+            template: element.__dropTemplate,
+            classes: element.__dropClasses
+        });
+        element.__highlightActive = true;
+        element.__dropBounds = element.getBoundingClientRect();
+    }
+
+    element.__callback({action: "dragOver", event: event});
 }
 
 /**
  * @function drag_leave_handler - The `drag_leave_handler` function is called when the user drags a file over the drop zone and then leaves the drop zone
+ * During the leave event, the animation layer and drop zone highlight will be removed
+ *
  * @param event {Object}- The event object.
  *
  * @example <caption>javascript</caption>
@@ -397,11 +435,23 @@ async function drag_over_handler(event) {
 async function drag_leave_handler(event) {
     event.preventDefault();
 
-    event.currentTarget.__callback({action: "dragLeave", event: event});
+    if (event.target !== event.currentTarget) return;
+
+    const element = event.currentTarget;
+
+    if (event.x >= element.__dropBounds?.left && event.x <= element.__dropBounds?.right &&
+        event.y >= element.__dropBounds?.top && event.y <= element.__dropBounds?.bottom) return;
+
+    await crs.call("dom_interactive", "remove_animation_layer");
+    element.__highlightActive = false;
+
+    element.__callback({action: "dragLeave", event: event});
 }
 
 /**
  * @method file_drop_handler - It takes a callback function and an event object, and then it calls the callback function with an array of file objects
+ * Will remove the animation layer and drop zone highlight when the event is triggered.
+ *
  * @param event {Object}- The event object that was triggered.
  *
  * @example <caption>javascript</caption>
@@ -412,6 +462,11 @@ async function drag_leave_handler(event) {
  */
 async function file_drop_handler(event) {
     event.preventDefault();
+    const element = event.currentTarget;
+
+    await crs.call("dom_interactive", "remove_animation_layer");
+    element.__highlightActive = false;
+
     const files = event.dataTransfer.files;
     const results = [];
 
@@ -426,7 +481,7 @@ async function file_drop_handler(event) {
         });
     }
 
-    event.currentTarget.__callback({action: "drop", event: event, results: results});
+    element.__callback({action: "drop", event: event, results: results});
 }
 
 crs.intent.files = FilesActions;
