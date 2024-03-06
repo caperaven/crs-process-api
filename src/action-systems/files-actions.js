@@ -191,6 +191,10 @@ export class FilesActions {
      * A dropTemplate should also be passed in which will be used to highlight the drop zone when a file is dragged over it.
      * Any dropClasses will be added to the dropTemplate in order to style it as needed.
      *
+     * NOTE: we require a dragover event as in the dragover event handler for the target container,
+     * we call event.preventDefault(), which enables it to receive drop events.
+     * Please see for further details: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/drop_event
+     *
      * @param step {Object} - The step object from the process definition.
      * @param context {Object} - The context object that is passed to the process.
      * @param process {Object} - The process object
