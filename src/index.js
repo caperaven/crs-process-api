@@ -92,6 +92,14 @@ globalThis.crs.getNextStep = (process, step, steps) => {
     return crsbinding.utils.getValueOnPath(steps, step);
 }
 
+globalThis.crs.process.reservedWords ||= {
+    "$context": true,
+    "$process": true,
+    "$item": true,
+    "$fn": true,
+    "$binding": true
+};
+
 crsbinding.events.emitter.on("crs-process-error", (message) => {
     console.error(message.error);
 })
