@@ -609,8 +609,10 @@ export class DomActions {
 
         let result = await crs.process.getValue(step.args.element, context, process, item);
 
+        const scope = await crs.process.getValue(step.args.scope || document, context, process, item);
+
         if (typeof result == "string") {
-            result = document.querySelector(result);
+            result = scope.querySelector(result);
         }
 
         if (step.args.target != null) {
