@@ -125,9 +125,9 @@ export class ProcessRunner {
         if (expr.indexOf("$") > -1) {
 
             const parts = expr.split(".");
-            const prefix = parts[0];
+            const prefix = parts[0].split("[")[0];
 
-            if (crs.process.reservedWords[prefix] == null && process?.prefixes[prefix] == null) {
+            if (crs.process.reservedWords[prefix] == null && process?.prefixes?.[prefix] == null) {
                 return expr;
             }
         }

@@ -75,4 +75,16 @@ describe("process tests", async () => {
 
         assertEquals(await crs.process.getValue("$data.value", null, process), 10);
     })
+
+    it ("getValue - square brackets", async () => {
+        const context = { };
+        const process = {
+            parameters: {
+                fieldUrlProperty: "my_url"
+            }
+        };
+        const item = { my_url: "https://www.google.com" };
+        const value = await crs.process.getValue("$item[$process.parameters.fieldUrlProperty]", context, process, item);
+        assertEquals(value, "https://www.google.com");
+    })
 })

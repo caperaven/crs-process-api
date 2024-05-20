@@ -294,6 +294,43 @@ Deno.test("inflate string", async () => {
 
 })
 
+Deno.test("inflate string - complex", async () => {
+
+    const template = "${url}"
+    const parameters = {
+        "url": "$item[$process.parameters.fieldUrlProperty]"
+    }
+
+    const items = [
+        {
+            fieldUrlProperty: "url",
+            my_url: "https://www.google.com",
+            expected: "https://www.google.com"
+        },
+        {
+            fieldUrlProperty: "url",
+            my_url: "https://www.microsoft.com",
+            expected: "https://www.microsoft.com"
+        }
+        ];
+
+    const process = {
+        parameters: {
+            fieldUrlProperty: "my_url"
+        }
+    }
+
+    for (const item of items) {
+        let result = await crs.call("string", "inflate", {
+            template: template,
+            parameters
+        }, null, process, item);
+
+        assertEquals(result, item.expected);
+    }
+
+})
+
 Deno.test("translate string", async () => {
     await crsbinding.translations.add({
         "hello": "Hello",
