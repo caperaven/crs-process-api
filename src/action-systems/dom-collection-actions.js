@@ -147,6 +147,7 @@ export class DomCollectionActions {
 async function filter(element, filter) {
     element = await crs.dom.get_element(element);
     const hasFilter = filter.length > 0;
+    let count = 0;
 
     for (let child of element.children) {
         child.removeAttribute("aria-hidden");
@@ -156,10 +157,21 @@ async function filter(element, filter) {
             continue;
         }
 
-        if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
-            child.setAttribute("aria-hidden", "true");
+        const subMenuUl = child.querySelector("ul");
+        if (subMenuUl) {
+           const count =  await filter(subMenuUl, filter);
+            if (count == 0) {
+                child.setAttribute("aria-hidden", "true");
+                continue;
+            }
         }
+        else if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
+                child.setAttribute("aria-hidden", "true");
+                continue;
+        }
+        count++;
     }
+    return count;
 }
 
 crs.intent.dom_collection = DomCollectionActions;
