@@ -158,6 +158,7 @@ async function filter(element, filter) {
         }
 
         const subMenuUl = child.querySelector("ul");
+        //We only filter leaf items
         if (subMenuUl) {
            const count =  await filter(subMenuUl, filter);
             if (count == 0) {
@@ -165,9 +166,11 @@ async function filter(element, filter) {
                 continue;
             }
         }
-        else if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
+        else {
+            if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
                 child.setAttribute("aria-hidden", "true");
                 continue;
+            }
         }
         count++;
     }
