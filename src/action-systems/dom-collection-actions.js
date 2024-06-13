@@ -43,7 +43,8 @@ export class DomCollectionActions {
      */
     static async filter_children(step, context, process, item) {
         const filterString = await crs.process.getValue(step.args.filter, context, process, item);
-        await filter(step.args.element, filterString);
+        const hierarchical = await crs.process.getValue(step.args.hierarchical ?? false, context, process, item)
+        return await filter(step.args.element, filterString, hierarchical);
     }
 
     /**
@@ -138,13 +139,13 @@ export class DomCollectionActions {
  * attribute
  * @param element - The element to filter.
  * @param filter - The filter to apply to the element.
- *
+ * @param hierarchical - true if the filter is searching through a Hierarchical structure, false otherwise.
  * @example <caption>javascript</caption>
  * await filter("my-list", "my filter string");
  *
  * @returns {Promise<void>}
  */
-async function filter(element, filter) {
+async function filter(element, filter, hierarchical) {
     element = await crs.dom.get_element(element);
     const hasFilter = filter.length > 0;
     let count = 0;
@@ -157,7 +158,7 @@ async function filter(element, filter) {
             continue;
         }
 
-        const subMenuUl = child.querySelector("ul");
+        const subMenuUl = hierarchical === true ? child.querySelector("ul"): null;
         //We only filter leaf items
         if (subMenuUl) {
            const count =  await filter(subMenuUl, filter);
