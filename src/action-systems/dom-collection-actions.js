@@ -22,7 +22,7 @@ export class DomCollectionActions {
      *
      * @param step.args.element {String} - The id of the element to filter.
      * @param step.args.filter {String} - The filter string to use.
-     *
+     * @param step.args.hierarchical {Boolean} - If true, the filter is applied to a hierarchical structure.
      * @example <caption>javascript</caption>
      * await crs.call("dom-collection", "filter_children", {
      *  element: "my-list",
