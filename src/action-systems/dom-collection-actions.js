@@ -161,7 +161,7 @@ async function filter(element, filterString, hierarchical) {
         const subMenuUl = hierarchical === true ? child.querySelector("ul"): null;
         //We only filter leaf items
         if (subMenuUl) {
-           const count =  await filter(subMenuUl, filterString);
+           const count =  await filter(subMenuUl, filterString, true);
             if (count == 0) {
                 child.setAttribute("aria-hidden", "true");
                 continue;
