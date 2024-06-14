@@ -145,9 +145,9 @@ export class DomCollectionActions {
  *
  * @returns {Promise<void>}
  */
-async function filter(element, filter, hierarchical) {
+async function filter(element, filterString, hierarchical) {
     element = await crs.dom.get_element(element);
-    const hasFilter = filter.length > 0;
+    const hasFilter = filterString.length > 0;
     let count = 0;
 
     for (let child of element.children) {
@@ -161,14 +161,14 @@ async function filter(element, filter, hierarchical) {
         const subMenuUl = hierarchical === true ? child.querySelector("ul"): null;
         //We only filter leaf items
         if (subMenuUl) {
-           const count =  await filter(subMenuUl, filter);
+           const count =  await filter(subMenuUl, filterString, true);
             if (count == 0) {
                 child.setAttribute("aria-hidden", "true");
                 continue;
             }
         }
         else {
-            if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
+            if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filterString) == -1) {
                 child.setAttribute("aria-hidden", "true");
                 continue;
             }
