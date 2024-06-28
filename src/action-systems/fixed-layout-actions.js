@@ -77,6 +77,7 @@ export class FixedLayoutActions {
         const anchor = await crs.process.getValue(step.args.anchor, context, process, item);
         const container = await crs.process.getValue(step.args.container || document.body, context, process, item);
         const margin = await crs.process.getValue(step.args.margin || 0, context, process, item);
+        const containerBound =  await crs.process.getValue(step.args.container_bound ?? false, context, process, item);
 
         element.style.position = "fixed";
         element.style.left = 0;
@@ -107,7 +108,11 @@ export class FixedLayoutActions {
         let position = this.#actions[at](elementBounds, targetBounds, margin, anchor);
         position.x -= containerBounds.left;
         position.y -= containerBounds.top;
-        position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height);
+
+        const boundWidth = containerBound ? containerBounds.width : window.innerWidth;
+        const boundHeight = containerBound ? containerBounds.height : window.innerHeight;
+
+        position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height, boundWidth, boundHeight);
         element.style.translate = `${position.x}px ${position.y}px`;
         element.removeAttribute("hidden");
     }
@@ -196,28 +201,29 @@ export class FixedLayoutActions {
      * @param position {Object}- The position of the top left corner of the window.
      * @param width {Number}- The width of the tooltip.
      * @param height {Number}- The height of the tooltip.
-     *
+     * @param containerWidth {Number} - The width of the container. Usually window.innerWidth, but can be set to the width of the container.
+     * @param containerHeight {Number} - The height of the container. Usually window.innerHeight, but can be set to the height of the container.
      * @example <caption>javascript</caption>
      * // If the tooltip is outside the viewport, move it back inside
-     * position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height);
+     * position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height, window.innerWidth, window.innerHeight);
      *
      * @returns The position of the element.
      */
-    static #ensureInFrustum(position, width, height) {
+    static #ensureInFrustum(position, width, height, containerWidth, containerHeight) {
         if (position.x < 0) {
             position.x = 1;
         }
 
-        if (position.x + width > window.innerWidth) {
-            position.x = window.innerWidth - width - 1;
+        if (position.x + width > containerWidth) {
+            position.x = containerWidth - width - 1;
         }
 
         if (position.y < 0) {
             position.y = 1;
         }
 
-        if (position.y + height > window.innerHeight) {
-            position.y = window.innerHeight - height - 1;
+        if (position.y + height > containerHeight) {
+            position.y = containerHeight - height - 1;
         }
 
         position.x = Math.round(position.x);
