@@ -113,7 +113,10 @@ class Database {
                         let countString = i < 10 ? `0${i}` : i;
                         const storeName = `table_${countString}`
                         const objectStore = db.createObjectStore(storeName);
-                        objectStore.createIndex("idIndex", "id", {unique: true});
+
+                        // We are setting the unique to false as the ids are not always unique.
+                        // The id can be duplicated in the table to support some scenarios e.g. cross-reference
+                        objectStore.createIndex("idIndex", "id", {unique: false});
 
                         newMegaData.push({
                             storeName,
@@ -125,8 +128,11 @@ class Database {
 
                 for (const storeName of storeNames) {
                     if (db.objectStoreNames.contains(storeName) === false) {
-                        const objectStore = db.createObjectStore(storeName);
-                        objectStore.createIndex("idIndex", "id", {unique: true});
+                        const objectStore = db.createObjectStore(storeName)
+
+                        // We are setting the unique to false as the ids are not always unique.
+                        // The id can be duplicated in the table to support some scenarios e.g. cross-reference
+                        objectStore.createIndex("idIndex", "id", {unique: false});
 
                         newMegaData.push({
                             storeName,
@@ -505,9 +511,11 @@ class Database {
             const index = store.index("idIndex");
 
             for (const model of models) {
-                const request = index.getKey(model.id);
+                const request = index.getAllKeys(model.id);
                 request.onsuccess = (event) => {
-                    store.put(model, event.target.result);
+                    for (const key of event.target.result) {
+                        store.put(model, key);
+                    }
                 }
             }
 
@@ -533,10 +541,11 @@ class Database {
             }
 
             for (const id of ids) {
-                const request = index.getKey(id);
+                const request = index.getAllKeys(id);
                 request.onsuccess = (event) => {
-                    const key = event.target.result;
-                    store.delete(key);
+                    for (const key of event.target.result) {
+                        store.delete(key);
+                    }
                 }
             }
 

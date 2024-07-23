@@ -285,6 +285,10 @@ export class DomInteractiveActions {
             result.style.transform = `translate(${position.x}px, ${position.y}px)`;
         }
 
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
         return result;
     }
 

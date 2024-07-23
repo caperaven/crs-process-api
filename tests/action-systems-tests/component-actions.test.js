@@ -23,6 +23,19 @@ describe("component actions tests", async () => {
         assertEquals(isReady, true);
     })
 
+    it ("notify_loaded", async () => {
+        let isReady = false;
+        const element = new ElementMock("div");
+        element.addEventListener("loading", () => isReady = true);
+
+        await crs.call("component", "notify_loading", {
+            element: element
+        })
+
+        assertEquals(element.dataset.loading, "true");
+        assertEquals(isReady, true);
+    })
+
     it ("observe / unobserve", async () => {
         let isCalled = false;
 
@@ -49,5 +62,45 @@ describe("component actions tests", async () => {
         })
 
         assert(element._processObserver["0"] == null);
+    })
+
+    it ("waitForElementRender - pass", async () => {
+        const element = new ElementMock("div");
+        element.offsetWidth = 10;
+        element.offsetHeight = 10;
+
+        const result = await crs.call("component", "wait_for_element_render", {
+            element: element
+        })
+
+        assertEquals(result, true);
+    })
+
+    it ("waitForElementRender - pass", async () => {
+        const element = new ElementMock("div");
+        element.offsetWidth = 0;
+        element.offsetHeight = 0;
+
+        let doCallback;
+        globalThis.ResizeObserver = class {
+            constructor(callback) {
+                doCallback = callback;
+            }
+            observe(element) {
+                const timeout = setTimeout(() => {
+                    element.offsetWidth = 10;
+                    element.offsetHeight = 10;
+                    clearTimeout(timeout);
+                    doCallback();
+                }, 100)
+            }
+            disconnect() {}
+        }
+
+        const result = await crs.call("component", "wait_for_element_render", {
+            element: element
+        })
+
+        assertEquals(result, true);
     })
 })

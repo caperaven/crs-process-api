@@ -80,6 +80,10 @@ export class ComponentActions {
             await crs.binding.data.addCallback(dataId, property, element._processObserver[id].eval);
         }
 
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, id, context, process, item);
+        }
+
         return id;
     }
 
@@ -117,7 +121,8 @@ export class ComponentActions {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const ids = await crs.process.getValue(step.args.ids, context, process, item);
 
-        for (const id of ids) {
+        for (let id of ids) {
+            id = await crs.process.getValue(id, context, process, item);
             const def = element._processObserver[id];
             for (const property of def.properties) {
                 await crs.binding.data.removeCallback(element._dataId, property, def.eval);
@@ -290,6 +295,36 @@ export class ComponentActions {
         }
 
         element.addEventListener("loading", fn);
+    }
+
+    /**
+     * @method wait_for_element_render - Wait for an element to be rendered.
+     * We wait until the width of the height of the element is greater than 0.
+     * @param step {Object} - The step object.
+     * @param context {Object} - The context of the process.
+     * @param process {Object} - The process that is currently running.
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param step.args.element {HTMLElement} - The element that is being observed.
+     * @returns {Promise<unknown>}
+     */
+    static async wait_for_element_render(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+
+        if (element.offsetWidth > 0 && element.offsetHeight > 0) {
+            return true;
+        }
+
+        return new Promise(resolve => {
+            const observer = new ResizeObserver(() => {
+                if (element.offsetWidth > 0 && element.offsetHeight > 0) {
+                    observer.disconnect();
+                    resolve(true);
+                }
+            });
+
+            observer.observe(element);
+        });
     }
 }
 

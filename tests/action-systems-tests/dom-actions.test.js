@@ -276,3 +276,164 @@ Deno.test("css variables get and set multiple", async () => {
     assertEquals(result[0], "red");
     assertEquals(result[1], "green");
 })
+
+Deno.test("remove_attribute- removes an attribute off of an element", async () => {
+    //Arrange
+    const element = await crs.call("dom", "create_element", {
+        tag_name: "div",
+        id: "testElementRemove",
+        attributes: {
+            hidden: true
+        }
+    });
+
+    document.children[1].appendChild(element);
+
+    //Act
+    await crs.call("dom", "remove_attribute",{
+        element: "#testElementRemove",
+        attr: "hidden",
+    });
+
+    //Assert
+    assertEquals(element.getAttribute("hidden"), undefined);
+});
+
+Deno.test("remove_attributes- removes multiple attributes off of an element", async () => {
+    //Arrange
+    const element = await crs.call("dom", "create_element", {
+        tag_name: "div",
+        id: "MultipleAttributesRemoved",
+        attributes: {
+            hidden: true,
+            class: "testClass"
+        }
+    });
+
+    document.children[1].appendChild(element);
+
+    //Act
+    await crs.call("dom", "remove_attributes",{
+        element: "#MultipleAttributesRemoved",
+        attributes: ["hidden", "class"]
+    });
+
+    //Assert
+    assertEquals(element.getAttribute("hidden"), undefined);
+    assertEquals(element.getAttribute("class"), undefined);
+});
+
+Deno.test("batch_modify_attributes - should add attributes to an element", async () => {
+        //Arrange
+        const expectedValue = "hidden";
+        const element = await crs.call("dom", "create_element", {
+            tag_name: "div",
+            id: "testElementAdd",
+        });
+
+        document.children[1].appendChild(element);
+
+        //Act
+        await crs.call("dom", "batch_modify_attributes", {
+            add: [
+                {
+                    element: "#testElementAdd",
+                    attributes:{
+                        hidden: "hidden",
+                        "data-value": "test"
+                    }
+                }
+            ]
+        });
+
+        const actualValue = element.getAttribute("hidden");
+        const actualDataValue = element.getAttribute("data-value");
+
+        //Assert
+        assertEquals(actualValue, expectedValue);
+        assertEquals(actualDataValue, "test");
+});
+
+Deno.test("batch_modify_attributes - should remove attributes from an element", async () => {
+    //Arrange
+    const expectedValue = undefined;
+    const element = await crs.call("dom", "create_element", {
+        tag_name: "div",
+        id: "BatchRemoveAttributes",
+        attributes: {
+            hidden: "hidden",
+            "data-value": "test"
+        }
+    });
+
+    document.children[1].appendChild(element);
+
+    //Act
+    await crs.call("dom", "batch_modify_attributes", {
+        remove: [
+            {
+                element: "#BatchRemoveAttributes",
+                attributes: ["hidden", "data-value"]
+            }
+        ]
+    });
+
+    const actualValue = element.getAttribute("hidden");
+    const actualDataValue = element.getAttribute("data-value");
+
+    //Assert
+    assertEquals(actualValue, expectedValue);
+    assertEquals(actualDataValue, expectedValue);
+});
+
+Deno.test("batch_modify_attributes - should add and remove attributes from an element", async () => {
+    //Arrange
+    const expectedValue = undefined;
+    const element = await crs.call("dom", "create_element", {
+        tag_name: "div",
+        id: "BatchAddAndRemoveAttributes",
+    });
+
+    document.children[1].appendChild(element);
+
+    //Act
+    await crs.call("dom", "batch_modify_attributes", {
+        add: [
+            {
+                element: "#BatchAddAndRemoveAttributes",
+                attributes:{
+                    hidden: "hidden",
+                    "data-value": "test"
+                }
+            }
+        ],
+        remove: [
+            {
+                element: "#BatchAddAndRemoveAttributes",
+                attributes: ["hidden"]
+            }
+        ]
+    });
+
+    const actualValue = element.getAttribute("hidden");
+    const actualDataValue = element.getAttribute("data-value");
+
+    //Assert
+    assertEquals(actualValue, expectedValue);
+    assertEquals(actualDataValue, "test");
+});
+
+Deno.test("should not fail if empty add and remove array is passed through", async () => {
+       await crs.call("dom", "batch_modify_attributes", {
+          add : [],
+          remove: []
+       });
+});
+
+Deno.test("should not fail if empty object is passed through", async () => {
+       await crs.call("dom", "batch_modify_attributes", {});
+});
+
+Deno.test("should not fail if null is passed through", async () => {
+         await crs.call("dom", "batch_modify_attributes", null);
+});

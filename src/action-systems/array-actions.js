@@ -1,53 +1,9 @@
-/**
- * @class ArrayActions - This is a static class that contains the actions for manipulating arrays
- *
- * Features:
- * - add - add an item to an array
- * - remove - remove an item from an array
- * - transfer - transfer an item from one array to another
- * - field_to_csv - convert an array of objects to a csv string
- * - concat - concat two arrays
- * - change_values - change the values of an array
- * - get_value - get the value of an array at a given index
- * - map_objects - map an array of objects to an array of values
- * - get_records - get the records from an array of objects, given the page size and page number to return
- * - get_range - get a range (min and max) of values from an array
- * - calculate_paging - for the given array and how big a page size is, how many pages fit in the array
- * - map_assign_data - map an array of objects using a mapping definition to remap fields and add new fields.
- */
+// https://caperaven.co.za/process-api/using-process-ai/array-module/
 export class ArrayActions {
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
     }
 
-    /**
-     * @method add - add an item to an array
-     * @param step {object} - The step that contains the action to perform
-     * @param context {object} - The context of the process
-     * @param process {object} - The process
-     * @param item {object} - Current item in a process loop
-     *
-     * @param step.args.target {Array} - target array to add to
-     * @param step.args.value {*} - value to add to the array
-     *
-     * @returns {Promise<void>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "add", {
-     *    target: array,
-     *    value: "value"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "add",
-     *     "args": {
-     *         "target": "@process.array",
-     *         "value": "value"
-     *     }
-     * }
-     */
     static async add(step, context, process, item) {
         const target = await crs.process.getValue(step.args.target, context, process, item);
         const value = await crs.process.getValue(step.args.value, context, process, item);
@@ -59,124 +15,6 @@ export class ArrayActions {
         }
     }
 
-    /**
-     * @method move - move an item from one array to another or up and down in the same array
-     * If you are moving the item to a different array, you need to set the target.
-     * If you want to move the item to be above or below a particular item you need to set the target_item.
-     * If you don't define the target item, it will assume you are moving the item up or down in the same array based on its location.
-     *
-     * Actions are:
-     * - up - move the item up one in the array
-     * - down - move the item down one in the array
-     * - append - move the item to the end of the array
-     * - prepend - move the item to the beginning of the array
-     * - insert - insert the item at the given index
-     * - before - move the item before the target item (target item must be defined)
-     * - after - move the item after the target item (target item must be defined)
-     *
-     * @param step {object} - The step that contains the action to perform
-     * @param context {object} - The context of the process
-     * @param process {object} - The process
-     * @param item {object} - Current item in a process loop
-     *
-     * @param step.args.source {Array} - array that the item is currently in
-     * @param step.args.source_item {object} - the item in the source array that is being moved
-     * @param step.args.action {string} - action to perform, either "up", "down", "append", "prepend", "insert", "before", "after"
-     * @param step.args.target {Array} - array to move the item to
-     * @param step.args.target_item {object} - the item in the target array that the source item is being moved before or after
-     * @returns {Promise<void>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "move", {
-     *   source: array,
-     *   source_item: item,
-     *   action: "up"
-     * });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *    "type": "array",
-     *    "action": "move",
-     *    "args": {
-     *      "source": "@process.array",
-     *      "source_item": "@process.item",
-     *      "action": "up"
-     *    }
-     * }
-     */
-    static async move(step, context, process, item) {
-        const action = await crs.process.getValue(step.args.action, context, process, item);
-        const source = await crs.process.getValue(step.args.source, context, process, item);
-        const source_item = await crs.process.getValue(step.args.source_item, context, process, item);
-        const source_index = source.indexOf(source_item);
-        // the target array is what you defined or the source array if you didn't define a target
-        const target = await crs.process.getValue(step.args.target || source, context, process, item);
-        const target_item = await crs.process.getValue(step.args.target_item, context, process, item);
-
-        source.splice(source_index, 1);
-
-        if (action === "append") {
-            return target.push(source_item);
-        }
-
-        if (action === "prepend") {
-            return target.unshift(source_item);
-        }
-
-        if (action === "insert") {
-            const index = await crs.process.getValue(step.args.index, context, process, item);
-            return target.splice(index, 0, source_item);
-        }
-
-        if (action === "move_up") {
-            const target_index = source_index - 1;
-            return target.splice(target_index, 0, source_item);
-        }
-
-        if (action === "move_down") {
-            const target_index = source_index + 1;
-            return target.splice(target_index, 0, source_item);
-        }
-
-        if (action === "before") {
-            const target_index = target.indexOf(target_item);
-            return target.splice(target_index, 0, source_item);
-        }
-
-        if (action === "after") {
-            const target_index = target.indexOf(target_item) + 1;
-            return target.splice(target_index, 0, source_item);
-        }
-    }
-
-    /**
-     * @method remove - removes a value from a defined array
-     * @param step {object} - The step that contains the action to perform
-     * @param context {object} - The context of the process
-     * @param process {object} - The process
-     * @param item {object} - Current item in a process loop
-     *
-     * @param step.args.target {Array} - target array to remove from
-     * @param step.args.value {*} - value to remove from the array
-     *
-     * @returns {Promise<void>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "remove", {
-     *   target: array,
-     *   value: "value"
-     *   }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *    "type": "array",
-     *    "action": "remove",
-     *    "args": {
-     *        "target": "@process.array",
-     *        "value": "value"
-     *    }
-     * }
-     */
     static async remove(step, context, process, item) {
         const target = await crs.process.getValue(step.args.target, context, process, item);
         const value = await crs.process.getValue(step.args.value, context, process, item);
@@ -189,37 +27,6 @@ export class ArrayActions {
         }
     }
 
-    /**
-     * @method transfer - This function transfers a value from one array to another
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object} - process to perform
-     * @param item{Object} - item to perform the action on
-     *
-     * @param step.args.source {Array} - source array to remove from
-     * @param step.args.target {Array} - target array to add to
-     * @param step.args.value {*} - value to transfer from the source to the target
-     *
-     * @returns {Promise<void>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "transfer", {
-     *     source: array1,
-     *     target: array2,
-     *     value: "value"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "array",
-     *   "action": "transfer",
-     *   "args": {
-     *        "source": "@process.array1",
-     *        "target": "@process.array2",
-     *        "value": "value"
-     *    }
-     * }
-     */
     static async transfer(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const target = await crs.process.getValue(step.args.target, context, process, item);
@@ -229,40 +36,6 @@ export class ArrayActions {
         await this.remove({args: {target: source, value: value}}, context, process, item)
     }
 
-    /**
-     * @method field_to_csv - This function takes an array of objects and exports csv text
-     *
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object} - process to perform
-     * @param item {Object} - item to perform the action on
-     *
-     * @param step.args.source {Array} - source array to convert
-     * @param step.args.target {Array} - target array to add to
-     * @param step.args.field {String} - field to convert to csv
-     * @param step.args.fields {[string]} - fields to convert to csv
-     * @param [step.args.delimiter = ' , '] {Symbol}  - delimiter to use in the csv
-     *
-     * @returns {Promise<void>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "field_to_csv", {
-     *    source: array,
-     *    target: "@process.csv",
-     *    field: "field"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "field_to_csv",
-     *     "args": {
-     *         "source": "@process.array",
-     *         "target": "@process.csv",
-     *         "field": "field"
-     *     }
-     * }
-     */
     static async field_to_csv(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
 
@@ -287,35 +60,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method concat - Create a new array that contains the content of the defined source arrays.
-     *
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object} - process to perform
-     * @param item {Object} - item to perform the action on
-     *
-     * @param step.args.sources {Array} - array of source arrays
-     * @param step.args.target {string} - target array to add to
-     *
-     * @returns {Promise<*[]>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "concat", {
-     *    sources: [array1, array2],
-     *    target: "@process.array"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "concat",
-     *     "args": {
-     *         "sources": ["@process.array1", "@process.array2"],
-     *         "target": "@process.array"
-     *     }
-     * }
-     */
     static async concat(step, context, process, item) {
         let result = [];
 
@@ -332,40 +76,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method change_values - Change the values of fields in a object array
-     *
-     * @param step {Object} - step to perform
-     * @param context {Object}  - context of the process
-     * @param process {Object}  - process to perform
-     * @param item {Object}  - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to change
-     * @param step.args.changes {Object} - object of changes to make with key being the field to change and value being the new value
-     *
-     * @returns {Promise<void>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "change_values", {
-     *     source: array,
-     *     changes: {
-     *       field1: "new value",
-     *       field2: "@process.field"
-     *     }
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "change_values",
-     *     "args": {
-     *         "source": "@process.array",
-     *         "changes": {
-     *         "field1": "new value",
-     *         "field2": "@process.field"
-     *     }
-     * }
-     */
     static async change_values(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item);
         const keys = Object.keys(step.args.changes);
@@ -382,42 +92,6 @@ export class ArrayActions {
         }
     }
 
-    /**
-     * @method get_value - For a given record at index provided, get the value of defined property
-     *
-     * @param step {Object}  - step to perform
-     * @param context {Object}  - context of the process
-     * @param process {Object} - process to perform
-     * @param item {Object} - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to change
-     * @param step.args.index {Number} - index of the record to get the value from
-     * @param step.args.property {String} - property to get the value from
-     * @param step.args.target {string} - target to store the value in
-     *
-     *
-     * @returns {Promise<*>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "get_value", {
-     *     source: array,
-     *     index: 0,
-     *     property: "field"
-     *     target: "@process.field"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "get_value",
-     *     "args": {
-     *         "source": "@process.array",
-     *         "index": 0,
-     *         "property": "field"
-     *         "target": "@process.field"
-     *     }
-     * }
-     */
     static async get_value(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item);
         let result = collection[step.args.index][step.args.field];
@@ -429,38 +103,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method map_objects - For an array of objects map an object field/s to a flat array of values
-     *
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object} - process to perform
-     * @param item {Object} - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to change
-     * @param step.args.fields {[string]} - fields to map
-     * @param step.args.target {String} - target array to add to
-     *
-     * @returns {Promise<*[]>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "map_objects", {
-     *    source: array,
-     *    fields: ["field1", "field2"],
-     *    target: "@process.array"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "map_objects",
-     *     "args": {
-     *         "source": "@process.array",
-     *         "fields": ["field1", "field2"],
-     *         "target": "@process.array"
-     *     }
-     * }
-     */
     static async map_objects(step, context, process, item) {
         const collection = await crs.process.getValue(step.args.source, context, process, item) ?? [];
         const fields = step.args.fields ?? [];
@@ -478,44 +120,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method get_records - Get records starting at a page number for a particular batch size
-     *
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object} - process to perform
-     * @param item {Object} - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to change
-     * @param step.args.page_number {Number} - page number to start from
-     * @param step.args.page_size {Number} - page size to get
-     * @param step.args.fields {[string]} - fields to get
-     * @param step.args.target {String} - target array to add to
-     *
-     * @returns {Promise<*>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "get_records", {
-     *    source: array,
-     *    page_number: 0,
-     *    page_size: 10,
-     *    fields: ["field1", "field2"],
-     *    target: "@process.array"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *    "type": "array",
-     *    "action": "get_records",
-     *    "args": {
-     *       "source": "@process.array",
-     *       "page_number": 0,
-     *       "page_size": 10,
-     *       "fields": ["field1", "field2"],
-     *       "target": "@process.array"
-     *    }
-     * }
-     */
     static async get_records(step, context, process, item) {
         const result = [];
 
@@ -547,38 +151,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method get_range - get the min and max values of the data for a given field.
-     *
-     * @param step {Object}  - step to perform
-     * @param context {Object}  - context of the process
-     * @param process {Object}  - process to perform
-     * @param item {Object}  - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to change
-     * @param step.args.field {String} - field to get the min and max values from
-     * @param step.args.target {String} - target array to add to
-     *
-     * @returns {Promise<*>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "get_range", {
-     *   source: array,
-     *   field: "field1",
-     *   target: "@process.array"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "get_range",
-     *     "args": {
-     *         "source": "@process.array",
-     *         "field": "field1",
-     *         "target": "@process.array"
-     *     }
-     * }
-     */
     static async get_range(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
         const field = await crs.process.getValue(step.args.field, context, process, item);
@@ -601,38 +173,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method calculate_paging - Calculate the number of pages of an array for a given batch size
-     *
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object} - process to perform
-     * @param item {Object} - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to change
-     * @param step.args.page_size {Number} - page size to get
-     * @param step.args.target {String} - target array to add to
-     *
-     * @returns {Promise<*>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "calculate_paging", {
-     *    source: data,
-     *    page_size: 10
-     *    target: "$process.paging"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *     "type": "array",
-     *     "action": "calculate_paging",
-     *     "args": {
-     *         "source": "@process.array",
-     *         "page_size": 10,
-     *         "target": "@process.array"
-     *     }
-     * }
-     */
     static async calculate_paging(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
         const pageSize = await crs.process.getValue(step.args.page_size, context, process, item);
@@ -650,48 +190,6 @@ export class ArrayActions {
         return result;
     }
 
-    /**
-     * @method map_assign_data - Apply mappings to an array of objects, allowing you to assign data from one field to another
-     * it also can add new fields and null existing fields. It returns the existing array with modifications made.
-     * Note: all source items must have the same fields.
-     *
-     * @param step {object} - step to perform
-     * @param context {object} - context of the process
-     * @param process {object} - process to perform
-     * @param item {object} - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array to map and assign data to
-     * @param step.args.mappings {object} - mappings to perform where key is the source field and value is the target field
-     * @param step.args.target {string|[]} - target to save new array of objects to
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("array", "map_assign_data", {
-     *   source: data,
-     *   mappings: {
-     *       "field1": "field5",
-     *       "field2": "field6",
-     *       "field3": null
-     *   }
-     *   target: "$process.result"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "array",
-     *   "action": "map_assign_data",
-     *   "args": {
-     *     "source": "@process.array",
-     *     "mappings": {
-     *       "field1": "field5",
-     *       "field2": "field6",
-     *       "field3": null
-     *     },
-     *     "target": "@process.array"
-     *   }
-     * }
-     *
-     * @returns {Array[{object}]} - array of objects
-     */
     static async map_assign_data(step, context, process, item) {
         const data = await crs.process.getValue(step.args.source, context, process, item);
         const mappings = await crs.process.getValue(step.args.mappings, context, process, item);
@@ -730,34 +228,6 @@ export class ArrayActions {
         return data;
     }
 
-    /***
-     * @method delete_properties - Delete properties from an array of objects
-     * @param step {object} - step to perform
-     * @param context {object} - context of the process
-     * @param process {object} - process to perform
-     * @param item {object} - item to perform the action on
-     *
-     * @param step.args.source {string|[]} - source array objects to delete properties from
-     * @param step.args.properties {string|[]} - array of properties to delete
-     *
-     * @example <caption>javascript example</caption>
-     * await crs.call("array", "delete_properties", {
-     *      source: arrayOfObjects,
-     *      properties: ["field1", "field2"]
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *      "type": "array",
-     *      "action": "delete_properties",
-     *      "args": {
-     *          "source": "$data.arrayOfObjects",
-     *          "properties": ["propertyName1", "propertyName2"]
-     *      }
-     * }
-     *
-     * @return {Promise<void>}
-     */
     static async delete_properties(step, context, process, item) {
         const source = await crs.process.getValue(step.args.source, context, process, item);
         const properties = await crs.process.getValue(step.args.properties, context, process, item);

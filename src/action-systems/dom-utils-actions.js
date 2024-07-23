@@ -153,14 +153,17 @@ export class DomUtilsActions {
      * @param item {Object} - The item that is being processed.
      *
      * @param step.args.url {String} - The url to open in the new tab.
+     * @param step.args.prefix_http {Boolean} - If true, it will prefix the url with http:// if it doesn't have a protocol.
      * @param step.args.parameters {Object} - The parameters to inflate the url with.
+     *
      *
      * @example <caption>javascript</caption>
      * await crs.call("dom_utils", "open_tab", {
-     *  url: "https://www.google.com/search?q={query}",
-     *  parameters: {
-     *    query: "my query"
-     *    }
+     *      url: "https://www.google.com/search?q={query}",
+     *      parameters: {
+     *          query: "my query"
+     *      },
+     *      prefix_http: true
      * });
      *
      * @example <caption>json</caption>
@@ -168,20 +171,26 @@ export class DomUtilsActions {
      *  "type": "dom_utils",
      *  "action": "open_tab",
      *  "args": {
-     *    "url": "https://www.google.com/search?q={query}",
-     *    "parameters": {
-     *      "query": "my query"
-     *     }
-     *    }
-     *  }
+     *          "url": "https://www.google.com/search?q={query}",
+     *          "parameters": {
+     *              "query": "my query"
+     *          },
+     *          "prefix_http": true
+     *   }
+     * }
      *
      * @returns {Promise<void>}
      */
     static async open_tab(step, context, process, item) {
+        const prefixHTTP = await crs.process.getValue(step.args.prefix_http, context, process, item) || false;
         let url = await crs.call("string", "inflate", {
             template: step.args.url,
             parameters: step.args.parameters
         }, context, process, item);
+
+        if (prefixHTTP === true && url.indexOf("://") === -1) {
+            url = `http://${url}`;
+        }
 
         window.open(url, "_blank");
     }
@@ -262,9 +271,9 @@ export class DomUtilsActions {
     static async find_parent_of_type(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const stopAtNodeName = await crs.process.getValue(step.args.stopAtNodeName, context, process, item);
-        const stopAtNodeQuery = await crs.process.getValue(step.args.stopAtNodeQuery, context, process, item);
+        const stopAtNodeQuery = await crs.process.getValue(step.args.stopAtNodeQuery || step.args.stop_query, context, process, item);
         const nodeName = await crs.process.getValue(step.args.nodeName, context, process, item);
-        const nodeQuery = await crs.process.getValue(step.args.nodeQuery, context, process, item);
+        const nodeQuery = await crs.process.getValue(step.args.nodeQuery || step.args.query, context, process, item);
 
         if (element == null || (nodeName == null && nodeQuery == null)) return;
 

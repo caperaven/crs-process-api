@@ -1,43 +1,5 @@
-/**
- * @class ActionActions - This is a static class that contains the actions for the action system
- *
- * Features:
- * -perform - perform an action on a component or element
- *-test
- *
- */
+// https://caperaven.co.za/process-api/using-process-ai/actions-module/
 export class ActionActions {
-    /**
-     * @method perform - perform an action on a component or element
-     * @param step {Object} - step to perform
-     * @param context {Object} - context of the process
-     * @param process {Object}  - process to perform
-     * @param item {Object}  - item to perform the action on
-     *
-     * @param step.args.action {String} - action to perform
-     * @param step.args.parameters {[string]} - parameters to pass to the action
-     * @param step.args.target {String} - target to set the result of the action to
-     *
-     * @returns {Promise<*>}
-     *
-     * @example <caption>javascript example</caption>
-     * const result = await crs.call("action", "perform", {
-     *    action: "myAction",
-     *    parameters: ["param1", "param2"],
-     *    target: "@process.result"
-     * }, context, process, item);
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "action",
-     *   "action": "perform",
-     *   "args": {
-     *      "action": "myAction",
-     *      "parameters": ["param1", "param2"],
-     *      "target": "@process.result"
-     *   }, context, process, item);
-     *
-     */
     static async perform(step, context, process, item) {
         let expr = `return await ${step.action.replace("$", "")}(...(args||[]))`;
 

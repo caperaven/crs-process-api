@@ -1,99 +1,14 @@
-/**
- *  @class CssGridActions - This class contains functions that perform actions on CSS grids
- *  Features:
- *  -init - Enable an element to be a CSS grid
- *  -enable_resize - Enable a CSS grid to be resized
- *  -disable_resize - Disable a CSS grid from being resized
- *  -auto_fill - Automatically fill a CSS grid with items
- *  -set_columns - Set the number of columns in a CSS grid
- *  -set_rows - Set the number of rows in a CSS grid
- *  -add_columns - Add columns to a CSS grid
- *  -add_rows - Add rows to a CSS grid
- *  -remove_columns - Remove columns from a CSS grid
- *  -remove_rows - Remove rows from a CSS grid
- *  -set_column_width - Set the width of a column in a CSS grid
- *  -set_row_height - Set the height of a row in a CSS grid
- *  -set_region - Set the region of an element(s) in a CSS grid
- *  -clear_region - Clear the region of an element(s) in a CSS grid
- *  -column_count - Get the number of columns in a CSS grid
- *  -row_count - Get the number of rows in a CSS grid
- *  -get_column_sizes - Get the sizes of the columns in a CSS grid.
- */
+// https://caperaven.co.za/process-api/using-process-ai/css-grid-module/
 export class CssGridActions {
-    /**
-     * @method - The `perform` function is a static function that is called by the `process` function. It takes the `step` object,
-     * the `context` object, the `process` function, and the `item` object as arguments. It then calls the `step.action`
-     * function, passing the `step`, `context`, `process`, and `item` objects as arguments
-     * @param step - The step object from the process definition
-     * @param context - The context object that is passed to the process.
-     * @param process - The process object that is being executed.
-     * @param item - The item that is being processed.
-     *
-     * @param {string} step.action - The action to perform
-     */
     static async perform(step, context, process, item) {
         await this[step.action](step, context, process, item);
     }
 
-
-    /**
-     * @method init - The function sets the display style of the element to "grid"
-     * Enable an element to be a CSS grid
-     * @param step {Object}- The step object from the JSON file.
-     * @param context {Object} - The context object that is passed to the step.
-     * @param process {Object} - The process object that is currently running.
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String} - The element to set to "grid"
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "init", {
-     *   element: "#my-grid"
-     *   // or
-     *   element: "my-grid"
-     *   // or
-     *   element: document.getElementById("my-grid")
-     *   });
-     *
-     * @example <caption>json example</caption>
-     *   {
-     *      "type": "css-grid",
-     *      "action": "init",
-     *      "args": {
-     *       "element": "#my-grid"
-     *      }
-     *   }
-     */
     static async init(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         element.style.display = "grid";
     }
 
-    /**
-     * @method enable_resize - It imports the grid resize manager, creates an instance of it, and initializes it
-     * @param step {Object} - The step object from the process.
-     * @param context {Object} - The context of the current process.
-     * @param process {Object} - The current process.
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String} - The element to enable resizing on.
-     * @param step.args.options {Object} - The options to pass to the grid resize manager.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "enable_resize", {
-     *  element: "#my-grid"
-     *  options: {
-     *    min: {
-     *         width: 100,
-     *         height: 100
-     *          },
-     *    max: {
-     *         width: 500,
-     *         height: 500
-     *         }
-     *    }
-     *    });
-     */
     static async enable_resize(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         const options = await crs.process.getValue(step.args.options, context, process, item);
@@ -103,95 +18,11 @@ export class CssGridActions {
         await instance.initialize();
     }
 
-    /**
-     * @method disable_resize - It disables the resize functionality on the element specified in the step's `element` argument
-     * @param step {Object} - The step object from the process.
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - The process that is running the step.
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String} - The element to disable resizing on.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "disable_resize", {
-     *    element: "#my-grid"
-     * });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "css-grid",
-     *   "action": "disable_resize",
-     *   "args": {
-     *   "element": "#my-grid"
-     *   }
-     * }
-     */
     static async disable_resize(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element, context, process, item);
         element.__cssGridResizeMananger?.dispose();
     }
 
-    /**
-     * @method auto_fill - This function creates a grid of cells, each with a unique id
-     * a function that will automatically fill/create a grid according to the number of columns and rows.
-     * @param step {Object} - The step object
-     * @param context {Object} - The context of the process.
-     * @param process {Object} - The process object
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String} - The element to create the grid in.
-     * @param step.args.columns {String} - The number of columns to create.
-     * @param step.args.rows {String} - The number of rows to create.
-     *
-     * It will create a grid of cells, each with a unique id
-     * Each cell will be a div element with the class "grid-cell" and the id "grid-cell-<row>-<column>"
-     * Each cell will be a child of the element specified in the step's `element` argument
-     * Every cell will have a border of 1px solid black
-     * The css-variable `--grid-cell-width` will be set to the width of the element divided by the number of columns
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "auto_fill", {
-     *  element: "#my-grid",
-     *  columns: "3",
-     *  rows: "3"
-     *  });
-     *
-     *  // The following html will be created
-     *  <div id="my-grid">
-     *      <div id="grid-cell-1-1" class="grid-cell"></div>
-     *      <div id="grid-cell-1-2" class="grid-cell"></div>
-     *      <div id="grid-cell-1-3" class="grid-cell"></div>
-     *      <div id="grid-cell-2-1" class="grid-cell"></div>
-     *      <div id="grid-cell-2-2" class="grid-cell"></div>
-     *      <div id="grid-cell-2-3" class="grid-cell"></div>
-     *      <div id="grid-cell-3-1" class="grid-cell"></div>
-     *      <div id="grid-cell-3-2" class="grid-cell"></div>
-     *      <div id="grid-cell-3-3" class="grid-cell"></div>
-     *      <style>
-     *
-     *          #my-grid {
-     *          display: grid;
-     *          grid-template-columns: repeat(3, 1fr);
-     *          grid-template-rows: repeat(3, 1fr);
-     *          }
-     *
-     *      </style>
-     *
-     *  @example <caption>json example</caption>
-     *  {
-     *    "type": "css-grid",
-     *    "action": "auto_fill",
-     *    "args": {
-     *    "element": "#my-grid",
-     *    "columns": "3",
-     *    "rows": "3"
-     *    }
-     *  }
-     *
-     *  This will create a grid with 3 columns and 3 rows in the element with the id "my-grid".
-     *
-     *  @returns {Promise<void>}
-     */
     static async auto_fill(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const columns = await crs.process.getValue(step.args.columns, context, process, item);
@@ -228,333 +59,42 @@ export class CssGridActions {
         }
     }
 
-
-    /**
-     * @method set_columns - Set the CSS grid template columns property of the element identified by the `element` argument to the value of the
-     * `columns` argument
-     * @param step {Object} - The step object from the process.
-     * @param context {Object} - The context object that is passed to the process.
-     * @param process {Object} - the process object
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String} - The element to set the columns on.
-     * @param step.args.columns {String}- The value to set the columns to.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "set_columns", {
-     *    element: "#my-grid",
-     *    columns: "repeat(3, 1fr)"
-     * });
-     *
-     * // The following html will be created
-     * <div id="my-grid">
-     *     <style>
-     *
-     *         #my-grid {
-     *         display: grid;
-     *         grid-template-columns: repeat(3, 1fr);
-     *         }
-     *
-     *     </style>
-     * </div>
-     *
-     * @example <caption>json example</caption>
-     * {
-     *  "type": "css-grid",
-     *  "action": "set_columns",
-     *  "args": {
-     *   "element": "#my-grid",
-     *   "columns": "repeat(3, 1fr)"
-     *   }
-     * }
-     */
     static async set_columns(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const columns = await crs.process.getValue(step.args.columns, context, process, item);
         element.style.gridTemplateColumns = columns;
     }
 
-
-    /**
-     * @method set_rows - It sets the grid-template-rows property of the element specified in the step's args.element property to the value of
-     * the step's args.rows property
-     * @param step {Object} - The step object from the process.
-     * @param context {Object} - The context object that is passed to the process.
-     * @param process {Object} - the process object
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String}- The element to set the rows on.
-     * @param step.args.rows {String}- The value to set the rows to.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "set_rows", {
-     *   element: "#my-grid",
-     *   rows: "repeat(3, 1fr)"
-     *   });
-     *
-     *   // The following html will be created
-     *   <div id="my-grid">
-     *       <style>
-     *
-     *           #my-grid {
-     *           display: grid;
-     *           grid-template-rows: repeat(3, 1fr);
-     *           }
-     *       </style>
-     *   </div>
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "css-grid",
-     *   "action": "set_rows",
-     *   "args": {
-     *    "element": "#my-grid",
-     *    "rows": "repeat(3, 1fr)"
-     *    }
-     * }
-     *
-     */
     static async set_rows(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const rows = await crs.process.getValue(step.args.rows, context, process, item);
         element.style.gridTemplateRows = rows;
     }
 
-
-    /**
-     * @method add_columns - It adds columns to the specified element in the specified position.
-     *  a Count can be added to multiple columns at once.
-     *
-     * @param step {Object} - the current step in the process
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - the process object
-     * @param item {Object} - the item that is being processed
-     *
-     * @param step.args.element {String}- The element to add the column to.
-     * @param step.args.position {String|Number}- The position to add the column to.
-     * @param step.args.width {String} - The width of the column to add.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "add_column", {
-     *  element: "#my-grid",
-     *  position: "front",
-     *  // or
-     *  position: "back",
-     *  // or
-     *  position: 1,
-     *  width: "1fr"
-     *  });
-     *
-     *  @example <caption>json example</caption>
-     *  {
-     *     "type": "css-grid",
-     *     "action": "add_column",
-     *     "args": {
-     *      "element": "#my-grid",
-     *      "position": "front",
-     *      "width": "1fr"
-     *     }
-     *  }
-     */
     static async add_columns(step, context, process, item) {
         await add(step, context, process, item, "gridTemplateColumns", "width");
     }
 
-
-    /**
-     * @method remove_columns - Removes a column and/or columns from the specified element's grid at the specified position.
-     * @param step {Object} - the step object
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - the process object
-     * @param item {Object} - the item that is being processed
-     *
-     * @param step.args.element {String} - The element to remove the column from.
-     * @param step.args.position {String|Number} - The position to remove the column from.
-     *
-     */
     static async remove_columns(step, context, process, item) {
         await remove(step, context, process, item, "gridTemplateColumns");
     }
 
-
-    /**
-     * @method set_column_width - Sets the width of a column in the specified element's grid at the specified position.
-     *
-     * @param step {Object} - the step object
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - the process object
-     * @param item {Object} - the item that is being resized
-     *
-     * @param step.args.element {String}- The element to set the column width on.
-     * @param step.args.position {String|Number} - The position to set the column width on.
-     * @param step.args.width {String}- The width to set the column to.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "set_column_width", {
-     * element: "#my-grid",
-     * position: 1,
-     * width: "1fr"
-     * });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *    "type": "css-grid",
-     *    "action": "set_column_width",
-     *    "args": {
-     *      "element": "#my-grid",
-     *      "position": 1,
-     *      "width": "1fr"
-     *     }
-     * }
-     */
     static async set_column_width(step, context, process, item) {
         await resize(step, context, process, item, "gridTemplateColumns", "width");
     }
 
-
-    /**
-     * @method add_rows - It adds a row to the grid of the specified element in the specified position.
-     * @param step {Object} - the step object
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - the process object
-     * @param item {Object} - the item to add to the grid
-     *
-     * @param step.args.element {String} - The element to add the row to.
-     * @param step.args.position {String|Number} - The position to add the row to.
-     * @param step.args.height {String}- The height of the row to add.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "add_row", {
-     *    element: "#my-grid",
-     *    position: "front",
-     *    // or
-     *    position: 1,
-     *    height: "1fr"
-     * });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "css-grid",
-     *   "action": "add_row",
-     *   "args": {
-     *     "element": "#my-grid",
-     *     "position": "front",
-     *     "height": "1fr"
-     *   }
-     * }
-     */
     static async add_rows(step, context, process, item) {
         await add(step, context, process, item, "gridTemplateRows", "height");
     }
 
-
-    /**
-     * @method remove_rows - Remove the rows from the grid of the specified element in the specified position.
-     * @param step {Object} - the step object
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - the process object
-     * @param item {Object} - the item that is being processed
-     *
-     * @param step.args.element {String} - The element to remove the row from.
-     * @param step.args.position {String} - The position to remove the row from.
-     * @param step.args.count {String} - The number of rows to remove.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "remove_row", {
-     *   element: "#my-grid",
-     *   position: "front",
-     *   // or
-     *   position: 1,
-     *   count: 1
-     *   });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *  "type": "css-grid",
-     *  "action": "remove_row",
-     *  "args": {
-     *    "element": "#my-grid",
-     *    "position": "front",
-     *    "count": 1
-     *    }
-     * }
-     */
     static async remove_rows(step, context, process, item) {
         await remove(step, context, process, item, "gridTemplateRows");
     }
 
-
-    /**
-     * @method set_row_height- Resize the row height of the grid of the specified element in the specified position.
-     * @param step {Object} - the step object
-     * @param context {Object} - The context of the current step.
-     * @param process {Object} - the process object
-     * @param item {Object} - the item that was selected in the grid
-     *
-     * @param step.args.element {String} - The element to set the row height on.
-     * @param step.args.position {String} - The position to set the row height on.
-     * @param step.args.height {String}- The height to set the row to.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "set_row_height", {
-     *  element: "#my-grid",
-     *  position: 1,
-     *  height: "1fr"
-     *  });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *  "type": "css-grid",
-     *  "action": "set_row_height",
-     *  "args": {
-     *    "element": "#my-grid",
-     *    "position": 1,
-     *    "height": "1fr"
-     *   }
-     * }
-     */
     static async set_row_height(step, context, process, item) {
         await resize(step, context, process, item, "gridTemplateRows", "height");
     }
 
-
-    /**
-     * @method set_regions - It takes a list of areas, and sets the grid template areas of the element to those areas
-     * @param step {Object} - The step object
-     * @param context {Object} - The context object that is passed to the process.
-     * @param process {Object} - The process that is currently running.
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String}- The element to set the regions on.
-     * @param step.args.areas {[Object]}- The areas to set the regions to.
-     * @param [step.args.auto_fill=false] {String}- If true, it will fill in the rest of the grid with the default area.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "set_regions", {
-     *   element: "#my-grid",
-     *   areas: [
-     *     { start: {col: 0, row: 0}, end: {col: 1, row: 1}, name: "area1" },
-     *     { start: {col: 2, row: 0}, end: {col: 2, row: 1}, name: "area2" },
-     *     { start: {col: 0, row: 2}, end: {col: 2, row: 2}, name: "area3" }
-     *   ],
-     *   auto_fill: true
-     *  });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *  "type": "css-grid",
-     *  "action": "set_regions",
-     *  "args": {
-     *  "element": "#my-grid",
-     *  "areas": [
-     *    { "start": { "col": 0, "row": 0 }, "end": { "col": 1, "row": 1 }, "name": "area1" },
-     *    { "start": { "col": 2, "row": 0 }, "end": { "col": 2, "row": 1 }, "name": "area2" },
-     *    { "start": { "col": 0, "row": 2 }, "end": { "col": 2, "row": 2 }, "name": "area3" }
-     *    ]
-     *   }
-     * }
-     *
-     */
     static async set_regions(step, context, process, item) {
         const element   = await crs.dom.get_element(step.args.element);
         const areas     = await crs.process.getValue(step.args.areas, context, process, item);
@@ -593,33 +133,6 @@ export class CssGridActions {
         }
     }
 
-
-    /**
-     * @method clear_region - It removes all elements with a data-area attribute that matches the area argument
-     * @param step {Object} - The step object from the process.
-     * @param context {Object} - The context object that is passed to the process.
-     * @param process {Object} - The process object
-     * @param item {Object} - The item that is being processed.
-     *
-     * @param step.args.element {String}- The element to clear the region on.
-     * @param step.args.area {String}- The area to clear.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "clear_region", {
-     *   element: "#my-grid",
-     *   area: "area1"
-     * });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "css-grid",
-     *   "action": "clear_region",
-     *   "args": {
-     *     "element": "#my-grid",
-     *     "area": "area1"
-     *    }
-     * }
-     */
     static async clear_region(step, context, process, item) {
         const element   = await crs.dom.get_element(step.args.element);
         const area      = await crs.process.getValue(step.args.area, context, process, item);
@@ -630,91 +143,39 @@ export class CssGridActions {
         }
     }
 
-    /**
-     * @method column_count - Get the number of columns for a css grid element.
-     * @param step {Object} - The step object that is passed to the function.
-     *
-     * @param step.args.element {String} - The element to get the column count for.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "column_count", {
-     *    element: "#my-grid"
-     *  });
-     *
-     * @example <caption>json example</caption>
-     *  {
-     *    "type": "css-grid",
-     *    "action": "column_count",
-     *    "args": {
-     *     "element": "#my-grid"
-     *    }
-     *  }
-     *
-     * @returns The number of columns in the table.
-     */
-    static async column_count(step) {
+    static async column_count(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const result = getColumnCount(element);
+
+        if (step.args.result != null) {
+            await crs.process.setValue(step.args.result, result, context, process, item);
+        }
+
         return result;
     }
 
 
-    /**
-     * @method row_count - Get the number of rows in a for a css grid element
-     * @param step {Object} - The step object that is passed to the function.
-     *
-     * @param step.args.element {String}- The element to get the row count for.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "row_count", {
-     *   element: "#my-grid"
-     *   });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *  "type": "css-grid",
-     *  "action": "row_count",
-     *  "args": {
-     *    "element": "#my-grid"
-     *   }
-     * }
-     *
-     * @returns The number of rows in the table.
-     */
-    static async row_count(step) {
+    static async row_count(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const result = getRowCount(element);
+
+        if (step.args.result != null) {
+            await crs.process.setValue(step.args.result, result, context, process, item);
+        }
+
         return result;
     }
 
-    /**
-     * @method get_column_sizes - It gets the sizes of the columns of a grid element
-     * @param step {Object} - The step object that is being executed.
-     *
-     * @param step.args.element {String}- The element to get the column sizes for.
-     *
-     * @example <caption>javascript</caption>
-     * const result = await crs.call("css-grid", "get_column_sizes", {
-     *  element: "#my-grid"
-     *  });
-     *
-     * @example <caption>json example</caption>
-     * {
-     *   "type": "css-grid",
-     *   "action": "get_column_sizes",
-     *   "args": {
-     *     "element": "#my-grid"
-     *   }
-     * }
-     *
-     * @returns An array of numbers
-     */
-    static async get_column_sizes(step) {
+    static async get_column_sizes(step, context, process, item) {
         const element = await crs.dom.get_element(step.args.element);
         const sizes = getComputedStyle(element).gridTemplateColumns.split("px").join("").split(" ");
 
         for (let i = 0; i < sizes.length; i++) {
             sizes[i] = Number(sizes[i]);
+        }
+
+        if (step.args.result != null) {
+            await crs.process.setValue(step.args.result, sizes, context, process, item);
         }
 
         return sizes;

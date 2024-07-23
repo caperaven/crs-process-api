@@ -6,9 +6,9 @@
       <sourceFolder url="file://$MODULE_DIR$/wasm/data-processing/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wasm/excel/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wasm/markdown/src" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/wasm/markdown/target" />
-      <excludeFolder url="file://$MODULE_DIR$/wasm/excel/target" />
       <excludeFolder url="file://$MODULE_DIR$/wasm/data-processing/target" />
+      <excludeFolder url="file://$MODULE_DIR$/wasm/excel/target" />
+      <excludeFolder url="file://$MODULE_DIR$/wasm/markdown/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

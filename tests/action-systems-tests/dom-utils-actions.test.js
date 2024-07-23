@@ -5,8 +5,13 @@ import {init} from "./../mockups/init.js";
 
 await init();
 
+let expectedResult;
 beforeAll(async () => {
+
     await import("./../../src/action-systems/dom-utils-actions.js");
+    window.open = (url) => {
+        assertEquals(url, expectedResult);
+    }
 })
 
 Deno.test("call_on_element", async () => {
@@ -112,3 +117,40 @@ Deno.test("find_parent_of_type - element not found", async () => {
     // Assert
     assertEquals(result, undefined);
 });
+
+Deno.test("open_tab, should prefix url with http if prefix_http equals true" , async () => {
+    // Arrange
+    const url = "www.google.com";
+    expectedResult = "http://www.google.com";
+
+    // Act
+    await crs.call("dom_utils", "open_tab", {
+        url,
+        prefix_http: true
+    });
+});
+
+Deno.test("open_tab, should not prefix url with http if prefix_http equals false" , async () => {
+    // Arrange
+    const url = "www.google.com";
+    expectedResult = "www.google.com";
+
+    // Act
+    await crs.call("dom_utils", "open_tab", {
+        url,
+        prefix_http: false
+    });
+});
+
+Deno.test("open_tab, should not prefix url with http if prefix_http equals true but already contains a protocol" , async () => {
+    // Arrange
+    const url = "http://www.google.com";
+    expectedResult = "http://www.google.com";
+
+    // Act
+    await crs.call("dom_utils", "open_tab", {
+        url,
+        prefix_http: true
+    });
+});
+

@@ -68,24 +68,32 @@ export class HtmlActions {
      * }
      */
     static async get(step, context, process, item) {
+        let result;
+
         if (step.args.url != null) {
             if (step.args.template != null) {
-                return await this.#from_template(step, context, process, item);
+                result = await this.#from_template(step, context, process, item);
             }
-            return await this.#from_file(step, context, process, item);
+            result = await this.#from_file(step, context, process, item);
         }
 
-        if (step.args.schema != null) {
-            return await this.#from_schema(step, context, process, item);
+        else if (step.args.schema != null) {
+            result = await this.#from_schema(step, context, process, item);
         }
 
-        if (step.args.function != null) {
-            return await this.#from_function(step, context, process, item);
+        else if (step.args.function != null) {
+            result = await this.#from_function(step, context, process, item);
         }
 
-        if (step.args.markdown != null) {
-            return await crs.call("markdown", "to_html", step.args, context, process, item);
+        else if (step.args.markdown != null) {
+            result = await crs.call("markdown", "to_html", step.args, context, process, item);
         }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 
     /**

@@ -15,7 +15,7 @@ Deno.test("execute-action", async () => {
         }
     }
 
-    await crs.call("action", "$context.log", { parameters: ["Hello World"] }, context);
+    await crs.call("action", "context.log", { parameters: ["Hello World"] }, context);
 
     assertEquals(data.value, "Hello World");
 })

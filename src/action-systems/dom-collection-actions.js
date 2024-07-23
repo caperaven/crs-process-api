@@ -22,7 +22,7 @@ export class DomCollectionActions {
      *
      * @param step.args.element {String} - The id of the element to filter.
      * @param step.args.filter {String} - The filter string to use.
-     *
+     * @param step.args.hierarchical {Boolean} - If true, the filter is applied to a hierarchical structure.
      * @example <caption>javascript</caption>
      * await crs.call("dom-collection", "filter_children", {
      *  element: "my-list",
@@ -43,7 +43,8 @@ export class DomCollectionActions {
      */
     static async filter_children(step, context, process, item) {
         const filterString = await crs.process.getValue(step.args.filter, context, process, item);
-        await filter(step.args.element, filterString);
+        const hierarchical = await crs.process.getValue(step.args.hierarchical ?? false, context, process, item)
+        return await filter(step.args.element, filterString, hierarchical);
     }
 
     /**
@@ -138,15 +139,16 @@ export class DomCollectionActions {
  * attribute
  * @param element - The element to filter.
  * @param filter - The filter to apply to the element.
- *
+ * @param hierarchical - true if the filter is searching through a Hierarchical structure, false otherwise.
  * @example <caption>javascript</caption>
  * await filter("my-list", "my filter string");
  *
  * @returns {Promise<void>}
  */
-async function filter(element, filter) {
+async function filter(element, filterString, hierarchical) {
     element = await crs.dom.get_element(element);
-    const hasFilter = filter.length > 0;
+    const hasFilter = filterString.length > 0;
+    let count = 0;
 
     for (let child of element.children) {
         child.removeAttribute("aria-hidden");
@@ -156,10 +158,24 @@ async function filter(element, filter) {
             continue;
         }
 
-        if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filter) == -1) {
-            child.setAttribute("aria-hidden", "true");
+        const subMenuUl = hierarchical === true ? child.querySelector("ul"): null;
+        //We only filter leaf items
+        if (subMenuUl) {
+           const count =  await filter(subMenuUl, filterString, true);
+            if (count == 0) {
+                child.setAttribute("aria-hidden", "true");
+                continue;
+            }
         }
+        else {
+            if (child.dataset.tags && hasFilter && child.dataset.tags.indexOf(filterString) == -1) {
+                child.setAttribute("aria-hidden", "true");
+                continue;
+            }
+        }
+        count++;
     }
+    return count;
 }
 
 crs.intent.dom_collection = DomCollectionActions;

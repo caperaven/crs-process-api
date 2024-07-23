@@ -36,12 +36,14 @@ impl NumberAggregator {
         let max = self.max;
         let sum = self.total;
         let ave = self.total / self.count;
+        let count = self.count;
 
         let obj = js_sys::Object::new();
         js_sys::Reflect::set(&obj,&JsValue::from("min"), &JsValue::from(min))?;
         js_sys::Reflect::set(&obj,&JsValue::from("max"), &JsValue::from(max))?;
         js_sys::Reflect::set(&obj,&JsValue::from("sum"), &JsValue::from(sum))?;
         js_sys::Reflect::set(&obj,&JsValue::from("ave"), &JsValue::from(ave))?;
+        js_sys::Reflect::set(&obj,&JsValue::from("count"), &JsValue::from(count))?;
 
         Ok(obj)
     }

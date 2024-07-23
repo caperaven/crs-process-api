@@ -9,6 +9,7 @@ export async function initialize(root) {
     await crs.modules.add("compile", `${root}/action-systems/compile-actions.js`);
     await crs.modules.add("component", `${root}/action-systems/component-actions.js`);
     await crs.modules.add("condition", `${root}/action-systems/condition-actions.js`);
+    await crs.modules.add("contingent", `${root}/action-systems/contingent-actions`);
     await crs.modules.add("console", `${root}/action-systems/console-actions.js`);
     await crs.modules.add("cssgrid", `${root}/action-systems/css-grid-actions.js`);
     await crs.modules.add("data", `${root}/action-systems/data-actions.js`);
@@ -85,10 +86,19 @@ globalThis.crs.call = async (system, fn, args, context, process, item, prefixes 
     return await module[fn]({args: args}, context, process, item);
 }
 
-globalThis.crs.getNextStep = (process, step) => {
+globalThis.crs.getNextStep = (process, step, steps) => {
+    steps ||= process?.steps;
     if (typeof step == "object") return step;
-    return crs.binding.utils.getValueOnPath(process.steps, step);
+    return crs.binding.utils.getValueOnPath(steps, step);
 }
+
+globalThis.crs.process.reservedWords ||= {
+    "$context": true,
+    "$process": true,
+    "$item": true,
+    "$fn": true,
+    "$binding": true
+};
 
 crs.binding.events.emitter.on("crs-process-error", (message) => {
     console.error(message.error);

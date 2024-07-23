@@ -1,4 +1,4 @@
-import init, {unique_values, filter, group, get_perspective} from "./../bin/data_processing.js";
+import init, {unique_values, filter, group, sort, get_perspective, init_panic_hook, aggregate} from "./../bin/data_processing.js";
 
 await init();
 
@@ -17,6 +17,20 @@ export class DataProcessing {
      */
     static init_panic_hook(step, context, process, item) {
         init_panic_hook();
+    }
+
+    static async aggregate(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const intent = await crs.process.getValue(step.args.intent, context, process, item);
+        const rows = await crs.process.getValue(step.args.rows, context, process, item);
+
+        const result = aggregate(data, intent, rows);
+
+        if (step.args.target) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
     }
 
     /**
@@ -116,6 +130,19 @@ export class DataProcessing {
         const intent = await crs.process.getValue(step.args.intent, context, process, item);
         const rows = await crs.process.getValue(step.args.rows, context, process, item);
         const result = group(data, intent, rows)
+
+        if (step.args.target) {
+            await crs.process.setValue(step.args.target, result, context, process, item);
+        }
+
+        return result;
+    }
+
+    static async sort(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const intent = await crs.process.getValue(step.args.intent, context, process, item);
+        const rows = await crs.process.getValue(step.args.rows, context, process, item);
+        const result = sort(data, intent, rows)
 
         if (step.args.target) {
             await crs.process.setValue(step.args.target, result, context, process, item);

@@ -206,7 +206,9 @@ export class MathActions {
             args.push(value);
         }
 
-        const result = Math[step.action]?.(...args);
+        const action = await crs.process.getValue(step.args.action, context, process, item);
+
+        const result = Math[action]?.(...args);
 
         if (step.args.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

@@ -32,26 +32,25 @@ export class ConditionActions {
      * @example <caption>json example</caption>
      * {
      *    "type": "condition",
-     *    "action": "if",
      *    "args": {
-     *    "condition": "value == 10 ? true"
+     *      "condition": "value == 10 ? true"
      *    },
      *    "pass_step": "step1",
      *    "fail_step": "step2"
      * }
      */
-    static async perform(step, context, process, item) {
+    static async perform(step, context, process, item, steps) {
         const fn = compileExpression(step.args.condition, process);
 
         const success = fn(context, process, item);
 
         if (success && step.pass_step != null) {
-            const nextStep = await crs.getNextStep(process, step.pass_step);
-            await crs.process.runStep(nextStep, context, process, item);
+            const nextStep = await crs.getNextStep(process, step.pass_step, steps);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
         if (!success && step.fail_step != null) {
-            const nextStep = await crs.getNextStep(process, step.fail_step);
-            await crs.process.runStep(nextStep, context, process, item);
+            const nextStep = await crs.getNextStep(process, step.fail_step, steps);
+            await crs.process.runStep(nextStep, context, process, item, steps);
         }
 
         if (step.args.target != null) {
@@ -70,7 +69,7 @@ export class ConditionActions {
  *
  * @returns A function that takes in a context, process, and item and returns the result of the expression.
  */
-function compileExpression(condition, process) {
+export function compileExpression(condition, process) {
     let exp = condition;
 
     for (const key of Object.keys(process.prefixes)) {

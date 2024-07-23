@@ -55,7 +55,6 @@ pub fn in_filter(intent: &JsValue, row: &JsValue, case_sensitive: bool) -> Resul
 #[wasm_bindgen]
 pub fn filter(data: &Array, intent: &JsValue, case_sensitive: bool) -> Result<Array, JsValue> {
     let result = Array::new();
-
     let iterator = data.iter();
 
     for (index, row) in iterator.enumerate() {

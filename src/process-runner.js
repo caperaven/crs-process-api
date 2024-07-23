@@ -71,7 +71,12 @@ export class ProcessRunner {
                 await crs.modules.get(step.type);
             }
 
-            result = await crs.intent[step.type].perform(step, context, process, item);
+            // We are double-checking if the intent exist here because in some cases the module is not defined, and we want to surface those.
+            if (crs.intent[step.type] == null) {
+                throw new Error(`Process API module "${step.type}" not found.`);
+            }
+
+            result = await crs.intent[step.type].perform(step, context, process, item, steps);
         }
 
         if (step.args?.log != null) {
@@ -82,7 +87,7 @@ export class ProcessRunner {
         await setBinding("binding_after", step, context, process, item)
 
         if (process?.aborted !== true && step.aborted !== true) {
-            steps ||= process.steps;
+            steps ||= process?.steps;
 
             const nextStep = steps?.[step.alt_next_step || step.next_step];
 
@@ -116,6 +121,16 @@ export class ProcessRunner {
         if (expr == "$item") return item;
 
         if (expr.indexOf("$") == -1) return expr;
+
+        if (expr.indexOf("$") > -1) {
+
+            const parts = expr.split(".");
+            const prefix = parts[0].split("[")[0];
+
+            if (crs.process.reservedWords[prefix] == null && process?.prefixes?.[prefix] == null) {
+                return expr;
+            }
+        }
 
         if (expr.indexOf("$binding") != -1) {
             return await crs.binding.data.getProperty(process.parameters.bId, expr.replace("$binding.", ""));
