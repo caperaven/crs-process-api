@@ -124,11 +124,14 @@ export class RouteManager {
         }
 
         this.#routeDefinition = routeDefinition;
-        if (this.#routeDefinition.params.view == null || this.#routeDefinition.params.view === "") {
-            this.#routeDefinition.params.view = this.#defaultView;
+        const viewZero = this.#routeDefinition.params["0"];
+
+        if (viewZero == null || viewZero === "") {
+            this.#routeDefinition.params["0"] = this.#defaultView;
         }
 
-        const route = this.#routes.find(route => route.view === this.#routeDefinition.params.view);
+        const findView = this.#routeDefinition.params["0"];
+        const route = this.#routes.find(route => route.view === findView);
 
         if (route == null) {
             // todo redirect to 404

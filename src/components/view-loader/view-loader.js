@@ -35,7 +35,7 @@ class ViewLoader extends HTMLElement {
     }
 
     async #callback(args, title) {
-        let view = args.params.view;
+        let view = args.params["0"];
 
         if (view !== this.#currentView) {
             this.#viewModel?.remove();
