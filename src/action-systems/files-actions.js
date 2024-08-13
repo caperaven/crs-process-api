@@ -1,4 +1,23 @@
 /**
+ * FileFormat - an ENUM that represent the different file formats the load_as action can handle
+ * @type {Readonly<{TEXT: string, JSON: string}>}
+ */
+const FileFormats = Object.freeze({
+    TEXT: "text",
+    JSON: "json"
+});
+
+/**
+ * FileFormatActions - a readonly object that contain functions to parse file content based on the file format
+ * @type {Readonly<{TEXT: (function(*): *), JSON: (function(*): *)}>}
+ * @returns The parsed file content
+ */
+const FileFormatActions = Object.freeze ({
+    [FileFormats.TEXT]: (content) => { return content },
+    [FileFormats.JSON]: (content) => { return JSON.parse(content) }
+});
+
+/**
  * @class FilesActions - It provides a set of actions for working with files.
  * Features:
  * -load - load files from the file system
@@ -20,6 +39,7 @@ export class FilesActions {
      * @param item {Object} - The item that is being processed.
      *
      * @param step.args.dialog {boolean} - If true, it opens a file dialog and returns the files selected.
+     * @param step.args.files {Array} - An array of file paths.
      * @param step.args.target {string} - The target to save the files to.
      *
      * @example <caption>javascript</caption>
@@ -73,6 +93,62 @@ export class FilesActions {
 
             return results;
         }
+    }
+
+    /**
+     * @method load_as - It loads file content in different formats
+     * @param step {Object} - The step object from the process definition.
+     * @param context {Object} - The context object that is passed to the process.
+     * @param process {Object} - The process object
+     * @param item {Object} - The item that is being processed.
+     *
+     * @param [step.args.dialog = false] {boolean} - If true, it opens a file dialog and returns the files selected.
+     * @param [step.args.file_format = "json"] {string} - The format to load the file as.
+     * @param [step.args.file_paths = []] {Array} - An array of file paths.
+     * @param step.args.target {string} - The target to save the files to.
+     *
+     * @example <caption>javascript</caption>
+     * const result = await crs.call("files", "load_as", {
+     *    dialog: false,
+     *    file_format: "json"
+     *    file_paths: ["my/path/to/my/file.txt"],
+     * });
+     *
+     * @example <caption>json</caption>
+     * {
+     *   "type": "files",
+     *   "action": "load_as",
+     *   "args": {
+     *      "dialog": true,
+     *      "file_format": "json",
+     *      "target": "$data.fileContentArray"
+     *   }
+     * }
+     * @returns {Promise<Array>} - The array of file content.
+     */
+    static async load_as(step, context, process, item) {
+        const dialog = await crs.process.getValue(step.args.dialog, context, process, item) ?? false;
+        const fileFormat = await crs.process.getValue(step.args.file_format, context, process, item) ?? FileFormats.JSON;
+
+        const format = FileFormats[fileFormat.toUpperCase()];
+
+        if (format == null) {
+            throw new Error(`Invalid file format: ${fileFormat}`);
+        }
+
+        const contentArray = [];
+        const filePath = dialog == false ? step.args.file_paths : [];
+        const files = await crs.call("files", "load", {dialog, files: filePath});
+
+        for (const file of files) {
+            await parseFileContent(file, format, contentArray);
+        }
+
+        if (step.args.target != null) {
+            await crs.process.setValue(step.args.target, contentArray, context, process, item);
+        }
+
+        return contentArray;
     }
 
     /**
@@ -285,9 +361,6 @@ export class FilesActions {
     }
 }
 
-
-
-
 /**
  * @class FileFormatter - It reads a file and returns a blob
  * Features:
@@ -306,6 +379,28 @@ export class FileFormatter {
             reader.readAsArrayBuffer(file);
         })
     }
+}
+
+/**
+ * @function parseFileContent - It reads a file and returns the content in the specified format (text or json)
+ * @param file {Object} - The file to read.
+ * @param format {string} - The format to return the file content in.
+ * @param contentArray {Array} - The array to store the file content in.
+ * @returns {Promise<Array>} - The array of file content.
+ */
+async function parseFileContent(file,format,contentArray) {
+    return new Promise((resolve,reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const content = FileFormatActions[format](event.target.result);
+
+            contentArray.push(content);
+            resolve(contentArray);
+        };
+        reader.onerror = () => reject(new Error("Failed to read file."));
+        reader.readAsText(file.value, "UTF-8");
+    });
 }
 
 /**
@@ -328,7 +423,6 @@ export async function get_file_name(path) {
         ext
     }
 }
-
 
 /**
  * @function get_files_dialog - It creates an input element, sets its type to file, sets its multiple attribute to true, and then returns a promise that
