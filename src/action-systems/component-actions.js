@@ -328,6 +328,51 @@ export class ComponentActions {
             observer.observe(element);
         });
     }
+
+    /**
+     * @method load_html - Load the HTML of the element by fetching the html and loading the stylesheets of the CSS if needed.
+     * @param step
+     * @param context
+     * @param process
+     * @param item
+     *
+     * @param step.args.element {HTMLElement} - The element to where we want to load the HTML
+     * @param step.args.url {String} - The URL of the HTML file we want to load
+     * @param step.args.has_css {Boolean} - If the HTML file has CSS to load or not
+     * @returns {Promise<void>}
+     *
+     * @example <caption>javascript</caption>
+     * await crs.call("component", "load_html", {
+     *   element: "my-element",
+     *   url: "my-url",
+     *   has_css: true
+     *   });
+     */
+    static async load_html(step, context, process, item) {
+        const element = await crs.dom.get_element(step.args.element, context, process, item);
+        const url = await crs.process.getValue(step.args.url, context, process, item);
+        const hasCss = await crs.process.getValue(step.args.has_css, context, process, item);
+
+        const htmlURL = new URL(url.replace('.js', '.html'));
+        const html = await fetch(htmlURL).then(result => result.text());
+
+        if (hasCss === true) {
+            return new Promise((resolve => {
+                const cssURL = new URL(url.replace('.js', '.css'));
+                element.innerHTML = `<link rel="stylesheet" href="${cssURL}">${html}`;
+
+                // Wait for stylesheet to load
+                const link = element.querySelector("link");
+                link.onload = () => {
+                    link.onload = null;
+                    resolve();
+                }
+            }));
+
+        } else {
+            element.innerHTML = html;
+        }
+    }
 }
 
 
