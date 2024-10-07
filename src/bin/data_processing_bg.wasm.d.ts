@@ -5,6 +5,7 @@ export function init_panic_hook(): void;
 export function get_value(a: number, b: number, c: number): number;
 export function in_filter(a: number, b: number, c: number, d: number): void;
 export function filter(a: number, b: number, c: number, d: number): void;
+export function fuzzy_filter(a: number, b: number, c: number): void;
 export function sort(a: number, b: number, c: number, d: number, e: number): void;
 export function group(a: number, b: number, c: number, d: number, e: number): void;
 export function aggregate(a: number, b: number, c: number, d: number, e: number, f: number): void;

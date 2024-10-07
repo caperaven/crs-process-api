@@ -9,7 +9,7 @@ mod group;
 mod aggregate;
 mod unique_values;
 
-use js_sys::{Array, Reflect};
+use js_sys::{Array, Reflect, try_iter};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -62,6 +62,37 @@ pub fn filter(data: &Array, intent: &JsValue, case_sensitive: bool) -> Result<Ar
 
         if pass {
             result.push(&JsValue::from(index));
+        }
+    }
+
+    Ok(result)
+}
+
+#[wasm_bindgen]
+pub fn fuzzy_filter(data: &Array, intent: &JsValue) -> Result<Array, JsValue> {
+    // Extract fields and value from intent
+    let fields = Reflect::get(&intent, &JsValue::from("fields"))
+        .map_err(|_| JsValue::from("fuzzy_filter - failed to get fields"))?;
+
+    let fields_vec: Vec<JsValue> = try_iter(&fields)?
+        .ok_or_else(|| JsValue::from("fuzzy_filter - fields must be an array"))?
+        .collect::<Result<Vec<_>, _>>()?;
+
+    let value = Reflect::get(&intent, &JsValue::from("value"))
+        .and_then(|v| v.as_string().ok_or_else(|| JsValue::from("fuzzy_filter - value must be a string")))?;
+
+    let result = Array::new();
+    let iterator = data.iter();
+
+    // Iterate over each row in the data array
+    for (index, row) in iterator.enumerate() {
+        // Check each field for a fuzzy match
+        for field in &fields_vec {
+            let field_value = get_property!(&row, field).as_string().unwrap_or_default();
+            if field_value.contains(&value) {
+                result.push(&JsValue::from(index));
+                break;
+            }
         }
     }
 

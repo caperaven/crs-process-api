@@ -11,7 +11,5 @@
   ],
   "module": "data_processing.js",
   "types": "data_processing.d.ts",
-  "sideEffects": [
-    "./snippets/*"
-  ]
+  "sideEffects": false
 }

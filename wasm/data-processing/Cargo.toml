@@ -17,5 +17,5 @@ hashbrown = "0.12.3"
 uuid = { version = "0.8", features = ["v4", "wasm-bindgen"] }
 
 [profile.release]
-# lto = true
-debug = true
+lto = true
+#debug = true
