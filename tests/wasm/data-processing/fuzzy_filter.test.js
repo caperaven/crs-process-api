@@ -13,6 +13,6 @@ Deno.test("fuzzy filter", () => {
         { value: "b" , value2: "aa"}
     ], { "fields": ["value", "value2"], "value": "a" });
 
-    assertEquals(result.length, 3);
-    assertEquals(result, [0, 2, 4]);
+    assertEquals(result.length, 4);
+    assertEquals(result, [0, 2, 3, 4]);
 })
