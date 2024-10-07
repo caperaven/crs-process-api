@@ -80,6 +80,7 @@ pub fn fuzzy_filter(data: &Array, intent: &JsValue) -> Result<Array, JsValue> {
 
     let value = Reflect::get(&intent, &JsValue::from("value"))
         .and_then(|v| v.as_string().ok_or_else(|| JsValue::from("fuzzy_filter - value must be a string")))?;
+    let value = value.to_lowercase();
 
     let result = Array::new();
     let iterator = data.iter();
@@ -89,6 +90,8 @@ pub fn fuzzy_filter(data: &Array, intent: &JsValue) -> Result<Array, JsValue> {
         // Check each field for a fuzzy match
         for field in &fields_vec {
             let field_value = get_property!(&row, field).as_string().unwrap_or_default();
+            let field_value = field_value.to_lowercase();
+
             if field_value.contains(&value) {
                 result.push(&JsValue::from(index));
                 break;
