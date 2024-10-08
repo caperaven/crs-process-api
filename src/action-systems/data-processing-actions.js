@@ -1,4 +1,4 @@
-import init, {unique_values, filter, group, sort, get_perspective, init_panic_hook, aggregate, fuzzy_filter} from "./../bin/data_processing.js";
+import init, {unique_values, filter, group, sort, get_perspective, init_panic_hook, aggregate, fuzzy_filter} from "../wasm/data_processing.js";
 
 await init();
 
