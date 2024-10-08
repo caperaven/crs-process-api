@@ -200,18 +200,28 @@ pub fn unique_values(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>
 #[wasm_bindgen]
 pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue> {
     let filter_def = Reflect::get(&intent, &JsValue::from("filter")).unwrap();
-    // let fuzzy_filter_def = Reflect::get(&intent, &JsValue::from("fuzzy_filter")).unwrap();
+    let fuzzy_filter_def = Reflect::get(&intent, &JsValue::from("fuzzy_filter")).unwrap();
     let sort_def = Reflect::get(&intent, &JsValue::from("sort")).unwrap();
     let group_def = Reflect::get(&intent, &JsValue::from("group")).unwrap();
     let aggregate_def = Reflect::get(&intent, &JsValue::from("aggregate")).unwrap();
 
     let has_filter = !filter_def.is_undefined() && !filter_def.is_null();
-    // let has_fuzzy_filter = !fuzzy_filter_def.is_undefined() && !fuzzy_filter_def.is_null();
+    let has_fuzzy_filter = !fuzzy_filter_def.is_undefined() && !fuzzy_filter_def.is_null();
     let has_sort = !sort_def.is_undefined() && !sort_def.is_null();
     let has_group = !group_def.is_undefined() && !group_def.is_null();
     let has_aggregate = !aggregate_def.is_undefined() && !aggregate_def.is_null();
 
     let mut rows: Vec<usize> = vec![];
+
+    if has_fuzzy_filter {
+        let fuzzy_filter_result = fuzzy_filter(data, &fuzzy_filter_def)?;
+
+        if !has_sort && !has_group && !has_aggregate {
+            return Ok(JsValue::from(fuzzy_filter_result));
+        }
+
+        rows = fuzzy_filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
+    }
 
     if has_filter {
         let filter_result = filter(data, &filter_def, false)?;

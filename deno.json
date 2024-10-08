@@ -1,0 +1,5 @@
+{
+    "tasks": {
+        "build_wasm": "wasm-pack build ./wasm/data/  --target web --out-dir ./../../src/bin & wasm-pack build ./wasm/markdown/  --target web --out-dir ./../../src/bin & wasm-pack build --release ./wasm/data-processing/  --target web --out-dir ./../../src/bin"
+    }
+}
