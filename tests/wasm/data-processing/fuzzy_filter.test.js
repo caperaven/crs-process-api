@@ -66,13 +66,13 @@ Deno.test("fuzzy filter - numeric match", () => {
     init_panic_hook();
 
     const result = fuzzy_filter([
-        { value: "123" , value2: "456" },
-        { value: "789" , value2: "012"},
-        { value: "345" , value2: "678"},
-        { value: "901" , value2: "234"},
-        { value: "567" , value2: "890"}
+        { value: "123" , value2: 456 },
+        { value: "789" , value2: 120 },
+        { value: "345" , value2: 678 },
+        { value: "901" , value2: 234 },
+        { value: "567" , value2: 890 }
     ], { "fields": ["value", "value2"], "value": "3" });
 
-    assertEquals(result.length, 3);
-    assertEquals(result, [0, 2, 3]);
+    assertEquals(result.length, 2);
+    assertEquals(result, [0, 2]);
 });
