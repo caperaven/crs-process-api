@@ -5,11 +5,14 @@ yarn.lock
 yarn-error.log
 /coverage/
 /wasm/data/target/
+/wasm/data-processing/target/
 /wasm/excel/target/
-/wasm/excel/target/
-wasm/data/Cargo.lock
+/wasm/markdown/target/
+Cargo.lock
 dist/
 /out/
 
 /wasm/random_data/target/
 deno.lock
+
+
