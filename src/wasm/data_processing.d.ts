@@ -37,6 +37,12 @@ export function in_filter(intent: any, row: any, case_sensitive: boolean): boole
 */
 export function filter(data: Array<any>, intent: any, case_sensitive: boolean): Array<any>;
 /**
+* @param {Array<any>} data
+* @param {any} intent
+* @returns {Array<any>}
+*/
+export function fuzzy_filter(data: Array<any>, intent: any): Array<any>;
+/**
 *
 *    Sort the array of objects based on the sort intent.
 *    If you only want to sort a subset of the records, pass in an array of indexes for the objects
@@ -117,6 +123,7 @@ export interface InitOutput {
   readonly get_value: (a: number, b: number, c: number) => number;
   readonly in_filter: (a: number, b: number, c: number, d: number) => void;
   readonly filter: (a: number, b: number, c: number, d: number) => void;
+  readonly fuzzy_filter: (a: number, b: number, c: number) => void;
   readonly sort: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly group: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly aggregate: (a: number, b: number, c: number, d: number, e: number, f: number) => void;
@@ -134,18 +141,18 @@ export type SyncInitInput = BufferSource | WebAssembly.Module;
 * Instantiates the given `module`, which can either be bytes or
 * a precompiled `WebAssembly.Module`.
 *
-* @param {SyncInitInput} module
+* @param {{ module: SyncInitInput }} module - Passing `SyncInitInput` directly is deprecated.
 *
 * @returns {InitOutput}
 */
-export function initSync(module: SyncInitInput): InitOutput;
+export function initSync(module: { module: SyncInitInput } | SyncInitInput): InitOutput;
 
 /**
 * If `module_or_path` is {RequestInfo} or {URL}, makes a request and
 * for everything else, calls `WebAssembly.instantiate` directly.
 *
-* @param {InitInput | Promise<InitInput>} module_or_path
+* @param {{ module_or_path: InitInput | Promise<InitInput> }} module_or_path - Passing `InitInput` directly is deprecated.
 *
 * @returns {Promise<InitOutput>}
 */
-export default function __wbg_init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;
+export default function __wbg_init (module_or_path?: { module_or_path: InitInput | Promise<InitInput> } | InitInput | Promise<InitInput>): Promise<InitOutput>;

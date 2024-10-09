@@ -11,7 +11,7 @@ import init, {
     init_panic_hook,
     evaluate_obj,
     build_perspective
-} from "./../bin/data.js";
+} from "../wasm/data.js";
 
 /**
  * todo: free up the data objects after transactions are done. IDB

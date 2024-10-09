@@ -9,7 +9,7 @@ mod group;
 mod aggregate;
 mod unique_values;
 
-use js_sys::{Array, Reflect};
+use js_sys::{Array, Reflect, try_iter};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -62,6 +62,40 @@ pub fn filter(data: &Array, intent: &JsValue, case_sensitive: bool) -> Result<Ar
 
         if pass {
             result.push(&JsValue::from(index));
+        }
+    }
+
+    Ok(result)
+}
+
+#[wasm_bindgen]
+pub fn fuzzy_filter(data: &Array, intent: &JsValue) -> Result<Array, JsValue> {
+    // Extract fields and value from intent
+    let fields = Reflect::get(&intent, &JsValue::from("fields"))
+        .map_err(|_| JsValue::from("fuzzy_filter - failed to get fields"))?;
+
+    let fields_vec: Vec<JsValue> = try_iter(&fields)?
+        .ok_or_else(|| JsValue::from("fuzzy_filter - fields must be an array"))?
+        .collect::<Result<Vec<_>, _>>()?;
+
+    let value = Reflect::get(&intent, &JsValue::from("value"))
+        .and_then(|v| v.as_string().ok_or_else(|| JsValue::from("fuzzy_filter - value must be a string")))?;
+    let value = value.to_lowercase();
+
+    let result = Array::new();
+    let iterator = data.iter();
+
+    // Iterate over each row in the data array
+    for (index, row) in iterator.enumerate() {
+        // Check each field for a fuzzy match
+        for field in &fields_vec {
+            let field_value = get_property!(&row, field).as_string().unwrap_or_default();
+            let field_value = field_value.to_lowercase();
+
+            if field_value.contains(&value) {
+                result.push(&JsValue::from(index));
+                break;
+            }
         }
     }
 
@@ -166,18 +200,28 @@ pub fn unique_values(data: &Array, intent: Vec<JsValue>, rows: Option<Vec<usize>
 #[wasm_bindgen]
 pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue> {
     let filter_def = Reflect::get(&intent, &JsValue::from("filter")).unwrap();
-    // let fuzzy_filter_def = Reflect::get(&intent, &JsValue::from("fuzzy_filter")).unwrap();
+    let fuzzy_filter_def = Reflect::get(&intent, &JsValue::from("fuzzy_filter")).unwrap();
     let sort_def = Reflect::get(&intent, &JsValue::from("sort")).unwrap();
     let group_def = Reflect::get(&intent, &JsValue::from("group")).unwrap();
     let aggregate_def = Reflect::get(&intent, &JsValue::from("aggregate")).unwrap();
 
     let has_filter = !filter_def.is_undefined() && !filter_def.is_null();
-    // let has_fuzzy_filter = !fuzzy_filter_def.is_undefined() && !fuzzy_filter_def.is_null();
+    let has_fuzzy_filter = !fuzzy_filter_def.is_undefined() && !fuzzy_filter_def.is_null();
     let has_sort = !sort_def.is_undefined() && !sort_def.is_null();
     let has_group = !group_def.is_undefined() && !group_def.is_null();
     let has_aggregate = !aggregate_def.is_undefined() && !aggregate_def.is_null();
 
     let mut rows: Vec<usize> = vec![];
+
+    if has_fuzzy_filter {
+        let fuzzy_filter_result = fuzzy_filter(data, &fuzzy_filter_def)?;
+
+        if !has_sort && !has_group && !has_aggregate {
+            return Ok(JsValue::from(fuzzy_filter_result));
+        }
+
+        rows = fuzzy_filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
+    }
 
     if has_filter {
         let filter_result = filter(data, &filter_def, false)?;

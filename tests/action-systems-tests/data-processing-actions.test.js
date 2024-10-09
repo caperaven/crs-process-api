@@ -364,4 +364,72 @@ describe("data processing actions tests", () => {
         assertEquals(result.age.ave, 14);
         assertEquals(result.age.count, 3);
     })
+
+    it ("fuzzy filter", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        const result = await crs.call("data_processing", "fuzzy_filter", {
+            source: people,
+            value: "doe"
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result[0], 0);
+        assertEquals(result[1], 2);
+    })
+
+    it ("fuzzy filter - include", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        let result = await crs.call("data_processing", "fuzzy_filter", {
+            include: ["name"],
+            source: people,
+            value: "doe"
+        });
+
+        assertEquals(result.length, 0);
+
+        result = await crs.call("data_processing", "fuzzy_filter", {
+            include: ["lastName"],
+            source: people,
+            value: "doe"
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result, [0, 2]);
+    })
+
+    it ("fuzzy filter - exclude", async () => {
+        const people = [
+            { "id": 1, "name": "John", "lastName": "Doe", "age": 10 },
+            { "id": 2, "name": "Andrew", "lastName": "Smith", "age": 20 },
+            { "id": 3, "name": "Suzy", "lastName": "Doe", "age": 12 }
+        ]
+
+        let result = await crs.call("data_processing", "fuzzy_filter", {
+            exclude: ["lastName"],
+            source: people,
+            value: "doe"
+        });
+
+        assertEquals(result.length, 0);
+
+        result = await crs.call("data_processing", "fuzzy_filter", {
+            exclude: ["name"],
+            source: people,
+            value: "doe"
+        });
+
+        assertEquals(result.length, 2);
+        assertEquals(result, [0, 2]);
+
+    })
 })

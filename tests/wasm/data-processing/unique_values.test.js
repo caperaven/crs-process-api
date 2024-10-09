@@ -1,5 +1,5 @@
 import {assertEquals} from "https://deno.land/std@0.148.0/testing/asserts.ts";
-import init, {unique_values} from "./../../../src/bin/data_processing.js";
+import init, {unique_values} from "../../../src/wasm/data_processing.js";
 
 await init();
 

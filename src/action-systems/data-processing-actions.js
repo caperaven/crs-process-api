@@ -1,4 +1,4 @@
-import init, {unique_values, filter, group, sort, get_perspective, init_panic_hook, aggregate} from "./../bin/data_processing.js";
+import init, {unique_values, filter, group, sort, get_perspective, init_panic_hook, aggregate, fuzzy_filter} from "../wasm/data_processing.js";
 
 await init();
 
@@ -161,6 +161,27 @@ export class DataProcessing {
         }
 
         return result;
+    }
+
+    static async fuzzy_filter(step, context, process, item) {
+        const data = await crs.process.getValue(step.args.source, context, process, item);
+        const value = await crs.process.getValue(step.args.value, context, process, item);
+
+        if (data == null || data.length === 0) return [];
+
+        let fields;
+
+        const include = await crs.process.getValue(step.args.include ?? [], context, process, item);
+
+        if (include.length > 0) {
+            fields = include;
+        }
+        else {
+            const exclude = await crs.process.getValue(step.args.exclude ?? [], context, process, item);
+            fields = Object.keys(data[0]).filter(key => !exclude.includes(key));
+        }
+
+        return fuzzy_filter(data, {fields, value: String(value)});
     }
 }
 

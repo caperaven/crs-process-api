@@ -1,4 +1,4 @@
-import init, {markdown_to_html} from  "./../bin/markdown.js"
+import init, {markdown_to_html} from "../wasm/markdown.js"
 
 await init();
 

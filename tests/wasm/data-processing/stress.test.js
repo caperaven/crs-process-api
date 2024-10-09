@@ -1,5 +1,5 @@
 // import {join} from "https://deno.land/std@0.150.0/path/mod.ts";
-// import init, {filter} from "./../bin/wasm_lib.js";
+// import init, {filter} from "./../wasm/wasm_lib.js";
 //
 // await init();
 //

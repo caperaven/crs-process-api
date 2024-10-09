@@ -1,5 +1,5 @@
 import {assertEquals, assertThrows} from "https://deno.land/std@0.148.0/testing/asserts.ts";
-import init, {filter, init_panic_hook} from "./../../../src/bin/data_processing.js";
+import init, {filter, init_panic_hook} from "../../../src/wasm/data_processing.js";
 await init();
 
 Deno.test("filter - simple", () => {

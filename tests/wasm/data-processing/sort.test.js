@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.148.0/testing/asserts.ts";
 import {data, data2, people} from "./data/simple-data.js"
-import init, {sort} from "./../../../src/bin/data_processing.js";
+import init, {sort} from "../../../src/wasm/data_processing.js";
 
 await init();
 
