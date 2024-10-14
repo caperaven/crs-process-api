@@ -213,16 +213,6 @@ pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue
 
     let mut rows: Vec<usize> = vec![];
 
-    if has_fuzzy_filter {
-        let fuzzy_filter_result = fuzzy_filter(data, &fuzzy_filter_def)?;
-
-        if !has_sort && !has_group && !has_aggregate {
-            return Ok(JsValue::from(fuzzy_filter_result));
-        }
-
-        rows = fuzzy_filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
-    }
-
     if has_filter {
         let filter_result = filter(data, &filter_def, false)?;
 
@@ -233,13 +223,25 @@ pub fn get_perspective(data: &Array, intent: JsValue) -> Result<JsValue, JsValue
         rows = filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
     }
 
-    // if has_fuzzy_filter {
-        // this can be a single value that you need to check over all the fields.
-        // or this can be an single expression
-        // field eq value and field eq value
-        // field eq value or field eq value
-        // field eq value and (field eq value or field eq value)
-    // }
+    if has_fuzzy_filter {
+        let mut fuzzy_data: &Array = data;
+        let temp_array = Array::new();
+
+        if !rows.is_empty() {
+            for row in rows.iter() {
+                temp_array.push(&data.at(*row as i32));
+            }
+            fuzzy_data = &temp_array;
+        }
+
+        let fuzzy_filter_result = fuzzy_filter(fuzzy_data, &fuzzy_filter_def)?;
+
+        if !has_sort && !has_group && !has_aggregate {
+            return Ok(JsValue::from(fuzzy_filter_result));
+        }
+
+        rows = fuzzy_filter_result.iter().map(|x| x.as_f64().unwrap() as usize).collect();
+    }
 
     if has_sort {
         let sort_intent: Array = sort_def.into();

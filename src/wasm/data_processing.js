@@ -594,6 +594,10 @@ function __wbg_get_imports() {
         getDataViewMemory0().setFloat64(arg0 + 8 * 1, isLikeNone(ret) ? 0 : ret, true);
         getDataViewMemory0().setInt32(arg0 + 4 * 0, !isLikeNone(ret), true);
     };
+    imports.wbg.__wbg_at_5fa66069579ac579 = function(arg0, arg1) {
+        const ret = getObject(arg0).at(arg1);
+        return addHeapObject(ret);
+    };
     imports.wbg.__wbg_new_abda76e883ba8a5f = function() {
         const ret = new Error();
         return addHeapObject(ret);
@@ -615,10 +619,6 @@ function __wbg_get_imports() {
         } finally {
             wasm.__wbindgen_free(deferred0_0, deferred0_1, 1);
         }
-    };
-    imports.wbg.__wbg_at_5fa66069579ac579 = function(arg0, arg1) {
-        const ret = getObject(arg0).at(arg1);
-        return addHeapObject(ret);
     };
     imports.wbg.__wbindgen_typeof = function(arg0) {
         const ret = typeof getObject(arg0);
