@@ -111,7 +111,7 @@ await packageDirectory({
 
 await bundle("./src/index.js", "./dist/crs-process-api.js", minified);
 
-await copyDirectory("./src/bin", "./dist/bin");
+await copyDirectory("./src/wasm", "./dist/wasm");
 await copyDirectory("./docs", "./dist/docs");
 await copyDirectory("./tools", "./dist/tools");
 await copyDirectory("./src/action-systems/no-content", "./dist/action-systems/no-content");
