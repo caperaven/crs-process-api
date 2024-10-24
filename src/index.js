@@ -1,5 +1,6 @@
 import {SchemaRegistry} from "./process-registry.js";
 import {ProcessRunner, populatePrefixes} from "./process-runner.js";
+import {validateArgs} from "./validate.js";
 
 export async function initialize(root) {
     await crs.modules.add("action", `${root}/action-systems/action-actions.js`);
@@ -92,6 +93,8 @@ globalThis.crs.getNextStep = (process, step, steps) => {
     if (typeof step == "object") return step;
     return crsbinding.utils.getValueOnPath(steps, step);
 }
+
+globalThis.crs.validate = validateArgs;
 
 globalThis.crs.process.reservedWords ||= {
     "$context": true,

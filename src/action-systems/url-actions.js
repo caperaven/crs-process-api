@@ -1,5 +1,3 @@
-import {validateArgs} from "../validate.js";
-
 export class UrlActions {
     static async perform(step, context, process, item) {
         return await this[step.action](step, context, process, item);
@@ -39,7 +37,7 @@ export class UrlActions {
      * }
      */
     static async set_hash(step, context, process, item) {
-        await validateArgs(step, context, process, item, {
+        await crs.validate(step, context, process, item, {
             hash: { required: true, type: "string" },
             parameters: { required: false, type: "object" }
         }, "UrlActions.set_hash");
