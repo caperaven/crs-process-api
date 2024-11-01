@@ -90,7 +90,11 @@ export class MoveManager {
 
     async #animateMoving() {
         if (this.#startPos == null) return;
-        this.#element.style.translate = `${this.#bounds.x + this.#offsetX}px ${this.#bounds.y + this.#offsetY}px`;
+
+        const xCoordinate = await roundOffValue((this.#bounds.x + this.#offsetX));
+        const yCoordinate = await roundOffValue((this.#bounds.y + this.#offsetY));
+
+        this.#element.style.translate = `${xCoordinate}px ${yCoordinate}px`;
         requestAnimationFrame(this.#animateMovingHandler);
     }
 
@@ -111,4 +115,8 @@ export class MoveManager {
         event.preventDefault();
         event.stopPropagation();
     }
+}
+
+async function roundOffValue(value) {
+    return Math.round(value);
 }
