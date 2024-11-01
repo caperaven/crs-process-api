@@ -90,7 +90,11 @@ export class MoveManager {
 
     async #animateMoving() {
         if (this.#startPos == null) return;
-        this.#element.style.translate = `${this.#bounds.x + this.#offsetX}px ${this.#bounds.y + this.#offsetY}px`;
+
+        const xCoordinate = Math.round((this.#bounds.x + this.#offsetX));
+        const yCoordinate = Math.round((this.#bounds.y + this.#offsetY));
+
+        this.#element.style.translate = `${xCoordinate}px ${yCoordinate}px`;
         requestAnimationFrame(this.#animateMovingHandler);
     }
 
