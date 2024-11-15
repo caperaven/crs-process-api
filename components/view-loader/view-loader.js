@@ -55,7 +55,7 @@ class ViewLoader extends HTMLElement {
 
     async #click(event) {
         const target = event.composedPath()[0].closest('a');
-        if (target && target.href.startsWith(window.location.origin)) {
+        if (target && target.href.startsWith(globalThis.location.origin)) {
             event.preventDefault();
             await crs.call("route", "goto", { definition: target.href })
         }
