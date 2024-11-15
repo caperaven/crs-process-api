@@ -8,8 +8,8 @@ const bounds = { x: 0, left: 0, y: 0, top: 0, width: 50, right: 50, height: 50, 
 
 beforeAll(async () => {
     await import("./../../src/action-systems/fixed-position-actions.js");
-    globalThis.window.innerWidth = 1000;
-    globalThis.window.innerHeight = 1000;
+    globalThis.innerWidth = 1000;
+    globalThis.innerHeight = 1000;
 })
 
 describe("fixed position tests", () => {

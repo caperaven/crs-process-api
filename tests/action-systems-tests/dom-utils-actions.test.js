@@ -9,7 +9,7 @@ let expectedResult;
 beforeAll(async () => {
 
     await import("./../../src/action-systems/dom-utils-actions.js");
-    window.open = (url) => {
+    globalThis.open = (url) => {
         assertEquals(url, expectedResult);
     }
 })

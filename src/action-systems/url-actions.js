@@ -42,7 +42,7 @@ export class UrlActions {
             parameters: { required: false, type: "object" }
         }, "UrlActions.set_hash");
 
-        window.location.hash = await crs.call("string", "inflate", {
+        globalThis.location.hash = await crs.call("string", "inflate", {
             template: step.args.hash,
             parameters: step.args.parameters
         }, context, process, item);
@@ -72,7 +72,7 @@ export class UrlActions {
      * const searchParameters = await crs.call("url", "get_hash_search_parameters", {})
      */
     static async get_hash_search_parameters(step, context, process, item) {
-        const hash = window.location.hash;
+        const hash = globalThis.location.hash;
         const search = hash.split("?")[1];
         const params = new URLSearchParams(search);
         const result = {};

@@ -44,11 +44,11 @@ export default class Dom extends crsbinding.classes.BindableElement {
             })
         }
 
-        window.addEventListener("click", this._clickHandler);
+        globalThis.addEventListener("click", this._clickHandler);
     }
 
     async clearAnimationLayer() {
-        window.removeEventListener("click", this._clickHandler);
+        globalThis.removeEventListener("click", this._clickHandler);
         this._clickHandler = null;
 
         crs.call("dom", "remove_animation_layer");

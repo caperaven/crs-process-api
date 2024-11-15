@@ -93,7 +93,7 @@ export class RouteManager {
         this.#definition = definition;
         this.#callback = callback;
 
-        this.goto(window.location.href).then(() => {
+        this.goto(globalThis.location.href).then(() => {
             addEventListener("popstate", this.#onpopstateChangedHandler);
         })
     }
@@ -111,7 +111,7 @@ export class RouteManager {
 
     async #onpopstate(event) {
         event.preventDefault();
-        this.#routeDefinition = await crs.call("route", "parse", { url: window.location.href })
+        this.#routeDefinition = await crs.call("route", "parse", { url: globalThis.location.href })
         await this.#callback?.(this.#routeDefinition);
     }
 

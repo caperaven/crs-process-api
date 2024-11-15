@@ -193,7 +193,7 @@ export class FixedLayoutActions {
 
     /**
      * @method ensureInFrustum - If the position of the popup is outside the viewport, move it back inside
-     * @param position {Object}- The position of the top left corner of the window.
+     * @param position {Object}- The position of the top left corner of the globalThis.
      * @param width {Number}- The width of the tooltip.
      * @param height {Number}- The height of the tooltip.
      *
@@ -208,16 +208,16 @@ export class FixedLayoutActions {
             position.x = 1;
         }
 
-        if (position.x + width > window.innerWidth) {
-            position.x = window.innerWidth - width - 1;
+        if (position.x + width > globalThis.innerWidth) {
+            position.x = globalThis.innerWidth - width - 1;
         }
 
         if (position.y < 0) {
             position.y = 1;
         }
 
-        if (position.y + height > window.innerHeight) {
-            position.y = window.innerHeight - height - 1;
+        if (position.y + height > globalThis.innerHeight) {
+            position.y = globalThis.innerHeight - height - 1;
         }
 
         position.x = Math.round(position.x);
