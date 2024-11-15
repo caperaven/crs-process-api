@@ -8,7 +8,7 @@ globalThis.location = {
 };
 
 Deno.test("UrlActions.set_hash - sets the correct hash", async () => {
-    await globalThis.crs.call("url", "set_hash", {
+    await crs.call("url", "set_hash", {
         hash: "page?param1=${param1}&param2=${param2}",
         parameters: {
             param1: "value1",
@@ -21,7 +21,7 @@ Deno.test("UrlActions.set_hash - sets the correct hash", async () => {
 
 Deno.test("UrlActions.set_hash - throws error if hash is missing", async () => {
     await assertThrowsAsync(async () => {
-        await globalThis.crs.call("url", "set_hash", {
+        await crs.call("url", "set_hash", {
             parameters: {
                 param1: "value1",
                 param2: "value2"
@@ -33,7 +33,7 @@ Deno.test("UrlActions.set_hash - throws error if hash is missing", async () => {
 Deno.test("UrlActions.get_hash_search_parameters - gets the search parameters from the hash", async () => {
     globalThis.location.hash = "page?param1=value1&param2=value2";
 
-    const searchParameters = await globalThis.crs.call("url", "get_hash_search_parameters", {});
+    const searchParameters = await crs.call("url", "get_hash_search_parameters", {});
     assertEquals(searchParameters, {
         param1: "value1",
         param2: "value2"
@@ -43,6 +43,6 @@ Deno.test("UrlActions.get_hash_search_parameters - gets the search parameters fr
 Deno.test("UrlActions.get_hash_search_parameters - should not fail if no search", async () => {
     globalThis.location.hash = "";
 
-    const searchParameters = await globalThis.crs.call("url", "get_hash_search_parameters", {});
+    const searchParameters = await crs.call("url", "get_hash_search_parameters", {});
     assertEquals(searchParameters, {});
 });

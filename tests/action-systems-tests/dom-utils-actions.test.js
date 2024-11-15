@@ -26,7 +26,7 @@ Deno.test("call_on_element", async () => {
         calledArgs2 = args2;
     }
 
-    await globalThis.crs.call("dom_utils", "call_on_element", {
+    await crs.call("dom_utils", "call_on_element", {
         element: element,
         action: "fn",
         parameters: ["arg1", "arg2"]
@@ -43,7 +43,7 @@ Deno.test("find_parent_of_type - finds specified ancestor li tagname", async () 
     element.parentElement = document.createElement("div");
     element.parentElement.parentElement = document.createElement("li");
     // Act
-    const result = await globalThis.crs.call("dom_utils", "find_parent_of_type", {
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
        element,
        nodeName: "li"
     });
@@ -57,7 +57,7 @@ Deno.test("find_parent_of_type - stops at div tagname", async () => {
     element.parentElement = document.createElement("div");
     element.parentElement.parentElement = document.createElement("li");
     // Act
-    const result = await globalThis.crs.call("dom_utils", "find_parent_of_type", {
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
         element,
         nodeName: "li",
         stopAtNodeName: "div"
@@ -75,7 +75,7 @@ Deno.test("find_parent_of_type - finds specified ancestor li matches", async () 
     element.parentElement.parentElement.queryResults["[data-id='overHere']"] = element.parentElement.parentElement;
 
     // Act
-    const result = await globalThis.crs.call("dom_utils", "find_parent_of_type", {
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
         element,
         nodeQuery: "[data-id='overHere']"
     });
@@ -94,7 +94,7 @@ Deno.test("find_parent_of_type - stops at stopAtNodeQuery", async () => {
     element.parentElement.parentElement.queryResults["[data-id='overHere']"] = element.parentElement.parentElement;
 
     // Act
-    const result = await globalThis.crs.call("dom_utils", "find_parent_of_type", {
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
         element,
         nodeQuery: "[data-id='overHere']",
         stopAtNodeQuery: "[data-id='stop']"
@@ -110,7 +110,7 @@ Deno.test("find_parent_of_type - element not found", async () => {
     element.parentElement.parentElement = document.createElement("li");
 
     // Act
-    const result = await globalThis.crs.call("dom_utils", "find_parent_of_type", {
+    const result = await crs.call("dom_utils", "find_parent_of_type", {
         element,
         nodeName: "section"
     });
@@ -124,7 +124,7 @@ Deno.test("open_tab, should prefix url with http if prefix_http equals true" , a
     expectedResult = "http://www.google.com";
 
     // Act
-    await globalThis.crs.call("dom_utils", "open_tab", {
+    await crs.call("dom_utils", "open_tab", {
         url,
         prefix_http: true
     });
@@ -136,7 +136,7 @@ Deno.test("open_tab, should not prefix url with http if prefix_http equals false
     expectedResult = "www.google.com";
 
     // Act
-    await globalThis.crs.call("dom_utils", "open_tab", {
+    await crs.call("dom_utils", "open_tab", {
         url,
         prefix_http: false
     });
@@ -148,7 +148,7 @@ Deno.test("open_tab, should not prefix url with http if prefix_http equals true 
     expectedResult = "http://www.google.com";
 
     // Act
-    await globalThis.crs.call("dom_utils", "open_tab", {
+    await crs.call("dom_utils", "open_tab", {
         url,
         prefix_http: true
     });

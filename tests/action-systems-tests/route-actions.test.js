@@ -22,7 +22,7 @@ beforeAll(async () => {
     await import("./../../src/action-systems/route-actions.js");
     await import("./../../src/action-systems/dom-observer-actions.js");
 
-    await globalThis.crs.call("route", "register", {
+    await crs.call("route", "register", {
         definition: {
             parameters: {
                 0: "connection",
@@ -41,7 +41,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-    await globalThis.crs.call("route", "dispose", {});
+    await crs.call("route", "dispose", {});
 })
 
 describe("route actions tests", async () => {
@@ -50,7 +50,7 @@ describe("route actions tests", async () => {
     })
 
     it ("parse", async () => {
-        const result = await globalThis.crs.call("route", "parse", {
+        const result = await crs.call("route", "parse", {
             url: "https://www.google.com/connection/en-us/search?q=crs&id=1000"
         });
 
@@ -70,7 +70,7 @@ describe("route actions tests", async () => {
     })
 
     it ("create_url", async () => {
-        const result = await globalThis.crs.call("route", "create_url", {
+        const result = await crs.call("route", "create_url", {
             definition: {
                 protocol: "https",
                 host: "www.google.com",
@@ -104,14 +104,14 @@ describe("route actions tests", async () => {
             }
         }
 
-        await globalThis.crs.call("route", "goto", { definition });
+        await crs.call("route", "goto", { definition });
 
         assertEquals(changeDef, definition);
         assertEquals(stateDef.url, "https://www.google.com/connection/en-us/search?q=crs&id=1000");
     })
 
     it ("goto using string path", async () => {
-        await globalThis.crs.call("route", "goto", {
+        await crs.call("route", "goto", {
             definition: "https://www.google.com/connection/en-us/search?q=crs&id=2000"
         })
 
@@ -119,7 +119,7 @@ describe("route actions tests", async () => {
     })
 
     it ("set_parameters", async () => {
-        await globalThis.crs.call("route", "goto", {
+        await crs.call("route", "goto", {
             definition: {
                 protocol: "https",
                 host: "www.google.com",
@@ -135,7 +135,7 @@ describe("route actions tests", async () => {
             }
         });
 
-        await globalThis.crs.call("route", "set_parameters", {
+        await crs.call("route", "set_parameters", {
             parameters: {
                 "connection"  : "new_connection",
                 "environment" : "new_environment",
@@ -150,7 +150,7 @@ describe("route actions tests", async () => {
     })
 
     it ("set_queries", async () => {
-        await globalThis.crs.call("route", "set_queries", {
+        await crs.call("route", "set_queries", {
             queries: {
                 id: "2000"
             },
