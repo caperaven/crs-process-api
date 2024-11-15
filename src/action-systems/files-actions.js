@@ -204,11 +204,11 @@ export class FilesActions {
 
         for (let fileDetail of fileDetails) {
             let blob = new Blob([fileDetail.value], {type: fileDetail.type});
-            let url = window.URL.createObjectURL(blob);
+            let url = globalThis.URL.createObjectURL(blob);
             link.href = url;
             link.download = `${fileDetail.name}.${fileDetail.ext}`;
             link.click();
-            window.URL.revokeObjectURL(url);
+            globalThis.URL.revokeObjectURL(url);
             url = null;
             blob = null;
         }

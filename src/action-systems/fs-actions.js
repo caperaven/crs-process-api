@@ -51,7 +51,7 @@ export class FsActions {
      */
     static async select_file(step, context, process, item) {
         let fileHandle;
-        [fileHandle] = await window.showOpenFilePicker();
+        [fileHandle] = await globalThis.showOpenFilePicker();
         return fileHandle;
     }
 
@@ -258,7 +258,7 @@ export class FsActions {
      */
     static async open_folder(step, context, process, item) {
         const handle = await crs.process.getValue(step.args?.handle, context, process, item);
-        const dirHandle = handle || await window.showDirectoryPicker();
+        const dirHandle = handle || await globalThis.showDirectoryPicker();
         await verifyPermission(dirHandle, true);
 
         const results = [];
@@ -299,7 +299,7 @@ async function getSaveHandle(types, defaultName) {
         types: types || []
     };
 
-    return await window.showSaveFilePicker(options);
+    return await globalThis.showSaveFilePicker(options);
 }
 
 /**

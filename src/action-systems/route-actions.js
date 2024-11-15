@@ -110,7 +110,7 @@ export class RouteActions {
      * }
      */
     static async parse(step, context, process, item) {
-        let url = await crs.process.getValue(step.args.url || window.location.href, context, process, item);
+        let url = await crs.process.getValue(step.args.url || globalThis.location.href, context, process, item);
 
         // 0. ensure a properly define url
         if (url.indexOf("://") === -1) url = `http://${url}`;

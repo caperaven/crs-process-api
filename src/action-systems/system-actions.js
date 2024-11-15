@@ -236,7 +236,7 @@ export class SystemActions {
      * }
      */
     static async is_portrait(step, context, process, item) {
-        let result = window.matchMedia("(orientation: portrait)").matches;
+        let result = globalThis.matchMedia("(orientation: portrait)").matches;
 
         if (step?.args?.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);
@@ -269,7 +269,7 @@ export class SystemActions {
      * }
      */
     static async is_landscape(step, context, process, item) {
-        let result = window.matchMedia("(orientation: landscape)").matches
+        let result = globalThis.matchMedia("(orientation: landscape)").matches
 
         if (step?.args?.target != null) {
             await crs.process.setValue(step.args.target, result, context, process, item);

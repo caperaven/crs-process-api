@@ -24,7 +24,7 @@ describe("fixed layout tests", () => {
     })
 
     it("top - left", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "top",
@@ -37,7 +37,7 @@ describe("fixed layout tests", () => {
     })
 
     it("top - right", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "top",
@@ -50,7 +50,7 @@ describe("fixed layout tests", () => {
     })
 
     it("top - middle", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "top",
@@ -62,7 +62,7 @@ describe("fixed layout tests", () => {
     })
 
     it("bottom - left", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "bottom",
@@ -75,7 +75,7 @@ describe("fixed layout tests", () => {
     })
 
     it("bottom - right", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "bottom",
@@ -88,7 +88,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("left - top", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "left",
@@ -101,7 +101,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("left - bottom", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "left",
@@ -114,7 +114,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("left - middle", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "left",
@@ -126,7 +126,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("right - top", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "right",
@@ -139,7 +139,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("left - bottom", async () => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             target: target,
             at: "right",
@@ -152,7 +152,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("below - point - left", async() => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             point: {x: 100, y:100},
             at: "bottom",
@@ -164,7 +164,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("below - point - right", async() => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             point: {x: 100, y:100},
             at: "bottom",
@@ -176,7 +176,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("top - point - left", async() => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             point: {x: 100, y:100},
             at: "top",
@@ -188,7 +188,7 @@ describe("fixed layout tests", () => {
     })
 
     it ("top - point - right", async() => {
-        await crs.call("fixed_layout", "set", {
+        await globalThis.crs.call("fixed_layout", "set", {
             element: element,
             point: {x: 100, y:100},
             at: "top",

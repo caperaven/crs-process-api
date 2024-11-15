@@ -192,7 +192,7 @@ export class DomUtilsActions {
             url = `http://${url}`;
         }
 
-        window.open(url, "_blank");
+        globalThis.open(url, "_blank");
     }
 
     /**

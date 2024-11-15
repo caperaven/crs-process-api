@@ -116,7 +116,7 @@ class Positioning {
      * Positioning["top-center"](element, margin, elementBounds);
      */
     static "top-center"(element, margin, elementBounds) {
-        const x = Math.round((window.innerWidth / 2) - (elementBounds.width / 2));
+        const x = Math.round((globalThis.innerWidth / 2) - (elementBounds.width / 2));
         const y = Math.round(margin);
         element.style.translate = `${x}px ${y}px`;
     }
@@ -132,7 +132,7 @@ class Positioning {
      *
      */
     static "top-right"(element, margin, elementBounds) {
-        const x = Math.round(window.innerWidth - elementBounds.width - margin);
+        const x = Math.round(globalThis.innerWidth - elementBounds.width - margin);
         const y = Math.round(margin);
         element.style.translate = `${x}px ${y}px`;
     }
@@ -148,7 +148,7 @@ class Positioning {
      */
     static "bottom-left"(element, margin, elementBounds) {
         const x = Math.round(margin);
-        const y = Math.round(window.innerHeight - elementBounds.height - margin);
+        const y = Math.round(globalThis.innerHeight - elementBounds.height - margin);
         element.style.translate = `${x}px ${y}px`;
     }
 
@@ -162,8 +162,8 @@ class Positioning {
      * Positioning["bottom-center"](element, margin, elementBounds);
      */
     static "bottom-center"(element, margin, elementBounds) {
-        const x = Math.round((window.innerWidth / 2) - (elementBounds.width / 2));
-        const y = Math.round(window.innerHeight - elementBounds.height - margin);
+        const x = Math.round((globalThis.innerWidth / 2) - (elementBounds.width / 2));
+        const y = Math.round(globalThis.innerHeight - elementBounds.height - margin);
         element.style.translate = `${x}px ${y}px`;
     }
 
@@ -174,8 +174,8 @@ class Positioning {
      * @param elementBounds {Bounding Rect} - bounds of the element
      */
     static "bottom-right"(element, margin, elementBounds) {
-        const x = Math.round(window.innerWidth - elementBounds.width - margin);
-        const y = Math.round(window.innerHeight - elementBounds.height - margin);
+        const x = Math.round(globalThis.innerWidth - elementBounds.width - margin);
+        const y = Math.round(globalThis.innerHeight - elementBounds.height - margin);
         element.style.translate = `${x}px ${y}px`;
     }
 
@@ -189,8 +189,8 @@ class Positioning {
      * Positioning["center-screen"](element, margin, elementBounds);
      */
     static "center-screen"(element, margin, elementBounds) {
-        const x = Math.round((window.innerWidth / 2) - (elementBounds.width / 2));
-        const y = Math.round((window.innerHeight / 2) - (elementBounds.height / 2));
+        const x = Math.round((globalThis.innerWidth / 2) - (elementBounds.width / 2));
+        const y = Math.round((globalThis.innerHeight / 2) - (elementBounds.height / 2));
         element.style.translate = `${x}px ${y}px`;
     }
 }
