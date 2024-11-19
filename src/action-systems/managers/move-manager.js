@@ -72,7 +72,7 @@ export class MoveManager {
 
 
     async #mouseDown(event) {
-        if (this.#matches(event) === false)
+        if (this.#matches(event) === false || event.target.dataset.ignore === "true")
             return;
 
         this.#startPos = {x: clientX(event), y: clientY(event)};
