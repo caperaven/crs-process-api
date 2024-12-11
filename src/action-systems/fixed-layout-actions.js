@@ -110,6 +110,7 @@ export class FixedLayoutActions {
         position = this.#ensureInFrustum(position, elementBounds.width, elementBounds.height);
         element.style.translate = `${position.x}px ${position.y}px`;
         element.removeAttribute("hidden");
+        return targetBounds;
     }
 
     /**
